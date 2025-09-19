@@ -1,0 +1,60 @@
+@charset "utf-8";
+/*
+Template Name: Realistic
+Author: <a href="http://www.os-templates.com/">OS Templates</a>
+Author URI: http://www.os-templates.com/
+Licence: Free to use under our free template licence terms
+Licence URI: http://www.os-templates.com/template-terms
+File: Layout CSS
+*/
+
+/* @import url("navi.css"); */
+@import url("forms.css");
+@import url("tables.css");
+@import url("homepage.css");
+@import url("gallery.css");
+@import url("portfolio.css");
+@import url("style.css");
+
+html{overflow-y:scroll;}
+body{margin:0; padding:0; font-size:12px; font-family:'Titillium Web'; color:#787878; background-color:#E0E0E0;}
+
+.justify{text-align:justify;}
+.bold{font-weight:bold;}
+.center{text-align:center;}
+.right{text-align:right;}
+.nostart{margin:0; padding:0; list-style-type:none;}
+
+.clear{clear:both;}
+br.clear{clear:both; margin-top:-15px;}
+
+a{outline:none; text-decoration:none; color:#A3443E; background-color:#E0E0E0;}
+
+.fl_left, .imgl{float:left;}
+.fl_right, .imgr{float:right;}
+
+/*img{display:block; margin:0; padding:0; border:none;}*/
+.imgl, .imgr{border:1px solid #C7C5C8; padding:5px;}
+.imgl{margin:0 8px 8px 0; clear:left;}
+.imgr{margin:0 0 8px 8px; clear:right;}
+/* ----------------------------------------------Wrapper------------------------------------- */
+
+div.wrapper{display:block; margin:0 0 1px 0; text-align:left;}
+div.wrapper h1, div.wrapper h2, div.wrapper h3, div.wrapper h4, div.wrapper h5, div.wrapper h6{margin:0 0 15px 0; padding:0; font-size:20px; font-weight:normal; line-height:normal;}
+/* ----------------------------------------------Generalise------------------------------------- */
+
+#header, #topbar, #topnav, #breadcrumb, .container, #footer, #copyright{display:block; position:relative; width:960px; margin:0 auto;}
+
+/* ----------------------------------------------Header------------------------------------- */
+
+#header{text-align:center; text-transform:uppercase;}
+#header h1, #header p{margin:0; padding:0; list-style:none; line-height:normal;}
+#header h1 a{font-size:170px; color:#292929; background-color:#E0E0E0;}
+#header p{margin-top:-20px; font-size:20px; color:#4A4A4A; background-color:#E0E0E0;}
+
+/* ----------------------------------------------Topbar------------------------------------- */
+
+#topbar{padding:15px 0; border-bottom:1px solid #999999;}
+#topbar .fl_left{margin:8px 0 0 0; padding:0;}
+#topbar .fl_left, #topbar .fl_left a{color:#999999; background-color:#E0E0E0;}
+

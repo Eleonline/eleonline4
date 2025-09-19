@@ -1,0 +1,75 @@
+/* Wrapper principale */
+.wrapper {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+}
+
+/* Container per sidebar + contenuto, prende tutto lo spazio disponibile */
+.content-container {
+  flex: 1 1 auto;
+  display: flex;
+  overflow: hidden;
+}
+.main-sidebar .brand-link {
+  display: flex;
+  align-items: center;  /* centra verticalmente contenuto */
+  padding: 0 15px;      /* mantieni padding orizzontale */
+  height: 57px;         /* altezza standard AdminLTE */
+}
+
+.main-sidebar .brand-link img {
+  margin-right: 10px;   /* spazio tra logo e testo */
+  height: 35px;         /* regola altezza logo se serve */
+  width: auto;
+}
+
+
+
+/* Spazio contenuto spostato a destra per lasciare posto alla sidebar */
+.content-wrapper {
+  margin-left: 250px;
+  padding: 20px;
+  background: #f4f6f9;
+  
+  /* spazio per footer */
+  padding-bottom: 50px;
+  
+  height: 100vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.main-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+  
+  display: flex;
+  justify-content: center; /* centra orizzontalmente */
+  align-items: center;     /* centra verticalmente */
+  
+  z-index: 1050;
+  font-weight: bold; /* opzionale */
+}
+
+#paginationControls {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 768px) {
+    #paginationControls button {
+      flex: 1 0 auto;
+      min-width: 40px;
+      font-size: 14px;
+      padding: 6px 8px;
+    }
+  }
+

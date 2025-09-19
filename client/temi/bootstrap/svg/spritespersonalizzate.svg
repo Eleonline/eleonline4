@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+<symbol id="it-percentuale" viewBox="0 0 24 24">
+  <path d="M6.5 7.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" />
+  <path d="M6.5 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+  <path d="M17.5 21.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" />
+  <path d="M17.5 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+  <path d="M5 20.2L20.2 5l-1.2-1.2L3.8 19z" />
+</symbol>
+</svg>

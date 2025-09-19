@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: admin.php
+Disallow: /admin/
+Disallow: /images/
+Disallow: /doc/
+Disallow: /pagine/
+Disallow: /temi/
+Disallow: /modules/
+

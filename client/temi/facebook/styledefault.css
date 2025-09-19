@@ -1,0 +1,376 @@
+/**************** 
+style css for eleonline
+http://www.elenoline.it
+****************/
+
+body , html {
+	font-family: Titillium Web,Lora, Roboto Mono;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	margin-right: 0;
+	margin-left: 0;
+	margin-top: 0;
+	text-align: center;
+	background-color: #FFFFFF;
+	color: #333333;
+}
+
+a:link {
+	text-decoration: none;
+	color: #660033;
+}
+a:visited {
+	text-decoration: none;
+	color: #660000;
+}
+a:hover {
+	color: #CC2222;
+}
+
+/* contenitore */
+
+div#container{
+    width: 750px;
+    margin: 0px auto;   /*centra negli altri browsers*/
+    text-align: left;   /*ripristina l' allineamento*/
+    }
+table {
+	margin-right: auto;
+	margin-left: auto;
+	text-align: left;
+	margin-top: 0px;
+	
+}
+td {
+	font-family: Titillium Web,Lora, Roboto Mono;
+	font-size: 12px;
+	margin-top: 0px;
+	margin: 0;
+}
+
+hr {
+	color: #000000;
+	background-color: #FFFFFF;
+	border-bottom: 1px dotted #CCCCCC;
+}
+form {
+	
+	font-size: 12px;
+	color: #000066;
+	text-decoration: none;
+	margin-right: 0px;
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	width: 100%;
+}
+p {
+	font-family: Titillium Web,Lora, Roboto Mono;
+	font-size: 12px;
+	padding-right: 8px;
+	padding-bottom: 0px;
+	padding-left: 8px;
+	padding-top: 0px;
+	margin: 2px 2px 4px;
+}
+h1 {
+	font-size: 16px;
+	font-weight: bold;
+	color: #222266;
+	text-decoration: none;
+	border-bottom-width: 1px;
+	border-bottom-style: dotted;
+	border-bottom-color: #222266;
+	margin-top: 6px;
+	margin-bottom: 8px;
+	padding-right: 0px;
+	padding-left: 0px;
+}
+h2 {
+	font-size: 14px;
+	font-weight: bold;
+	color: #660000;
+	text-decoration: none;
+	border-bottom-width: 1px;
+	border-bottom-style: dotted;
+	border-bottom-color: #CCCCCC;
+	margin-top: 9px;
+	margin-bottom: 2px;
+	padding-right: 1px;
+	padding-left: 4px;
+}
+h4 {
+	font-size: 14px;
+	color: #003366;
+	text-decoration: none;
+	background-position: center;
+	bottom: 9px;
+	margin: 20px;
+	text-align: center;
+	border: 1px dotted #666666;
+	padding: 2px;
+	width: auto;
+	background-color: #EEEFEF;
+	font-variant: small-caps;
+}
+h5 {
+	font-size: 14px;
+	font-weight: bold;
+	color: #333333;
+	text-decoration: none;
+	border-bottom-width: 1px;
+	border-bottom-style: dotted;
+	border-bottom-color: #CCCCCC;
+	margin-top: 0px;
+	margin-bottom: 4px;
+	padding-right: 1px;
+	padding-left: 4px;
+	background-color: #EFEFEF;
+	background-position: center;
+	text-align: center;
+}
+h6 {
+	font-size: 12px;
+	font-weight: bold;
+	color: #333333;
+	text-decoration: none;
+	border-bottom-style: dotted;
+	padding-left: 4px;
+	background-position: center;
+	border-bottom-color: #EEEEEE;
+	border-bottom-width: 1px;
+	padding-top: 3px;
+	padding-right: 2px;
+	padding-bottom: 0px;
+	bottom: 9px;
+	margin-top: 1px;
+	margin-bottom: 3px;
+}
+
+/* classe tratteggiata usata in molti td */
+
+
+.modulo {
+	text-decoration: none;
+	border: 1px solid #666699;
+	font-size: 10px;
+}
+
+.modulo-button {
+	color: #663366;
+	text-decoration: none;
+	background-color: #FFFFEE;
+	border: 1px solid #660033;
+	width: 50%;
+	text-align: center;
+	font-size: 10px;
+	padding: 3px;
+}
+
+
+.sitebar {
+	background-image: url(images/site-background.gif);
+	font-size: 12px;
+	border: none;
+	color: #330000;
+}
+
+
+
+/* tavole */
+.table-main {
+	border: 1px solid #DEDEDC;
+	font-size: 12px;
+	background-position: center top;
+	padding: 0px;
+	color: #666666;
+	text-align:center;
+	width: 762px;
+}
+/* usate per blocco */
+
+.td-149 {
+	float: right;
+	margin: 0px 0 0 0px;
+	width: 149px;	
+	border: none;
+	background-color: #d2d2d2;
+	padding: 0px;
+}
+
+/* numero e simbolo liste */
+
+.td-5 {
+	
+	margin: 0px 0 0 0px;
+	width: 5%;	
+	border: none;
+	background-color: #d2d2d2;
+	padding: 0px;
+        FONT-SIZE: 12px; 
+        FONT-FAMILY: Titillium Web,Lora, Roboto Mono;
+}	
+
+	
+/* sinistra */
+div#sx{
+    width: 610px;
+    float: left;
+    text-align: left;   
+    }
+/* destra */
+div#dx{
+    width: 149px;
+    float: right;
+    text-align: left;   
+    }
+
+
+/* flash */
+div#flash{
+    width: 410px;
+    float: left;
+    text-align: left;   
+    }
+
+
+
+
+
+
+/* immagini bordo */
+
+.image {
+	/*float: center;*/
+	border: none;
+	margin: 0px;
+	padding: 0px;
+}		
+
+.stemma {
+	/*float: center;*/
+	border: none;
+	margin: 0px;
+	padding: 0px;
+	width:50px;
+	height:50px;
+}		
+
+
+.nobordo {
+border: 0px;
+text-align: center;
+vertical-align: middle;
+}
+
+.bordo {
+border: 1px solid #ff0000;
+text-align: left;
+vertical-align: middle;
+
+}
+/******************** font e backcolor******************************/
+.blu 	{
+	background: none;
+	font-weight: bold; 
+	color: #003366; 
+	font-size: 12px; 
+	font-family: Titillium Web,Lora, Roboto Mono;
+}
+
+
+.red 	{
+	background: none; 
+	color: #ff0000; 
+	font-size: 12px; 
+	font-family: Titillium Web,Lora, Roboto Mono;
+}
+
+.redbig 	{
+	background: none; 
+	color: #ff0000; 
+	font-size: 16px; 
+	font-family: Titillium Web,Lora, Roboto Mono;
+}
+
+.bgw	{
+	background: #ffffff; 
+	font-size: 12px; 
+	font-family: Titillium Web,Lora, Roboto Mono;
+	text-align: center;
+}
+
+.bggray 	{
+	background: #d2d2d2; 
+	font-size: 12px; 
+	font-family: Titillium Web,Lora, Roboto Mono;
+	text-align: center;
+}
+
+.bggray2 	{
+	background: #EFEFEF; 
+	font-size: 12px; 
+	font-family: Titillium Web,Lora, Roboto Mono;
+	text-align: center;
+	}
+
+.bggray3 	{
+	background: #EFEFEF; 
+	font-size: 12px; 
+	font-family: Titillium Web,Lora, Roboto Mono;
+	text-align: left;
+	}
+
+.normale {
+	background: none; 
+	color: #000000; 
+	font-size: 12px; 
+	font-family: Titillium Web,Lora, Roboto Mono;
+	text-align: left;
+}
+
+/**********************************************************************BOTTONI W3C*****************************************************/
+
+.w3cbutton3 {
+  margin: 0px 0px 0px 5px;
+  width: 95px;
+  border: 1px solid #6A6A6A;
+  font-family: Titillium Web,Lora, Roboto Mono;
+  font-size: 10px;
+  float: left;
+}
+
+.w3cbutton3 a {
+  display: block;
+  width: 100%;
+}
+
+.w3cbutton3 a:link, .w3cbutton3 a:visited {
+  background-color: #8CC8C7;
+  color: #2A290B;
+  text-decoration: none;
+}
+
+.w3cbutton3 a:hover {
+  background-color: #C9F4F3;
+  color: #2A290B;
+  text-decoration: none;
+}
+
+.w3cbutton3 span.w3c {
+  font-weight: bold;
+  padding: 0 0.4em;
+  background-color: #FFFFCC;
+  color: #0C479D;
+}
+
+.w3cbutton3 span.spec {
+  color: #333333;
+}
+
+.w3cbutton3 span.specRed {
+  color: #FF0000;
+}
+
+

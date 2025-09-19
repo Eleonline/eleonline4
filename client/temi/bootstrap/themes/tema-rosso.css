@@ -1,0 +1,392 @@
+/* ========================= */
+/* Variabili CSS - Colori tema rosso */
+/* ========================= */
+:root {
+  --rosso-chiaro: #f9e6e6;
+  --rosso-molto-chiaro: #fdf0f0;
+  --rosso-chiaro-pastello: #f2cccc;
+  --rosso-medio: #cc0000;
+  --rosso-scuro: #660000;
+  --rosso-scuro-alt: #990000;
+  --rosso-brillante: #dc3545;
+  --rosso-chiaro-intenso: #cc9999;
+  --rosso-chiaro-alt: #f0d9d9;
+  --rosso-molto-chiaro-alt: #f5e8e8;
+  --rosso-tenue: #c6a3a3;
+  --rosso-chiaro-diffuso: #efd8d8;
+  --rosso-chiaro-leggero: #e8d0d0;
+  --testo-bianco: #ffffff;
+  --testo-rosso-scuro: #660000;
+  --testo-rosso-scuro-alt: #5a1b1b;
+  --testo-rosso-scuro-molto: #7a2f2f;
+  --testo-rosso-visibile: #662f2f;
+  --testo-rosso-brillante: #b32e2e;
+  --ombra-rosso-scuro: rgba(136, 33, 33, 0.7);
+  --ombra-rosso-brillante: rgba(220, 53, 69, 0.5);
+  --ombra-rosso-medio: rgba(100, 40, 40, 0.2);
+}
+
+/* ========================= */
+/* --- Stili base del body e testo --- */
+/* ========================= */
+/*
+html, body {
+  background-color: var(--rosso-chiaro) !important; 
+  color: var(--rosso-scuro) !important;
+}
+*/
+/* ========================= */
+/* Affluenza*/
+/* ========================= */
+
+.complessivi {
+  color: white !important;
+}
+/* ========================= */
+/* Link */
+/* ========================= */
+a, a:visited {
+  color: var(--rosso-scuro-alt) !important;
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  color: var(--rosso-medio) !important;
+  text-decoration: underline;
+}
+/* ========================= */
+/* Percentuali */
+/* ========================= */
+
+#toggle-percentuali {
+  color: var(--testo-rosso-brillante);
+}
+
+#toggle-percentuali .icon {
+  fill: currentColor;
+}
+/* ========================= */
+/* Pulsanti e submit */
+/* ========================= */
+/*
+button, input[type="submit"] {
+  background-color: var(--rosso-medio) !important;
+  color: var(--testo-bianco) !important;
+  border: none !important;
+}
+
+button:hover, input[type="submit"]:hover {
+  background-color: var(--rosso-scuro-alt) !important;
+}
+*/
+
+/* ========================= */
+/* Sfondo accordion e icone - Rosso */
+/* ========================= */
+
+/* Quando chiuso */
+.accordion-button.collapsed {
+  background-color: transparent;
+  color: var(--testo-rosso-scuro-molto); /* rosso scuro per testo */
+}
+.accordion-button.collapsed::after {
+  filter: invert(34%) sepia(43%) saturate(464%) hue-rotate(-20deg) brightness(85%) contrast(80%);
+}
+
+/* Quando aperto */
+.accordion-button:not(.collapsed) {
+  background-color: var(--rosso-chiaro-pastello); /* rosso chiaro pastello */
+  color: var(--testo-rosso-scuro-alt); /* rosso scuro alternativo */
+}
+.accordion-button:not(.collapsed)::after {
+  filter: invert(56%) sepia(73%) saturate(650%) hue-rotate(-15deg) brightness(95%) contrast(90%);
+}
+
+
+/* ========================= */
+/* --- Topbar e navbar generici (se usati) --- */
+/* ========================= */
+.topbar, .navbar {
+  background-color: var(--rosso-scuro) !important;
+  color: var(--testo-bianco) !important;
+}
+
+.topbar a, .navbar a {
+  color: var(--testo-bianco) !important;
+}
+
+.topbar a:hover, .navbar a:hover {
+  color: var(--rosso-chiaro-intenso) !important;
+}
+
+/* ========================= */
+/* --- Header specifico (.it-header-wrapper) --- */
+/* ========================= */
+.it-header-wrapper {
+  background-color: var(--rosso-scuro) !important;
+  color: var(--testo-bianco) !important;
+}
+
+.it-header-wrapper .it-brand-text,
+.it-header-wrapper .it-brand-title,
+.it-header-wrapper .it-brand-tagline {
+  color: var(--testo-bianco) !important;
+}
+
+.it-header-wrapper a:hover {
+  color: var(--rosso-chiaro-intenso) !important;
+}
+
+/* Reset sfondo trasparente agli elementi interni per far vedere lo sfondo padre */
+.it-header-wrapper *,
+.it-header-wrapper .it-nav-wrapper,
+.it-header-wrapper .it-header-center-wrapper,
+.it-header-wrapper nav,
+.it-header-wrapper .navbar {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+.it-header-wrapper .menu-wrapper {
+  background-color: var(--rosso-scuro) !important;
+  color: var(--testo-bianco) !important;
+}
+
+.it-header-wrapper .dropdown-menu {
+  background-color: var(--rosso-chiaro) !important;
+  color: var(--rosso-scuro) !important;
+}
+
+/* Overlay, close button e bottoni */
+.it-header-wrapper .overlay,
+.it-header-wrapper .close-div,
+.it-header-wrapper button.btn.close-menu {
+  background-color: var(--rosso-scuro) !important;
+  color: var(--testo-bianco) !important;
+}
+
+/* Link nei dropdown */
+.it-header-wrapper .dropdown-menu a {
+  color: var(--rosso-scuro) !important;
+}
+
+.it-header-wrapper .dropdown-menu a:hover {
+  background-color: #f2cccc !important; /* rosso leggermente più intenso */
+  color: var(--rosso-scuro-alt) !important;
+}
+
+/* Separatore nel menu dropdown */
+.dropdown-menu .link-list-wrapper ul li span.divider {
+  background-color: var(--rosso-medio) !important;
+}
+
+/* Icone svg */
+.it-header-wrapper svg.icon * {
+  fill: var(--rosso-scuro) !important;
+}
+
+/* Navbar brand */
+.it-right-zone .navbar-brand {
+  color: var(--testo-bianco) !important;
+}
+
+/* Triangolino dropdown */
+.it-header-wrapper .dropdown-menu::before {
+  background-color: #f4e6e6 !important;
+  border-color: #f4e6e6 transparent !important;
+}
+.nav-link.dropdown-toggle .icon {
+  fill: #fff !important;      /* colore bianco */
+  stroke: #fff !important;    /* se usano contorni */
+  filter: none !important;    /* rimuove filtri scuri */
+}
+
+
+/* ========================= */
+/* Titolo content */
+/* ========================= */
+.title-content {
+  width: 100%;
+  background: var(--rosso-scuro);
+  color: var(--rosso-chiaro);
+}
+
+/* ========================= */
+/* Background colors - classi riutilizzabili */
+/* ========================= */
+.primary-bg-c1 {
+  background-color: var(--rosso-molto-chiaro) !important;
+}
+
+.primary-bg-c4, .primary-bg-c11 {
+  background-color: var(--rosso-scuro) !important;
+}
+
+.primary-bg-c6 {
+  background-color: var(--rosso-chiaro-pastello) !important;
+  /* color: var(--rosso-chiaro) !important; */
+}
+
+.lightgrey-bg-b2 {
+  background-color: var(--rosso-molto-chiaro-alt) !important;
+  color: var(--rosso-scuro) !important;
+  border: 1px solid var(--rosso-medio) !important;
+}
+
+.primary-bg-a2 {
+  background-color: var(--rosso-chiaro-pastello) !important;
+  color: var(--rosso-scuro) !important;
+  border: 1px solid var(--rosso-medio) !important;
+}
+
+/* ========================= */
+/* Testo e icone principali */
+/* ========================= */
+.text-primary {
+  color: var(--rosso-scuro) !important;
+}
+
+.icon-primary {
+  fill: var(--rosso-scuro) !important;
+  color: var(--rosso-scuro) !important;
+}
+/* ========================= */
+/* Affluenza Pagina inziale */
+/* ========================= */
+.table.votanti thead,
+.table.votanti tfoot {
+  background: var(--rosso-scuro);
+  color: var(--testo-bianco);
+}
+/* ========================= */
+/* Footer */
+/* ========================= */
+.it-footer,
+.it-footer .it-footer-small-prints,
+.it-footer .container {
+  background-color: var(--rosso-scuro) !important;
+  color: var(--rosso-chiaro) !important;
+}
+
+.it-footer a {
+  color: #fff !important;
+}
+
+.it-footer a:hover {
+  color: #ffe6e6 !important;
+}
+
+/* ========================= */
+/* Referendum */
+/* ========================= */
+.dati_referendum_titolo_quesito {
+  background-color: var(--rosso-chiaro-leggero);
+  color: var(--testo-rosso-scuro-alt);
+}
+
+table th.box_elevot_title {
+  border-bottom: 1px solid var(--rosso-tenue);
+  color: var(--testo-rosso-scuro-molto);
+  background-color: var(--rosso-chiaro-diffuso);
+}
+
+.dati_referendum {
+  color: var(--testo-rosso-visibile);
+}
+
+/* ========================= */
+/* Pagina link Utili
+/* ========================= */
+.box_linkutili {
+  box-shadow: 0px 2px 3px 1px var(--ombra-rosso-medio);
+  background-color: var(--rosso-molto-chiaro-alt);
+}
+
+.list-item-title,
+.box_linkutili p {
+  color: var(--testo-rosso-brillante) !important;
+}
+
+/* ========================= */
+/* torna su */
+/* ========================= */
+.back-to-top {
+  background: var(--rosso-brillante);
+  border: none;
+  box-shadow: 0 4px 6px var(--ombra-rosso-brillante);
+}
+
+.back-to-top:hover {
+  background: var(--rosso-scuro-alt);
+  box-shadow: 0 6px 10px var(--ombra-rosso-scuro);
+}
+
+.back-to-top svg {
+  fill: var(--testo-bianco);
+}
+
+.back-to-top.shadow:hover {
+  box-shadow: 0 .3rem .75rem var(--ombra-rosso-scuro) !important;
+}
+
+/* ========================= */
+/* modalità smartphone */
+/* ========================= */
+@media (max-width: 820px) {
+  /* html, body { */
+    /* background-color: var(--rosso-chiaro) !important; */
+  /* } */
+
+  .it-header-wrapper .menu-wrapper {
+    background-color: var(--rosso-chiaro-alt) !important;
+    color: var(--rosso-scuro) !important;
+  }
+
+  /* Anche i link dentro il menu burger */
+  .it-header-wrapper .menu-wrapper a {
+    color: var(--rosso-scuro) !important;
+  }
+
+  .it-header-wrapper .menu-wrapper a:hover {
+    color: var(--rosso-scuro-alt) !important;
+  }
+
+  .it-header-wrapper .menu-wrapper svg.icon {
+    fill: var(--rosso-scuro) !important;
+    color: var(--rosso-scuro) !important;
+  }
+
+  /* Burger bianco */
+  .navbar-toggler-icon {
+    filter: none !important;
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+  }
+
+  /* Bottone trasparente */
+  .navbar-toggler {
+    background-color: transparent !important;
+    border-color: white !important;
+    color: white !important;
+    z-index: 1050;
+  }
+
+  /* Menu a scomparsa trasparente */
+  .navbar-collapse {
+    background-color: transparent !important;
+  }
+
+  /* Icone bianche */
+  .it-header-wrapper svg.icon * {
+    fill: white !important;
+  }
+
+  /* Frecce dropdown rosso scuro su smartphone */
+  .nav-link.dropdown-toggle .icon,
+  .dropdown-item .icon {
+    fill: var(--rosso-scuro) !important;
+    stroke: var(--rosso-scuro) !important;
+    color: var(--rosso-scuro) !important;
+    filter: none !important;
+  }
+}
+

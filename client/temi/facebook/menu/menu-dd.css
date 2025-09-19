@@ -1,0 +1,38 @@
+/*CSS principale per il menu*/
+
+ul#nav{font-family:  Titillium Web,Lora, Roboto Mono;}
+ul#nav,ul#nav li,ul#nav ul,ul#nav ul li{margin:0;padding:0;list-style-type:none}
+ul#nav{height:26px;line-height:25px;margin-left:5px;
+    background: #3B5998;color: #fff}
+ul#nav a{display:block;padding: 0 15px;text-decoration: none; color:#FFF}
+ul#nav li{float: left;position: relative}
+ul#nav li li{float: none;line-height: 22px;
+    display:block !important;display: inline; /*IE*/}
+ul#nav ul{position: absolute;top: 23px;left: -9999px;
+    width: 20em;background: #fff;color: #3B5998}
+ul#nav ul{padding: 7px 0;border: 1px solid #3B5998}
+ul#nav li li a{height:22px}   /*fix per IE */
+ul#nav ul,ul#nav li li a{background-color: #FFF;color: #3B5998}
+ul#nav li:hover,ul#nav a:hover{background-color: #5C75AA;color: #FFF}
+ul#nav li:hover ul,ul#nav li.sfhover ul{left: -1px;z-index: 100}
+
+/*regole per separatore e le icone */
+
+ul#nav li.sep{height: 34px;background: #fff}
+ul#nav li.sep span{display: block;height: 1px;overflow: hidden;
+    margin: 6px 5px 0;background: #CCC}
+ul#nav li li.icon a{padding-left: 24px}
+ul#nav li li.settings a{background: url(icon_settings.gif) no-repeat 3px 3px}
+ul#nav li li.privacy a{background: url(icon_padlock.gif) no-repeat 3px 3px}
+ul#nav li li.voto a{background: url(icon_voto.gif) no-repeat 3px 3px}
+ul#nav li li.numeri a{background: url(icon_numeri.gif) no-repeat 3px 3px}
+ul#nav li li.servizi a{background: url(icon_servizi.gif) no-repeat 3px 3px}
+ul#nav li li.votanti a{background: url(icon_votanti.gif) no-repeat 3px 3px}
+ul#nav li li.affluenze a{background: url(icon_affluenze.gif) no-repeat 3px 3px}
+ul#nav li li.matita a{background: url(icon_matita.gif) no-repeat 3px 3px}
+ul#nav li li.candi a{background: url(icon_candi.gif) no-repeat 3px 3px}
+ul#nav li li.consi a{background: url(icon_consi.gif) no-repeat 3px 3px}
+ul#nav li li.liste a{background: url(icon_liste.gif) no-repeat 3px 3px}
+ul#nav li li.graf a{background: url(icon_graf.gif) no-repeat 3px 3px}
+ul#nav li li.stat a{background: url(icon_stat.gif) no-repeat 3px 3px}
+ul#nav li li.dontd a{background: url(icon_dontd.gif) no-repeat 3px 3px}

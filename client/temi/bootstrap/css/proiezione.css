@@ -1,0 +1,19 @@
+.table-docs {
+	text-align:center;
+}
+.bggray 	{
+	background-color: rgb(97.92, 171.36, 244.8); !important
+	text-align: center;
+}
+.bggray2 	{
+	background-color: rgb(220.32, 232.56, 244.8); !important
+	text-align: center;
+	}
+.bgw	{
+	BACKGROUND: #ffffff; 
+	text-align: center;
+}
+.red 	{
+	BACKGROUND: none; 
+	COLOR: #ff0000;
+}

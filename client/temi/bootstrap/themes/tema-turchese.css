@@ -1,0 +1,392 @@
+/* ========================= */
+/* Variabili CSS - Colori tema turchese */
+/* ========================= */
+:root {
+  --turchese-chiaro: #d0f0f3;            /* ex turchese-chiaro */
+  --turchese-molto-chiaro: #e0f6f8;      /* ex turchese-molto-chiaro */
+  --turchese-chiaro-pastello: #e0f6f8;   /* sostituito con colore molto chiaro simile */
+  --turchese-medio: #009ea9;              /* ex turchese-medio */
+  --turchese-scuro: #007c85;              /* ex turchese-scuro */
+  --turchese-scuro-alt: #00acc1;          /* ex turchese-scuro-alt */
+  --turchese-brillante: #00acc1;          /* ex turchese-brillante */
+  --turchese-chiaro-intenso: #66c9ce;     /* ex turchese-chiaro-intenso */
+  --turchese-chiaro-alt: #d0f0f3;         /* ex turchese-chiaro-alt */
+  --turchese-molto-chiaro-alt: #f5f1e8;   /* mantenuto simile */
+  --turchese-tenue: #c6bfa3;               /* non usato, mantenuto */
+  --turchese-chiaro-diffuso: #efedd8;     /* non usato, mantenuto */
+  --turchese-chiaro-leggero: #e8e0d0;     /* non usato, mantenuto */
+  --testo-bianco: #ffffff;
+  --testo-turchese-scuro: #007c85;         /* ex testo-turchese-scuro */
+  --testo-turchese-scuro-alt: #009ea9;     /* ex testo-turchese-scuro-alt */
+  --testo-turchese-scuro-molto: #007c85;   /* ex testo-turchese-scuro-molto */
+  --testo-turchese-visibile: #007c85;      /* ex testo-turchese-visibile */
+  --testo-turchese-brillante: #00acc1;     /* ex testo-turchese-brillante */
+  --ombra-turchese-scuro: rgba(0, 124, 133, 0.7); /* ex ombra-turchese-scuro */
+  --ombra-turchese-brillante: rgba(0, 172, 193, 0.5); /* ex ombra-turchese-brillante */
+  --ombra-turchese-medio: rgba(0, 158, 169, 0.2);   /* ex ombra-turchese-medio */
+}
+
+
+/* ========================= */
+/* --- Stili base del body e testo --- */
+/* ========================= */
+/*
+html, body {
+  background-color: var(--turchese-chiaro) !important; 
+  color: var(--turchese-scuro) !important;
+}
+*/
+/* ========================= */
+/* Affluenza*/
+/* ========================= */
+
+.complessivi {
+  color: white !important;
+}
+/* ========================= */
+/* Link */
+/* ========================= */
+a, a:visited {
+  color: var(--turchese-scuro-alt) !important;
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  color: var(--turchese-medio) !important;
+  text-decoration: underline;
+}
+/* ========================= */
+/* Percentuali */
+/* ========================= */
+
+#toggle-percentuali {
+  color: var(--testo-turchese-brillante);
+}
+
+#toggle-percentuali .icon {
+  fill: currentColor;
+}
+/* ========================= */
+/* Pulsanti e submit */
+/* ========================= */
+/*
+button, input[type="submit"] {
+  background-color: var(--turchese-medio) !important;
+  color: var(--testo-bianco) !important;
+  border: none !important;
+}
+
+button:hover, input[type="submit"]:hover {
+  background-color: var(--turchese-scuro-alt) !important;
+}
+*/
+
+/* ========================= */
+/* Sfondo accordion e icone - Turchese */
+/* ========================= */
+
+/* Quando chiuso */
+.accordion-button.collapsed {
+  background-color: transparent;
+  color: var(--testo-turchese-scuro-molto);
+}
+.accordion-button.collapsed::after {
+  filter: invert(43%) sepia(31%) saturate(533%) hue-rotate(155deg) brightness(90%) contrast(85%);
+}
+
+/* Quando aperto */
+.accordion-button:not(.collapsed) {
+  background-color: var(--turchese-chiaro-pastello);
+  color: var(--testo-turchese-scuro-alt);
+}
+.accordion-button:not(.collapsed)::after {
+  filter: invert(65%) sepia(60%) saturate(600%) hue-rotate(150deg) brightness(100%) contrast(95%);
+}
+
+
+/* ========================= */
+/* --- Topbar e navbar generici (se usati) --- */
+/* ========================= */
+.topbar, .navbar {
+  background-color: var(--turchese-scuro) !important;
+  color: var(--testo-bianco) !important;
+}
+
+.topbar a, .navbar a {
+  color: var(--testo-bianco) !important;
+}
+
+.topbar a:hover, .navbar a:hover {
+  color: var(--turchese-chiaro-intenso) !important;
+}
+
+/* ========================= */
+/* --- Header specifico (.it-header-wrapper) --- */
+/* ========================= */
+.it-header-wrapper {
+  background-color: var(--turchese-scuro) !important;
+  color: var(--testo-bianco) !important;
+}
+
+.it-header-wrapper .it-brand-text,
+.it-header-wrapper .it-brand-title,
+.it-header-wrapper .it-brand-tagline {
+  color: var(--testo-bianco) !important;
+}
+
+.it-header-wrapper a:hover {
+  color: var(--turchese-chiaro-intenso) !important;
+}
+
+/* Reset sfondo trasparente agli elementi interni per far vedere lo sfondo padre */
+.it-header-wrapper *,
+.it-header-wrapper .it-nav-wrapper,
+.it-header-wrapper .it-header-center-wrapper,
+.it-header-wrapper nav,
+.it-header-wrapper .navbar {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+.it-header-wrapper .menu-wrapper {
+  background-color: var(--turchese-scuro) !important;
+  color: var(--testo-bianco) !important;
+}
+
+.it-header-wrapper .dropdown-menu {
+  background-color: var(--turchese-chiaro) !important;
+  color: var(--turchese-scuro) !important;
+}
+
+/* Overlay, close button e bottoni */
+.it-header-wrapper .overlay,
+.it-header-wrapper .close-div,
+.it-header-wrapper button.btn.close-menu {
+  background-color: var(--turchese-scuro) !important;
+  color: var(--testo-bianco) !important;
+}
+
+/* Link nei dropdown */
+.it-header-wrapper .dropdown-menu a {
+  color: var(--turchese-scuro) !important;
+}
+
+.it-header-wrapper .dropdown-menu a:hover {
+  background-color: #f2eccc !important; /* turchese leggermente più intenso */
+  color: var(--turchese-scuro-alt) !important;
+}
+
+/* Separatore nel menu dropdown */
+.dropdown-menu .link-list-wrapper ul li span.divider {
+  background-color: var(--turchese-medio) !important;
+}
+
+/* Icone svg */
+.it-header-wrapper svg.icon * {
+  fill: var(--turchese-scuro) !important;
+}
+
+/* Navbar brand */
+.it-right-zone .navbar-brand {
+  color: var(--testo-bianco) !important;
+}
+
+/* Triangolino dropdown */
+.it-header-wrapper .dropdown-menu::before {
+  background-color: #f4f4e6 !important;
+  border-color: #f4f4e6 transparent !important;
+}
+.nav-link.dropdown-toggle .icon {
+  fill: #fff !important;      /* colore bianco */
+  stroke: #fff !important;    /* se usano contorni */
+  filter: none !important;    /* rimuove filtri scuri */
+}
+
+
+/* ========================= */
+/* Titolo content */
+/* ========================= */
+.title-content {
+  width: 100%;
+  background: var(--turchese-scuro);
+  color: var(--turchese-chiaro);
+}
+
+/* ========================= */
+/* Background colors - classi riutilizzabili */
+/* ========================= */
+.primary-bg-c1 {
+  background-color: var(--turchese-molto-chiaro) !important;
+}
+
+.primary-bg-c4, .primary-bg-c11 {
+  background-color: var(--turchese-scuro) !important;
+}
+
+.primary-bg-c6 {
+  background-color: var(--turchese-chiaro-pastello) !important;
+  /* color: var(--turchese-chiaro) !important; */
+}
+
+.lightgrey-bg-b2 {
+  background-color: var(--turchese-molto-chiaro-alt) !important;
+  color: var(--turchese-scuro) !important;
+  border: 1px solid var(--turchese-medio) !important;
+}
+
+.primary-bg-a2 {
+  background-color: var(--turchese-chiaro-pastello) !important;
+  color: var(--turchese-scuro) !important;
+  border: 1px solid var(--turchese-medio) !important;
+}
+
+/* ========================= */
+/* Testo e icone principali */
+/* ========================= */
+.text-primary {
+  color: var(--turchese-scuro) !important;
+}
+
+.icon-primary {
+  fill: var(--turchese-scuro) !important;
+  color: var(--turchese-scuro) !important;
+}
+/* ========================= */
+/* Affluenza Pagina inziale */
+/* ========================= */
+.table.votanti thead,
+.table.votanti tfoot {
+  background: var(--turchese-scuro);
+  color: var(--testo-bianco);
+}
+/* ========================= */
+/* Footer */
+/* ========================= */
+.it-footer,
+.it-footer .it-footer-small-prints,
+.it-footer .container {
+  background-color: var(--turchese-scuro) !important;
+  color: var(--turchese-chiaro) !important;
+}
+
+.it-footer a {
+  color: #fff !important;
+}
+
+.it-footer a:hover {
+  color: #fffbe6 !important;
+}
+
+/* ========================= */
+/* Referendum */
+/* ========================= */
+.dati_referendum_titolo_quesito {
+  background-color: var(--turchese-chiaro-leggero);
+  color: var(--testo-turchese-scuro-alt);
+}
+
+table th.box_elevot_title {
+  border-bottom: 1px solid var(--turchese-tenue);
+  color: var(--testo-turchese-scuro-molto);
+  background-color: var(--turchese-chiaro-diffuso);
+}
+
+.dati_referendum {
+  color: var(--testo-turchese-visibile);
+}
+
+/* ========================= */
+/* Pagina link Utili
+/* ========================= */
+.box_linkutili {
+  box-shadow: 0px 2px 3px 1px var(--ombra-turchese-medio);
+  background-color: var(--turchese-molto-chiaro-alt);
+}
+
+.list-item-title,
+.box_linkutili p {
+  color: var(--testo-turchese-brillante) !important;
+}
+
+/* ========================= */
+/* torna su */
+/* ========================= */
+.back-to-top {
+  background: var(--turchese-brillante);
+  border: none;
+  box-shadow: 0 4px 6px var(--ombra-turchese-brillante);
+}
+
+.back-to-top:hover {
+  background: var(--turchese-scuro-alt);
+  box-shadow: 0 6px 10px var(--ombra-turchese-scuro);
+}
+
+.back-to-top svg {
+  fill: var(--testo-bianco);
+}
+
+.back-to-top.shadow:hover {
+  box-shadow: 0 .3rem .75rem var(--ombra-turchese-scuro) !important;
+}
+
+/* ========================= */
+/* modalità smartphone */
+/* ========================= */
+@media (max-width: 820px) {
+  /* html, body { */
+    /* background-color: var(--turchese-chiaro) !important; */
+  /* } */
+
+  .it-header-wrapper .menu-wrapper {
+    background-color: var(--turchese-chiaro-alt) !important;
+    color: var(--turchese-scuro) !important;
+  }
+
+  /* Anche i link dentro il menu burger */
+  .it-header-wrapper .menu-wrapper a {
+    color: var(--turchese-scuro) !important;
+  }
+
+  .it-header-wrapper .menu-wrapper a:hover {
+    color: var(--turchese-scuro-alt) !important;
+  }
+
+  .it-header-wrapper .menu-wrapper svg.icon {
+    fill: var(--turchese-scuro) !important;
+    color: var(--turchese-scuro) !important;
+  }
+
+  /* Burger bianco */
+  .navbar-toggler-icon {
+    filter: none !important;
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+  }
+
+  /* Bottone trasparente */
+  .navbar-toggler {
+    background-color: transparent !important;
+    border-color: white !important;
+    color: white !important;
+    z-index: 1050;
+  }
+
+  /* Menu a scomparsa trasparente */
+  .navbar-collapse {
+    background-color: transparent !important;
+  }
+
+  /* Icone bianche */
+  .it-header-wrapper svg.icon * {
+    fill: white !important;
+  }
+
+  /* Frecce dropdown turchese scuro su smartphone */
+  .nav-link.dropdown-toggle .icon,
+  .dropdown-item .icon {
+    fill: var(--turchese-scuro) !important;
+    stroke: var(--turchese-scuro) !important;
+    color: var(--turchese-scuro) !important;
+    filter: none !important;
+  }
+}

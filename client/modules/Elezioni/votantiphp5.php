@@ -1,0 +1,37 @@
+<?php
+/************************************************************************/
+/* Eleonline - Raccolta e diffusione dei dati elettorali                */
+/* by Luciano Apolito & Roberto Gigli                                   */
+/* http://www.eleonline.it                                              */
+/* info@eleonline.it rgigli@libero.it                                   */
+/************************************************************************/
+
+if (!defined('MODULE_FILE')) {
+    die ("Non puoi accedere al file direttamente...");
+}
+require_once('inc/hpdf403/html2pdf.class.php');
+
+include('votanti-inc.php');
+
+############### stampa
+if ($xls!='1' && $pdf!='1'){
+	  echo "$datipdf $html";
+}elseif($xls=="1"){
+	$nomefile="votanti.xls";
+	header ("Content-Type: application/vnd.ms-excel");
+	header ("Content-Disposition: inline; filename=$nomefile");
+	header("Pragma: no-cache");
+	header("Expires: 0");
+	$datipdf = mb_convert_encoding($datipdf , "HTML-ENTITIES", "UTF-8");
+	echo "$datipdf";
+	echo "$html \n";
+}elseif($pdf=='1'){
+	$nomefile="$descr_cons votanti.pdf";
+	$stampa ="$datipdf $html";		
+	$html2pdf = new Html2Pdf('P','A4', 'it');
+	$html2pdf->WriteHTML($stampa, isset($_GET['vuehtml']));
+	$html2pdf->Output($nomefile);
+}
+if($csv!=1 ) include ("footer.php");
+
+?>

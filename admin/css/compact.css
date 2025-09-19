@@ -1,0 +1,140 @@
+/* Compatta layout generale */
+.content-wrapper, .main-footer, .main-header {
+    padding: 5px !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    margin-left: 250px; /* larghezza sidebar standard AdminLTE */
+    transition: margin-left 0.3s ease;
+}
+
+/* Quando la sidebar è ridotta o collapse */
+body.sidebar-mini.sidebar-collapse .content-wrapper,
+body.sidebar-mini.sidebar-collapse .main-footer,
+body.sidebar-mini.sidebar-collapse .main-header {
+    margin-left: 80px; /* larghezza sidebar mini senza !important */
+    transition: margin-left 0.3s ease;
+}
+
+/* Sidebar ristretta */
+body.sidebar-mini.sidebar-collapse .main-sidebar {
+    width: 80px; /* senza !important */
+    transition: width 0.3s ease;
+}
+
+/* Espandi sidebar al passaggio del mouse */
+body.sidebar-mini.sidebar-collapse .main-sidebar:hover {
+    width: 250px; /* larghezza normale */
+}
+
+body.sidebar-mini.sidebar-collapse .main-sidebar:hover ~ .content-wrapper,
+body.sidebar-mini.sidebar-collapse .main-sidebar:hover ~ .main-footer,
+body.sidebar-mini.sidebar-collapse .main-sidebar:hover ~ .main-header {
+    margin-left: 250px;
+}
+
+/* Mostra testo e icone estese all’hover */
+body.sidebar-mini.sidebar-collapse .main-sidebar:hover .brand-link,
+body.sidebar-mini.sidebar-collapse .main-sidebar:hover .nav-link > p,
+body.sidebar-mini.sidebar-collapse .main-sidebar:hover .nav-header {
+    display: block;
+}
+
+body.sidebar-mini.sidebar-collapse .main-sidebar:hover .nav-icon {
+    margin-right: 10px;
+}
+
+/* Navbar compatta */
+.navbar {
+    padding: 4px 8px !important;
+    min-height: auto;
+}
+
+/* Card compatte */
+.card {
+    margin-bottom: 5px;
+}
+.card-header, .card-body, .card-footer {
+    padding: 6px 10px !important;
+}
+
+/* Tabelle compatte */
+.table {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+.table th, .table td {
+    padding: 4px 8px;
+}
+
+/* Input e form più piccoli */
+.form-control,
+.custom-select,
+.input-group-text {
+    font-size: 13px !important;
+    padding: 4px 8px !important;
+    height: auto !important;
+}
+
+/* Etichette e bottoni */
+label, .form-label {
+    font-size: 13px !important;
+    margin-bottom: 2px;
+}
+.btn {
+    font-size: 13px !important;
+    padding: 4px 8px !important;
+}
+
+/* Riduci margin tra righe e colonne */
+.row > [class^="col-"] {
+    margin-bottom: 6px;
+}
+
+/* Rimuovi spazio eccessivo da breadcrumb */
+.content-header .breadcrumb {
+    margin-bottom: 0;
+}
+
+/* Checkbox e radio compatti */
+.custom-control-label::before,
+.custom-control-label::after {
+    top: 0.2rem;
+}
+
+/* Responsive migliorato per smartphone e tablet */
+@media (max-width: 768px) {
+    .form-control,
+    .custom-select,
+    .input-group-text,
+    .btn {
+        font-size: 15px !important;
+        padding: 8px 12px !important;
+    }
+
+    .table {
+        font-size: 13px;
+    }
+
+    label, .form-label {
+        font-size: 14px;
+    }
+
+    .card-header, .card-body, .card-footer {
+        padding: 10px !important;
+    }
+
+    .navbar {
+        padding: 6px 10px !important;
+    }
+
+    /* Nascondi sidebar mini in mobile */
+    body.sidebar-mini.sidebar-collapse .main-sidebar {
+        width: 0 !important;
+    }
+
+    body.sidebar-mini.sidebar-collapse .content-wrapper,
+    body.sidebar-mini.sidebar-collapse .main-footer,
+    body.sidebar-mini.sidebar-collapse .main-header {
+        margin-left: 0 !important;
+    }
+}

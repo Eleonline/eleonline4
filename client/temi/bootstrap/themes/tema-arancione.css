@@ -1,0 +1,414 @@
+/* ========================= */
+/* Variabili CSS - Colori tema arancione */
+/* ========================= */
+:root {
+  --arancione-chiaro: #f7d9d0;               /* chiaro arancione */
+  --arancione-molto-chiaro: #fff2e9;         /* arancione molto chiaro */
+  --arancione-chiaro-pastello: #e8b3a6;      /* arancione pastello */
+  --arancione-medio: #d95f00;                 /* arancione medio */
+  --arancione-scuro: #593000;                 /* marrone scuro aranciato */
+  --arancione-scuro-alt: #734f00;             /* marrone scuro alternativo */
+  --arancione-brillante: #d87800;             /* arancione brillante */
+  --arancione-chiaro-intenso: #e88635;        /* arancione chiaro intenso */
+  --arancione-chiaro-alt: #f8e2ca;            /* arancione chiaro alternativo */
+  --arancione-molto-chiaro-alt: #fbf0de;      /* arancione molto chiaro alternativo */
+  --arancione-tenue: #cca080;                  /* arancione tenue */
+  --arancione-chiaro-diffuso: #febdbd;        /* arancione chiaro diffuso */
+  --arancione-chiaro-leggero: #faf0e0;        /* arancione chiaro leggero */
+  --testo-bianco: #ffffff;
+  --testo-arancione-scuro: #593000;
+  --testo-arancione-scuro-alt: #6e4f00;
+  --testo-arancione-scuro-molto: #855f00;
+  --testo-arancione-visibile: #594759;
+  --testo-arancione-brillante: #b86f00;
+  --ombra-arancione-scuro: rgba(89, 48, 0, 0.7);
+  --ombra-arancione-brillante: rgba(216, 120, 0, 0.5);
+  --ombra-arancione-medio: rgba(217, 95, 0, 0.2);
+}
+
+/* ========================= */
+/* --- Stili base del body e testo --- */
+/* ========================= */
+/*
+html, body {
+  background-color: var(--arancione-chiaro) !important; 
+  color: var(--arancione-scuro) !important;
+}
+*/
+/* ========================= */
+/* Affluenza*/
+/* ========================= */
+
+.complessivi {
+  color: white !important;
+}
+/* ========================= */
+/* Link */
+/* ========================= */
+a, a:visited {
+  color: var(--arancione-scuro-alt) !important;
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  color: var(--arancione-medio) !important;
+  text-decoration: underline;
+}
+/* ========================= */
+/* Percentuali */
+/* ========================= */
+
+#toggle-percentuali {
+  color: var(--testo-arancione-brillante);
+}
+
+#toggle-percentuali .icon {
+  fill: currentColor;
+}
+/* ========================= */
+/* Pulsanti e submit */
+/* ========================= */
+/*
+button, input[type="submit"] {
+  background-color: var(--arancione-medio) !important;
+  color: var(--testo-bianco) !important;
+  border: none !important;
+}
+
+button:hover, input[type="submit"]:hover {
+  background-color: var(--arancione-scuro-alt) !important;
+}
+*/
+
+/* ========================= */
+/* Sfondo accordion e icone arancione */
+/* =============================== */
+
+/* Quando l'accordion è chiuso */
+.accordion-button.collapsed {
+  background-color: transparent;
+  color: var(--testo-arancione-scuro); /* testo arancione scuro */
+}
+.accordion-button.collapsed::after {
+  filter: invert(27%) sepia(74%) saturate(4334%) hue-rotate(12deg) brightness(92%) contrast(88%);
+  /* filtro icona freccia arancione tenue */
+}
+
+/* Quando l'accordion è aperto */
+.accordion-button:not(.collapsed) {
+  background-color: var(--arancione-chiaro); /* arancione chiaro */
+  color: var(--testo-arancione-scuro-alt); /* testo arancione scuro alternativo */
+}
+.accordion-button:not(.collapsed)::after {
+  filter: invert(45%) sepia(94%) saturate(5200%) hue-rotate(18deg) brightness(95%) contrast(91%);
+  /* filtro icona arancione brillante */
+}
+
+
+/* ========================= */
+/* --- Topbar e navbar generici (se usati) --- */
+/* ========================= */
+.topbar, .navbar {
+  background-color: var(--arancione-scuro) !important;
+  color: var(--testo-bianco) !important;
+}
+
+.topbar a, .navbar a {
+  color: var(--testo-bianco) !important;
+}
+
+.topbar a:hover, .navbar a:hover {
+  color: var(--arancione-chiaro-intenso) !important;
+}
+
+/* ========================= */
+/* --- Header specifico (.it-header-wrapper) --- */
+/* ========================= */
+.it-header-wrapper {
+  background-color: var(--arancione-scuro) !important;
+  color: var(--testo-bianco) !important;
+}
+
+.it-header-wrapper .it-brand-text,
+.it-header-wrapper .it-brand-title,
+.it-header-wrapper .it-brand-tagline {
+  color: var(--testo-bianco) !important;
+}
+
+.it-header-wrapper a:hover {
+  color: var(--arancione-chiaro-intenso) !important;
+}
+
+/* Reset sfondo trasparente agli elementi interni per far vedere lo sfondo padre */
+.it-header-wrapper *,
+.it-header-wrapper .it-nav-wrapper,
+.it-header-wrapper .it-header-center-wrapper,
+.it-header-wrapper nav,
+.it-header-wrapper .navbar {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+.it-header-wrapper .menu-wrapper {
+  background-color: var(--arancione-scuro) !important;
+  color: var(--testo-bianco) !important;
+}
+
+.it-header-wrapper .dropdown-menu {
+  background-color: var(--arancione-chiaro) !important;
+  color: var(--arancione-scuro) !important;
+}
+
+/* Overlay, close button e bottoni */
+.it-header-wrapper .overlay,
+.it-header-wrapper .close-div,
+.it-header-wrapper button.btn.close-menu {
+  background-color: var(--arancione-scuro) !important;
+  color: var(--testo-bianco) !important;
+}
+
+/* Link nei dropdown */
+.it-header-wrapper .dropdown-menu a {
+  color: var(--arancione-scuro) !important;
+}
+
+.it-header-wrapper .dropdown-menu a:hover {
+  background-color: #e8b3a6 !important; /* arancione leggermente più intenso */
+  color: var(--arancione-scuro-alt) !important;
+}
+
+/* Separatore nel menu dropdown */
+.dropdown-menu .link-list-wrapper ul li span.divider {
+  background-color: var(--arancione-medio) !important;
+}
+
+/* Icone svg */
+.it-header-wrapper svg.icon * {
+  fill: var(--arancione-scuro) !important;
+}
+
+/* Navbar brand */
+.it-right-zone .navbar-brand {
+  color: var(--testo-bianco) !important;
+}
+
+/* Triangolino dropdown */
+.it-header-wrapper .dropdown-menu::before {
+  background-color: #f7d9d0 !important;
+  border-color: #f7d9d0 transparent !important;
+}
+.nav-link.dropdown-toggle .icon {
+  fill: #fff !important;      /* colore bianco */
+  stroke: #fff !important;    /* se usano contorni */
+  filter: none !important;    /* rimuove filtri scuri */
+}
+
+/* ========================= */
+/* Titolo content */
+/* ========================= */
+.title-content {
+  width: 100%;
+  background: var(--arancione-scuro);
+  color: var(--arancione-chiaro);
+}
+
+/* ========================= */
+/* Background colors - classi riutilizzabili */
+/* ========================= */
+.primary-bg-c1 {
+  background-color: var(--arancione-molto-chiaro) !important;
+}
+
+.primary-bg-c4, .primary-bg-c11 {
+  background-color: var(--arancione-scuro) !important;
+}
+
+.primary-bg-c6 {
+  background-color: var(--arancione-chiaro-pastello) !important;
+  /* color: var(--arancione-chiaro) !important; */
+}
+
+.lightgrey-bg-b2 {
+  background-color: var(--arancione-molto-chiaro-alt) !important;
+  color: var(--arancione-scuro) !important;
+  border: 1px solid var(--arancione-medio) !important;
+}
+
+.primary-bg-a2 {
+  background-color: var(--arancione-chiaro-pastello) !important;
+  color: var(--arancione-scuro) !important;
+  border: 1px solid var(--arancione-medio) !important;
+}
+
+/* ========================= */
+/* Testo e icone principali */
+/* ========================= */
+.text-primary {
+  color: var(--arancione-scuro) !important;
+}
+
+.icon-primary {
+  fill: var(--arancione-scuro) !important;
+  color: var(--arancione-scuro) !important;
+}
+/* ========================= */
+/* Affluenza Pagina inziale */
+/* ========================= */
+.table.votanti thead,
+.table.votanti tfoot {
+  background: var(--arancione-scuro);
+  color: var(--testo-bianco);
+}
+/* ========================= */
+/* Footer */
+/* ========================= */
+.it-footer,
+.it-footer .it-footer-small-prints,
+.it-footer .container {
+  background-color: var(--arancione-scuro) !important;
+  color: var(--arancione-chiaro) !important;
+}
+
+.it-footer a {
+  color: #fff !important;
+}
+
+.it-footer a:hover {
+  color: #f7d9d0 !important;
+}
+
+/* ========================= */
+/* Referendum */
+/* ========================= */
+.dati_referendum_titolo_quesito {
+  background-color: var(--arancione-chiaro-leggero);
+  color: var(--testo-arancione-scuro-alt);
+}
+
+table th.box_elevot_title {
+  border-bottom: 1px solid var(--arancione-tenue);
+  color: var(--testo-arancione-scuro-molto);
+  background-color: var(--arancione-chiaro-diffuso);
+}
+
+.dati_referendum {
+  color: var(--testo-arancione-visibile);
+}
+
+/* ========================= */
+/* Pagina link Utili
+/* ========================= */
+.box_linkutili {
+  box-shadow: 0px 2px 3px 1px var(--ombra-arancione-medio);
+  background-color: var(--arancione-molto-chiaro-alt);
+}
+
+.list-item-title,
+.box_linkutili p {
+  color: var(--testo-arancione-brillante) !important;
+}
+
+/* ========================= */
+/* torna su */
+/* ========================= */
+.back-to-top {
+  background: var(--arancione-brillante);
+  border: none;
+  box-shadow: 0 4px 6px var(--ombra-arancione-brillante);
+}
+
+.back-to-top:hover,
+.back-to-top:focus {
+  background-color: var(--arancione-chiaro-intenso);
+  box-shadow: 0 6px 10px var(--ombra-arancione-brillante);
+  border-color: var(--arancione-chiaro-intenso);
+}
+
+/* ========================= */
+/* Pulsanti */
+.btn-primary {
+  background-color: var(--arancione-medio);
+  border-color: var(--arancione-medio);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: var(--arancione-scuro-alt);
+  border-color: var(--arancione-scuro-alt);
+}
+
+/* ========================= */
+/* Pulsanti di tipo btn-link con testo arancione scuro */
+/* ========================= */
+.btn-link {
+  color: var(--arancione-scuro-alt);
+  text-decoration: underline;
+}
+
+.btn-link:hover,
+.btn-link:focus {
+  color: var(--arancione-medio);
+  text-decoration: none;
+}
+
+/* ========================= */
+/* modalità smartphone */
+/* ========================= */
+@media (max-width: 820px) {
+  /* html, body { */
+    /* background-color: var(--arancione-chiaro) !important; */
+  /* } */
+
+  .it-header-wrapper .menu-wrapper {
+    background-color: var(--arancione-chiaro-alt) !important;
+    color: var(--arancione-scuro) !important;
+  }
+
+  /* Anche i link dentro il menu burger */
+  .it-header-wrapper .menu-wrapper a {
+    color: var(--arancione-scuro) !important;
+  }
+
+  .it-header-wrapper .menu-wrapper a:hover {
+    color: var(--arancione-scuro-alt) !important;
+  }
+
+  .it-header-wrapper .menu-wrapper svg.icon {
+    fill: var(--arancione-scuro) !important;
+    color: var(--arancione-scuro) !important;
+  }
+
+  /* Burger bianco */
+  .navbar-toggler-icon {
+    filter: none !important;
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+  }
+
+  /* Bottone trasparente */
+  .navbar-toggler {
+    background-color: transparent !important;
+    border-color: white !important;
+    color: white !important;
+    z-index: 1050;
+  }
+
+  /* Menu a scomparsa trasparente */
+  .navbar-collapse {
+    background-color: transparent !important;
+  }
+
+  /* Icone bianche */
+  .it-header-wrapper svg.icon * {
+    fill: white !important;
+  }
+
+  /* Frecce dropdown arancione scuro su smartphone */
+  .nav-link.dropdown-toggle .icon,
+  .dropdown-item .icon {
+    fill: var(--arancione-scuro) !important;
+    stroke: var(--arancione-scuro) !important;
+    color: var(--arancione-scuro) !important;
+    filter: none !important;
+  }
+}

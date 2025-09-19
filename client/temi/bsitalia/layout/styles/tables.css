@@ -1,0 +1,43 @@
+@charset "utf-8";
+/*
+Template Name: Realistic
+Author: <a href="http://www.os-templates.com/">OS Templates</a>
+Author URI: http://www.os-templates.com/
+Licence: Free to use under our free template licence terms
+Licence URI: http://www.os-templates.com/template-terms
+File: Tables CSS
+*/
+
+table{width:100%; border-collapse:collapse; table-layout:auto; vertical-align:top; margin-bottom:15px; border:1px solid #CCCCCC;}
+table thead th{color:#FFFFFF; background-color:#666666; border:1px solid #CCCCCC; border-collapse:collapse; text-align:center; table-layout:auto; vertical-align:middle;}
+table tbody td{vertical-align:top; border-collapse:collapse; border-left:1px solid #CCCCCC; border-right:1px solid #CCCCCC;}
+table thead th, table tbody td{padding:5px; border-collapse:collapse;}
+table tbody tr.light{color:#666666; background-color:#F7F7F7;}
+table tbody tr.dark{color:#666666; background-color:#E8E8E8;}
+
+/* TEST */
+table.td-89 > tbody > tr.bggray2 > td.bggray2 > table.td-89 > tbody > tr.bggray2 > td,
+table.td-89 > tbody > tr.bggray2 > td.bggray2 > table.td-vuoto > tbody > tr.bggray2 > td,
+table.td-89 > tbody > tr.bggray > td > table.td-vuoto > tbody > tr.bggray > th.td-30
+{
+  padding: 10px 10px!important;
+  margin: 0px!important;
+  text-align: center!important;
+  width: 33%!important;
+  vertical-align: middle!important;
+  border:none!important;
+}
+table.td-89 > tbody > tr.bggray2 > td.bggray2,
+table.td-89 > tbody > tr.bggray > td
+{
+  border: 1px solid gray!important;
+  vertical-align: middle!important;
+  padding: 0px 10px!important;
+}
+table.td-89 > tbody > tr.bggray2 > td.bggray2 > table.td-89,
+table.td-89 > tbody > tr.bggray2 > td.bggray2 > table.td-vuoto
+{
+  padding:0px!important;  
+  margin: 0px!important;
+  width: 100%!important;
+}

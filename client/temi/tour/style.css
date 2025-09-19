@@ -1,0 +1,572 @@
+/************************************************************************/
+/* Eleonline - Raccolta e diffusione dei dati elettorali                */
+/* by Luciano Apolito & Roberto Gigli                                   */
+/* http://www.eleonline.it                                              */
+/* info@eleonline.it  luciano@aniene.net rgigli@libero.it               */
+/************************************************************************/
+/**************** 
+style css for eleonline
+http://www.eleonline.it
+
+l.apolito r.gigli
+****************/
+
+/* inizio style tour */
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background: #FFFFFF;
+	font: 13px "Trebuchet MS", Arial, Helvetica, sans-serif;
+	color: #7F7772;
+}
+
+
+#bg {
+	background: url(images/img04.gif) no-repeat center top;
+}
+/*
+#menu {
+	width: 970px;
+	height: 60px;
+	margin: 0 auto;
+	
+}
+
+#menu ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#menu li {
+	/*display: inline;
+
+}
+
+#menu a {
+	display: block;
+	float: left;
+	padding: 18px 30px 0 30px;
+	text-decoration: none;
+	font-size: 1.6em;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+
+#menu a:hover {
+	text-decoration: underline; 
+}
+
+#menu .current_page_item {
+}
+
+#menu .current_page_item a {
+	color: #000000;
+}
+
+/* Page */
+
+#page {
+	width: 1100px;
+	margin: 0 auto;
+	padding: 30px 0;
+}
+
+
+
+/* Content */
+
+#content {
+	float: left;
+	width: 770px;
+}
+
+
+
+#bottoni {
+	padding-right: 0px;
+	width: 150px;
+	height: 28px;
+	
+}
+
+
+
+/* 
+fine tour
+inizio eleonline
+*/
+
+
+
+
+
+
+.logoleft{
+background-image:url(images/logo_left.jpg); background-repeat:no-repeat;
+width:12px;
+height:78px;
+}sidebar
+.logoright{
+background-image:url(images/logo_right.jpg); background-repeat:no-repeat;
+width:12px;
+height:78px;
+}
+.logo{
+background-image:url(images/logo_bg.jpg); background-repeat:repeat-x;
+	text-transform: uppercase;
+	font-size:28px;
+	color:#88AED6;
+	font-weight:bold;
+	text-decoration:none;
+	width:250px;
+}
+.main{
+background-color:#A8C4E1;
+}
+.tag {
+	margin: 0;
+	padding:45px 20px 10px 10px;
+	text-transform: uppercase;
+	font-size:16px;
+	font-weight:bold;
+	color:#ffffff;
+    text-decoration:none;
+}
+a{
+color:#000000;
+
+text-decoration:none;
+}
+a:hover{
+color:#dce9f9;
+text-decoration:none;
+}
+
+/* usate per blocco */
+
+.sidebar {
+	
+	
+	margin-top:0px;
+	background-color: #d2d2d2;
+	/*margin: 0px 0 0 0px;*/
+	width: 200px;	
+	border: none;
+	
+	
+	padding: 0px;
+}
+
+.sidebar h5 {
+
+	height: 27px;
+	padding: 6px 0 0 27px;
+	/*background: #ffffff url(images/img05.gif) no-repeat;*/
+        background-position:center; 
+	text-transform: lowercase;
+	font-size: 12px;
+	color: #000000;
+}
+
+
+
+
+.sidebar h6 {
+
+	padding: 12px;
+	/*background: #ffffff url(images/img06.gif) repeat-x;*/
+	font-size: 12px;
+}
+
+
+/*
+.td-149 a{
+color:#5D81A6;
+}
+.td-149 a:hover{
+color:#FFFFFF;
+}
+.td-149 a:visited{
+color:#000000;
+}
+*/
+.welcome
+{font-size:35px;
+color:#686868;
+}
+
+/* contenitore */
+
+div#container{
+    width: 750px;
+    margin: 0px auto;   /*centra negli altri browsers*/
+    text-align: left;   /*ripristina l' allineamento*/
+    }
+table {
+	margin-right: auto;
+	margin-left: auto;
+	text-align: left;
+	margin-top: 0px;
+	
+	
+	
+}
+td {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	margin-top: 0px;
+	margin: 0;
+}
+
+hr {
+	color: #000000;
+	background-color: #FFFFFF;
+	border-bottom: 1px dotted #CCCCCC;
+}
+form {
+	
+	font-size: 12px;
+	color: #000066;
+	text-decoration: none;
+	margin-right: 0px;
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	width: 100%;
+}
+p {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	padding-right: 8px;
+	padding-bottom: 0px;
+	padding-left: 8px;
+	padding-top: 0px;
+	margin: 2px 2px 4px;
+}
+h1 {
+	font-size: 16px;
+	font-weight: bold;
+	color: #000000;
+	text-decoration: none;
+	border-bottom-width: 1px;
+	border-bottom-style: dotted;
+	border-bottom-color: #222266;
+	margin-top: 6px;
+	margin-bottom: 8px;
+	padding-right: 0px;
+	padding-left: 0px;
+}
+h2 {
+	font-size: 14px;
+	font-weight: bold;
+	color: #5D81A6;
+	text-decoration: none;
+	border-bottom-width: 1px;
+	border-bottom-style: dotted;
+	border-bottom-color: #CCCCCC;
+	/*margin-top: 9px;
+	margin-bottom: 2px;
+	*/
+	padding-right: 1px;
+	padding-left: 4px;
+	text-align: center; 
+}
+h4 {
+	font-size: 14px;
+	color: #003366;
+	text-decoration: none;
+	background-position: center;
+	bottom: 9px;
+	margin: 20px;
+	text-align: center;
+	border: 1px dotted #666666;
+	padding: 2px;
+	width: auto;
+	background-color: #EEEFEF;
+	font-variant: small-caps;
+}
+
+
+h5 {
+
+	height: 27px;
+	padding: 6px 0 0 27px;
+	/*background: #ffffff url(images/img05bis.gif) no-repeat;*/
+        background-position:center; 
+	text-transform: lowercase;
+	font-size: 12px;
+	color: #000000;
+	text-align: center;
+
+}
+h6 {
+
+	padding: 12px;
+	background: #ffffff url(images/img06.gif) repeat-x;
+	font-size: 12px;
+
+}
+
+/* classe tratteggiata usata in molti td */
+
+
+.modulo {
+	text-decoration: none;
+	border: 1px solid #666699;
+	font-size: 10px;
+}
+
+.modulo-button {
+	color: #663366;
+	text-decoration: none;
+	background-color: #FFFFEE;
+	border: 1px solid #660033;
+	width: 50%;
+	text-align: center;
+	font-size: 10px;
+	padding: 3px;
+}
+
+
+
+
+/* tavole */
+.table-main {
+	border: 1px solid #DEDEDC;
+	font-size: 12px;
+	background-position: center top;
+	padding: 0px;
+	color: #000000;
+	text-align:center;
+	width: 970px;
+	
+}
+
+
+/* numero e simbolo liste */
+
+.td-5 {
+	
+	margin: 0px 0 0 0px;
+	width: 5%;	
+	border: none;
+        background-color:#4983b6;
+	color:#ffffff;
+	/*background-color: #d2d2d2;*/
+	padding: 0px;
+        FONT-SIZE: 12px; 
+        FONT-FAMILY: Verdana, Helvetica;
+}	
+.td-130c {
+	text-align:left;
+	margin: 0px 0 0 0px;
+	width: 130px;	
+	padding: 0px;
+	border: .5px solid black;
+}	
+.td-130b {
+	border: .5px solid black;	
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	margin-top: 0px;
+	margin: 0;
+}		
+	
+/* sinistra */
+div#sx{
+    width: 590px;
+    float: left;
+    text-align: left;   
+    }
+/* destra */
+div#dx{
+    width: 149px;
+    float: right;
+    text-align: left;   
+    }
+
+
+/* flash */
+div#flash{
+    width: 410px;
+    float: left;
+    text-align: left;   
+    }
+
+
+
+
+
+
+/* immagini bordo */
+
+.image {
+	/*float: center;*/
+	border: none;
+	margin: 0px;
+	padding: 0px;
+}		
+
+.stemma {
+	/*float: center;*/
+	border: none;
+	margin: 0px;
+	padding: 0px;
+	width:50px;
+}		
+
+.stemmapic {
+	/*float: center;*/
+	border: none;
+	margin: 0px;
+	padding: 0px;
+	width:30px;
+	height:30px;
+}		
+
+
+.noblocco {
+border: 0px;
+margin-right:0px;
+margin-left:180px;
+text-align: right;
+vertical-align: middle;
+width:18px;
+height:18px;
+}
+
+
+.nobordo {
+border: 0px;
+text-align: center;
+vertical-align: middle;
+}
+
+.bordo {
+border: 1px solid #ff0000;
+text-align: left;
+vertical-align: middle;
+
+}
+/******************** font e backcolor******************************/
+.blu 	{
+	background: none;
+	font-weight: bold; 
+	color: #003366; 
+	font-size: 12px; 
+	font-family: Verdana, Helvetica
+}
+
+/*diventa grigio qui */
+
+.red 	{
+	background: none; 
+	color: #ff0000; 
+	font-size: 12px; 
+	font-family: Verdana, Helvetica
+}
+
+.redbig 	{
+	background: none; 
+	color: #ff0000; 
+	font-size: 16px; 
+	font-family: Verdana, Helvetica
+}
+
+.bgw	{
+	background: #ffffff; 
+	font-size: 12px; 
+	font-family: Verdana, Helvetica;
+	text-align: center;
+}
+/* diventa rosso */
+
+.bggray 	{
+	background-color:#4983b6;
+	font-size: 12px; 
+	font-family: Verdana, Helvetica;
+	text-align: center;
+	color: #ffffff;
+}
+
+.bggray2 	{
+	background: #EAEAEA; 
+	font-size: 12px; 
+	font-family: Verdana, Helvetica;
+	text-align: center;
+	}
+
+.bggray3 	{
+	background: #ffffff;  
+	font-size: 12px; 
+	font-family: Verdana, Helvetica;
+	text-align: left;
+	}
+
+.normale {
+	background: none; 
+	color: #000000; 
+	font-size: 12px; 
+	font-family: Verdana, Helvetica;
+	text-align: left;
+}
+.piccolo {
+	background: none; 
+	/*color: #cccccc; */
+	font-size: 11px; 
+	font-weight: normal; 
+	font-family: Verdana, Helvetica; 
+	text-decoration: none}
+/**********************************************************************
+BOTTONI W3C      *****************************************************/
+
+.w3cbutton3 {
+background-image:url(images/box_bg.jpg); background-repeat:repeat-x;
+  margin: 0px 0px 0px 5px;
+  width: 95px;
+  border: 1px solid #6A6A6A;
+  font-family: helvetica,arial,sans-serif;
+  font-size: 10px;
+  float: left;
+}
+
+.w3cbutton3 a {
+  display: block;
+  width: 100%;
+}
+
+.w3cbutton3 a:link, .w3cbutton3 a:visited {
+  background-color: #8CC8C7;
+  color: #2A290B;
+  text-decoration: none;
+}
+
+.w3cbutton3 a:hover {
+  background-color: #C9F4F3;
+  color: #2A290B;
+  text-decoration: none;
+}
+
+.w3cbutton3 span.w3c {
+  font-weight: bold;
+  padding: 0 0.4em;
+  background-color: #FFFFCC;
+  color: #0C479D;
+}
+
+.w3cbutton3 span.spec {
+  color: #333333;
+}
+
+.w3cbutton3 span.specRed {
+  color: #FF0000;
+}
+
+

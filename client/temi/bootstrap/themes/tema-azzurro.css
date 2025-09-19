@@ -1,0 +1,392 @@
+/* ========================= */
+/* Variabili CSS - Colori tema azzurro mare */
+/* ========================= */
+:root {
+  --azzurro-chiaro: #d9f0f7;             /* chiaro acqua */
+  --azzurro-molto-chiaro: #e9fbff;       /* azzurro molto chiaro */
+  --azzurro-chiaro-pastello: #b3dce8;    /* azzurro pastello */
+  --azzurro-medio: #0077b6;               /* azzurro medio */
+  --azzurro-scuro: #003459;               /* blu scuro */
+  --azzurro-scuro-alt: #005f73;           /* blu scuro alternativo */
+  --azzurro-brillante: #00b4d8;           /* azzurro brillante */
+  --azzurro-chiaro-intenso: #66c7e8;      /* azzurro chiaro intenso */
+  --azzurro-chiaro-alt: #caf0f8;          /* azzurro chiaro alternativo */
+  --azzurro-molto-chiaro-alt: #def7fb;    /* azzurro molto chiaro alternativo */
+  --azzurro-tenue: #a0c4cc;               /* azzurro tenue */
+  --azzurro-chiaro-diffuso: #bde0fe;      /* azzurro chiaro diffuso */
+  --azzurro-chiaro-leggero: #e0f7fa;      /* azzurro chiaro leggero */
+  --testo-bianco: #ffffff;
+  --testo-azzurro-scuro: #003459;
+  --testo-azzurro-scuro-alt: #004f6e;
+  --testo-azzurro-scuro-molto: #005f85;
+  --testo-azzurro-visibile: #004759;
+  --testo-azzurro-brillante: #007bb8;
+  --ombra-azzurro-scuro: rgba(0, 52, 89, 0.7);
+  --ombra-azzurro-brillante: rgba(0, 180, 216, 0.5);
+  --ombra-azzurro-medio: rgba(0, 119, 182, 0.2);
+}
+
+/* ========================= */
+/* --- Stili base del body e testo --- */
+/* ========================= */
+/*
+html, body {
+  background-color: var(--azzurro-chiaro) !important; 
+  color: var(--azzurro-scuro) !important;
+}
+*/
+/* ========================= */
+/* Affluenza*/
+/* ========================= */
+
+.complessivi {
+  color: white !important;
+}
+/* ========================= */
+/* Link */
+/* ========================= */
+a, a:visited {
+  color: var(--azzurro-scuro-alt) !important;
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  color: var(--azzurro-medio) !important;
+  text-decoration: underline;
+}
+/* ========================= */
+/* Percentuali */
+/* ========================= */
+
+#toggle-percentuali {
+  color: var(--testo-azzurro-brillante);
+}
+
+#toggle-percentuali .icon {
+  fill: currentColor;
+}
+/* ========================= */
+/* Pulsanti e submit */
+/* ========================= */
+/*
+button, input[type="submit"] {
+  background-color: var(--azzurro-medio) !important;
+  color: var(--testo-bianco) !important;
+  border: none !important;
+}
+
+button:hover, input[type="submit"]:hover {
+  background-color: var(--azzurro-scuro-alt) !important;
+}
+*/
+
+/* Sfondo accordion e icone azzurro */
+/* =============================== */
+
+/* Quando l'accordion è chiuso */
+.accordion-button.collapsed {
+  background-color: transparent;
+  color: var(--testo-azzurro-scuro); /* testo azzurro scuro */
+}
+.accordion-button.collapsed::after {
+  filter: invert(28%) sepia(37%) saturate(578%) hue-rotate(168deg) brightness(84%) contrast(88%);
+  /* filtro per icona freccia azzurra chiara */
+}
+
+/* Quando l'accordion è aperto */
+.accordion-button:not(.collapsed) {
+  background-color: var(--azzurro-chiaro); /* azzurro chiaro */
+  color: var(--testo-azzurro-scuro-alt); /* azzurro scuro alternativo per testo */
+}
+.accordion-button:not(.collapsed)::after {
+  filter: invert(54%) sepia(84%) saturate(461%) hue-rotate(169deg) brightness(100%) contrast(91%);
+  /* filtro icona più intensa azzurro brillante */
+}
+
+
+/* ========================= */
+/* --- Topbar e navbar generici (se usati) --- */
+/* ========================= */
+.topbar, .navbar {
+  background-color: var(--azzurro-scuro) !important;
+  color: var(--testo-bianco) !important;
+}
+
+.topbar a, .navbar a {
+  color: var(--testo-bianco) !important;
+}
+
+.topbar a:hover, .navbar a:hover {
+  color: var(--azzurro-chiaro-intenso) !important;
+}
+
+/* ========================= */
+/* --- Header specifico (.it-header-wrapper) --- */
+/* ========================= */
+.it-header-wrapper {
+  background-color: var(--azzurro-scuro) !important;
+  color: var(--testo-bianco) !important;
+}
+
+.it-header-wrapper .it-brand-text,
+.it-header-wrapper .it-brand-title,
+.it-header-wrapper .it-brand-tagline {
+  color: var(--testo-bianco) !important;
+}
+
+.it-header-wrapper a:hover {
+  color: var(--azzurro-chiaro-intenso) !important;
+}
+
+/* Reset sfondo trasparente agli elementi interni per far vedere lo sfondo padre */
+.it-header-wrapper *,
+.it-header-wrapper .it-nav-wrapper,
+.it-header-wrapper .it-header-center-wrapper,
+.it-header-wrapper nav,
+.it-header-wrapper .navbar {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+.it-header-wrapper .menu-wrapper {
+  background-color: var(--azzurro-scuro) !important;
+  color: var(--testo-bianco) !important;
+}
+
+.it-header-wrapper .dropdown-menu {
+  background-color: var(--azzurro-chiaro) !important;
+  color: var(--azzurro-scuro) !important;
+}
+
+/* Overlay, close button e bottoni */
+.it-header-wrapper .overlay,
+.it-header-wrapper .close-div,
+.it-header-wrapper button.btn.close-menu {
+  background-color: var(--azzurro-scuro) !important;
+  color: var(--testo-bianco) !important;
+}
+
+/* Link nei dropdown */
+.it-header-wrapper .dropdown-menu a {
+  color: var(--azzurro-scuro) !important;
+}
+
+.it-header-wrapper .dropdown-menu a:hover {
+  background-color: #b3dce8 !important; /* azzurro leggermente più intenso */
+  color: var(--azzurro-scuro-alt) !important;
+}
+
+/* Separatore nel menu dropdown */
+.dropdown-menu .link-list-wrapper ul li span.divider {
+  background-color: var(--azzurro-medio) !important;
+}
+
+/* Icone svg */
+.it-header-wrapper svg.icon * {
+  fill: var(--azzurro-scuro) !important;
+}
+
+/* Navbar brand */
+.it-right-zone .navbar-brand {
+  color: var(--testo-bianco) !important;
+}
+
+/* Triangolino dropdown */
+.it-header-wrapper .dropdown-menu::before {
+  background-color: #d9f0f7 !important;
+  border-color: #d9f0f7 transparent !important;
+}
+.nav-link.dropdown-toggle .icon {
+  fill: #fff !important;      /* colore bianco */
+  stroke: #fff !important;    /* se usano contorni */
+  filter: none !important;    /* rimuove filtri scuri */
+}
+
+/* ========================= */
+/* Titolo content */
+/* ========================= */
+.title-content {
+  width: 100%;
+  background: var(--azzurro-scuro);
+  color: var(--azzurro-chiaro);
+}
+
+/* ========================= */
+/* Background colors - classi riutilizzabili */
+/* ========================= */
+.primary-bg-c1 {
+  background-color: var(--azzurro-molto-chiaro) !important;
+}
+
+.primary-bg-c4, .primary-bg-c11 {
+  background-color: var(--azzurro-scuro) !important;
+}
+
+.primary-bg-c6 {
+  background-color: var(--azzurro-chiaro-pastello) !important;
+  /* color: var(--azzurro-chiaro) !important; */
+}
+
+.lightgrey-bg-b2 {
+  background-color: var(--azzurro-molto-chiaro-alt) !important;
+  color: var(--azzurro-scuro) !important;
+  border: 1px solid var(--azzurro-medio) !important;
+}
+
+.primary-bg-a2 {
+  background-color: var(--azzurro-chiaro-pastello) !important;
+  color: var(--azzurro-scuro) !important;
+  border: 1px solid var(--azzurro-medio) !important;
+}
+
+/* ========================= */
+/* Testo e icone principali */
+/* ========================= */
+.text-primary {
+  color: var(--azzurro-scuro) !important;
+}
+
+.icon-primary {
+  fill: var(--azzurro-scuro) !important;
+  color: var(--azzurro-scuro) !important;
+}
+/* ========================= */
+/* Affluenza Pagina inziale */
+/* ========================= */
+.table.votanti thead,
+.table.votanti tfoot {
+  background: var(--azzurro-scuro);
+  color: var(--testo-bianco);
+}
+/* ========================= */
+/* Footer */
+/* ========================= */
+.it-footer,
+.it-footer .it-footer-small-prints,
+.it-footer .container {
+  background-color: var(--azzurro-scuro) !important;
+  color: var(--azzurro-chiaro) !important;
+}
+
+.it-footer a {
+  color: #fff !important;
+}
+
+.it-footer a:hover {
+  color: #d9f0f7 !important;
+}
+
+/* ========================= */
+/* Referendum */
+/* ========================= */
+.dati_referendum_titolo_quesito {
+  background-color: var(--azzurro-chiaro-leggero);
+  color: var(--testo-azzurro-scuro-alt);
+}
+
+table th.box_elevot_title {
+  border-bottom: 1px solid var(--azzurro-tenue);
+  color: var(--testo-azzurro-scuro-molto);
+  background-color: var(--azzurro-chiaro-diffuso);
+}
+
+.dati_referendum {
+  color: var(--testo-azzurro-visibile);
+}
+
+/* ========================= */
+/* Pagina link Utili
+/* ========================= */
+.box_linkutili {
+  box-shadow: 0px 2px 3px 1px var(--ombra-azzurro-medio);
+  background-color: var(--azzurro-molto-chiaro-alt);
+}
+
+.list-item-title,
+.box_linkutili p {
+  color: var(--testo-azzurro-brillante) !important;
+}
+
+/* ========================= */
+/* torna su */
+/* ========================= */
+.back-to-top {
+  background: var(--azzurro-brillante);
+  border: none;
+  box-shadow: 0 4px 6px var(--ombra-azzurro-brillante);
+}
+
+.back-to-top:hover {
+  background: var(--azzurro-scuro-alt);
+  box-shadow: 0 6px 10px var(--ombra-azzurro-scuro);
+}
+
+.back-to-top svg {
+  fill: var(--testo-bianco);
+}
+
+.back-to-top.shadow:hover {
+  box-shadow: 0 .3rem .75rem var(--ombra-azzurro-scuro) !important;
+}
+
+/* ========================= */
+/* modalità smartphone */
+/* ========================= */
+@media (max-width: 820px) {
+  /* html, body { */
+    /* background-color: var(--azzurro-chiaro) !important; */
+  /* } */
+
+  .it-header-wrapper .menu-wrapper {
+    background-color: var(--azzurro-chiaro-alt) !important;
+    color: var(--azzurro-scuro) !important;
+  }
+
+  /* Anche i link dentro il menu burger */
+  .it-header-wrapper .menu-wrapper a {
+    color: var(--azzurro-scuro) !important;
+  }
+
+  .it-header-wrapper .menu-wrapper a:hover {
+    color: var(--azzurro-scuro-alt) !important;
+  }
+
+  .it-header-wrapper .menu-wrapper svg.icon {
+    fill: var(--azzurro-scuro) !important;
+    color: var(--azzurro-scuro) !important;
+  }
+
+  /* Burger bianco */
+  .navbar-toggler-icon {
+    filter: none !important;
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+  }
+
+  /* Bottone trasparente */
+  .navbar-toggler {
+    background-color: transparent !important;
+    border-color: white !important;
+    color: white !important;
+    z-index: 1050;
+  }
+
+  /* Menu a scomparsa trasparente */
+  .navbar-collapse {
+    background-color: transparent !important;
+  }
+
+  /* Icone bianche */
+  .it-header-wrapper svg.icon * {
+    fill: white !important;
+  }
+
+  /* Frecce dropdown azzurro scuro su smartphone */
+  .nav-link.dropdown-toggle .icon,
+  .dropdown-item .icon {
+    fill: var(--azzurro-scuro) !important;
+    stroke: var(--azzurro-scuro) !important;
+    color: var(--azzurro-scuro) !important;
+    filter: none !important;
+  }
+}
+
