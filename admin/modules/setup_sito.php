@@ -5,10 +5,17 @@ $gru = [
     'google_api_key' => ''
 ];
 
-$MAP_PROVIDER = isset($gru['googlemaps']) && in_array($gru['googlemaps'], ['google', 'openstreetmap']) ? $gru['googlemaps'] : 'openstreetmap';
+#$MAP_PROVIDER = isset($gru['googlemaps']) && in_array($gru['googlemaps'], ['google', 'openstreetmap']) ? $gru['googlemaps'] : 'openstreetmap';
 $GOOGLE_API_KEY = !empty($gru['google_api_key']) ? htmlspecialchars($gru['google_api_key']) : '';
 $comuni_disponibili = ['Comune di Roma', 'Comune di Milano', 'Comune di Napoli'];
 $DEFAULT_COMUNE = 'Comune di Roma';
+$row=configurazione();
+$SITE_NAME = $row[0]['sitename'];
+$SITE_URL = $row[0]['siteurl'];
+$EMAIL_ADMIN = $row[0]['adminmail'];
+$MAP_PROVIDER = $row[0]['googlemaps']==='1' ? 'google' : 'openstreetmap' ;
+$MULTICOMUNE = $row[0]['multicomune']==='1' ? 'si' : 'no';
+if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
 ?>
 
 <section class="content">

@@ -66,10 +66,12 @@ function getUltimaRevisioneOnline() {
     }
 */
 	$newrev=0;
-	if ($stream = fopen('http://mail.eleonline.it/version4/risposta.php', 'r')) {
-		$newrev= stream_get_contents($stream, 4);
-		fclose($stream);
-	}
+	$headers = @get_headers('http://mail.eleonline.it/version4/risposta.php');
+	if($headers)
+		if ($stream = fopen('http://mail.eleonline.it/version4/risposta.php', 'r')) { 
+			$newrev= stream_get_contents($stream, 4);
+			fclose($stream);
+		}
 	$rev=(int) filter_var($newrev, FILTER_SANITIZE_NUMBER_INT);
 	$tempo='';
 
@@ -114,6 +116,7 @@ $notifiche[] = ['icona' => 'fas fa-users', 'testo' => '2 nuove richieste', 'temp
   </ul>
 
 <?php
+$role=$_SESSION['ruolo'];
 // Recupera i valori GET oppure imposta default
 if($_SESSION['ruolo']=='superuser' and isset($_POST['id_comune'])) {
 	$id_comune=$_POST['id_comune'];
@@ -124,7 +127,7 @@ if(isset($_POST['id_cons_gen'])and (count(verifica_cons($_POST['id_cons_gen'])) 
 	$id_cons_gen=$_POST['id_cons_gen'];
 if(!isset($id_cons_gen) and isset($_SESSION['id_cons_gen'])) $id_cons_gen=$_SESSION['id_cons_gen'];
 if(!isset($id_cons_gen) or !$id_cons_gen) $id_cons_gen=default_cons();
-if(!$id_cons_gen) header("Location: ../logout.php");
+if(!$id_cons_gen and $role!='superuser') header("Location: ../logout.php");
 $_SESSION['id_cons_gen']=$id_cons_gen;
 // Array esempio consultazioni, id => nome
 $row=elenco_cons();
@@ -132,7 +135,9 @@ foreach($row as $key=>$val){
 	$consultazioni[$val['id_cons_gen']] = $val['descrizione'];
 	if($val['id_cons_gen']==$id_cons_gen) $_SESSION['tipo_cons']=$val['tipo_cons'];
 }
-$tipo_cons=$_SESSION['tipo_cons'];
+if(!isset($_SESSION['tipo_cons'])) $tipo_cons=0; 
+else
+	$tipo_cons=$_SESSION['tipo_cons'];
 if (in_array($tipo_cons, [1, 12, 13])) {
     $tipo_consultazione = 'provinciali';
 } elseif (in_array($tipo_cons, [2])) {

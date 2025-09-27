@@ -17,6 +17,16 @@ function cambio_password($pass)
 	return($row);	
 }
 
+function configurazione()
+{
+	global $id_cons_gen,$prefix,$dbi;
+	$sql="select * from ".$prefix."_config";
+	$sth = $dbi->prepare("$sql");
+	$sth->execute();
+	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+	return($row);	
+}
+
 function dati_sezione($idsez,$numsez)
 {
 global $dbi,$prefix,$id_cons;
@@ -118,7 +128,7 @@ function verifica_cons($id) #verifica se il comune corrente è presente tra i co
 {
 	global $id_cons_gen,$id_comune,$prefix,$dbi;
 	if(!$id) $id=$id_cons_gen;
-	$sql="select * from ".$prefix."_ele_cons_comune where id_cons_gen=$id and id_comune=$id_comune";
+	$sql="select * from ".$prefix."_ele_cons_comune where id_cons_gen='$id' and id_comune='$id_comune'";
 	$sth = $dbi->prepare("$sql");
 	$sth->execute();
 	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
