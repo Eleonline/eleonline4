@@ -85,6 +85,9 @@ switch ($funzione) {
 	case 'leggiBarraSezioni':
 		include("modules/barra_sezioni.php");
 		break;
+	case 'salvaColoreTema':
+		include("modules/salva_colore_tema.php");
+		break;
 	case 101: 
 		include("ws/funzioni/salvaModifiche.php");
 	break;

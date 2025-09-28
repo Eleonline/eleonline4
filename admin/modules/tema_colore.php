@@ -2,7 +2,10 @@
 require_once '../includes/check_access.php';
 
 // Tema attivo di default
-$DEFAULT_THEME = "bootstrap-italia";
+$DEFAULT_THEME = "default";
+$row=configurazione();
+$DEFAULT_THEME = $row[0]['tema_colore']; #"bootstrap-italia";
+#$DEFAULT_THEME = 'tema-giallo';
 
 // Cartella dei temi
 $themesDir = __DIR__ . '/../../client/temi/bootstrap/themes';
@@ -12,7 +15,7 @@ $themes = [];
 $paletteColors = [];
 
 // Aggiungi tema istituzionale Bootstrap Italia manualmente PRIMA degli altri temi
-$bootstrapItaliaTheme = 'bootstrap-italia';
+$bootstrapItaliaTheme = 'default';
 $themes[] = $bootstrapItaliaTheme;
 $paletteColors[$bootstrapItaliaTheme] = [
     '#007FFF', '#0056B3', '#003D80', '#66A3FF', '#99C2FF', '#CCE5FF'
@@ -46,13 +49,15 @@ foreach ($files as $file) {
       <div class="card-header">
         <h3 class="card-title"><i class="fas fa-palette me-2"></i>Seleziona Tema Colore</h3>
       </div>
+	  <div id="risultato"></div>
       <div class="card-body">
-        <form id="themeForm" novalidate>
+        <form id="themeForm" action='modules.php'>
+		  <input type="hidden" name="op" value="4">
           <div class="d-flex flex-wrap justify-content-start">
             <?php foreach ($themes as $theme): ?>
               <label class="theme-card mb-3 <?= $theme === $DEFAULT_THEME ? 'selected' : '' ?>" data-theme="<?= htmlspecialchars($theme) ?>" style="cursor:pointer; user-select:none;">
                 <input type="radio" name="theme"
-                       value="<?= $theme === $bootstrapItaliaTheme ? '0' : htmlspecialchars($theme) ?>"
+                       value="<?= $theme === $bootstrapItaliaTheme ? htmlspecialchars($theme) : htmlspecialchars($theme) ?>"
                        style="display:none" <?= $theme === $DEFAULT_THEME ? 'checked' : '' ?>>
 
                 <div class="theme-name text-center mb-2" style="font-weight:600;">
@@ -111,7 +116,13 @@ foreach ($files as $file) {
   document.getElementById('themeForm').addEventListener('submit', e => {
     e.preventDefault();
     const selectedTheme = document.querySelector('input[name="theme"]:checked').value;
-    alert('Tema selezionato: ' + (selectedTheme === '0' ? 'Istituzionale (default)' : selectedTheme));
-    // Qui puoi aggiungere chiamata ajax o submit vero al backend
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("risultato").innerHTML = this.responseText;
+		}
+    }
+    xmlhttp.open("GET","../principale.php?funzione=salvaColoreTema&colore="+selectedTheme,true);
+    xmlhttp.send();
   });
 </script>
