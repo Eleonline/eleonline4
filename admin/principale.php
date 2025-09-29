@@ -69,6 +69,7 @@ $id_cons=$_SESSION['id_cons'];
 if (isset($param['funzione'])) {$funzione=$param['funzione'];} else die("Errore: funzione non definita");
 $permessi=ChiSei($id_cons_gen);
 if($permessi<16) return("Errore: non hai i permessi");
+require_once 'includes/query.php';
 switch ($funzione) {
 	case 'salvaAffluenze':
 		include("modules/salva_aff.php");
@@ -87,6 +88,9 @@ switch ($funzione) {
 		break;
 	case 'salvaColoreTema':
 		include("modules/salva_colore_tema.php");
+		break;
+	case 'salvaAffluenza':
+		include("modules/salva_orario_affluenza.php");
 		break;
 	case 101: 
 		include("ws/funzioni/salvaModifiche.php");

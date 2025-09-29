@@ -74,7 +74,7 @@ function elenco_cons()
 function elenco_comuni()
 {
 	global $id_cons_gen,$id_comune,$prefix,$dbi;
-	$sql="select id_comune,descrizione from ".$prefix."_ele_comune order by descrizione";
+	$sql="select * from ".$prefix."_ele_comune order by descrizione"; #id_comune,descrizione
 	$sth = $dbi->prepare("$sql");
 	$sth->execute();
 	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -91,6 +91,35 @@ function elenco_liste()
 	return($row);	
 }
 
+function elenco_fasce($id)
+{
+	global $id_cons,$id_comune,$prefix,$dbi;
+	$sql="select * from ".$prefix."_ele_fascia where id_conf='$id' order by id_fascia";
+	$sth = $dbi->prepare("$sql");
+	$sth->execute();
+	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+	return($row);	
+}
+
+function elenco_rilevazioni()
+{
+	global $id_cons_gen,$prefix,$dbi;
+	$sql="select * from ".$prefix."_ele_rilaff where id_cons_gen='$id_cons_gen' order by data,orario";
+	$sth = $dbi->prepare("$sql");
+	$sth->execute();
+	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+	return($row);	
+}
+
+function elenco_utenti()
+{
+	global $id_cons,$id_comune,$prefix,$dbi;
+	$sql="select * from ".$prefix."_author where id_comune='$id_comune' order by aid";
+	$sth = $dbi->prepare("$sql");
+	$sth->execute();
+	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+	return($row);	
+}
 
 function tipo_consultazione($id)
 {

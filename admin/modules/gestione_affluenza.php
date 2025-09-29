@@ -1,6 +1,6 @@
 <?php
 require_once '../includes/check_access.php';
-
+global $id_cons_gen;
 // Connessione al DB (commentata)
 // $conn = new mysqli("localhost", "user", "password", "nome_database");
 // if ($conn->connect_error) {
@@ -15,12 +15,6 @@ require_once '../includes/check_access.php';
 // }
 // $datiJson = json_encode($affluenze);
 ?>
-
-<!-- JavaScript carica i dati dal PHP (commentato) -->
-<script>
-// let affluenze = <?= $datiJson ?? '[]' ?>;
-let affluenze = []; // fallback se MySQL non è attivo
-</script>
 
 <section class="content">
   <div class="container-fluid mt-4">
@@ -70,7 +64,9 @@ let affluenze = []; // fallback se MySQL non è attivo
               <th style="width: 20%">Azione</th>
             </tr>
           </thead>
-          <tbody id="affluenzeRows"></tbody>
+          <tbody id="risultato">
+		  <?php include('elenco_rilevazioni.php'); ?>
+		  </tbody>
         </table>
       </div>
 
@@ -82,21 +78,6 @@ let affluenze = []; // fallback se MySQL non è attivo
 </section>
 
 <script>
-  aggiornaTabella();
-
-  function aggiornaTabella() {
-    const tbody = document.getElementById('affluenzeRows');
-    tbody.innerHTML = '';
-    affluenze.forEach((a, i) => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${a.data}</td>
-        <td>${a.ora.padStart(2, '0')}:${a.minuto.padStart(2, '0')}</td>
-        <td><button type="button" class="btn btn-danger btn-sm" onclick="rimuoviAffluenza(${i})">Elimina</button></td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
 
   function aggiungiAffluenza(e) {
     e.preventDefault();
@@ -108,10 +89,16 @@ let affluenze = []; // fallback se MySQL non è attivo
       return;
     }
 
-    affluenze.unshift({ ora, minuto, data });
-    aggiornaTabella();
 
     // Salvataggio nel DB (commentato)
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("risultato").innerHTML = this.responseText;
+		}
+    }
+    xmlhttp.open("GET","../principale.php?funzione=salvaAffluenza&data="+data+"&ora="+ora+"&minuto="+minuto,true);
+    xmlhttp.send();
     /*
     fetch(window.location.href, {
       method: 'POST',
@@ -122,7 +109,16 @@ let affluenze = []; // fallback se MySQL non è attivo
   }
 
   function rimuoviAffluenza(index) {
-    const aff = affluenze[index];
+	var data = document.getElementById ( "data"+index ).innerText
+	var orario = document.getElementById ( "orario"+index ).innerText
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("risultato").innerHTML = this.responseText;
+		}
+    }
+    xmlhttp.open("GET","../principale.php?funzione=salvaAffluenza&data="+data+"&ora="+orario+"&minuto=&op=cancella",true);
+    xmlhttp.send();
 
     // Eliminazione nel DB (commentato)
     /*
@@ -131,10 +127,9 @@ let affluenze = []; // fallback se MySQL non è attivo
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'delete', data: aff.data, ora: aff.ora, minuto: aff.minuto })
     }).then(r => r.text()).then(console.log);
-    */
-
-    affluenze.splice(index, 1);
-    aggiornaTabella();
+    
+*/
+	document.getElementById("riga"+index).style.display = 'none'
   }
 </script>
 

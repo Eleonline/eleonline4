@@ -49,9 +49,9 @@ $sth->execute();
 
 $sth = $dbi->prepare("SET NAMES 'utf8'");
 $sth->execute();
-
+global $id_cons_gen;
 ob_start(); // attiva output buffering
-include '../includes/header.php'; 
+include '../includes/header.php';
 include '../includes/menu.php'; 
 include 'contenuto.php'; 
 include '../includes/footer.php'; 

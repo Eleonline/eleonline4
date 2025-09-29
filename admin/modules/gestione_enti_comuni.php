@@ -2,12 +2,19 @@
 require_once '../includes/check_access.php';
 
 $currentUserRole = $_SESSION['ruolo'] ?? 'operatore';
-
+$row=configurazione();
+$predefinito=$row[0]['siteistat'];
+$row=elenco_comuni();
+foreach($row as $key=>$val) {
+	if($predefinito===$val['id_comune']) $pred=true; else $pred=false;
+$enti[]=['id'=>($key+1),'denominazione'=>$val['denominazione'],'codice_istat'=>$val['id_comune'],'capoluogo'=>$val['capoluogo'],'indirizzo'=>$val['indirizzo'],'abitanti'=>$val['fascia'],'fax'=>$val['fax'],'email'=>$val['email'],'cap'=>$val['cap'],'centralino'=>$val['centralino'],'stemma'=>$val['stemma'],'predefinito'=>$pred];
+}
+/*
 $enti = [
   ['id'=>1, 'denominazione'=>'Comune A', 'codice_istat'=>'001', 'capoluogo'=>'Sì', 'indirizzo'=>'Via Roma 1', 'abitanti'=>'3000-10000', 'fax'=>'0123456789', 'email'=>'comuneA@pec.it', 'cap'=>'00100', 'centralino'=>'123456', 'stemma'=>'', 'predefinito' => true],
   ['id'=>2, 'denominazione'=>'Comune B', 'codice_istat'=>'002', 'capoluogo'=>'No', 'indirizzo'=>'Via Milano 2', 'abitanti'=>'10000-15000', 'fax'=>'9876543210', 'email'=>'comuneB@pec.it', 'cap'=>'00200', 'centralino'=>'654321', 'stemma'=>'', 'predefinito' => false],
   ['id'=>3, 'denominazione'=>'Comune C', 'codice_istat'=>'003', 'capoluogo'=>'Sì', 'indirizzo'=>'Via Napoli 3', 'abitanti'=>'15000-30000', 'fax'=>'0112233445', 'email'=>'comuneC@pec.it', 'cap'=>'00300', 'centralino'=>'112233', 'stemma'=>'', 'predefinito' => false],
-];
+]; */
 //require_once '../includes/db_connection.php'; // Assumendo che qui apri la connessione $conn (mysqli)
 
 // Aggiunta, modifica, eliminazione enti in MySQL
@@ -171,13 +178,17 @@ if ($result) {
             <div class="form-group col-md-4">
               <label for="abitanti">Abitanti*</label>
               <select class="form-control" id="abitanti" name="abitanti" required>
-                <option value="">Seleziona...</option>
-                <option value="3000-10000">3000 - 10000</option>
-                <option value="10000-15000">10000 - 15000</option>
-                <option value="15000-30000">15000 - 30000</option>
-                <option value="30000-50000">30000 - 50000</option>
-                <option value="50000-100000">50000 - 100000</option>
-                <option value="100000+">Oltre 100000</option>
+              <option value="">Seleziona...</option>
+			  <?php
+			  $row=elenco_fasce(1);
+			  $i=1;
+			  foreach($row as $key=>$val){
+                echo "<option value=\"".$val['id_fascia']."\">".number_format($i,0,',','.')." - ".number_format(($val['abitanti']-1),0,',','.')."</option>";
+				$i=$val['abitanti'];
+				if($val['id_fascia']==8) break;
+			  }
+			  ?>
+                <option value="9">Oltre 1.000.000</option>
               </select>
             </div>
             <div class="form-group col-md-3">
