@@ -64,7 +64,7 @@ function elenco_autorizzati() #elenco dei comuni autorizzati per la consultazion
 function elenco_cons()
 {
 	global $id_cons_gen,$id_comune,$prefix,$dbi;
-	$sql="select id_cons_gen,descrizione,tipo_cons from ".$prefix."_ele_consultazione order by data_inizio desc";
+	$sql="select * from ".$prefix."_ele_consultazione order by data_inizio desc";
 	$sth = $dbi->prepare("$sql");
 	$sth->execute();
 	$row = $sth->fetchAll(PDO::FETCH_ASSOC);

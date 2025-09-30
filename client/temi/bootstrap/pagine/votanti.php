@@ -144,15 +144,22 @@ include 'temi/bootstrap/pagine/tab_link_opendata.php'; ?>
 				$bianchi = $row[$keysez]['bianchi'];
 				$contestati = $row[$keysez]['contestati'];
 				$complessivi = $aff[0]['voti_complessivi'];
-				
-				$percentualeuomini = ($uomini / $iscrittim[$keysez]) * 100;
-				$percentualedonne = ($donne / $iscrittif[$keysez]) * 100;	
+				if($iscrittim[$keysez])
+					$percentualeuomini = ($uomini / $iscrittim[$keysez]) * 100;
+				else
+					$percentualeuomini = 0;
+				if($iscrittim[$keysez])
+					$percentualedonne = ($donne / $iscrittif[$keysez]) * 100;
+				else
+					$percentualedonne = 0;
 				$percentualenulli = ($nulli / $complessivi) * 100;
 				$percentualebianchi = ($bianchi / $complessivi) * 100;
 				$percentualevalidi = ($validi / $complessivi) * 100;				
 				$percentualecontestati = ($contestati / $complessivi) * 100;
-				$percentualeespressi = ($complessivi / ($iscrittim[$keysez]+$iscrittif[$keysez])) * 100;
-				
+				if($iscrittim[$keysez]+$iscrittif[$keysez])
+					$percentualeespressi = ($complessivi / ($iscrittim[$keysez]+$iscrittif[$keysez])) * 100;
+				else
+					$percentualeespressi = 0;
 				$percentualetotuomini = ($totuomini / $totiscrittim) * 100;
 				$percentualetotdonne = ($totdonne / $totiscrittif) * 100;
 				$percentualetotnulli = ($totnulli / $totespressi) * 100;

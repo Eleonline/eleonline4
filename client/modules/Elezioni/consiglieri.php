@@ -49,7 +49,7 @@ $res->execute();
 
 if ($res->rowCount()){
 	list($tipo_cons,$id_cons,$fascia,$conf) = $res->fetch(PDO::FETCH_NUM);
-	$sql = "select capoluogo from ".$prefix."_ele_comuni where id_comune='$id_comune'";
+	$sql = "select capoluogo from ".$prefix."_ele_comune where id_comune='$id_comune'";
 $result = $dbi->prepare("$sql");
 $result->execute();
 
@@ -61,12 +61,12 @@ $result->execute();
 	list($inffisso,$fascia2) = $result->fetch(PDO::FETCH_NUM);
 	if($fascia<$fascia2 and $capoluogo) $fascia=$fascia2;
 
-		$sql = "SELECT seggi from ".$prefix."_ele_fasce where id_fascia='$fascia' and id_conf=$id_conf";
+		$sql = "SELECT seggi from ".$prefix."_ele_fascia where id_fascia='$fascia' and id_conf=$id_conf";
 $result = $dbi->prepare("$sql");
 $result->execute();
 
 		list($numcons) = $result->fetch(PDO::FETCH_NUM);
-$sql = "SELECT id_cand, sum(voti) from ".$prefix."_ele_voti_candidati where id_cons='$id_cons' group by id_cand";
+$sql = "SELECT id_cand, sum(voti) from ".$prefix."_ele_voti_candidato where id_cons='$id_cons' group by id_cand";
 $res_val = $dbi->prepare("$sql");
 $res_val->execute();
 
@@ -77,7 +77,7 @@ if ($num_cons<$numcons){
 	die();
 }
 	if (!$gruppo){
-		$sql = "SELECT sum(validi) from ".$prefix."_ele_sezioni where id_cons='$id_cons'";
+		$sql = "SELECT sum(validi) from ".$prefix."_ele_sezione where id_cons='$id_cons'";
 $res_val = $dbi->prepare("$sql");
 $res_val->execute();
 
@@ -102,7 +102,7 @@ $res_lis->execute();
 			$num_gruppo2=0; $voti2=0;
 			if($res_lis->rowCount()>1)
 				list($num_gruppo2,$voti2)= $res_lis->fetch(PDO::FETCH_NUM);
-			$sql = "SELECT sum(maschi+femmine) from ".$prefix."_ele_sezioni where id_cons='$id_cons'";
+			$sql = "SELECT sum(maschi+femmine) from ".$prefix."_ele_sezione where id_cons='$id_cons'";
 			$res_val = $dbi->prepare("$sql");
 			$res_val->execute();
 			list($elettori)=$res_val->fetch(PDO::FETCH_NUM);
@@ -254,7 +254,7 @@ function consmin4($fascia,$grp,$votisindaco,$gruppo2,$voticsec)
 	if (!isset($fisso)) $fisso=0; #se fisso=1 il premio di maggioranza è fisso
 	if (isset($votol)) {$votolista=$votol; $fisso=$votol;} #se votolista=1 c'e' voto di lista
 	$premiomaggioranza=ceil($numcons*2/3);
-	$sql = "SELECT sum(validi_lista) from ".$prefix."_ele_sezioni where id_cons='$id_cons'";
+	$sql = "SELECT sum(validi_lista) from ".$prefix."_ele_sezione where id_cons='$id_cons'";
 	$res = $dbi->prepare("$sql");
 	$res->execute();
 	list($valista)=$res->fetch(PDO::FETCH_NUM);
@@ -307,7 +307,7 @@ function consmin4($fascia,$grp,$votisindaco,$gruppo2,$voticsec)
 	$sindel=0;
 	$csmin[]=$gruppo2;
 	$num_candlst=array();
-	$sql = "SELECT num_lista,count(num_cand) from ".$prefix."_ele_candidati where id_cons=$id_cons GROUP BY num_lista order by num_lista";
+	$sql = "SELECT num_lista,count(num_cand) from ".$prefix."_ele_candidato where id_cons=$id_cons GROUP BY num_lista order by num_lista";
 	$res_can = $dbi->prepare("$sql");
 	$res_can->execute();
 	while(list($x,$num)=$res_can->fetch(PDO::FETCH_NUM))
@@ -370,7 +370,7 @@ function consmin4($fascia,$grp,$votisindaco,$gruppo2,$voticsec)
 		$pos=0;
 		$z=0;
 		$arvin[$x][$pos++]=$desliste[$lst]; 
-		$sql = "SELECT concat(substring(concat('0',t1.num_cand),-2),') ',t1.cognome,' ',substring(t1.nome from 1 for 1),'.') as descr,sum(t2.voti) as voti from ".$prefix."_ele_candidati as t1, ".$prefix."_ele_voti_candidati as t2 where t1.id_lista='$id_lista' and t1.id_cand=t2.id_cand GROUP BY t1.num_cand,t1.cognome,t1.nome order by voti desc,t1.num_cand";
+		$sql = "SELECT concat(substring(concat('0',t1.num_cand),-2),') ',t1.cognome,' ',substring(t1.nome from 1 for 1),'.') as descr,sum(t2.voti) as voti from ".$prefix."_ele_candidato as t1, ".$prefix."_ele_voti_candidato as t2 where t1.id_lista='$id_lista' and t1.id_cand=t2.id_cand GROUP BY t1.num_cand,t1.cognome,t1.nome order by voti desc,t1.num_cand";
 		$res_can = $dbi->prepare("$sql");
 		$res_can->execute();
 		$num_candlst[$x]=$res_can->rowCount();
@@ -420,7 +420,7 @@ function consmin4($fascia,$grp,$votisindaco,$gruppo2,$voticsec)
 		$pos=0;
 		$z=0;
 		$arvin[$x][$pos++]=$desliste[$lst]; 
-		$sql = "SELECT concat(substring(concat('0',t1.num_cand),-2),') ',t1.cognome,' ',substring(t1.nome from 1 for 1),'.') as descr,sum(t2.voti) as voti from ".$prefix."_ele_candidati as t1, ".$prefix."_ele_voti_candidati as t2 where t1.id_lista='$id_lista' and t1.id_cand=t2.id_cand GROUP BY t1.num_cand,t1.cognome,t1.nome order by voti desc,t1.num_cand";
+		$sql = "SELECT concat(substring(concat('0',t1.num_cand),-2),') ',t1.cognome,' ',substring(t1.nome from 1 for 1),'.') as descr,sum(t2.voti) as voti from ".$prefix."_ele_candidato as t1, ".$prefix."_ele_voti_candidato as t2 where t1.id_lista='$id_lista' and t1.id_cand=t2.id_cand GROUP BY t1.num_cand,t1.cognome,t1.nome order by voti desc,t1.num_cand";
 		$res_can = $dbi->prepare("$sql");
 		$res_can->execute();
 		$num_candlst[$x]=$res_can->rowCount();
@@ -496,9 +496,9 @@ $conselmin=array();
 $consel[]=array(_LISTA,_VOTI,_SEGGI,_CANDIDATO,_CIFRAELE,_QUOZIENTI);
 #carica numero di liste e voti, i voti sono quelli del gruppo se non c'e' voto di lista
 if($inffisso=='1')
-	$sql = "SELECT sum(validi+contestati) from ".$prefix."_ele_sezioni where id_cons='$id_cons'";
+	$sql = "SELECT sum(validi+contestati) from ".$prefix."_ele_sezione where id_cons='$id_cons'";
 elseif($votolista=='0')
-	$sql = "SELECT sum(validi) from ".$prefix."_ele_sezioni where id_cons='$id_cons'";
+	$sql = "SELECT sum(validi) from ".$prefix."_ele_sezione where id_cons='$id_cons'";
 else
 	$sql = "SELECT sum(voti) from ".$prefix."_ele_voti_lista where id_cons='$id_cons'";
 $res_val = $dbi->prepare("$sql");
@@ -562,7 +562,7 @@ while (list($descr,$num_gruppo,$id_lista,$num_lista,$descr_lista,$voti)= $res_pe
 	}
     foreach ($listagruppo as $lista=>$val){
 		$id_lista=$idlst[$lista];
-		$sql = "SELECT concat(substring(concat('0',t1.num_cand),-2),') ',t1.cognome,' ',substring(t1.nome from 1 for 1),'.') as descr,sum(t2.voti) as voti from ".$prefix."_ele_candidati as t1, ".$prefix."_ele_voti_candidati as t2 where t1.id_lista='$id_lista' and t1.id_cand=t2.id_cand GROUP BY descr order by voti desc,descr";
+		$sql = "SELECT concat(substring(concat('0',t1.num_cand),-2),') ',t1.cognome,' ',substring(t1.nome from 1 for 1),'.') as descr,sum(t2.voti) as voti from ".$prefix."_ele_candidato as t1, ".$prefix."_ele_voti_candidato as t2 where t1.id_lista='$id_lista' and t1.id_cand=t2.id_cand GROUP BY descr order by voti desc,descr";
 		$res_can = $dbi->prepare("$sql");
 		$res_can->execute();
 		$num_candlst[$lista]=$res_can->rowCount();
@@ -898,7 +898,7 @@ function conssup($fascia,$gruppo,$collegate,$collperd,$primoturno) {
 				$pos=0;
 				$z=0;
 				$arvin[$x][$pos++]=$desliste[$lst]; 
-				$sql = "SELECT concat(substring(concat('0',t1.num_cand),-2),') ',t1.cognome,' ',substring(t1.nome from 1 for 1),'.') as descr,sum(t2.voti) as voti from ".$prefix."_ele_candidati as t1, ".$prefix."_ele_voti_candidati as t2 where t1.id_lista='$id_lista' and t1.id_cand=t2.id_cand GROUP BY t1.num_cand,t1.cognome,t1.nome order by voti desc,t1.num_cand";
+				$sql = "SELECT concat(substring(concat('0',t1.num_cand),-2),') ',t1.cognome,' ',substring(t1.nome from 1 for 1),'.') as descr,sum(t2.voti) as voti from ".$prefix."_ele_candidato as t1, ".$prefix."_ele_voti_candidato as t2 where t1.id_lista='$id_lista' and t1.id_cand=t2.id_cand GROUP BY t1.num_cand,t1.cognome,t1.nome order by voti desc,t1.num_cand";
 				$res_can = $dbi->prepare("$sql");
 				$res_can->execute();
 				$num_candlst[$x]=$res_can->rowCount();
@@ -992,7 +992,7 @@ function conssup($fascia,$gruppo,$collegate,$collperd,$primoturno) {
 			$pos=0;$z=0;
 			if(!$premio and $key==$gruppo) $arvin[$x][$pos++]=$desliste[$lst];
 			else $arper[$x][$pos++]=$desliste[$lst]; 
-			$sql = "SELECT concat(substring(concat('0',t1.num_cand),-2),') ',t1.cognome,' ',substring(t1.nome from 1 for 1),'.') as descr,sum(t2.voti) as voti from ".$prefix."_ele_candidati as t1, ".$prefix."_ele_voti_candidati as t2 where t1.id_lista='$id_lista' and t1.id_cand=t2.id_cand GROUP BY descr order by voti desc,t1.num_cand";
+			$sql = "SELECT concat(substring(concat('0',t1.num_cand),-2),') ',t1.cognome,' ',substring(t1.nome from 1 for 1),'.') as descr,sum(t2.voti) as voti from ".$prefix."_ele_candidato as t1, ".$prefix."_ele_voti_candidato as t2 where t1.id_lista='$id_lista' and t1.id_cand=t2.id_cand GROUP BY descr order by voti desc,t1.num_cand";
 			$res_can = $dbi->prepare("$sql");
 			$res_can->execute();
 			$num_candlst[$x]=$res_can->rowCount();
