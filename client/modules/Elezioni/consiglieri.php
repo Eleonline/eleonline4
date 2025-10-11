@@ -155,25 +155,25 @@ $res_lis->execute();
 	elseif ($gruppo>0) conssup($fascia,$gruppo,$collegate,$collperd,$primoturno);
 	elseif ($numgruppo>0){
 		$sqllis = "SELECT t1.id_lista,t1.num_lista,t1.descrizione,t1.id_gruppo from ".$prefix."_ele_lista as t1, ".$prefix."_ele_gruppo as t2 where t1.id_cons='$id_cons' and t1.id_gruppo=t2.id_gruppo and t2.num_gruppo not in (".$_SESSION['ballo1'].",".$_SESSION['ballo2'].")";
-$res_lis = $dbi->prepare("$sqllis");
-$res_lis->execute();
+		$res_lis = $dbi->prepare("$sqllis");
+		$res_lis->execute();
 
 		$yy=$res_lis->rowCount(); 
-			$sql = "select sum(voti) from ".$prefix."_ele_voti_lista where id_cons='$id_cons'";
-$res_voti = $dbi->prepare("$sql");
-$res_voti->execute();
+		$sql = "select sum(voti) from ".$prefix."_ele_voti_lista where id_cons='$id_cons'";
+		$res_voti = $dbi->prepare("$sql");
+		$res_voti->execute();
 
-			list($validilista) = $res_voti->fetch(PDO::FETCH_NUM);
+		list($validilista) = $res_voti->fetch(PDO::FETCH_NUM);
 		if ($yy){
-while(list($id_lista,$num_lista,$descr,$pgrup) = $res_lis->fetch(PDO::FETCH_NUM)) {
-			$sql = "select sum(voti) from ".$prefix."_ele_voti_lista where id_lista='$id_lista'";
-$res_voti = $dbi->prepare("$sql");
-$res_voti->execute();
+			while(list($id_lista,$num_lista,$descr,$pgrup) = $res_lis->fetch(PDO::FETCH_NUM)) {
+				$sql = "select sum(voti) from ".$prefix."_ele_voti_lista where id_lista='$id_lista'";
+				$res_voti = $dbi->prepare("$sql");
+				$res_voti->execute();
 
-			list($votilista) = $res_voti->fetch(PDO::FETCH_NUM);
-			if(!isset($voti[$pgrup])) $voti[$pgrup]=0;
-			$voti[$pgrup]+=$votilista;
-}
+				list($votilista) = $res_voti->fetch(PDO::FETCH_NUM);
+				if(!isset($voti[$pgrup])) $voti[$pgrup]=0;
+				$voti[$pgrup]+=$votilista;
+			}
 			foreach ($voti as $key=>$val){if($val<($validilista*3/100)) unset($voti[$key]);} ##################################################
 			$res_lis = $dbi->prepare("$sqllis");
 			$res_lis->execute();
@@ -187,7 +187,7 @@ $res_voti->execute();
 			echo "<input type=\"hidden\" name=\"id_cons_gen\" value=\"$id_cons_gen\"/>";
 			echo "<input type=\"hidden\" name=\"id_comune\" value=\"$id_comune\"/></td>";
 
-echo "<td><b>".$_SESSION['grp1']."</b></td>";
+			echo "<td><b>".$_SESSION['grp1']."</b></td>";
 			echo "<td><b>".$_SESSION['grp2']."</b></td>";
 			echo "<td><b>"._NONCOLLE."</b></td></tr>";
 			
@@ -207,7 +207,7 @@ echo "<td><b>".$_SESSION['grp1']."</b></td>";
 			echo "<input type=\"submit\" name=\"invia\" value=\""._OK."\"/></td></tr></table></form>";
 		}else conssup($fascia,$numgruppo,$collegate,$collperd,$primoturno);
 	}else {
-		echo "<br>";
+		echo "<br>"; 
 		echo "<form id=\"numgruppo\" action=\"modules.php\">";
 		echo "<table><tr><td>"._SCELTASIN.":</td><td align=\"left\">";
 		if($tema=='bootstrap')
@@ -216,20 +216,40 @@ echo "<td><b>".$_SESSION['grp1']."</b></td>";
 			echo "<input type=\"hidden\" name=\"op\" value=\"consiglieri\"/>";
 		echo "<input type=\"hidden\" name=\"id_cons_gen\" value=\"$id_cons_gen\"/>";
 		echo "<input type=\"hidden\" name=\"id_comune\" value=\"$id_comune\"/>";
-		$sql = "SELECT t1.id_gruppo,t1.num_gruppo,t1.descrizione, sum(t2.voti) as pref FROM ".$prefix."_ele_gruppo as t1, ".$prefix."_ele_voti_gruppo as t2 where t1.id_gruppo=t2.id_gruppo and t1.id_cons='$id_cons' group by t1.id_gruppo,t1.num_gruppo,t1.descrizione order by pref desc limit 0,2";
+		$sql = "SELECT t1.id_gruppo,t1.num_gruppo,t1.descrizione, sum(t2.voti) as pref FROM ".$prefix."_ele_gruppo as t1, ".$prefix."_ele_voti_gruppo as t2 where t1.id_gruppo=t2.id_gruppo and t1.id_cons='$id_cons' group by t1.id_gruppo,t1.num_gruppo,t1.descrizione order by pref desc limit 0,3";
 		$res = $dbi->prepare("$sql");
 		$res->execute();
-
-		while(list($id_gruppo,$num_gruppo, $descr_gruppo,$pref) = $res->fetch(PDO::FETCH_NUM)) {
-			if (!isset($_SESSION['ballo1'])) {
+		$row=$res->fetchAll(PDO::FETCH_ASSOC);
+		if($row[2]['pref']===$row[1]['pref'])
+		{
+			$sql = "SELECT t2.id_gruppo,sum(t3.voti) as votilista from ".$prefix."_ele_lista as t2, ".$prefix."_ele_voti_lista as t3 where t2.id_cons='$id_cons' and (t2.id_gruppo=".$row[1]['pref']." or t2.id_gruppo=".$row[2]['pref'].") group by t2.id_gruppo order by votilista desc";
+			$res_lis = $dbi->prepare("$sql");
+			$res_lis->execute();
+			$rowlis = $res_lis->fetchAll();
+			$rowtmp[]=$row[0];
+			if($rowlis[0]['votilista']>$rowlis[1]['votilista']){
+				if($row[2]['id_gruppo']==$rowlis[0]['id_gruppo'])
+					$rowtmp[]=$row[2];
+				else
+					$rowtmp[]=$row[1];
+			}
+			$row=$rowtmp;
+		} else {
+			$rowtmp[]=$row[0];
+			$rowtmp[]=$row[1];			
+			$row=$rowtmp;
+		}
+		list($id_gruppo,$num_gruppo, $descr_gruppo,$pref) = $row[0];
+#			if (!isset($_SESSION['ballo1'])) {
 				$_SESSION['ballo1']=$num_gruppo;
 				$_SESSION['grp1']=$descr_gruppo;
 				$_SESSION['idgrp1']=$id_gruppo;
-			}else{
+#			}else{
+		list($id_gruppo,$num_gruppo, $descr_gruppo,$pref) = $row[1];
 				$_SESSION['ballo2']=$num_gruppo;
 				$_SESSION['grp2']=$descr_gruppo;
 				$_SESSION['idgrp2']=$id_gruppo;
-			}
+#			}
 			echo "<input type=\"radio\" name=\"numgruppo\" value=\"$num_gruppo\"/>$descr_gruppo<br>";
 		}
 		echo "</td>";

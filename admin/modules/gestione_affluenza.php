@@ -1,6 +1,9 @@
 <?php
 require_once '../includes/check_access.php';
 global $id_cons_gen;
+$row=dati_consultazione($id_cons_gen);
+$dataInizio=$row[0]['data_inizio'];
+$dataFine=$row[0]['data_fine'];
 // Connessione al DB (commentata)
 // $conn = new mysqli("localhost", "user", "password", "nome_database");
 // if ($conn->connect_error) {
@@ -29,7 +32,7 @@ global $id_cons_gen;
             <div class="col-12 col-md-3">
               <label for="data" class="form-label">Data</label>
               <input type="date" id="data" class="form-control" required 
-                min="2025-01-01" max="2025-12-31" value="2025-01-01">
+                min="<?php echo $dataInizio; ?>" max="<?php echo $dataFine; ?>" value="<?php echo $dataInizio; ?>">
             </div>
 
             <div class="col-6 col-md-2">

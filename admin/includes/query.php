@@ -27,6 +27,17 @@ function configurazione()
 	return($row);	
 }
 
+function dati_consultazione($id)
+{
+global $dbi,$prefix,$id_cons_gen;
+	if(!$id) $id=$id_cons_gen;
+	$sql="SELECT * FROM ".$prefix."_ele_consultazione where id_cons_gen=$id";
+	$sth = $dbi->prepare("$sql");
+	$sth->execute();	
+	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+	return($row);	
+}
+
 function dati_sezione($idsez,$numsez)
 {
 global $dbi,$prefix,$id_cons;
