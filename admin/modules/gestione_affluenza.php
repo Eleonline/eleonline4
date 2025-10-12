@@ -1,7 +1,7 @@
 <?php
 require_once '../includes/check_access.php';
-global $id_cons_gen;
-$row=dati_consultazione($id_cons_gen);
+$id_cons_gen=$_SESSION['id_cons_gen'];
+$row=dati_consultazione(0);
 $dataInizio=$row[0]['data_inizio'];
 $dataFine=$row[0]['data_fine'];
 // Connessione al DB (commentata)

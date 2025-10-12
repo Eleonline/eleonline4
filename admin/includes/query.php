@@ -31,7 +31,7 @@ function dati_consultazione($id)
 {
 global $dbi,$prefix,$id_cons_gen;
 	if(!$id) $id=$id_cons_gen;
-	$sql="SELECT * FROM ".$prefix."_ele_consultazione where id_cons_gen=$id";
+	$sql="SELECT * FROM ".$prefix."_ele_consultazione where id_cons_gen='$id'";
 	$sth = $dbi->prepare("$sql");
 	$sth->execute();	
 	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -54,9 +54,9 @@ global $dbi,$prefix,$id_cons;
 function default_cons()
 {
 	global $id_cons_gen,$id_comune,$prefix,$dbi;
-	$sql="select id_cons_gen from ".$prefix."_ele_cons_comune where id_comune=$id_comune order by preferita desc limit 0,1"; 
+	$sql="select id_cons_gen from ".$prefix."_ele_cons_comune where id_comune='$id_comune' order by preferita desc limit 0,1"; 
 	$sth = $dbi->prepare("$sql");
-	$sth->execute();
+	$sth->execute(); 
 	list($row) = $sth->fetch(PDO::FETCH_NUM);
 	return($row);	
 }

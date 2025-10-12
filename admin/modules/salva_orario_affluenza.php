@@ -22,7 +22,7 @@ if(!$op)
 else
 	$orario="$ora:00";
 global $prefix,$fileout,$aid,$id_cons_gen;
-	
+$id_cons=$_SESSION['id_cons'];
 $salvato=1;
 if($op=='cancella'){
 	$sql="delete from ".$prefix."_ele_rilaff where id_cons_gen='$id_cons_gen' and data='$data' and orario='$orario'";
@@ -54,9 +54,10 @@ catch(PDOException $e)
 	}                  
 	if($salvato){
 		$datal=date('Y-m-d');
+#		$datal=date('d-m-Y');
 		$orariol=date(' H:i:s');
 		$riga=addslashes($sql);
-		$sqlog="insert into ".$prefix."_ele_log values('','','$aid','$datal','$orariol','','$riga','".$prefix."_ele_rilaff - nuovo affluenza: $id_cons_gen - $data - $orario ')";
+		$sqlog="insert into ".$prefix."_ele_log values('$id_cons','0','$aid','$datal','$orariol','','$riga','".$prefix."_ele_rilaff')";
 		$res = $dbi->prepare("$sqlog");
 		$res->execute();
 		include('modules/elenco_rilevazioni.php');

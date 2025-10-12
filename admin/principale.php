@@ -108,7 +108,7 @@ $prefix=$_SESSION['prefix'];
 $pwd=$_SESSION['pwd'];
 $id_comune=$_SESSION['id_comune'];
 $perms=0;
-$sql="select adminsuper, admincomune, adminop  from ".$prefix."_authors where aid='$aid' and pwd='$pwd' and (id_comune='$id_comune' or id_comune=0)";
+$sql="select adminsuper, admincomune, adminop  from ".$prefix."_authors where aid='$aid' and pwd='$pwd' and (id_comune='$id_comune' or id_comune='0')";
 $sth = $dbi->prepare("$sql");
 $sth->execute();	
 $row = $sth->fetch(PDO::FETCH_BOTH);	
@@ -120,7 +120,7 @@ if($row){
 	$adminsuper=0;
 	$admincomune=0;
 	$oper=1;
-}	
+}
 	if ($adminsuper==1)
 		return 256;
 	elseif ($admincomune==1) 
@@ -135,7 +135,7 @@ if($row){
 		if (!$id_cons_gen) $id_cons_gen=$idcg; 
 		$sql="select permessi from ".$prefix."_ele_operatori where id_cons='$id_cons' and aid='$aid'";
 		$sth = $dbi->prepare("$sql");
-		$sth->execute();		
+		$sth->execute();
 		list($perms) = $sth->fetch(PDO::FETCH_NUM);
 		return $perms;
 	}
