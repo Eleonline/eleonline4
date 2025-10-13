@@ -6,7 +6,9 @@ else
 	
 $row=elenco_rilevazioni();
 foreach($row as $key=>$val){
-echo "<tr id=\"riga$key\"><td id=\"data$key\">".$val['data']."</td><td id=\"orario$key\">".$val['orario']."</td><td><button type=\"button\" class=\"btn btn-danger btn-sm\" onclick=\"rimuoviAffluenza($key)\">Elimina</button></td></tr>";
+	list ($anno,$mese,$giorno)=explode('-',$val['data']);
+	$data="$giorno/$mese/$anno";
+	echo "<tr id=\"riga$key\"><td id=\"data$key\">".$data."</td><td id=\"orario$key\">".$val['orario']."</td><td><button type=\"button\" class=\"btn btn-danger btn-sm\" onclick=\"rimuoviAffluenza($key)\">Elimina</button></td></tr>";
 } #die("TEST:  --- ".count($row));
 
 ?>
