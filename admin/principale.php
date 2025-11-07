@@ -92,6 +92,9 @@ switch ($funzione) {
 	case 'salvaAffluenza':
 		include("modules/salva_orario_affluenza.php");
 		break;
+	case 'salvaConfigSito':
+		include("modules/salva_config_sito.php");
+		break;
 	case 101: 
 		include("ws/funzioni/salvaModifiche.php");
 	break;

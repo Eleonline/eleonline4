@@ -7,17 +7,18 @@ $SITE_NAME = $row[0]['sitename'];
 $SITE_URL = $row[0]['siteurl'];
 $EMAIL_ADMIN = $row[0]['adminmail'];
 $MAP_PROVIDER = $row[0]['googlemaps']==='1' ? 'google' : 'openstreetmap' ;
-$MULTICOMUNE = $row[0]['multicomune']==='1' ? 'si' : 'no';
+$MULTICOMUNE = $row[0]['multicomune']; #==='1' ? 'si' : 'no';
 $gru = [
-    'google_api_key' => "'".$row[0]['gkey']."'"
+    'google_api_key' => $row[0]['gkey']
 ];
 #$MAP_PROVIDER = isset($gru['googlemaps']) && in_array($gru['googlemaps'], ['google', 'openstreetmap']) ? $gru['googlemaps'] : 'openstreetmap';
 $GOOGLE_API_KEY = !empty($gru['google_api_key']) ? htmlspecialchars($gru['google_api_key']) : '';
-
+$GOOGLE_API_KEY = $row[0]['gkey'];
 $SITE_ISTAT=$row[0]['siteistat'];
 $row=elenco_comuni();
 foreach($row as $key=>$val){
-	$comuni_disponibili[]=$val['descrizione'];
+	if(!isset($DEFAULT_COMUNE)) {$DEFAULT_COMUNE=$val['descrizione']; $SITE_ISTAT_TMP=$val['id_comune'];}
+	$comuni_disponibili[]=[$val['descrizione'],$val['id_comune']];
 	if($val['id_comune']==$SITE_ISTAT) $DEFAULT_COMUNE=$val['descrizione'];
 }
 #$comuni_disponibili = ['Comune di Roma', 'Comune di Milano', 'Comune di Napoli'];
@@ -34,7 +35,7 @@ if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
         <h3 class="card-title" id="form-title"><i class="fas fa-cogs me-2"></i>Setup Sito</h3>
       </div>
       <div class="card-body">
-        <form>
+        <form id="configSitoForm" onsubmit="aggiornaDati(event)">
           <!-- LOGO + ANTEPRIMA -->
           <div class="mb-3 d-flex align-items-center">
             <div id="previewImageDiv"
@@ -94,18 +95,18 @@ if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
           <div class="mb-3">
             <label for="multicomune" class="form-label">Gestione multicomune?</label>
             <select class="form-select" name="multicomune" id="multicomune" onchange="toggleComuneDefault()">
-              <option value="si" <?= $MULTICOMUNE === 'si' ? 'selected' : '' ?>>Si</option>
-              <option value="no" <?= $MULTICOMUNE === 'no' ? 'selected' : '' ?>>No</option>
+              <option value="1" <?= $MULTICOMUNE === '1' ? 'selected' : '' ?>>Si</option>
+              <option value="0" <?= $MULTICOMUNE === '0' ? 'selected' : '' ?>>No</option>
             </select>
           </div>
 
           <!-- COMUNE DI DEFAULT -->
-          <div class="mb-3" id="defaultComuneRow" style="<?= $MULTICOMUNE === 'si' ? '' : 'display:none;' ?>">
+          <div class="mb-3" id="defaultComuneRow" style="<?= $MULTICOMUNE === '1' ? '' : 'display:none;' ?>">
             <label for="defaultComune" class="form-label">Comune visualizzato per default</label>
             <select class="form-select" name="default_comune" id="defaultComune">
               <?php foreach ($comuni_disponibili as $comune): ?>
-                <option value="<?= htmlspecialchars($comune) ?>" <?= $DEFAULT_COMUNE === $comune ? 'selected' : '' ?>>
-                  <?= htmlspecialchars($comune) ?>
+                <option value="<?= $comune[1] ?>" <?= $SITE_ISTAT === $comune[1] ? 'selected' : '' ?>>
+                  <?= htmlspecialchars($comune[0]) ?>
                 </option>
               <?php endforeach; ?>
             </select>
@@ -128,6 +129,9 @@ if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
           <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">Salva</button>
           </div>
+          <div class="d-flex justify-content-end" id="risultato">
+          
+          </div>
         </form>
       </div>
     </div>
@@ -135,6 +139,28 @@ if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
 </section>
 
 <script>
+  function aggiornaDati(e) {
+    e.preventDefault();
+    const siteName = document.getElementById('siteName').value;
+    const siteUrl = document.getElementById('siteUrl').value;
+    const emailAdmin = document.getElementById('emailAdmin').value;
+    const mapsProvider = document.getElementById('maps_provider').value;
+    const googleApiKey = document.getElementById('googleApiKey').value;
+    const multicomune = document.getElementById('multicomune').value;
+    const defaultComune = document.getElementById('defaultComune').value;
+
+    // Salvataggio nel DB (commentato)
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("risultato").innerHTML = this.responseText;
+				document.getElementById("bottoneStato").focus();
+		}
+    }
+    xmlhttp.open("GET","../principale.php?funzione=salvaConfigSito&siteName="+siteName+"&siteUrl="+siteUrl+"&emailAdmin="+emailAdmin+"&mapsProvider="+mapsProvider+"&googleApiKey="+googleApiKey+"&multicomune="+multicomune+"&defaultComune="+defaultComune,true);
+    xmlhttp.send();
+  }
+
   // Tooltip Bootstrap 5 init
   document.addEventListener('DOMContentLoaded', function () {
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -171,6 +197,14 @@ if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
   // Mostra/nasconde campo Comune default
   function toggleComuneDefault() {
     const multicomune = document.getElementById('multicomune').value;
-    document.getElementById('defaultComuneRow').style.display = (multicomune === 'si') ? '' : 'none';
+    document.getElementById('defaultComuneRow').style.display = (multicomune === '1') ? '' : 'none';
   }
+  
+  function nascondiElemento() {
+  const elemento = document.getElementById('risultato');
+  if (elemento) {
+    // Imposta la proprietà CSS display su 'none'
+    elemento.style.display = 'none';
+  }
+}
 </script>
