@@ -14,7 +14,7 @@ if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
 if (isset($_GET['colore'])) $colore=$_GET['colore']; else $colore='';
 #if (isset($_GET['scrutinata'])) {$scrutinata=$_GET['scrutinata']==false ? false : true;}else $scrutinata=false;
 
-global $prefix,$fileout,$aid;
+global $prefix,$fileout,$aid,$id_cons;
 	
 	$salvato=1;
 	$sql="update  ".$prefix."_config set tema_colore='$colore'";
@@ -32,7 +32,7 @@ catch(PDOException $e)
 		$datal=date('Y-m-d');
 		$orariol=date(' H:i:s');
 		$riga=addslashes($sql);
-		$sqlog="insert into ".$prefix."_ele_log values('','','$aid','$datal','$orariol','','$riga','".$prefix."_config - nuovo colore tema: $colore')";
+		$sqlog="insert into ".$prefix."_ele_log values('$id_cons','0','$aid','$datal','$orariol','','$riga','".$prefix."_config')";
 		$res = $dbi->prepare("$sqlog");
 		$res->execute();
 		echo "Salvata l'impostazione del colore $colore per il tema bootstrap";

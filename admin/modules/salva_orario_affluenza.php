@@ -61,10 +61,10 @@ catch(PDOException $e)
 		$sqlog="insert into ".$prefix."_ele_log values('$id_cons','0','$aid','$datal','$orariol','','$riga','".$prefix."_ele_rilaff')";
 		$res = $dbi->prepare("$sqlog");
 		$res->execute();
-		include('modules/elenco_rilevazioni.php');
 #		echo "Nuovo orario di rilevazione inserito";
 	}else{
-		echo "Errore, nessun cambiamento dell'impostazione del colore";
+		echo "<tr><td colspan=\"3\">Errore, impossibile salvare i dati</td></tr>";
 	}
+	include('modules/elenco_rilevazioni.php');
 
 ?>

@@ -4,122 +4,7 @@ require_once '../includes/check_access.php';
 $currentUserRole = $_SESSION['ruolo'] ?? 'operatore';
 $row=configurazione();
 $predefinito=$row[0]['siteistat'];
-$row=elenco_comuni();
-foreach($row as $key=>$val) {
-	if($predefinito===$val['id_comune']) $pred=true; else $pred=false;
-$enti[]=['id'=>($key+1),'denominazione'=>$val['denominazione'],'codice_istat'=>$val['id_comune'],'capoluogo'=>$val['capoluogo'],'indirizzo'=>$val['indirizzo'],'abitanti'=>$val['fascia'],'fax'=>$val['fax'],'email'=>$val['email'],'cap'=>$val['cap'],'centralino'=>$val['centralino'],'stemma'=>$val['stemma'],'predefinito'=>$pred];
-}
-/*
-$enti = [
-  ['id'=>1, 'denominazione'=>'Comune A', 'codice_istat'=>'001', 'capoluogo'=>'Sì', 'indirizzo'=>'Via Roma 1', 'abitanti'=>'3000-10000', 'fax'=>'0123456789', 'email'=>'comuneA@pec.it', 'cap'=>'00100', 'centralino'=>'123456', 'stemma'=>'', 'predefinito' => true],
-  ['id'=>2, 'denominazione'=>'Comune B', 'codice_istat'=>'002', 'capoluogo'=>'No', 'indirizzo'=>'Via Milano 2', 'abitanti'=>'10000-15000', 'fax'=>'9876543210', 'email'=>'comuneB@pec.it', 'cap'=>'00200', 'centralino'=>'654321', 'stemma'=>'', 'predefinito' => false],
-  ['id'=>3, 'denominazione'=>'Comune C', 'codice_istat'=>'003', 'capoluogo'=>'Sì', 'indirizzo'=>'Via Napoli 3', 'abitanti'=>'15000-30000', 'fax'=>'0112233445', 'email'=>'comuneC@pec.it', 'cap'=>'00300', 'centralino'=>'112233', 'stemma'=>'', 'predefinito' => false],
-]; */
-//require_once '../includes/db_connection.php'; // Assumendo che qui apri la connessione $conn (mysqli)
 
-// Aggiunta, modifica, eliminazione enti in MySQL
-
-// --- ELIMINAZIONE ---
-/*
-if (isset($_GET['delete_ente_id'])) {
-    $delete_id = intval($_GET['delete_ente_id']);
-    // Eliminazione
-    $sql_delete = "DELETE FROM enti WHERE id = ?";
-    if ($stmt = $conn->prepare($sql_delete)) {
-        $stmt->bind_param("i", $delete_id);
-        if ($stmt->execute()) {
-            // messaggio eliminazione riuscita (gestisci come vuoi)
-            $message = "Eliminazione ente ID $delete_id avvenuta con successo.";
-        } else {
-            $message = "Errore durante eliminazione ente.";
-        }
-        $stmt->close();
-    }
-}
-*/
-
-// --- INSERIMENTO O AGGIORNAMENTO ---
-// Se invii il form con POST
-/*
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Sanifica input
-    $id = isset($_POST['ente_id']) ? intval($_POST['ente_id']) : 0;
-    $denominazione = $_POST['denominazione'] ?? '';
-    $codice_istat = $_POST['codice_istat'] ?? '';
-    $capoluogo = $_POST['capoluogo'] ?? '';
-    $indirizzo = $_POST['indirizzo'] ?? '';
-    $centralino = $_POST['centralino'] ?? '';
-    $abitanti = $_POST['abitanti'] ?? '';
-    $fax = $_POST['fax'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $cap = $_POST['cap'] ?? '';
-    $predefinito = isset($_POST['predefinito']) ? 1 : 0;
-
-    // Gestisci upload file stemma se presente
-    $stemma_path = '';
-    if (isset($_FILES['stemma']) && $_FILES['stemma']['error'] === UPLOAD_ERR_OK) {
-        $tmp_name = $_FILES['stemma']['tmp_name'];
-        $name = basename($_FILES['stemma']['name']);
-        $upload_dir = '../uploads/'; // crea questa cartella e rendila scrivibile
-        if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
-        $target_file = $upload_dir . time() . '_' . $name;
-        if (move_uploaded_file($tmp_name, $target_file)) {
-            $stemma_path = $target_file;
-        }
-    }
-
-    // Se predefinito, azzera gli altri
-    if ($predefinito) {
-        $conn->query("UPDATE enti SET predefinito = 0");
-    }
-
-    if ($id > 0) {
-        // UPDATE
-        $sql_update = "UPDATE enti SET denominazione=?, codice_istat=?, capoluogo=?, indirizzo=?, centralino=?, abitanti=?, fax=?, email=?, cap=?, stemma=?, predefinito=? WHERE id=?";
-        if ($stmt = $conn->prepare($sql_update)) {
-            // Se non hai cambiato il file, mantieni lo stemma vecchio
-            if (!$stemma_path) {
-                // Prendi stemma attuale dal DB per questo id
-                $res = $conn->query("SELECT stemma FROM enti WHERE id=$id");
-                if ($res && $row = $res->fetch_assoc()) {
-                    $stemma_path = $row['stemma'];
-                }
-            }
-            $stmt->bind_param("ssssssssssii", $denominazione, $codice_istat, $capoluogo, $indirizzo, $centralino, $abitanti, $fax, $email, $cap, $stemma_path, $predefinito, $id);
-            if ($stmt->execute()) {
-                $message = "Ente aggiornato con successo.";
-            } else {
-                $message = "Errore durante aggiornamento ente.";
-            }
-            $stmt->close();
-        }
-    } else {
-        // INSERT
-        $sql_insert = "INSERT INTO enti (denominazione, codice_istat, capoluogo, indirizzo, centralino, abitanti, fax, email, cap, stemma, predefinito) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        if ($stmt = $conn->prepare($sql_insert)) {
-            $stmt->bind_param("ssssssssssi", $denominazione, $codice_istat, $capoluogo, $indirizzo, $centralino, $abitanti, $fax, $email, $cap, $stemma_path, $predefinito);
-            if ($stmt->execute()) {
-                $message = "Ente aggiunto con successo.";
-            } else {
-                $message = "Errore durante inserimento ente.";
-            }
-            $stmt->close();
-        }
-    }
-}
-*/
-
-// --- Recupero dati da DB (per esempio) ---
-/*
-$sql = "SELECT * FROM enti ORDER BY denominazione";
-$result = $conn->query($sql);
-$enti = [];
-if ($result) {
-    while ($row = $result->fetch_assoc()) {
-        $enti[] = $row;
-    }
-}
-*/
 ?>
 
 <section class="content">
@@ -132,7 +17,7 @@ if ($result) {
         <h3 class="card-title" id="form-subtitle">Aggiungi Ente</h3>
       </div>
       <div class="card-body">
-        <form id="enteForm" enctype="multipart/form-data">
+        <form id="enteForm" enctype="multipart/form-data"  onsubmit="aggiungiComune(event)">
           <input type="hidden" name="ente_id" id="ente_id">
 
           <div class="form-row">
@@ -211,7 +96,7 @@ if ($result) {
         </form>
       </div>
     </div>
-
+ 
     <!-- LISTA -->
     <div class="card">
       <div class="card-header bg-secondary text-white">
@@ -231,7 +116,9 @@ if ($result) {
               <th>Azioni</th>
             </tr>
           </thead>
-          <tbody id="enteRows"></tbody>
+          <tbody id="risultato">
+		  <?php include('elenco_comuni.php'); ?>		  
+		  </tbody>
         </table>
       </div>
     </div>
@@ -239,160 +126,80 @@ if ($result) {
 </section>
 
 <script>
-let enti = <?php echo json_encode($enti); ?>;
+  function aggiungiComune(e) {
+    e.preventDefault();
+	
+	var denominazione = document.getElementById ( "denominazione" ).value
+	var indirizzo = document.getElementById ( "indirizzo" ).value
+	var cap = document.getElementById ( "cap" ).value
+	var email = document.getElementById ( "email" ).value
+	var centralino = document.getElementById ( "centralino" ).value
+	var fax = document.getElementById ( "fax" ).value
+	var abitanti = document.getElementById ( "abitanti" ).value
+	var codiceIstat = document.getElementById ( "codice_istat" ).value
+	var capoluogo = document.getElementById ( "capoluogo" ).value
 
-const enteForm = document.getElementById('enteForm');
-const enteRows = document.getElementById('enteRows');
-const formTitle = document.getElementById('form-subtitle');
-const submitBtn = document.getElementById('submitBtn');
-const formMainTitle = document.getElementById('form-title');
-
-function renderEnti() {
-  enteRows.innerHTML = '';
-  enti.forEach(ente => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${ente.predefinito ? '<i class="fas fa-star" style="color:gold;"></i>' : '<i class="far fa-star"></i>'}</td>
-      <td>${ente.stemma ? `<img src="${ente.stemma}" alt="Stemma" style="height:30px;">` : ''}</td>
-      <td>${ente.denominazione}</td>
-      <td>${ente.indirizzo}</td>
-      <td>${ente.abitanti}</td>
-      <td>${ente.codice_istat}</td>
-      <td>${ente.capoluogo}</td>
-      <td>
-        <button class="btn btn-sm btn-warning" onclick="editEnte(${ente.id})">Modifica</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteEnte(${ente.id})">Elimina</button>
-      </td>
-    `;
-    enteRows.appendChild(tr);
-  });
-}
-
-function editEnte(id) {
-  const e = enti.find(e => e.id === id);
-  if (!e) return;
-
-  document.getElementById('ente_id').value = e.id;
-  document.getElementById('denominazione').value = e.denominazione;
-  document.getElementById('codice_istat').value = e.codice_istat;
-  document.getElementById('capoluogo').value = e.capoluogo;
-  document.getElementById('indirizzo').value = e.indirizzo;
-  document.getElementById('centralino').value = e.centralino;
-  document.getElementById('abitanti').value = e.abitanti;
-  document.getElementById('fax').value = e.fax;
-  document.getElementById('email').value = e.email;
-  document.getElementById('cap').value = e.cap;
-  document.getElementById('anteprimaStemma').src = e.stemma || '';
-  document.getElementById('anteprimaStemma').style.display = e.stemma ? 'block' : 'none';
-  document.getElementById('predefinito').checked = e.predefinito;
-
-  formTitle.innerText = 'Modifica Ente';
-  submitBtn.innerText = 'Salva ente';
-
-  formMainTitle.scrollIntoView({ behavior: 'smooth' });
-}
-
-function deleteEnte(id) {
-  const enteToDelete = enti.find(e => e.id === id);
-  if (!enteToDelete) return;
-
-  if (enteToDelete.predefinito) {
-    const altro = enti.find(e => e.id !== id);
-    if (altro) {
-      if (!confirm(`Stai eliminando l'ente predefinito "${enteToDelete.denominazione}". Verrà impostato come predefinito "${altro.denominazione}". Procedere?`)) {
-        return;
-      }
-      altro.predefinito = true; // nuovo predefinito
-    } else {
-      if (!confirm(`Stai eliminando l'ente predefinito "${enteToDelete.denominazione}". Non ci sono altri enti disponibili. Procedere?`)) {
-        return;
-      }
+    // Salvataggio nel DB (commentato)
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById("risultato").innerHTML = this.responseText;
+			document.getElementById ( "submitBtn" ).textContent = "Aggiungi ente"
+			document.getElementById ( "denominazione" ).value = ''
+			document.getElementById ( "indirizzo" ).value = ""
+			document.getElementById ( "cap" ).value = ''
+			document.getElementById ( "email" ).value = ''
+			document.getElementById ( "centralino" ).value = ''
+			document.getElementById ( "fax" ).value = ''
+			document.getElementById ( "abitanti" ).selectedIndex = 0
+			document.getElementById ( "codice_istat" ).value = ''
+			document.getElementById ( "capoluogo" ).selectedIndex = 0
+		}
     }
-  } else {
-    if (!confirm(`Sei sicuro di voler eliminare l'ente "${enteToDelete.denominazione}"?`)) {
-      return;
+    xmlhttp.open("GET","../principale.php?funzione=salvaComune&descrizione="+denominazione+"&indirizzo="+indirizzo+"&cap="+cap+"&email="+email+"&centralino="+centralino+"&fax="+fax+"&fascia="+abitanti+"&id_comune="+codiceIstat+"&capoluogo="+capoluogo+"&op=salva",true);
+    xmlhttp.send();
+	
+  }
+
+  function deleteEnte(index) {
+	var denominazione = document.getElementById ( "denominazione"+index ).innerText
+	var indirizzo = document.getElementById ( "indirizzo"+index ).innerText
+	var abitanti = document.getElementById ( "abitanti"+index ).innerText
+	var codiceIstat = document.getElementById ( "codiceIstat"+index ).innerText
+	var capoluogo = document.getElementById ( "capoluogo"+index ).innerText
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("risultato").innerHTML = this.responseText;
+		}
     }
+    xmlhttp.open("GET","../principale.php?funzione=salvaComune&descrizione="+denominazione+"&indirizzo="+indirizzo+"&fascia="+abitanti+"&id_comune="+codiceIstat+"&capoluogo="+capoluogo+"&op=cancella",true);
+    xmlhttp.send();
+
+//	document.getElementById("riga"+index).style.display = 'none'
   }
-
-  enti = enti.filter(e => e.id !== id);
-  renderEnti();
-  predefinitoAttuale = enti.find(e => e.predefinito);
-  alert(`Eliminazione dell'ente "${enteToDelete.denominazione}" avvenuta con successo.`);
-}
-
-let predefinitoAttuale = enti.find(e => e.predefinito);
-
-enteForm.addEventListener('submit', function(e){
-  e.preventDefault();
-
-  const id = parseInt(document.getElementById('ente_id').value);
-  const predefinito = document.getElementById('predefinito').checked;
-  const isModifica = !isNaN(id);
-  const eraPredefinito = predefinitoAttuale && predefinitoAttuale.id === id;
-
-  if (isModifica && eraPredefinito && !predefinito) {
-    if (!confirm(`Stai rimuovendo lo stato di predefinito dall'ente "${predefinitoAttuale.denominazione}". Continuare?`)) {
-      return;
-    } else {
-      // Se confermi la rimozione, assegno il predefinito al primo ente diverso da questo (se esiste)
-      const altriEnti = enti.filter(e => e.id !== id);
-      if (altriEnti.length > 0) {
-        altriEnti.forEach(e => e.predefinito = false); // resetta tutti
-        altriEnti[0].predefinito = true; // assegna al primo
-        alert(`L'ente "${altriEnti[0].denominazione}" è stato impostato automaticamente come predefinito.`);
-      } else {
-        alert(`Non ci sono altri enti a cui assegnare lo stato di predefinito.`);
-      }
-    }
+   function editEnte(index) {
+	document.getElementById ( "denominazione" ).value = document.getElementById ( "denominazione"+index ).innerText
+	document.getElementById ( "indirizzo" ).value = document.getElementById ( "indirizzo"+index ).innerText
+	document.getElementById ( "cap" ).value = document.getElementById ( "cap"+index ).value
+	document.getElementById ( "email" ).value = document.getElementById ( "email"+index ).value
+	document.getElementById ( "centralino" ).value = document.getElementById ( "centralino"+index ).value
+	document.getElementById ( "fax" ).value = document.getElementById ( "fax"+index ).value
+	document.getElementById ( "abitanti" ).selectedIndex = document.getElementById ( "abitanti"+index ).value
+	document.getElementById ( "codice_istat" ).value = document.getElementById ( "codiceIstat"+index ).innerText
+	if( document.getElementById ( "capoluogo"+index ).value == 1 )
+		document.getElementById ( "capoluogo" ).selectedIndex = 1
+	else
+		document.getElementById ( "capoluogo" ).selectedIndex = 2
+	document.getElementById ( "submitBtn" ).textContent = "Salva modifiche"
+//	document.getElementById("riga"+index).style.display = 'none' 
   }
-
-  const newEnte = {
-    id: id || (enti.length ? Math.max(...enti.map(e => e.id)) + 1 : 1),
-    denominazione: document.getElementById('denominazione').value,
-    codice_istat: document.getElementById('codice_istat').value,
-    capoluogo: document.getElementById('capoluogo').value,
-    indirizzo: document.getElementById('indirizzo').value,
-    centralino: document.getElementById('centralino').value,
-    abitanti: document.getElementById('abitanti').value,
-    fax: document.getElementById('fax').value,
-    email: document.getElementById('email').value,
-    cap: document.getElementById('cap').value,
-    stemma: document.getElementById('anteprimaStemma').src || '',
-    predefinito: predefinito
-  };
-
-  if (predefinito) {
-    enti.forEach(e => e.predefinito = false);
+  
+  function nascondiElemento() {
+  const elemento = document.getElementById('risultato');
+  if (elemento) {
+    // Imposta la proprietà CSS display su 'none'
+    elemento.style.display = 'none';
   }
-
-  if (isModifica) {
-    const index = enti.findIndex(e => e.id === id);
-    enti[index] = newEnte;
-    alert(`Ente "${newEnte.denominazione}" modificato con successo.`);
-  } else {
-    enti.push(newEnte);
-    alert(`Ente "${newEnte.denominazione}" aggiunto con successo.`);
   }
-
-  enteForm.reset();
-  document.getElementById('anteprimaStemma').style.display = 'none';
-  formTitle.innerText = 'Aggiungi Ente';
-  submitBtn.innerText = 'Aggiungi ente';
-
-  renderEnti();
-
-  predefinitoAttuale = enti.find(e => e.predefinito);
-
-  formMainTitle.scrollIntoView({behavior: 'smooth'});
-});
-
-document.getElementById('cancelEdit').addEventListener('click', () => {
-  enteForm.reset();
-  document.getElementById('anteprimaStemma').style.display = 'none';
-  formTitle.innerText = 'Aggiungi Ente';
-  submitBtn.innerText = 'Aggiungi ente';
-});
-
-renderEnti();
-
 </script>
