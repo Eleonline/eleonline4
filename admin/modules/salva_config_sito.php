@@ -37,10 +37,10 @@ catch(PDOException $e)
 		echo $sql . "<br>" . $e->getMessage();
 		$salvato=0;
 	}                  
-	if($salvato){
-		echo "<br><button id=\"bottoneStato\" style=\"background-color:aquamarine;\" onfocusout=\"document.getElementById('bottoneStato').style.display='none'\" > Dati salvati correttamente </button>";
-	}else{
-		echo "Errore di inserimento dati";
-	}
+if($salvato){
+	echo "<br><button id=\"bottoneStato\" style=\"background-color:aquamarine;\" onfocusout=\"document.getElementById('bottoneStato').style.display='none'\" > Dati salvati correttamente </button>";
+}else{
+	echo "Errore di inserimento dati";
+}
 
 ?>

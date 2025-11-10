@@ -32,7 +32,7 @@ catch(PDOException $e)
 		$datal=date('Y-m-d');
 		$orariol=date(' H:i:s');
 		$riga=addslashes($sql);
-		$sqlog="insert into ".$prefix."_ele_log values('$id_cons','','$aid','$datal','$orariol','','$riga','".$prefix."_config - nuovo colore tema: $colore')";
+		$sqlog="insert into ".$prefix."_ele_log values('$id_cons','0','$aid','$datal','$orariol','','$riga','".$prefix."_config')";
 		$res = $dbi->prepare("$sqlog");
 		$res->execute();
 		echo "Salvata l'impostazione del colore $colore per il tema bootstrap";

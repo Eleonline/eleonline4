@@ -95,6 +95,9 @@ switch ($funzione) {
 	case 'salvaConfigSito':
 		include("modules/salva_config_sito.php");
 		break;
+	case 'salvaComune':
+		include("modules/salva_comune.php");
+		break;
 	case 101: 
 		include("ws/funzioni/salvaModifiche.php");
 	break;
