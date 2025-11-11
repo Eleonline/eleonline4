@@ -11,7 +11,7 @@ if(!isset($predefinito))
 $row=elenco_comuni();
 foreach($row as $key=>$val) {
 	if($predefinito===$val['id_comune']) $pred=true; else $pred=false;
-$enti[]=['id'=>($key+1),'denominazione'=>$val['descrizione'],'codice_istat'=>$val['id_comune'],'capoluogo'=>$val['capoluogo'],'indirizzo'=>$val['indirizzo'],'abitanti'=>$val['fascia'],'fax'=>$val['fax'],'email'=>$val['email'],'cap'=>$val['cap'],'centralino'=>$val['centralino'],'stemma'=>$val['stemma'],'predefinito'=>$pred];
+$enti[]=['id'=>($key+1),'denominazione'=>$val['descrizione'],'codice_istat'=>$val['id_comune'],'capoluogo'=>$val['capoluogo'],'indirizzo'=>$val['indirizzo'],'abitanti'=>$val['fascia'],'fax'=>$val['fax'],'email'=>$val['email'],'cap'=>$val['cap'],'centralino'=>$val['centralino'],'stemma'=>$val['stemma'],'predefinito'=>$pred,'simbolo'=>$val['simbolo']];
 }
 $row=elenco_fasce(1);
 $i=1;
@@ -21,9 +21,9 @@ $i=$val['abitanti'];
 if($val['id_fascia']==8) break;
 }
 $fasce[8] = "Oltre 1.000.000";
-foreach($enti as $key=>$val){ 
+foreach($enti as $key=>$val){ if(!isset($fasce[$val['abitanti']])) continue; 
   echo "<tr><td><input type=\"hidden\" id=\"cap$key\" value=\"".$val['cap']."\"><input type=\"hidden\" id=\"email$key\" value=\"".$val['email']."\"><input type=\"hidden\" id=\"centralino$key\" value=\"".$val['centralino']."\"><input type=\"hidden\" id=\"fax$key\" value=\"".$val['fax']."\"> </td>
-  <td></td>
+  <td><img src=\"../principale.php?funzione=immagine&amp;id_comune=".$val['codice_istat']."&amp;simbolo=".$val['simbolo']."\" width=\"50px\" alt=\"foto\"></td>
   <td id=\"denominazione$key\">".$val['denominazione']."</td>
   <td id=\"indirizzo$key\">".$val['indirizzo']."</td>
   <td><input type=\"hidden\" id=\"abitanti$key\" value=\"".$val['abitanti']."\">".$fasce[$val['abitanti']]."</td>

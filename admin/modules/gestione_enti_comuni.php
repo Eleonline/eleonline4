@@ -23,7 +23,7 @@ $predefinito=$row[0]['siteistat'];
           <div class="form-row">
             <div class="form-group col-md-3">
               <label for="stemma">Stemma</label>
-              <input type="file" class="form-control-file" id="stemma" accept="image/*">
+              <input type="file" class="form-control-file" id="stemma" name="stemma" accept="image/*">
               <img id="anteprimaStemma" src="" alt="Anteprima stemma" style="max-height: 80px; margin-top: 5px; display: none;">
             </div>
             <div class="form-group col-md-5">
@@ -84,12 +84,12 @@ $predefinito=$row[0]['siteistat'];
                 <option value="No">No</option>
               </select>
             </div>
-            <div class="form-group col-md-3 d-flex align-items-center">
+            <!--div class="form-group col-md-3 d-flex align-items-center">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="predefinito" name="predefinito">
                 <label class="form-check-label" for="predefinito">Ente predefinito</label>
               </div>
-            </div>
+            </div-->
           </div>
           <button type="submit" class="btn btn-success" id="submitBtn">Aggiungi ente</button>
           <button type="reset" class="btn btn-secondary" id="cancelEdit">Annulla</button>
@@ -126,40 +126,65 @@ $predefinito=$row[0]['siteistat'];
 </section>
 
 <script>
-  function aggiungiComune(e) {
-    e.preventDefault();
-	
-	var denominazione = document.getElementById ( "denominazione" ).value
-	var indirizzo = document.getElementById ( "indirizzo" ).value
-	var cap = document.getElementById ( "cap" ).value
-	var email = document.getElementById ( "email" ).value
-	var centralino = document.getElementById ( "centralino" ).value
-	var fax = document.getElementById ( "fax" ).value
-	var abitanti = document.getElementById ( "abitanti" ).value
-	var codiceIstat = document.getElementById ( "codice_istat" ).value
-	var capoluogo = document.getElementById ( "capoluogo" ).value
 
-    // Salvataggio nel DB (commentato)
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			document.getElementById("risultato").innerHTML = this.responseText;
-			document.getElementById ( "submitBtn" ).textContent = "Aggiungi ente"
-			document.getElementById ( "denominazione" ).value = ''
-			document.getElementById ( "indirizzo" ).value = ""
-			document.getElementById ( "cap" ).value = ''
-			document.getElementById ( "email" ).value = ''
-			document.getElementById ( "centralino" ).value = ''
-			document.getElementById ( "fax" ).value = ''
-			document.getElementById ( "abitanti" ).selectedIndex = 0
-			document.getElementById ( "codice_istat" ).value = ''
-			document.getElementById ( "capoluogo" ).selectedIndex = 0
-		}
-    }
-    xmlhttp.open("GET","../principale.php?funzione=salvaComune&descrizione="+denominazione+"&indirizzo="+indirizzo+"&cap="+cap+"&email="+email+"&centralino="+centralino+"&fax="+fax+"&fascia="+abitanti+"&id_comune="+codiceIstat+"&capoluogo="+capoluogo+"&op=salva",true);
-    xmlhttp.send();
-	
-  }
+function aggiungiComune(e) {
+    e.preventDefault();
+
+    const fileInput = document.getElementById('stemma');
+    const file = fileInput.files[0];
+	const denominazione = document.getElementById ( "denominazione" ).value
+	const indirizzo = document.getElementById ( "indirizzo" ).value
+	const cap = document.getElementById ( "cap" ).value
+	const email = document.getElementById ( "email" ).value
+	const centralino = document.getElementById ( "centralino" ).value
+	const fax = document.getElementById ( "fax" ).value
+	const abitanti = document.getElementById ( "abitanti" ).value
+	const codiceIstat = document.getElementById ( "codice_istat" ).value
+	const capoluogo = document.getElementById ( "capoluogo" ).value
+
+    // Crea un oggetto FormData e aggiungi il file
+    const formData = new FormData();
+	if (file) {
+		formData.append('stemma', file);
+	}
+    formData.append('funzione', 'salvaComune');
+    formData.append('descrizione', denominazione);
+    formData.append('indirizzo', indirizzo);
+    formData.append('cap', cap);
+    formData.append('email', email);
+    formData.append('centralino', centralino);
+    formData.append('fax', fax);
+    formData.append('fascia', abitanti);
+    formData.append('id_comune', codiceIstat);
+    formData.append('capoluogo', capoluogo);
+    formData.append('op', 'salva');
+
+    // Invia la richiesta AJAX usando Fetch
+    fetch('../principale.php', {
+        method: 'POST',
+        body: formData // FormData viene gestito automaticamente da Fetch per l'upload
+    })
+    .then(response => response.text()) // O .json() se il server risponde con JSON
+    .then(data => {
+        risultato.innerHTML = data; // Mostra la risposta del server
+		document.getElementById ( "submitBtn" ).textContent = "Aggiungi ente";
+		document.getElementById ( "stemma" ).value = '';
+		document.getElementById ( "denominazione" ).value = '';
+		document.getElementById ( "indirizzo" ).value = "";
+		document.getElementById ( "cap" ).value = '';
+		document.getElementById ( "email" ).value = '';
+		document.getElementById ( "centralino" ).value = '';
+		document.getElementById ( "fax" ).value = '';
+		document.getElementById ( "abitanti" ).selectedIndex = 0;
+		document.getElementById ( "codice_istat" ).value = '';
+		document.getElementById ( "capoluogo" ).selectedIndex = 0;
+    })
+    .catch(error => {
+        console.error('Errore durante l\'upload:', error);
+        risultato.innerHTML = 'Si è verificato un errore durante l\'upload.';
+    });
+};
+
 
   function deleteEnte(index) {
 	var denominazione = document.getElementById ( "denominazione"+index ).innerText

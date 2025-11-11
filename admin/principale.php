@@ -8,11 +8,9 @@
 #1 -> seggi_salva_gruppo
 #2 -> seggi_salva_consiglieri
 # ...
-
 define('APP_RUNNING', true);
 #die("Errore");
 global $dbi,$prefix;
-$param=strtolower($_SERVER['REQUEST_METHOD']) == 'get' ? $_GET : $_POST;
   // gestione sessione
 if (!isset($_SESSION))
 {
@@ -66,10 +64,12 @@ $id_comune=$_SESSION['id_comune'];
 $id_cons_gen=$_SESSION['id_cons_gen']; #die("TEST QUI");
 $id_cons=$_SESSION['id_cons'];
 #if (isset($param['id_cons'])) {$id_cons=intval($param['id_cons']);} else die("Errore: consultazione non definita");
-if (isset($param['funzione'])) {$funzione=$param['funzione'];} else die("Errore: funzione non definita");
 $permessi=ChiSei($id_cons_gen);
 if($permessi<16) return("Errore: non hai i permessi");
+$param=strtolower($_SERVER['REQUEST_METHOD']) == 'get' ? $_GET : $_POST;
+if (isset($param['funzione'])) {$funzione=$param['funzione'];} else die("Errore: funzione non definita");
 require_once 'includes/query.php';
+
 switch ($funzione) {
 	case 'salvaAffluenze':
 		include("modules/salva_aff.php");
@@ -97,6 +97,9 @@ switch ($funzione) {
 		break;
 	case 'salvaComune':
 		include("modules/salva_comune.php");
+		break;
+	case 'immagine':
+		include("modules/foto.php");
 		break;
 	case 101: 
 		include("ws/funzioni/salvaModifiche.php");
