@@ -37,22 +37,25 @@ if(isset($_FILES['stemma'])) {
 		$stemmanome=addslashes($nomestemma);
 		$cond2=", simbolo='$stemmanome', stemma='$stemmablob'";
 		$cond3="and simbolo='$stemmanome' and stemma='$stemmablob'";
+		$cond4=", simbolo='$stemmanome'";
 	} else {
 	#		if ( $delsimb=='false') $cond2=", simbolo='', stemma=''"; # aggiungere controllo per eliminazione stemma
 	#		else 
 				$cond2='';
 				$cond3='';
+				$cond4='';
 	}
 }
 
 
-global $prefix,$id_parz,$tempo,$username,$aid,$dbi,$genere;
+global $prefix,$aid,$dbi;
 $salvato=0;
 $query="select * from ".$prefix."_ele_comune where id_comune='$id_comune'";
 $res = $dbi->prepare("$query");
 $res->execute();
 if($res->rowCount()) {
 	if($op=='salva') {
+		$sql2="descrizione='$descrizione' and indirizzo='$indirizzo' and cap='$cap' and email='$email' and centralino='$centralino' and fax='$fax' and fascia='$fascia' and capoluogo='$capoluogo'";
 		$sql="select * from ".$prefix."_ele_comune where descrizione='$descrizione' and indirizzo='$indirizzo' and cap='$cap' and email='$email' and centralino='$centralino' and fax='$fax' and fascia='$fascia' and capoluogo='$capoluogo' $cond3";
 		$res = $dbi->prepare("$sql");
 		$res->execute();
@@ -66,12 +69,14 @@ if($res->rowCount()) {
 	}elseif($op=='cancella'){
 		#delete
 		$sql="delete from ".$prefix."_ele_comune where  id_comune='$id_comune'";
+		$sql2=$sql;
 		$compl = $dbi->prepare("$sql");
 		$compl->execute(); 
 		if($compl->rowCount()) $salvato=1;
 	}
 }else{
 	#insert
+		$sql2="values( '$id_comune','$descrizione','$indirizzo','$centralino','$fax','$email','$fascia','$capoluogo','$stemmanome')";
 		$sql="insert into ".$prefix."_ele_comune values( '$id_comune','$descrizione','$indirizzo','$centralino','$fax','$email','$fascia','$capoluogo','$stemmanome','$stemmablob','0','$cap','')";
 		$compl = $dbi->prepare("$sql");
 		$compl->execute(); 
@@ -81,7 +86,7 @@ if($res->rowCount()) {
 if($salvato){
 	$datal=date('Y-m-d');
 	$orariol=date(' H:i:s');
-	$riga=addslashes($sql);
+	$riga=addslashes($sql2);
 	$sqlog="insert into ".$prefix."_ele_log values('$id_cons','0','$aid','$datal','$orariol','','$riga','".$prefix."_ele_comune')";
 	$res = $dbi->prepare("$sqlog");
 	$res->execute();
