@@ -2,7 +2,8 @@
 require_once '../includes/check_access.php';
 
 $currentUserRole = $_SESSION['ruolo'] ?? 'operatore';
-
+$row=elenco_utenti();
+foreach($row as $val)
 // Dati fittizi sedi e sezioni
 $sedi = [
   'Scuola A' => range(1, 4),
@@ -113,7 +114,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['delete_user'])) {
   </div>
   <div class="card-body">
     <form id="userForm">
-      <input type="hidden" name="user_id" id="user_id" value="">
       <div class="form-row">
         <div class="form-group col-md-3">
           <label>Username*</label>
@@ -127,50 +127,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['delete_user'])) {
           <label>Email</label>
           <input type="email" class="form-control" id="email">
         </div>
-        <div class="form-group col-md-3">
-          <label>Ruolo*</label>
-          <select class="form-control" id="role" required>
-            <option value="">Seleziona...</option>
-            <option value="admin">Admin</option>
-            <option value="operatore">Operatore</option>
-            <option value="operatore presidente">Operatore Presidente</option>
-          </select>
-        </div>
+		<div class="form-group col-md-3">
+			<label>Nominativo</label>
+			<input type="text" class="form-control" id="nominativo">
+		</div>
       </div>
 
-      <div id="presidenteFields" style="display:none">
-        <div class="form-row">
-          <div class="form-group col-md-4">
-            <label>Nome</label>
-            <input type="text" class="form-control" id="nome">
-          </div>
-          <div class="form-group col-md-4">
-            <label>Cognome</label>
-            <input type="text" class="form-control" id="cognome">
-          </div>
-          <div class="form-group col-md-4">
-            <label>Telefono</label>
-            <input type="tel" class="form-control" id="telefono">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group col-md-4">
-            <label>Sede*</label>
-            <select id="sede" class="form-control" required></select>
-          </div>
-          <div class="form-group col-md-4">
-            <label>Sezione*</label>
-            <select id="sezione" class="form-control" required></select>
-          </div>
-          <div class="form-group col-md-4">
-            <label>Stato*</label>
-            <select id="stato" class="form-control" required>
-              <option value="attivo">Attivo</option>
-              <option value="disattivo">Disattivo</option>
-            </select>
-          </div>
-        </div>
-      </div>
 
       <button type="button" class="btn btn-success" id="saveBtn">Aggiungi Utente</button>
       <button type="button" class="btn btn-secondary" id="cancelEdit">Annulla</button>
@@ -189,158 +151,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['delete_user'])) {
         <tr>
           <th>Username</th>
           <th>Email</th>
-          <th>Ruolo</th>
-          <th>Sede</th>
-          <th>Sezione</th>
-          <th>Stato</th>
+          <th>Nominativo</th>
           <th>Azioni</th>
         </tr>
       </thead>
-      <tbody id="userRows"></tbody>
+      <tbody id="userRows"><?php include('elenco_utenti.php'); ?></tbody>
     </table>
   </div>
 </div>
 
 <script>
-const currentUserRole = '<?php echo $currentUserRole; ?>';
-let users = <?php echo json_encode(array_values(array_filter($users, fn($u) => $u['role'] !== 'superuser'))); ?>;
-const sediData = <?php echo json_encode($sedi); ?>;
-
-const userForm = document.getElementById('userForm');
-const userRows = document.getElementById('userRows');
-const presidenteFields = document.getElementById('presidenteFields');
-const roleSelect = document.getElementById('role');
-const sedeSelect = document.getElementById('sede');
-const sezioneSelect = document.getElementById('sezione');
-const passwordField = document.getElementById('password');
-const formTitle = document.getElementById('form-title');
-const saveBtn = document.getElementById('saveBtn');
-
-roleSelect.addEventListener('change', () => {
-  presidenteFields.style.display = roleSelect.value === 'operatore presidente' ? 'block' : 'none';
-});
-
-function populateSedi() {
-  sedeSelect.innerHTML = '<option value="">Seleziona sede</option><option value="tutte">Tutte le sedi</option>';
-  Object.keys(sediData).forEach(sede => {
-    sedeSelect.innerHTML += `<option value="${sede}">${sede}</option>`;
-  });
-}
-
-sedeSelect.addEventListener('change', () => {
-  const sede = sedeSelect.value;
-  if (sede === 'tutte') {
-    sezioneSelect.innerHTML = '<option value="tutte">Tutte le sezioni</option>';
-  } else {
-    sezioneSelect.innerHTML = sediData[sede].map(s => `<option value="${s}">${s}</option>`).join('');
-    sezioneSelect.innerHTML += '<option value="tutte">Tutte le sezioni</option>';
-  }
-});
-
-function renderUsers() {
-  userRows.innerHTML = '';
-  users.forEach(user => {
-    if (currentUserRole === 'operatore' && user.role !== 'operatore presidente') return;
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${user.username}</td>
-      <td>${user.email || ''}</td>
-      <td>${user.role}</td>
-      <td>${user.sede || ''}</td>
-      <td>${user.sezione || ''}</td>
-      <td>${user.stato || ''}</td>
-      <td>
-        <button class="btn btn-sm btn-warning me-1" onclick="editUser(${user.id})">Modifica</button>
-        ${currentUserRole !== 'operatore' ? `<button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})">Elimina</button>` : ''}
-      </td>
-    `;
-    userRows.appendChild(tr);
-  });
-}
 
 function editUser(id) {
   const u = users.find(u => u.id === id);
   if (!u) return;
-  document.getElementById('user_id').value = u.id;
-  document.getElementById('username').value = u.username;
-  document.getElementById('email').value = u.email || '';
-  passwordField.value = '';
-  passwordField.required = false;
-  roleSelect.value = u.role;
-  roleSelect.dispatchEvent(new Event('change'));
-  if (u.role === 'operatore presidente') {
-    document.getElementById('nome').value = u.nome || '';
-    document.getElementById('cognome').value = u.cognome || '';
-    document.getElementById('telefono').value = u.telefono || '';
-    sedeSelect.value = u.sede || '';
-    sedeSelect.dispatchEvent(new Event('change'));
-    sezioneSelect.value = u.sezione || '';
-    document.getElementById('stato').value = u.stato || 'attivo';
-  }
-  formTitle.innerText = 'Modifica Utente';
-  saveBtn.innerText = 'Modifica Utente';
-  document.getElementById('form-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('username').value = document.getElementById('username'+id).innerText;
+  document.getElementById('password').value = '';
+  document.getElementById('email').value = document.getElementById('email'+id).innerText;
+  document.getElementById('nominativo').value = document.getElementById('nominativo'+id).innerText;;
+  document.getElementById ( "saveBtn" ).textContent = "Salva modifiche";
 
 }
 
-function deleteUser(id) {
-  const u = users.find(u => u.id === id);
-  if (!u) return;
-  if (confirm(`Confermi l'eliminazione dell'utente "${u.username}"?`)) {
-    users = users.filter(u => u.id !== id);
-    renderUsers();
-    alert('Utente eliminato con successo.');
+
+function aggiungiUser(e) {
+    e.preventDefault();
+
+	const username = document.getElementById ( "username" ).value
+	const password = document.getElementById ( "password" ).value
+	const email = document.getElementById ( "email" ).value
+	const nominativo = document.getElementById ( "nominativo" ).value
+
+    // Crea un oggetto FormData e aggiungi il file
+    const formData = new FormData();
+    formData.append('funzione', 'salvaUtente');
+    formData.append('username', username);
+    formData.append('password', password);
+    formData.append('email', email);
+    formData.append('nominativo', nominativo);
+    formData.append('op', 'salva');
+
+    // Invia la richiesta AJAX usando Fetch
+    fetch('../principale.php', {
+        method: 'POST',
+        body: formData // FormData viene gestito automaticamente da Fetch per l'upload
+    })
+    .then(response => response.text()) // O .json() se il server risponde con JSON
+    .then(data => {
+        risultato.innerHTML = data; // Mostra la risposta del server
+		document.getElementById ( "saveBtn" ).textContent = "Aggiungi Utente";
+		document.getElementById ( "username" ).value = '';
+		document.getElementById ( "password" ).value = "";
+		document.getElementById ( "email" ).value = '';
+		document.getElementById ( "nominativo" ).value = '';
+    })
+    .catch(error => {
+        console.error('Errore durante l\'upload:', error);
+        risultato.innerHTML = 'Si è verificato un errore durante l\'upload.';
+    });
+};
+
+  function deleteUtente(index) {
+	var username = document.getElementById ( "username"+index ).innerText
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("risultato").innerHTML = this.responseText;
+		}
+    }
+    xmlhttp.open("GET","../principale.php?funzione=salvaUtente&username="+username+"&op=cancella",true);
+    xmlhttp.send();
+
+//	document.getElementById("riga"+index).style.display = 'none'
   }
-}
 
-document.getElementById('cancelEdit').addEventListener('click', () => {
-  userForm.reset();
-  presidenteFields.style.display = 'none';
-  passwordField.required = true;
-  document.getElementById('user_id').value = '';
-  formTitle.innerText = 'Aggiungi Utente';
-  saveBtn.innerText = 'Salva';
-});
-
-saveBtn.addEventListener('click', () => {
-  const id = parseInt(document.getElementById('user_id').value);
-  const username = document.getElementById('username').value.trim();
-  const password = passwordField.value.trim();
-  const email = document.getElementById('email').value.trim();
-  const role = roleSelect.value;
-
-  if (!username || (!id && !password) || !role) return alert('Compila i campi obbligatori.');
-
-  let user = { id: id || Date.now(), username, email, role };
-  if (!id && password) user.password = password;
-
-  if (role === 'operatore presidente') {
-    user.nome = document.getElementById('nome').value.trim();
-    user.cognome = document.getElementById('cognome').value.trim();
-    user.telefono = document.getElementById('telefono').value.trim();
-    user.sede = sedeSelect.value;
-    user.sezione = sezioneSelect.value;
-    user.stato = document.getElementById('stato').value;
-  }
-
-  const index = users.findIndex(u => u.id === id);
-  if (index > -1) {
-    users[index] = { ...users[index], ...user };
-    alert('Utente aggiornato con successo.');
-  } else {
-    users.push(user);
-    alert('Utente aggiunto con successo.');
-  }
-
-  userForm.reset();
-  presidenteFields.style.display = 'none';
-  passwordField.required = true;
-  document.getElementById('user_id').value = '';
-  formTitle.innerText = 'Aggiungi Utente';
-  saveBtn.innerText = 'Aggiungi Utente';
-  renderUsers();
-});
-
-populateSedi();
-renderUsers();
 </script>

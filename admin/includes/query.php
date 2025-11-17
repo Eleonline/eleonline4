@@ -122,10 +122,20 @@ function elenco_rilevazioni()
 	return($row);	
 }
 
+function elenco_sedi()
+{
+	global $id_cons,$prefix,$dbi;
+	$sql="select * from ".$prefix."_ele_sede where id_cons='$id_cons' order by indirizzo";
+	$sth = $dbi->prepare("$sql");
+	$sth->execute();
+	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+	return($row);	
+}
+
 function elenco_utenti()
 {
 	global $id_cons,$id_comune,$prefix,$dbi;
-	$sql="select * from ".$prefix."_author where id_comune='$id_comune' order by aid";
+	$sql="select * from ".$prefix."_authors where id_comune='$id_comune' order by aid";
 	$sth = $dbi->prepare("$sql");
 	$sth->execute();
 	$row = $sth->fetchAll(PDO::FETCH_ASSOC);

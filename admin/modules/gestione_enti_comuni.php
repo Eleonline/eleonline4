@@ -220,11 +220,4 @@ function aggiungiComune(e) {
 //	document.getElementById("riga"+index).style.display = 'none' 
   }
   
-  function nascondiElemento() {
-  const elemento = document.getElementById('risultato');
-  if (elemento) {
-    // Imposta la proprietà CSS display su 'none'
-    elemento.style.display = 'none';
-  }
-  }
 </script>
