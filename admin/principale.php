@@ -83,6 +83,9 @@ if($permessi>32)
 		case 'salvaConsultazione':
 			include("modules/salva_consultazione.php");
 			break;
+		case 'salvaUtente':
+			include("modules/salva_utente.php");
+			break;
 	}
 	
 switch ($funzione) {

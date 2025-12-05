@@ -172,7 +172,7 @@ function aggiungiConsultazione(e) {
 	const dataFine = document.getElementById ( "data_fine" ).value
 	const linkDait = document.getElementById ( "link" ).value
 	const tipo = document.getElementById ( "tipo" ).value
-	const preferita = document.getElementById ( "preferita" ).value
+	const preferita = document.getElementById ( "preferita" ).checked
 	const id_cons_gen = document.getElementById ( "id_cons_gen" ).value
 	const chiusa = document.getElementById ( "chiusa" ).value
 	const id_conf = document.getElementById ( "id_conf" ).value
@@ -216,14 +216,11 @@ function aggiungiConsultazione(e) {
 		document.getElementById ( "submitBtn" ).textContent = "Aggiungi Consultazione"
 
     })
-    .catch(error => {
-        console.error('Errore durante l\'upload:', error);
-        risultato.innerHTML = 'Si è verificato un errore durante l\'upload.';
-    });
 };
 
 
   function deleteConsultazione(index) {
+	if (confirm("Confermi l'eliminazione?") == true) {  
 	var id_cons_gen = document.getElementById ( "id_cons_gen"+index ).innerText
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
@@ -233,9 +230,10 @@ function aggiungiConsultazione(e) {
     }
     xmlhttp.open("GET","../principale.php?funzione=salvaConsultazione&id_cons_gen="+id_cons_gen+"&op=cancella",true);
     xmlhttp.send();
-
+	}
 //	document.getElementById("riga"+index).style.display = 'none'
   }
+  
    function editConsultazione(index) { 
 	document.getElementById ( "id_cons_gen" ).value = document.getElementById ( "id_cons_gen"+index ).innerText
 	document.getElementById ( "denominazione" ).value = document.getElementById ( "descrizione"+index ).innerText

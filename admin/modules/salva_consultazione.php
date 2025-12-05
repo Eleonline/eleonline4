@@ -27,7 +27,7 @@ if (isset($param['vismf'])) $vismf=addslashes($param['vismf']); else $vismf='';
 if (isset($param['solo_gruppo'])) $solo_gruppo=addslashes($param['solo_gruppo']); else $solo_gruppo='';
 if (isset($param['disgiunto'])) $disgiunto=addslashes($param['disgiunto']); else $disgiunto='';
 if (isset($param['proiezione'])) $proiezione=addslashes($param['proiezione']); else $proiezione='';
-if($preferita=='on') {
+if($preferita == 'true') {
 	$preferita=1; 
 	$sql="update ".$prefix."_ele_cons_comune set preferita='0' where preferita='1'";
 	$compl = $dbi->prepare("$sql");
@@ -64,13 +64,64 @@ if($res->rowCount()) {
 		}
 	}elseif($op=='cancella'){	
 		#delete
+		$sql="select * from ".$prefix."_ele_cons_comune where id_cons_gen='$id_cons_gen'";
+		$compl = $dbi->prepare("$sql");
+		$compl->execute(); 
+		$row=$compl->fetchAll(PDO::FETCH_ASSOC);
+		$id_cons=$row[0]['id_cons'];
+		$sql="delete from ".$prefix."_ele_voti_candidato where id_cons='$id_cons'";
+		$compl = $dbi->prepare("$sql");
+		$compl->execute();
+		$sql="delete from ".$prefix."_ele_voti_lista where id_cons='$id_cons'";
+		$compl = $dbi->prepare("$sql");
+		$compl->execute();
+		$sql="delete from ".$prefix."_ele_voti_gruppo where id_cons='$id_cons'";
+		$compl = $dbi->prepare("$sql");
+		$compl->execute();
+		$sql="delete from ".$prefix."_ele_voti_parziale where id_cons='$id_cons'";
+		$compl = $dbi->prepare("$sql");
+		$compl->execute();
+		$sql="delete from ".$prefix."_ele_candidato where id_cons='$id_cons'";
+		$compl = $dbi->prepare("$sql");
+		$compl->execute();
+		$sql="delete from ".$prefix."_ele_lista where id_cons='$id_cons'";
+		$compl = $dbi->prepare("$sql");
+		$compl->execute();
+		$sql="delete from ".$prefix."_ele_gruppo where id_cons='$id_cons'";
+		$compl = $dbi->prepare("$sql");
+		$compl->execute();
+		$sql="delete from ".$prefix."_ele_come where id_cons='$id_cons'";
+		$compl = $dbi->prepare("$sql");
+		$compl->execute();
+		$sql="delete from ".$prefix."_ele_link where id_cons='$id_cons'";
+		$compl = $dbi->prepare("$sql");
+		$compl->execute();
+		$sql="delete from ".$prefix."_ele_numero where id_cons='$id_cons'";
+		$compl = $dbi->prepare("$sql");
+		$compl->execute();
+		$sql="delete from ".$prefix."_ele_controllo where id_cons='$id_cons'";
+		$compl = $dbi->prepare("$sql");
+		$compl->execute();
+		$sql="delete from ".$prefix."_ele_operatore where id_cons='$id_cons'";
+		$compl = $dbi->prepare("$sql");
+		$compl->execute();
+		$sql="delete from ".$prefix."_ele_sezione where id_cons='$id_cons'";
+		$compl = $dbi->prepare("$sql");
+		$compl->execute();
+		$sql="delete from ".$prefix."_ele_sede where id_cons='$id_cons'";
+		$compl = $dbi->prepare("$sql");
+		$compl->execute();
+		$sql="delete from ".$prefix."_ele_circoscrizione where id_cons='$id_cons'";
+		$compl = $dbi->prepare("$sql");
+		$compl->execute();
+		
 		$sql="delete from ".$prefix."_ele_consultazione where  id_cons_gen='$id_cons_gen'";
 		$compl = $dbi->prepare("$sql");
 		$compl->execute(); 
 		$sql="delete from ".$prefix."_ele_cons_comune where  id_cons_gen='$id_cons_gen'";
 		$compl = $dbi->prepare("$sql");
 		$compl->execute(); 
-		if($compl->rowCount()) $salvato=1;
+		if(!$compl->rowCount()) $salvato=1;
 	}
 }else{
 	#insert

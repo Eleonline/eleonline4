@@ -69,6 +69,6 @@ $op = filter_var($op, FILTER_VALIDATE_INT, [
 if (!array_key_exists($op, $pagesMap)) {
     $op = $defaultPage;
 }
-echo "<img src=\"../logo.jpg\" alt=\"\" />";
+#echo "<img src=\"../logo.jpg\" alt=\"\" />";
 // Includo la pagina corrispondente
 include($pagesMap[$op]);
