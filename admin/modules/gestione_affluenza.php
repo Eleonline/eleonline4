@@ -135,39 +135,3 @@ $dataFine=$row[0]['data_fine'];
 	document.getElementById("riga"+index).style.display = 'none'
   }
 </script>
-
-<?php
-// GESTIONE POST JSON (commentata)
-/*
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  header('Content-Type: application/json');
-  $input = json_decode(file_get_contents('php://input'), true);
-  if (!$input || !isset($input['action'])) {
-    echo json_encode(['success' => false, 'error' => 'Dati non validi']);
-    exit;
-  }
-
-  $data = $input['data'] ?? '';
-  $ora = $input['ora'] ?? '';
-  $minuto = $input['minuto'] ?? '';
-
-  if ($input['action'] === 'insert') {
-    $stmt = $conn->prepare("INSERT INTO affluenze (data, ora, minuto) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $data, $ora, $minuto);
-    echo $stmt->execute()
-      ? json_encode(['success' => true])
-      : json_encode(['success' => false, 'error' => $stmt->error]);
-  }
-
-  if ($input['action'] === 'delete') {
-    $stmt = $conn->prepare("DELETE FROM affluenze WHERE data=? AND ora=? AND minuto=?");
-    $stmt->bind_param("sss", $data, $ora, $minuto);
-    echo $stmt->execute()
-      ? json_encode(['success' => true])
-      : json_encode(['success' => false, 'error' => $stmt->error]);
-  }
-
-  exit;
-}
-*/
-?>

@@ -56,7 +56,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
             <li class="nav-item"><a href="modules.php?op=3" class="nav-link <?php echo ($op == 3) ? 'active' : ''; ?>"><i class="nav-icon fas fa-sliders-h text-danger"></i><p>Configurazione Sito</p></a></li>
             <li class="nav-item"><a href="modules.php?op=4" class="nav-link <?php echo ($op == 4) ? 'active' : ''; ?>"><i class="nav-icon fas fa-palette text-warning"></i><p>Tema colore</p></a></li>
             <!-- <li class="nav-item"><a href="modules.php?op=200" class="nav-link <?php echo ($op == 5) ? 'active' : ''; ?>"><i class="nav-icon fas fa-chart-pie text-primary"></i><p>Config. D'Hondt</p></a></li>-->
-            <li class="nav-item"><a href="modules.php?op=6" class="nav-link <?php echo ($op == 6) ? 'active' : ''; ?>"><i class="nav-icon fas fa-city text-secondary"></i><p>Anagrafica Enti/Comuni</p></a></li>
+            <!--li class="nav-item"><a href="modules.php?op=6" class="nav-link <?php echo ($op == 6) ? 'active' : ''; ?>"><i class="nav-icon fas fa-city text-secondary"></i><p>Anagrafica Enti/Comuni</p></a></li-->
 			<li class="nav-item"><a href="modules.php?op=7" class="nav-link <?php echo ($op == 7) ? 'active' : ''; ?>"><i class="nav-icon fas fa-sync-alt text-warning"></i><p>Aggiornamento Rev</p></a></li>         
 		 </ul>
         </li>
@@ -74,7 +74,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item"><a href="modules.php?op=8" class="nav-link <?php echo ($op == 8) ? 'active' : ''; ?>"><i class="nav-icon fas fa-user-shield text-secondary"></i><p>Gestione Utenti</p></a></li>
-            <li class="nav-item"><a href="modules.php?op=36" class="nav-link <?php echo ($op == 36) ? 'active' : ''; ?>"><i class="nav-icon fas fa-key text-danger"></i><p>Presidenti</p></a></li>
+            <li class="nav-item"><a href="modules.php?op=36" class="nav-link <?php echo ($op == 36) ? 'active' : ''; ?>"><i class="nav-icon fas fa-key text-danger"></i><p>Permessi</p></a></li>
           </ul>
         </li>
 <?php endif; ?>
@@ -133,12 +133,12 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
         <p>Configura Consultazione</p>
       </a>
     </li>
-	 <li class="nav-item">
+	 <!--li class="nav-item">
   <a href="modules.php?op=22" class="nav-link  <?php echo ($op == 22) ? 'active' : ''; ?>">
     <i class="nav-icon fas fa-check-circle text-success"></i>
     <p>Autorizza Comune</p>
   </a>
-</li>
+</li-->
 
     <li class="nav-item">
       <a href="modules.php?op=10" class="nav-link  <?php echo ($op == 10) ? 'active' : ''; ?>">

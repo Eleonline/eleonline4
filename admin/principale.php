@@ -69,7 +69,22 @@ if($permessi<16) return("Errore: non hai i permessi");
 $param=strtolower($_SERVER['REQUEST_METHOD']) == 'get' ? $_GET : $_POST;
 if (isset($param['funzione'])) {$funzione=$param['funzione'];} else die("Errore: funzione non definita");
 require_once 'includes/query.php';
-
+if($permessi>32)
+	switch ($funzione) {
+		case 'salvaColoreTema':
+			include("modules/salva_colore_tema.php");
+			break;
+		case 'salvaAffluenza':
+			include("modules/salva_orario_affluenza.php");
+			break;
+		case 'salvaConfigSito':
+			include("modules/salva_config_sito.php");
+			break;
+		case 'salvaConsultazione':
+			include("modules/salva_consultazione.php");
+			break;
+	}
+	
 switch ($funzione) {
 	case 'salvaAffluenze':
 		include("modules/salva_aff.php");
@@ -85,18 +100,6 @@ switch ($funzione) {
 	break;
 	case 'leggiBarraSezioni':
 		include("modules/barra_sezioni.php");
-		break;
-	case 'salvaColoreTema':
-		include("modules/salva_colore_tema.php");
-		break;
-	case 'salvaAffluenza':
-		include("modules/salva_orario_affluenza.php");
-		break;
-	case 'salvaConfigSito':
-		include("modules/salva_config_sito.php");
-		break;
-	case 'salvaComune':
-		include("modules/salva_comune.php");
 		break;
 	case 'immagine':
 		include("modules/foto.php");

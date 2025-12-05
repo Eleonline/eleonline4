@@ -92,16 +92,16 @@ if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
           </div>
 
           <!-- MULTICOMUNE -->
-          <div class="mb-3">
+          <!--div class="mb-3">
             <label for="multicomune" class="form-label">Gestione multicomune?</label>
             <select class="form-select" name="multicomune" id="multicomune" onchange="toggleComuneDefault()">
               <option value="1" <?= $MULTICOMUNE === '1' ? 'selected' : '' ?>>Si</option>
               <option value="0" <?= $MULTICOMUNE === '0' ? 'selected' : '' ?>>No</option>
             </select>
-          </div>
+          </div-->
 
           <!-- COMUNE DI DEFAULT -->
-          <div class="mb-3" id="defaultComuneRow" style="<?= $MULTICOMUNE === '1' ? '' : 'display:none;' ?>">
+          <!--div class="mb-3" id="defaultComuneRow" style="<?= $MULTICOMUNE === '1' ? '' : 'display:none;' ?>">
             <label for="defaultComune" class="form-label">Comune visualizzato per default</label>
             <select class="form-select" name="default_comune" id="defaultComune">
               <?php foreach ($comuni_disponibili as $comune): ?>
@@ -110,10 +110,10 @@ if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
                 </option>
               <?php endforeach; ?>
             </select>
-          </div>
+          </div-->
 		
 		<!-- VERIFICA DATI OPERATORE PRESIDENTE -->
-<div class="mb-3">
+<!--div class="mb-3">
   <label for="verifica_operatore" class="form-label">
     Verifica dati operatore presidente
     <i class="fas fa-circle-info text-primary ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -123,7 +123,7 @@ if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
     <option value="si" <?= (isset($VERIFICA_OPERATORE) && $VERIFICA_OPERATORE === 'si') ? 'selected' : '' ?>>Si</option>
     <option value="no" <?= (isset($VERIFICA_OPERATORE) && $VERIFICA_OPERATORE === 'no') ? 'selected' : '' ?>>No</option>
   </select>
-</div>
+</div-->
 
 		
           <div class="d-flex justify-content-end">

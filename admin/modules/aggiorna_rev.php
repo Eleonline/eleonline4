@@ -22,9 +22,16 @@ function send_output($msg, $status = 'progress') {
 
 // Leggi parametri POST con fallback a 0
 $data_rev = isset($_POST['data_rev']) ? $_POST['data_rev'] : '';
-$rev_locale = isset($_POST['rev_locale']) ? (int)$_POST['rev_locale'] : 0;
-$rev_online = isset($_POST['rev_online']) ? (int)$_POST['rev_online'] : 0;
-$rev_successivo = $rev_locale + 1;
+$rev_locale = isset($_POST['rev_locale']) ? (int)$_POST['rev_locale'] : 0; # caricare da db
+if ($stream = fopen('http://mail.eleonline.it/version/risposta.php', 'r')) {
+	$rev= stream_get_contents($stream, 7);
+	fclose($stream);							
+	$rev_online=substr($rev,0,7);
+	$_SESSION['remoterev']=$rev_online;         
+}else{
+	$errmex=2;
+	Header("Location: admin.php?op=aggiorna&id_cons_gen=$id_cons_gen&errmex=$errmex"); exit;
+}
 
 $backup_sql_confermato = isset($_POST['backup_sql']) ? (int)$_POST['backup_sql'] : -1;
 
@@ -66,7 +73,7 @@ if (!is_dir($tmpDir) && !mkdir($tmpDir, 0777, true)) {
     exit;
 }
 
-$url = "https://trac.eleonline.it/eleonline4/changeset?format=zip&new={$rev_online}&new_path=%2Ftrunk&old={$rev_successivo}&old_path=%2Ftrunk";
+$url = "https://trac.eleonline.it/eleonline4/changeset?format=zip&new=$rev_online&new_path=%2F&old=$rev_locale&old_path=%2F";
 
 send_output("Scaricamento da: $url");
 

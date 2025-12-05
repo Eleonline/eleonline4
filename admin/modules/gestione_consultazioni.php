@@ -1,36 +1,6 @@
 <?php
 require_once '../includes/check_access.php';
 
-// --- DA ATTIVARE QUANDO HAI IL DB PRONTO ---
-
-/*
-$conn = new mysqli('host', 'username', 'password', 'database');
-if ($conn->connect_error) {
-  die("Connessione fallita: " . $conn->connect_error);
-}
-
-// Carica consultazioni da DB, ordinate da ultima a prima (data_inizio DESC)
-$sql = "SELECT id, tipo, denominazione, data_inizio, data_fine, link, predefinita FROM consultazioni ORDER BY data_inizio DESC";
-$result = $conn->query($sql);
-
-$consultazioni = [];
-if ($result && $result->num_rows > 0) {
-  while ($row = $result->fetch_assoc()) {
-    $row['predefinita'] = (bool)$row['predefinita'];
-    $consultazioni[] = $row;
-  }
-} else {
-  $consultazioni = [];
-}
-
-$conn->close();
-*/
-
-// --- Dati di esempio in mancanza di DB (puoi rimuoverli quando usi DB) ---
-$consultazioni = [
-  ['id'=>1, 'tipo'=>'CAMERA', 'denominazione'=>'Elezioni Politiche 2022', 'data_inizio'=>'2022-09-25', 'data_fine'=>'2022-09-26', 'link'=>'https://dait.interno.gov.it/elezioni', 'predefinita'=>true],
-  ['id'=>2, 'tipo'=>'COMUNALI', 'denominazione'=>'Comunali 2023 - Roma', 'data_inizio'=>'2023-06-15', 'data_fine'=>'2023-06-16', 'link'=>'https://dait.interno.gov.it/elezioni/trasparenza', 'predefinita'=>false],
-];
 ?>
 
 <section class="content">
@@ -43,33 +13,33 @@ $consultazioni = [
         <h3 class="card-title" id="form-title">Aggiungi Consultazione</h3>
       </div>
       <div class="card-body">
-        <form id="consultazioneForm">
-          <input type="hidden" name="consultazione_id" id="consultazione_id">
+        <form id="consultazioneForm"  onsubmit="aggiungiConsultazione(event)">
+          <input type="hidden" name="id_cons_gen" id="id_cons_gen">
 
           <div class="form-row">
             <div class="form-group col-md-3">
               <label for="tipo">Tipo*</label>
-              <select class="form-control" id="tipo" name="tipo" required>
+              <select class="form-control" id="tipo" name="tipo" onchange="selezionaInput()" required>
                 <option value="">Seleziona...</option>
-                <option value="PROVINCIALI">PROVINCIALI</option>
-                <option value="REFERENDUM">REFERENDUM</option>
-                <option value="COMUNALI">COMUNALI</option>
-                <option value="CIRCOSCRIZIONALI">CIRCOSCRIZIONALI</option>
-                <option value="BALLOTTAGGIO COMUNALI">BALLOTTAGGIO COMUNALI</option>
-                <option value="CAMERA">CAMERA</option>
-                <option value="SENATO">SENATO</option>
-                <option value="EUROPEE">EUROPEE</option>
-                <option value="REGIONALI">REGIONALI</option>
-                <option value="SENATO CON GRUPPI">SENATO CON GRUPPI</option>
-                <option value="CAMERA CON GRUPPI">CAMERA CON GRUPPI</option>
-                <option value="PROVINCIALI CON COLLEGI">PROVINCIALI CON COLLEGI</option>
-                <option value="BALLOTTAGGIO PROVINCIALI">BALLOTTAGGIO PROVINCIALI</option>
-                <option value="EUROPEE CON COLLEGI">EUROPEE CON COLLEGI</option>
-                <option value="CAMERA CON GRUPPI E COLLEGI">CAMERA CON GRUPPI E COLLEGI</option>
-                <option value="SENATO CON GRUPPI E COLLEGI">SENATO CON GRUPPI E COLLEGI</option>
-                <option value="REGIONALI CON COLLEGI">REGIONALI CON COLLEGI</option>
-                <option value="CAMERA - Rosatellum 2.0">CAMERA - Rosatellum 2.0</option>
-                <option value="SENATO - Rosatellum 2.0">SENATO - Rosatellum 2.0</option>
+                <option value="1">PROVINCIALI</option>
+                <option value="2">REFERENDUM</option>
+                <option value="3">COMUNALI</option>
+                <option value="4">CIRCOSCRIZIONALI</option>
+                <option value="5">BALLOTTAGGIO COMUNALI</option>
+                <option value="6">CAMERA</option>
+                <option value="7">SENATO</option>
+                <option value="8">EUROPEE</option>
+                <option value="9">REGIONALI</option>
+                <option value="10">SENATO CON GRUPPI</option>
+                <option value="11">CAMERA CON GRUPPI</option>
+                <option value="12">PROVINCIALI CON COLLEGI</option>
+                <option value="13">BALLOTTAGGIO PROVINCIALI</option>
+                <option value="14">EUROPEE CON COLLEGI</option>
+                <option value="15">CAMERA CON GRUPPI E COLLEGI</option>
+                <option value="16">SENATO CON GRUPPI E COLLEGI</option>
+                <option value="17">REGIONALI CON COLLEGI</option>
+                <option value="18">CAMERA - Rosatellum 2.0</option>
+                <option value="19">SENATO - Rosatellum 2.0</option>
               </select>
             </div>
             <div class="form-group col-md-5">
@@ -86,17 +56,85 @@ $consultazioni = [
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="form-group" id="divlink">
             <label for="link">Link DAIT Trasparenza</label>
             <input type="url" class="form-control" id="link" name="link">
+		  </div>
+          <div class="form-row">		  
+            <div class="form-group col-md-1" id="divpreferenze">
+				<label for="preferenze">Preferenze</label>
+				<input type="input" class="form-control" id="preferenze" name="preferenze">
+			</div>
+			<?php $row=elenco_leggi(); ?>
+			<div class="form-group col-md-2" id="divlegge">
+				<label for="id_conf">Legge elettorale</label>
+				<select class="form-control" id="id_conf" name="id_conf">
+				<?php $i=0; foreach($row as $val) { ?>
+					<option value="<?= $val['id_conf'] ?>" <?php if(!$i++) echo "selected"; ?>><?= $val['descrizione'] ?></option>
+				<?php } ?>
+				</select>				
+			</div>
+			<div class="form-group col-md-2" id="divstato">
+				<label for="chiusa">Stato</label>
+				<select class="form-control" id="chiusa" name="chiusa">
+                <option value="0">Attiva</option>
+                <option value="1">Chiusa</option>
+                <option value="2">Nulla</option>
+              </select>				
+			</div>
+			<div class="form-group col-md-2" id="divfascia">
+				<label for="id_fascia">Abitanti</label>
+				<select class="form-control" id="id_fascia" name="id_fascia">
+                <option value="1">0 - 3.000</option>
+                <option value="2">3.001 - 10.000</option>
+                <option value="3">10.001 - 15.000</option>
+                <option value="4">15.001 - 30.000</option>
+                <option value="5">30.001 - 100.000</option>
+                <option value="6">100.001 - 250.000</option>
+                <option value="7">250.001 - 500.000</option>
+                <option value="8">500.001 - 1.000.000</option>
+                <option value="9">Oltre 1.000.000</option>
+              </select>				
+			</div>
+		  </div>
+          <div class="form-row">		  		  
+			<div class="form-group col-md-2" id="divdisgiunto">
+				<label for="disgiunto">Voto disgiunto</label>
+				<select class="form-control" id="disgiunto" name="disgiunto">
+				<option value="0">No</option>
+                <option value="1">Si</option>
+              </select>				
+			</div>
+			<div class="form-group col-md-2" id="divsologruppo">
+				<label for="solo_gruppo">Ai soli gruppi</label>
+				<select class="form-control" id="solo_gruppo" name="solo_gruppo">
+				<option value="0">No</option>
+                <option value="1">Si</option>
+              </select>				
+			</div>
+			<div class="form-group col-md-2" id="divvismf">
+				<label for="vismf">Affluenze per genere</label>
+				<select class="form-control" id="vismf" name="vismf">
+				<option value="0">No</option>
+                <option value="1">Si</option>
+              </select>				
+			</div>
+			<div class="form-group col-md-2" id="divproiezione">
+				<label for="disgiunto">Proiezione consiglio</label>
+				<select class="form-control" id="proiezione" name="proiezione">
+				<option value="0">No</option>
+                <option value="1">Si</option>
+              </select>				
+			</div>
           </div>
 
           <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="predefinita" name="predefinita">
-            <label class="form-check-label" for="predefinita">Consultazione predefinita</label>
+            <input type="checkbox" class="form-check-input" id="preferita" name="preferita">
+            <label class="form-check-label" for="preferita">Consultazione predefinita</label>
+			
           </div>
 
-          <button type="submit" class="btn btn-success">Aggiungi Consultazione</button>
+          <button type="submit" class="btn btn-success" id="submitBtn">Aggiungi Consultazione</button>
           <button type="reset" class="btn btn-secondary" id="cancelEdit">Annulla</button>
         </form>
       </div>
@@ -112,15 +150,13 @@ $consultazioni = [
           <thead>
             <tr>
               <th style="width:30px;"></th> <!-- colonna stella senza titolo -->
-              <th>Tipo</th>
               <th>Denominazione</th>
               <th>Data Inizio</th>
               <th>Data Fine</th>
-              <th>Link DAIT</th>
               <th>Azioni</th>
             </tr>
           </thead>
-          <tbody id="consultazioniRows"></tbody>
+          <tbody id="risultato"><?php include('elenco_consultazioni.php'); ?>	</tbody>
         </table>
       </div>
     </div>
@@ -128,216 +164,150 @@ $consultazioni = [
 </section>
 
 <script>
-let consultazioni = <?php echo json_encode($consultazioni); ?>;
+function aggiungiConsultazione(e) {
+    e.preventDefault();
 
-const form = document.getElementById('consultazioneForm');
-const rows = document.getElementById('consultazioniRows');
-const formTitle = document.getElementById('form-title');
-const submitBtn = form.querySelector('button[type="submit"]');
+	const denominazione = document.getElementById ( "denominazione" ).value
+	const dataInizio = document.getElementById ( "data_inizio" ).value
+	const dataFine = document.getElementById ( "data_fine" ).value
+	const linkDait = document.getElementById ( "link" ).value
+	const tipo = document.getElementById ( "tipo" ).value
+	const preferita = document.getElementById ( "preferita" ).value
+	const id_cons_gen = document.getElementById ( "id_cons_gen" ).value
+	const chiusa = document.getElementById ( "chiusa" ).value
+	const id_conf = document.getElementById ( "id_conf" ).value
+	const preferenze = document.getElementById ( "preferenze" ).value
+	const id_fascia = document.getElementById ( "id_fascia" ).value
+	const vismf = document.getElementById ( "vismf" ).value
+	const solo_gruppo = document.getElementById ( "solo_gruppo" ).value
+	const disgiunto = document.getElementById ( "disgiunto" ).value
+	const proiezione = document.getElementById ( "proiezione" ).value
 
-// Ordina consultazioni da più recente a meno recente (data_inizio DESC)
-function ordinaConsultazioni() {
-  consultazioni.sort((a,b) => {
-    // Confronto stringhe ISO date 'YYYY-MM-DD' direttamente valido
-    if (a.data_inizio > b.data_inizio) return -1;
-    if (a.data_inizio < b.data_inizio) return 1;
-    return 0;
-  });
-}
+    // Crea un oggetto FormData e aggiungi il file
+    const formData = new FormData();
+    formData.append('funzione', 'salvaConsultazione');
+    formData.append('id_cons_gen', id_cons_gen);
+    formData.append('descrizione', denominazione);
+    formData.append('data_inizio', dataInizio);
+    formData.append('data_fine', dataFine);
+    formData.append('link_dait', linkDait);
+    formData.append('tipo', tipo);
+    formData.append('preferita', preferita);
+    formData.append('chiusa', chiusa);
+    formData.append('id_conf', id_conf);
+    formData.append('preferenze', preferenze);
+    formData.append('id_fascia', id_fascia);
+    formData.append('vismf', vismf);
+    formData.append('solo_gruppo', solo_gruppo);
+    formData.append('disgiunto', disgiunto);
+    formData.append('proiezione', proiezione);
+    formData.append('op', 'salva');
 
-// Render lista consultazioni in tabella
-function renderConsultazioni() {
-  ordinaConsultazioni();
-  rows.innerHTML = '';
-  consultazioni.forEach(c => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td style="text-align:center; cursor:pointer;" onclick="impostaPredefinita(${c.id})">
-        ${c.predefinita ? '⭐' : ''}
-      </td>
-      <td>${c.tipo}</td>
-      <td>${c.denominazione}</td>
-      <td>${c.data_inizio}</td>
-      <td>${c.data_fine}</td>
-      <td>${c.link ? `<a href="${c.link}" target="_blank">Vai</a>` : ''}</td>
-      <td>
-        <button class="btn btn-sm btn-warning" onclick="editConsultazione(${c.id})">Modifica</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteConsultazione(${c.id})">Elimina</button>
-      </td>
-    `;
-    rows.appendChild(tr);
-  });
-}
+    // Invia la richiesta AJAX usando Fetch
+    fetch('../principale.php', {
+        method: 'POST',
+        body: formData // FormData viene gestito automaticamente da Fetch per l'upload
+    })
+    .then(response => response.text()) // O .json() se il server risponde con JSON
+    .then(data => {
+		const myForm = document.getElementById('consultazioneForm');
+        risultato.innerHTML = data; // Mostra la risposta del server
+		myForm.reset();
+		document.getElementById ( "submitBtn" ).textContent = "Aggiungi Consultazione"
 
-// Reset form in modalità aggiunta
-function resetForm() {
-  form.reset();
-  document.getElementById('consultazione_id').value = '';
-  formTitle.innerText = 'Aggiungi Consultazione';
-  submitBtn.innerText = 'Aggiungi Consultazione';
-}
-
-// Funzione modifica consultazione
-function editConsultazione(id) {
-  const c = consultazioni.find(x => x.id === id);
-  if (!c) return;
-  document.getElementById('consultazione_id').value = c.id;
-  document.getElementById('tipo').value = c.tipo;
-  document.getElementById('denominazione').value = c.denominazione;
-  document.getElementById('data_inizio').value = c.data_inizio;
-  document.getElementById('data_fine').value = c.data_fine;
-  document.getElementById('link').value = c.link;
-  document.getElementById('predefinita').checked = c.predefinita;
-
-  formTitle.innerText = 'Modifica Consultazione';
-  submitBtn.innerText = 'Modifica Consultazione';
-  // SCROLL verso il titolo del form (con un piccolo offset se vuoi)
-  document.getElementById('form-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// Imposta consultazione predefinita (una sola alla volta)
-function impostaPredefinita(id) {
-  consultazioni.forEach(c => c.predefinita = (c.id === id));
-  renderConsultazioni();
-  const currentId = parseInt(document.getElementById('consultazione_id').value);
-  if (currentId === id) {
-    document.getElementById('predefinita').checked = true;
-  }
-}
-
-// Cancella consultazione con conferma e controllo predefinita
-function deleteConsultazione(id) {
-  const c = consultazioni.find(x => x.id === id);
-  if (!c) return;
-
-  let msg = `Eliminare la consultazione "${c.denominazione}"?`;
-  if (c.predefinita) {
-    // Trova la nuova consultazione predefinita (più recente dopo eliminazione)
-    const altre = consultazioni.filter(x => x.id !== id);
-    ordinaConsultazioni(altre);
-    const nuovaPredefinita = altre.length > 0 ? altre[0].denominazione : null;
-
-    msg = `ATTENZIONE! Stai eliminando la consultazione predefinita "${c.denominazione}".\n` +
-          `La consultazione predefinita sarà spostata automaticamente alla consultazione "${nuovaPredefinita}".\n\n` +
-          `Procedere comunque?`;
-  }
-  if (!confirm(msg)) return;
-
-  // Rimuove consultazione
-  consultazioni = consultazioni.filter(x => x.id !== id);
-
-  // Se eliminata consultazione predefinita, sposta flag all'ultima consultazione (più recente)
-  if (c.predefinita && consultazioni.length > 0) {
-    ordinaConsultazioni();
-    consultazioni[0].predefinita = true;
-  }
-
-  resetForm();
-  renderConsultazioni();
-}
-
-// Ordina consultazioni per data di inizio discendente (più recente prima)
-function ordinaConsultazioni(lista = consultazioni) {
-  lista.sort((a, b) => new Date(b.data_inizio) - new Date(a.data_inizio));
-}
-
-
-form.addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  const id = document.getElementById('consultazione_id').value;
-  const tipo = document.getElementById('tipo').value.trim();
-  const denominazione = document.getElementById('denominazione').value.trim();
-  const data_inizio = document.getElementById('data_inizio').value;
-  const data_fine = document.getElementById('data_fine').value;
-  const link = document.getElementById('link').value.trim();
-  const predefinita = document.getElementById('predefinita').checked;
-
-  if (!tipo || !denominazione || !data_inizio || !data_fine) {
-    alert('Compilare tutti i campi obbligatori (*)');
-    return;
-  }
-
-  if (id) {
-    // Modifica
-    const cIndex = consultazioni.findIndex(x => x.id == id);
-    if (cIndex === -1) {
-      alert('Consultazione non trovata');
-      return;
-    }
-    consultazioni[cIndex] = { id: Number(id), tipo, denominazione, data_inizio, data_fine, link, predefinita };
-  } else {
-    // Aggiungi nuovo: genera id incrementale
-    const maxId = consultazioni.reduce((max, c) => c.id > max ? c.id : max, 0);
-    consultazioni.push({ id: maxId + 1, tipo, denominazione, data_inizio, data_fine, link, predefinita });
-  }
-
-  // Se predefinita selezionata, togli dalle altre
-  if (predefinita) {
-    const currentId = id ? Number(id) : consultazioni[consultazioni.length - 1].id;
-    consultazioni.forEach(c => {
-      if (c.id !== currentId) c.predefinita = false;
+    })
+    .catch(error => {
+        console.error('Errore durante l\'upload:', error);
+        risultato.innerHTML = 'Si è verificato un errore durante l\'upload.';
     });
-  } else {
-    // Se nessuna è predefinita (caso possibile dopo modifica), imposta la prima (più recente)
-    if (!consultazioni.some(c => c.predefinita) && consultazioni.length > 0) {
-      ordinaConsultazioni();
-      consultazioni[0].predefinita = true;
+};
+
+
+  function deleteConsultazione(index) {
+	var id_cons_gen = document.getElementById ( "id_cons_gen"+index ).innerText
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("risultato").innerHTML = this.responseText;
+		}
     }
+    xmlhttp.open("GET","../principale.php?funzione=salvaConsultazione&id_cons_gen="+id_cons_gen+"&op=cancella",true);
+    xmlhttp.send();
+
+//	document.getElementById("riga"+index).style.display = 'none'
   }
+   function editConsultazione(index) { 
+	document.getElementById ( "id_cons_gen" ).value = document.getElementById ( "id_cons_gen"+index ).innerText
+	document.getElementById ( "denominazione" ).value = document.getElementById ( "descrizione"+index ).innerText
+	document.getElementById ( "data_inizio" ).value = document.getElementById ( "data_inizio"+index ).innerText
+	document.getElementById ( "data_fine" ).value = document.getElementById ( "data_fine"+index ).innerText
+	document.getElementById ( "tipo" ).selectedIndex = document.getElementById ( "tipo_cons"+index ).innerText
+	document.getElementById ( "link" ).value = document.getElementById ( "link_trasparenza"+index ).innerText
+	document.getElementById ( "chiusa" ).selectedIndex = document.getElementById ( "chiusa"+index ).innerText
+	document.getElementById ( "id_conf" ).selectedIndex = document.getElementById ( "id_conf"+index ).innerText - 1
+	if(document.getElementById ( "preferita"+index ).innerText==1)
+		document.getElementById ( "preferita" ).checked = true
+	else
+		document.getElementById ( "preferita" ).checked = false
+	document.getElementById ( "preferenze" ).value = document.getElementById ( "preferenze"+index ).innerText
+	document.getElementById ( "id_fascia" ).selectedIndex = document.getElementById ( "id_fascia"+index ).innerText -1
+	document.getElementById ( "vismf" ).selectedIndex = document.getElementById ( "vismf"+index ).innerText
+	document.getElementById ( "solo_gruppo" ).selectedIndex = document.getElementById ( "solo_gruppo"+index ).innerText
+	document.getElementById ( "disgiunto" ).selectedIndex = document.getElementById ( "disgiunto"+index ).innerText
+	document.getElementById ( "proiezione" ).selectedIndex = document.getElementById ( "proiezione"+index ).innerText
 
-  resetForm();
-  renderConsultazioni();
-});
-const predefCheck = document.getElementById('predefinita');
-
-predefCheck.addEventListener('change', function() {
-  const isChecked = this.checked;
-  const id = document.getElementById('consultazione_id').value;
+	document.getElementById ( "submitBtn" ).textContent = "Salva modifiche"
+//	document.getElementById("riga"+index).style.display = 'none' 
+	selezionaInput()
+  }
   
-  if (isChecked) {
-    // Se sto selezionando come predefinita
-    if (id) {
-      alert('Stai impostando questa consultazione come predefinita. Verrà tolta la predefinita a un\'altra consultazione.');
-    } else {
-      alert('Stai aggiungendo una nuova consultazione predefinita. Verrà tolta la predefinita a un\'altra consultazione.');
-    }
-  } else {
-    // Se sto togliendo la predefinita
-    if (id) {
-      alert('Stai togliendo la predefinita da questa consultazione. Il sistema imposterà un\'altra consultazione come predefinita automaticamente.');
-    } else {
-      alert('Hai tolto la spunta di consultazione predefinita.');
-    }
-  }
-});
-function impostaPredefinita(id) {
-  const consultazione = consultazioni.find(c => c.id === id);
-  if (!consultazione) return;
 
-  if (consultazione.predefinita) {
-    if (!confirm(`Stai rimuovendo la consultazione predefinita "${consultazione.denominazione}". Il sistema ne imposterà automaticamente un'altra.`)) {
-      return;
-    }
-  } else {
-    if (!confirm(`Stai impostando "${consultazione.denominazione}" come consultazione predefinita. Verrà tolta la predefinita a un'altra consultazione.`)) {
-      return;
-    }
-  }
-
-  consultazioni.forEach(c => c.predefinita = (c.id === id));
-  renderConsultazioni();
-
-  const currentId = parseInt(document.getElementById('consultazione_id').value);
-  if (currentId === id) {
-    document.getElementById('predefinita').checked = true;
-  } else {
-    document.getElementById('predefinita').checked = false;
-  }
-}
-
-document.getElementById('cancelEdit').addEventListener('click', resetForm);
-
-// Inizializza lista
-renderConsultazioni();
+function selezionaInput() {
+	const tipo = document.getElementById ( "tipo" ).value
+	document.getElementById ( "divproiezione" ).style.display = 'none';
+	switch (tipo) {
+		case "1":
+		case "5":
+		case "6":
+		case "7":
+		case "8":
+		case "12":
+		case "13":
+		case "14":
+		
+			document.getElementById ( "divpreferenze" ).style.display = 'block';
+			document.getElementById ( "divlink" ).style.display = 'block';
+			document.getElementById ( "divsologruppo" ).style.display = 'none';
+			document.getElementById ( "divdisgiunto" ).style.display = 'none';
+			document.getElementById ( "divfascia" ).style.display = 'none';
+			document.getElementById ( "divlegge" ).style.display = 'none';
+			break
+		case "2":
+			document.getElementById ( "divpreferenze" ).style.display = 'none';
+			document.getElementById ( "divlink" ).style.display = 'none';
+			document.getElementById ( "divsologruppo" ).style.display = 'none';
+			document.getElementById ( "divdisgiunto" ).style.display = 'none';
+			document.getElementById ( "divfascia" ).style.display = 'none';
+			document.getElementById ( "divlegge" ).style.display = 'none';
+			break;
+		case "3":
+		case "4":
+			document.getElementById ( "divproiezione" ).style.display = 'block';
+		case "9":
+		case "10":
+		case "11":
+		case "15":
+		case "16":
+		case "17":
+		case "18":
+		case "19":
+			document.getElementById ( "divpreferenze" ).style.display = 'block';
+			document.getElementById ( "divlink" ).style.display = 'block';
+			document.getElementById ( "divsologruppo" ).style.display = 'block';
+			document.getElementById ( "divdisgiunto" ).style.display = 'block';
+			document.getElementById ( "divfascia" ).style.display = 'block';
+			document.getElementById ( "divlegge" ).style.display = 'block';
+			break
+	}
+}	
 </script>

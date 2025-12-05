@@ -27,6 +27,17 @@ function configurazione()
 	return($row);	
 }
 
+function dati_cons_comune($id)
+{
+global $dbi,$prefix,$id_cons_gen;
+	if(!$id) $id=$id_cons_gen;
+	$sql="SELECT * FROM ".$prefix."_ele_cons_comune where id_cons_gen='$id'";
+	$sth = $dbi->prepare("$sql");
+	$sth->execute();	
+	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+	return($row);	
+}
+
 function dati_consultazione($id)
 {
 global $dbi,$prefix,$id_cons_gen;
@@ -61,21 +72,10 @@ function default_cons()
 	return($row);	
 }
 
-function elenco_autorizzati() #elenco dei comuni autorizzati per la consultazione attiva
-{
-	global $id_cons_gen,$prefix,$dbi;
-	if(!$id) $id=$id_cons_gen;
-	$sql="select * from ".$prefix."_ele_cons_comune where id_cons_gen=$id_cons_gen";
-	$sth = $dbi->prepare("$sql");
-	$sth->execute();
-	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
-	return($row);	
-}
-
 function elenco_cons()
 {
 	global $id_cons_gen,$id_comune,$prefix,$dbi;
-	$sql="select * from ".$prefix."_ele_consultazione order by data_inizio desc";
+	$sql="select t1.*,t2.chiusa,t2.id_conf,t2.preferita,t2.preferenze,t2.id_fascia,t2.vismf,t2.solo_gruppo,t2.disgiunto,t2.proiezione from ".$prefix."_ele_consultazione as t1 left join ".$prefix."_ele_cons_comune as t2 on t1.id_cons_gen=t2.id_cons_gen order by data_inizio desc";
 	$sth = $dbi->prepare("$sql");
 	$sth->execute();
 	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -86,6 +86,16 @@ function elenco_comuni()
 {
 	global $id_cons_gen,$id_comune,$prefix,$dbi;
 	$sql="select * from ".$prefix."_ele_comune order by descrizione"; #id_comune,descrizione
+	$sth = $dbi->prepare("$sql");
+	$sth->execute();
+	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+	return($row);	
+}
+
+function elenco_leggi()
+{
+	global $id_cons,$id_comune,$prefix,$dbi;
+	$sql="select id_conf,descrizione from ".$prefix."_ele_conf order by id_conf";
 	$sth = $dbi->prepare("$sql");
 	$sth->execute();
 	$row = $sth->fetchAll(PDO::FETCH_ASSOC);

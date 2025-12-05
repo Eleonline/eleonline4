@@ -1,6 +1,6 @@
 <?php
 require_once '../includes/check_access.php';
-require_once '../includes/versione.php';
+#require_once '../includes/versione.php';
 require_once '../includes/query.php';
 // NOTIFICHE DINAMICHE
 
@@ -77,10 +77,12 @@ function getUltimaRevisioneOnline() {
 
     return ['rev' => $rev, 'tempo' => $tempo ?: 'Adesso'];
 }
-
+global $patch;
+if(!isset($_SESSION['tipo_cons'])) $_SESSION['tipo_cons']='';
 // Estrai build corrente
-preg_match('/rev\s*(\d+)/i', $versione, $match);
-$build_corrente = isset($match[1]) ? (int)$match[1] : 0;
+#preg_match('/rev\s*(\d+)/i', $versione, $match);
+$build_corrente = $patch;
+#isset($match[1]) ? (int)$match[1] : 0;
 
 // Ottieni revisione online e tempo
 $build_info = getUltimaRevisioneOnline();
@@ -131,6 +133,7 @@ if(!$id_cons_gen and $role!='superuser') header("Location: ../logout.php");
 $_SESSION['id_cons_gen']=$id_cons_gen;
 // Array esempio consultazioni, id => nome
 $row=elenco_cons();
+$consultazioni=array();
 foreach($row as $key=>$val){
 	$consultazioni[$val['id_cons_gen']] = $val['descrizione'];
 	if($val['id_cons_gen']==$id_cons_gen) $_SESSION['tipo_cons']=$val['tipo_cons'];
@@ -182,14 +185,14 @@ foreach($row as $key=>$val)
             <?php endforeach; ?>
           </select>
         </div>
-        <div class="form-group mb-2">
+        <!--div class="form-group mb-2">
           <label for="comune-mobile">Comune</label>
           <select class="form-control form-control-sm" name="id_comune" id="comune-mobile">
             <?php foreach ($comuni as $id => $nomeComune): ?>
               <option value="<?= $id ?>" <?= ($id === $id_comune) ? 'selected' : '' ?>><?= $nomeComune ?></option>
             <?php endforeach; ?>
           </select>
-        </div>
+        </div-->
       </form>
     </div>
   </div>
@@ -202,16 +205,16 @@ foreach($row as $key=>$val)
         <option value="<?= $id ?>" <?= ($id == $id_cons_gen) ? 'selected' : '' ?>><?= $nome ?></option>
       <?php endforeach; ?>
     </select>
-    <select class="form-control form-control-sm mr-2" name="id_comune" id="comune">
+    <!--select class="form-control form-control-sm mr-2" name="id_comune" id="comune">
       <?php foreach ($comuni as $id => $nomeComune): ?>
         <option value="<?= $id ?>" <?= ($id == $id_comune) ? 'selected' : '' ?>><?= $nomeComune ?></option>
       <?php endforeach; ?>
-    </select>
+    </select-->
   </form>
 
 <script>
   // Submit automatico al cambio select desktop e mobile
-  ['consultazione', 'comune'].forEach(id => {
+  ['consultazione'].forEach(id => {
     document.getElementById(id).addEventListener('change', () => {
       document.getElementById('form-consultazione').submit();
     });

@@ -1,11 +1,10 @@
 <?php require_once '../includes/check_access.php'; ?>
 <?php
-require_once '../includes/versione.php';
-
+#require_once '../includes/versione.php';
+global $patch;
 // Estrai build corrente
-preg_match('/rev\s*(\d+)/i', $versione, $match);
-$build_corrente = isset($match[1]) ? (int)$match[1] : 0;
-
+#preg_match('/rev\s*(\d+)/i', $versione, $match);
+$build_corrente = $patch; #isset($match[1]) ? (int)$match[1] : 0;
 // Variabili già pronte dalle notifiche dinamiche
 $build_nuovo = $notifiche[0]['testo'] ?? '';
 preg_match('/rev\s*(\d+)/i', $build_nuovo, $m);
