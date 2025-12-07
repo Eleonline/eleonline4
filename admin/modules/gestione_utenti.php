@@ -20,7 +20,7 @@ require_once '../includes/check_access.php';
         </div>
         <div class="form-group col-md-3">
           <label>Password*</label>
-          <input type="password" class="form-control" id="password" required>
+          <input type="password" class="form-control" id="password"  onfocus="select()" required>
         </div>
         <div class="form-group col-md-3">
           <label>Email</label>
@@ -30,7 +30,12 @@ require_once '../includes/check_access.php';
 			<label>Nominativo</label>
 			<input type="text" class="form-control" id="nominativo">
 		</div>
-      </div>
+ 	  <?php if($_SESSION['ruolo']=='superuser') $nascondi=''; else $nascondi="d-none"; ?>
+          <div class="form-group form-check <?= $nascondi ?>" >
+            <input type="checkbox" class="form-check-input" id="admin" name="admin">
+            <label class="form-check-label" for="preferita">Admin</label>
+          </div>
+     </div>
 
 
           <button type="submit" class="btn btn-success" id="submitBtn">Aggiungi Utente</button>
@@ -62,6 +67,10 @@ require_once '../includes/check_access.php';
 <script>
 
 function editUser(id) {
+	if(document.getElementById ( "admin"+id ).innerText==1)
+		document.getElementById ( "admin" ).checked = true
+	else
+		document.getElementById ( "admin" ).checked = false
   document.getElementById('username').value = document.getElementById('username'+id).innerText;
   document.getElementById('password').value = '********';
   document.getElementById('email').value = document.getElementById('email'+id).innerText;
@@ -74,6 +83,7 @@ function editUser(id) {
 function aggiungiUser(e) {
     e.preventDefault();
 
+	const admin = document.getElementById('admin').checked;
 	const username = document.getElementById ( "username" ).value
 	const password = document.getElementById ( "password" ).value
 	const email = document.getElementById ( "email" ).value
@@ -82,6 +92,7 @@ function aggiungiUser(e) {
     // Crea un oggetto FormData e aggiungi il file
     const formData = new FormData();
     formData.append('funzione', 'salvaUtente');
+    formData.append('admin', admin);
     formData.append('username', username);
     formData.append('password', password);
     formData.append('email', email);

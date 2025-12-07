@@ -16,7 +16,9 @@ if (isset($param['password'])) $password=addslashes($param['password']); else $p
 if (isset($param['email'])) $email=addslashes($param['email']); else $email='';
 if (isset($param['nominativo'])) $nominativo=addslashes($param['nominativo']); else $nominativo='';
 if (isset($param['op'])) $op=addslashes($param['op']); else $op='';
-
+if (isset($param['admin'])) $admin=addslashes($param['admin']); else $admin='0';
+if($admin == 'true') { $admin=1; $operatore=0;}
+else $operatore=1;
 global $prefix,$aid,$dbi,$id_comune;
 $salvato=0;
 $query="select * from ".$prefix."_authors where aid='$username'";
@@ -24,9 +26,9 @@ $res = $dbi->prepare("$query");
 $res->execute();
 if($res->rowCount()) {
 	if($op=='salva') {
-			if($password=='********') $pass="pwd='$password'"; else $pass="";
+			if($password!='********') {$password=md5($password); $pass=",pwd='$password'"; }else $pass="";
 			#update
-			$sql="update ".$prefix."_authors set name='$nominativo',email='$email',$pass where aid='$username'";
+			$sql="update ".$prefix."_authors set name='$nominativo',adminop='$operatore',admincomune='$admin', email='$email' $pass where aid='$username'";
 			$compl = $dbi->prepare("$sql");
 			$compl->execute(); 
 			if($compl->rowCount()) $salvato=1;
@@ -39,7 +41,7 @@ if($res->rowCount()) {
 	}
 }else{
 	#insert
-		$sql="insert into ".$prefix."_authors values( '$username','$nominativo','$id_comune','$email','$password','','1','0','0','it')";
+		$sql="insert into ".$prefix."_authors values( '$username','$nominativo','$id_comune','$email','$password','0','$operatore','$admin','0','it')";
 		$compl = $dbi->prepare("$sql");
 		$compl->execute(); 
 		if($compl->rowCount()) $salvato=1;

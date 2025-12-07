@@ -1,20 +1,21 @@
 <?php
 require_once '../includes/check_access.php';
 
-
+global $id_comune;
 $row=configurazione();
 $SITE_NAME = $row[0]['sitename'];
 $SITE_URL = $row[0]['siteurl'];
 $EMAIL_ADMIN = $row[0]['adminmail'];
 $MAP_PROVIDER = $row[0]['googlemaps']==='1' ? 'google' : 'openstreetmap' ;
-$MULTICOMUNE = $row[0]['multicomune']; #==='1' ? 'si' : 'no';
+#$SITE_COMUNE = $row[0]['siteistat']>0 ? $row[0]['siteistat'] : $id_comune;
+#$MULTICOMUNE = $row[0]['multicomune']; #==='1' ? 'si' : 'no';
 $gru = [
     'google_api_key' => $row[0]['gkey']
 ];
 #$MAP_PROVIDER = isset($gru['googlemaps']) && in_array($gru['googlemaps'], ['google', 'openstreetmap']) ? $gru['googlemaps'] : 'openstreetmap';
 $GOOGLE_API_KEY = !empty($gru['google_api_key']) ? htmlspecialchars($gru['google_api_key']) : '';
 $GOOGLE_API_KEY = $row[0]['gkey'];
-$SITE_ISTAT=$row[0]['siteistat'];
+$SITE_ISTAT=$row[0]['siteistat']>0 ? $row[0]['siteistat'] : $_SESSION['id_comune'];
 $row=elenco_comuni();
 foreach($row as $key=>$val){
 	if(!isset($DEFAULT_COMUNE)) {$DEFAULT_COMUNE=$val['descrizione']; $SITE_ISTAT_TMP=$val['id_comune'];}
@@ -23,7 +24,7 @@ foreach($row as $key=>$val){
 }
 #$comuni_disponibili = ['Comune di Roma', 'Comune di Milano', 'Comune di Napoli'];
 #$DEFAULT_COMUNE = 'Comune di Roma';
-
+#echo "TEST:$SITE_ISTAT: $id_comune:".$_SESSION['id_comune'];
 
 if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
 ?>
@@ -37,6 +38,7 @@ if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
       <div class="card-body">
         <form id="configSitoForm" onsubmit="aggiornaDati(event)">
           <!-- LOGO + ANTEPRIMA -->
+          <input type="hidden" name="siteIstat" id="siteIstat" value="<?= $SITE_ISTAT ?>">
           <div class="mb-3 d-flex align-items-center">
             <div id="previewImageDiv"
                  style="width: 100px; height: 60px; border: 1px solid #ccc; object-fit: contain; margin-right: 15px;">
@@ -141,13 +143,12 @@ if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
 <script>
   function aggiornaDati(e) {
     e.preventDefault();
+    const siteIstat = document.getElementById('siteIstat').value;
     const siteName = document.getElementById('siteName').value;
     const siteUrl = document.getElementById('siteUrl').value;
     const emailAdmin = document.getElementById('emailAdmin').value;
     const mapsProvider = document.getElementById('maps_provider').value;
     const googleApiKey = document.getElementById('googleApiKey').value;
-    const multicomune = document.getElementById('multicomune').value;
-    const defaultComune = document.getElementById('defaultComune').value;
 
     // Salvataggio nel DB (commentato)
     var xmlhttp = new XMLHttpRequest();
@@ -157,7 +158,7 @@ if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
 				document.getElementById("bottoneStato").focus();
 		}
     }
-    xmlhttp.open("GET","../principale.php?funzione=salvaConfigSito&siteName="+siteName+"&siteUrl="+siteUrl+"&emailAdmin="+emailAdmin+"&mapsProvider="+mapsProvider+"&googleApiKey="+googleApiKey+"&multicomune="+multicomune+"&defaultComune="+defaultComune,true);
+    xmlhttp.open("GET","../principale.php?funzione=salvaConfigSito&siteIstat="+siteIstat+"&siteName="+siteName+"&siteUrl="+siteUrl+"&emailAdmin="+emailAdmin+"&mapsProvider="+mapsProvider+"&googleApiKey="+googleApiKey,true);
     xmlhttp.send();
   }
 
@@ -169,7 +170,6 @@ if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
     });
 
     toggleApiKeyField();
-    toggleComuneDefault();
   });
 
   // Anteprima immagine
@@ -192,12 +192,6 @@ if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
   function toggleApiKeyField() {
     const provider = document.getElementById('maps_provider').value;
     document.getElementById('apikey_row').style.display = (provider === 'google') ? '' : 'none';
-  }
-
-  // Mostra/nasconde campo Comune default
-  function toggleComuneDefault() {
-    const multicomune = document.getElementById('multicomune').value;
-    document.getElementById('defaultComuneRow').style.display = (multicomune === '1') ? '' : 'none';
   }
   
   function nascondiElemento() {

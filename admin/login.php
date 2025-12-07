@@ -3,7 +3,7 @@ session_start();
 define('APP_RUNNING', true);
 
 # Inserimento accesso al db
-
+global $id_comune;
 if (file_exists("config/config.php")){ 
 	$install="0"; @require_once("config/config.php"); 
 }else{ 
@@ -51,6 +51,7 @@ $sth->execute();
 $sth = $dbi->prepare("select * from ".$prefix."_config");
 $sth->execute();
 $row = $sth->fetch(PDO::FETCH_ASSOC);
+$_SESSION['id_comune']=$id_comune;
 $multicomune=$row['multicomune'];
 $_SESSION['multicomune']=$multicomune;
 if($multicomune) {
@@ -68,28 +69,28 @@ if (isset($_POST['username'])) {
 	if (strstr( $aid," ")) { die ("Gli spazi non sono ammessi nel nome utente: $aid"); }
 	$mpwd=md5($pwd);
 	if (isset($_POST['id_comune']) and intval($_POST['id_comune'])>0) $id_comune=intval($_POST['id_comune']); else $id_comune=$row['siteistat'];
-		$sth = $dbi->prepare("select pwd,adminop,adminsuper,counter,admlanguage from ".$prefix."_authors where binary aid='$aid' and pwd='$mpwd' and (id_comune='$id_comune' or adminsuper='1')");
-		$sth->execute();	
-		$esiste=$sth->rowCount();
-		$row = $sth->fetch(PDO::FETCH_ASSOC);
-		if(!$esiste) {
-			$_SESSION['msglogout']=2;
-			header("Location: ../logout.php");
-		}else{ 
-			if ($row['pwd']!=$mpwd) {
-				$msglogout=3;
-				header("Location: ../logout.php");				
-			}				
-			$counter = $row['counter'];
-			$counter++;
+	$sth = $dbi->prepare("select pwd,adminop,admincomune,adminsuper,counter,admlanguage from ".$prefix."_authors where binary aid='$aid' and pwd='$mpwd' and (id_comune='$id_comune' or adminsuper='1')");
+	$sth->execute();	
+	$esiste=$sth->rowCount();
+	$row = $sth->fetch(PDO::FETCH_ASSOC);
+	if(!$esiste) {
+		$_SESSION['msglogout']=2;
+		header("Location: ../logout.php");
+	}else{ 
+		if ($row['pwd']!=$mpwd) {
+			$msglogout=3;
+			header("Location: ../logout.php");				
+		}
+		$counter = $row['counter'];
+		$counter++;
 #			$tmplang=$row['admlanguage'];
 #			if(strlen($tmplang)==2) $language=$tmplang;
-			$sth = $dbi->prepare("update ".$prefix."_authors set counter=$counter where aid='$aid' and pwd='$mpwd' and id_comune='$id_comune'");
-			$sth->execute();
-			$_SESSION['id_comune']=$id_comune;
-			$id_cons_gen=intval(default_cons());
-			$_SESSION['id_cons_gen']=$id_cons_gen;
-		}
+		$sth = $dbi->prepare("update ".$prefix."_authors set counter=$counter where aid='$aid' and pwd='$mpwd' and id_comune='$id_comune'");
+		$sth->execute();
+		$_SESSION['id_comune']=$id_comune;
+		$id_cons_gen=intval(default_cons());
+		$_SESSION['id_cons_gen']=$id_cons_gen;
+	}
 if($row['adminsuper']) $role='superuser';
 elseif($row['admincomune']) $role='admin';
 elseif($row['adminop']) $role='operatore';

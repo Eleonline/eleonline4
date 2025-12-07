@@ -10,7 +10,7 @@
 # ...
 define('APP_RUNNING', true);
 #die("Errore");
-global $dbi,$prefix;
+global $dbi,$prefix,$id_comune;
   // gestione sessione
 if (!isset($_SESSION))
 {

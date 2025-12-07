@@ -2,38 +2,34 @@
 require_once '../includes/check_access.php';
 
 // Simulazione utente loggato
-$_SESSION['username'] = $_SESSION['username'] ?? 'mario.rossi';
+//$_SESSION['username'] = $_SESSION['username'] ?? 'mario.rossi';
 $username = $_SESSION['username'];
 $messaggio = '';
 
 // Connessione MySQL con PDO (commentata)
 // require_once '../includes/db_connection.php'; // Assicurati che questo file definisca $pdo
-if (!function_exists('cambio_password')) {
+#if (!function_exists('cambio_password')) {
     function cambio_password($vecchia_password, $nuova_password) {
-        // Esempio con MySQL (decommenta per usare)
-        /*
-        global $pdo;
+		global $prefix,$aid,$dbi,$id_comune;
         $username = $_SESSION['username'];
-
+#		$vecchia_password=md5($vecchia_password);# die("UPDATE ".$prefix."_authors SET pwd = '$hash' WHERE aid = '$username'");
         // Recupero hash corrente
-        $stmt = $pdo->prepare("SELECT password FROM utenti WHERE username = :username");
-        $stmt->execute(['username' => $username]);
+        $stmt = $dbi->prepare("SELECT pwd FROM ".$prefix."_authors WHERE aid = '$username'");
+        $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!$row || !password_verify($vecchia_password, $row['password'])) {
+        if (!$row || $vecchia_password!=$row['pwd']) {
             return 'Vecchia password errata.';
         }
-
         // Aggiornamento con nuova password
-        $hash = password_hash($nuova_password, PASSWORD_DEFAULT);
-        $stmt = $pdo->prepare("UPDATE utenti SET password = :hash WHERE username = :username");
-        $successo = $stmt->execute(['hash' => $hash, 'username' => $username]);
-        return $successo ? true : 'Errore durante l\'aggiornamento.';
-        */
-
-        // Simulazione: sempre successo
+#        $hash = md5($nuova_password);
+        $stmt = $dbi->prepare("UPDATE ".$prefix."_authors SET pwd = '$nuova_password' WHERE aid = '$username'");
+        $stmt->execute();
+		if($stmt->rowCount())
         return true;
+		else return 'Errore durante l\'aggiornamento.';
+      
     }
-}
+#}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $vecchia_password = $_POST['vecchia_password'];
@@ -45,43 +41,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/', $nuova_password)) {
         $messaggio = '<div class="alert alert-warning">La nuova password deve contenere almeno 8 caratteri, una maiuscola, una minuscola, un numero e un carattere speciale.</div>';
     } else {
-        $test = cambio_password($vecchia_password, $nuova_password);
+        $test = cambio_password(md5($vecchia_password), md5($nuova_password));
         if ($test === true)
          $messaggio = <<<HTML
-<div id="overlay-success">
-  <div class="overlay-bg"></div>
-  <div class="overlay-msg">
-    ✅ Password aggiornata con successo!
-  </div>
-</div>
-<style>
-#overlay-success {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-.overlay-bg {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-}
-.overlay-msg {
-  position: relative;
-  background: #fff;
-  padding: 30px 40px;
-  font-size: 1.5rem;
-  font-weight: bold;
-  border-radius: 10px;
-  z-index: 10000;
-  box-shadow: 0 0 10px #000;
-  text-align: center;
-}
-</style>
+	 alert(<?= $test ?>)
+
 HTML;
 
         elseif (is_string($test))

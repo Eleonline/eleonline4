@@ -213,6 +213,7 @@ function aggiungiConsultazione(e) {
 		const myForm = document.getElementById('consultazioneForm');
         risultato.innerHTML = data; // Mostra la risposta del server
 		myForm.reset();
+		document.getElementById ( "id_cons_gen" ).value = ''
 		document.getElementById ( "submitBtn" ).textContent = "Aggiungi Consultazione"
 
     })

@@ -10,7 +10,9 @@ if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
     exit;
 }
 
+global $prefix,$fileout,$aid,$id_cons_gen,$id_comune;
 
+if (isset($_GET['siteIstat'])) $siteIstat=$_GET['siteIstat']; else $siteIstat=$id_comune;
 if (isset($_GET['siteName'])) $siteName=$_GET['siteName']; else $siteName='';
 if (isset($_GET['siteUrl'])) $siteUrl=$_GET['siteUrl']; else $siteUrl='';
 if (isset($_GET['emailAdmin'])) $emailAdmin=$_GET['emailAdmin']; else $emailAdmin='';
@@ -22,11 +24,10 @@ if (isset($_GET['op'])) $op=$_GET['op']; else $op='';
 #if (isset($_GET['scrutinata'])) {$scrutinata=$_GET['scrutinata']==false ? false : true;}else $scrutinata=false;
 
 
-global $prefix,$fileout,$aid,$id_cons_gen;
 $id_cons=$_SESSION['id_cons'];
 $salvato=1;
 
-$sql="update ".$prefix."_config set sitename='$siteName', siteurl='$siteUrl', adminmail='$emailAdmin', siteistat='$defaultComune', multicomune='$multicomune', googlemaps='$mapsProvider', gkey='$googleApiKey'";
+$sql="update ".$prefix."_config set siteistat='$siteIstat',sitename='$siteName', siteurl='$siteUrl', adminmail='$emailAdmin', multicomune='$multicomune', googlemaps='$mapsProvider', gkey='$googleApiKey'";
 
 try {
 		$res = $dbi->prepare("$sql");
@@ -38,7 +39,7 @@ catch(PDOException $e)
 		$salvato=0;
 	}                  
 if($salvato){
-	echo "<br><button id=\"bottoneStato\" style=\"background-color:aquamarine;\" onfocusout=\"document.getElementById('bottoneStato').style.display='none'\" > Dati salvati correttamente </button>";
+	echo "<br><button id=\"bottoneStato\" style=\"background-color:aquamarine;\" onfocusout=\"document.getElementById('bottoneStato').style.display='none'\" > Dati salvati correttamente $id_comune</button>";
 }else{
 	echo "Errore di inserimento dati";
 }

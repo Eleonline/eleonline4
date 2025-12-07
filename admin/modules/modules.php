@@ -4,13 +4,15 @@
 define('APP_RUNNING', true);
 require_once '../access.php';
 # Inserimento accesso al db
+global $id_comune;
 
 if (file_exists("../config/config.php")){ 
 	$install="0"; @require_once("../config/config.php"); 
 }else{ 
 	$install="1";
 }
-
+#if(!isset($_SESSION['id_comune'])) 
+	$_SESSION['id_comune']=$id_comune;
 # verifica se effettuata la configurazione
 if(empty($dbname) || $install=="1") {
     die("<html><body><div style=\"text-align:center\"><br /><br /><img src=\"modules/Elezioni/images/logo.jpg\" alt=\"Eleonline\" title=\"Eleonline\"><br /><br /><strong>Sembra che <a href='http://www.eleonline.it' title='Eleonline'>Eleonline</a> non sia stato ancora installato.<br /><br />Puoi procedere <a href='../install/index.php'>cliccando qui</a> per iniziare l'installazione</strong></div></body></html>");
@@ -54,7 +56,7 @@ require_once '../includes/query.php';
 $row=configurazione();
 $versione=$row[0]['versione'];
 $patch=$row[0]['patch'];
-if($versione==3) {
+if($versione<4) {
 	require_once '../includes/aggiornadbTo4.php';
 }
 ob_start(); // attiva output buffering

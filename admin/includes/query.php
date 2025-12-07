@@ -4,19 +4,6 @@ if(is_file('../includes/check_access.php'))
 else
 	require_once 'includes/check_access.php';
 
-function cambio_password($pass)
-{
-	global $id_cons_gen,$id_comune,$prefix,$dbi;
-	$aid=$_SESSION['username'];
-	$mpass=md5($pass);
-	if($_SESSION['ruolo']=='superuser') $id='0'; else $id=$id_comune;
-	$sql="update ".$prefix."_authors set pwd='$mpass' where id_comune=$id and aid='$aid'";
-	$sth = $dbi->prepare("$sql");
-	$sth->execute();
-	$row = $sth->rowCount();
-	return($row);	
-}
-
 function configurazione()
 {
 	global $id_cons_gen,$prefix,$dbi;
