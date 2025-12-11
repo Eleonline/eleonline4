@@ -69,6 +69,16 @@ function elenco_cons()
 	return($row);	
 }
 
+function elenco_circoscrizioni()
+{
+	global $id_cons,$id_comune,$prefix,$dbi;
+	$sql="select * from ".$prefix."_ele_circoscrizione where id_cons='$id_cons' order by num_circ"; #id_comune,descrizione
+	$sth = $dbi->prepare("$sql");
+	$sth->execute();
+	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+	return($row);	
+}
+
 function elenco_comuni()
 {
 	global $id_cons_gen,$id_comune,$prefix,$dbi;

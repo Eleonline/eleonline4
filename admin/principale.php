@@ -89,6 +89,9 @@ if($permessi>32)
 		case 'salvaPermesso':
 			include("modules/salva_permesso.php");
 			break;
+		case 'salvaCircoscrizione':
+			include("modules/salva_circoscrizione.php");
+			break;
 	}
 	
 switch ($funzione) {

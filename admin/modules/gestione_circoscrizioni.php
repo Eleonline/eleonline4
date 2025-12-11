@@ -21,6 +21,10 @@ $circoscrizioni = [
       <div class="card-body table-responsive" style="max-height:400px; overflow-y:auto;">
         <form id="formCircoscrizione" class="mb-3" onsubmit="aggiungiCircoscrizione(event)">
           <div class="row">
+            <div class="col-md-2" style="display:none">
+              <label for="id_circ"></label>
+              <input type="number" class="form-control" id="id_circ">
+            </div>
             <div class="col-md-2">
               <label for="numero">Numero</label>
               <input type="number" class="form-control" id="numero" required>
@@ -50,8 +54,8 @@ $circoscrizioni = [
                 <th style="width: 20%;">Azioni</th>
               </tr>
             </thead>
-            <tbody id="righeCircoscrizioni">
-              <!-- Righe generate dinamicamente -->
+            <tbody id="risultato">
+              <?php include("elenco_circoscrizioni.php"); ?>
             </tbody>
           </table>
         </div>
@@ -65,109 +69,67 @@ $circoscrizioni = [
 </section>
 
 <script>
-  let circoscrizioni = <?php echo json_encode($circoscrizioni); ?>;
-  let indiceModifica = null;
 
-  function aggiornaTabella() {
-    const tbody = document.getElementById("righeCircoscrizioni");
-    tbody.innerHTML = "";
-
-    circoscrizioni.forEach((c, i) => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${c.numero}</td>
-        <td>${c.denominazione}</td>
-        <td>
-          <button class="btn btn-sm btn-warning me-1" onclick="modificaCircoscrizione(${i})">Modifica</button>
-          <button class="btn btn-sm btn-danger" onclick="mostraConfermaEliminazione(${i})">Elimina</button>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
-
-  function aggiungiCircoscrizione(e) {
+function aggiungiCircoscrizione(e) {
     e.preventDefault();
-    const numero = document.getElementById("numero").value.trim();
+
+    const id_circ = document.getElementById("id_circ").value;
+    const numero = document.getElementById("numero").value;
     const denominazione = document.getElementById("denominazione").value.trim();
     const btn = document.getElementById("btnAggiungi");
 
-    if (numero === "" || denominazione === "") {
-      alert("Compila tutti i campi.");
-      return;
-    }
+    const formData = new FormData();
+    formData.append('funzione', 'salvaCircoscrizione');
+    formData.append('descrizione', denominazione);
+    formData.append('numero', numero);
+    formData.append('id_circ', id_circ);
+    formData.append('op', 'salva');
 
-    const numeroEsiste = circoscrizioni.some((c, i) =>
-      c.numero === numero && i !== indiceModifica
-    );
+    fetch('../principale.php', {
+        method: 'POST',
+        body: formData 
+    })
+    .then(response => response.text()) // O .json() se il server risponde con JSON
+    .then(data => {
+        risultato.innerHTML = data; // Mostra la risposta del server
+		const myForm = document.getElementById('formCircoscrizione');
+		myForm.reset();
+		document.getElementById ( "btnAggiungi" ).textContent = "Aggiungi";
+    })
 
-    if (indiceModifica !== null) {
-      circoscrizioni[indiceModifica] = { numero, denominazione };
-      indiceModifica = null;
-      btn.textContent = "Aggiungi";
-      btn.classList.remove("btn-success");
-      btn.classList.add("btn-primary");
+};
 
-      document.getElementById("btnAnnulla").classList.add("d-none");
-      alert("Modifica salvata con successo.");
-    } else {
-      if (numeroEsiste) {
-        alert("Attenzione: esiste già una circoscrizione con questo numero. Verrà comunque aggiunta.");
-      }
-      circoscrizioni.push({ numero, denominazione });
-      alert("Circoscrizione aggiunta.");
-    }
 
-    aggiornaTabella();
-    e.target.reset();
+  function deleteCircoscrizione(index) {
+	const denominazione = document.getElementById ( "denominazione"+index ).innerText
+	const numero = document.getElementById ( "numero"+index ).innerText
+	const id_circ = document.getElementById ( "id_circ"+index ).innerText
+    const formData = new FormData();
+    formData.append('funzione', 'salvaCircoscrizione');
+    formData.append('descrizione', denominazione);
+    formData.append('numero', numero);
+    formData.append('id_circ', id_circ);
+    formData.append('op', 'cancella');
+
+    fetch('../principale.php', {
+        method: 'POST',
+        body: formData 
+    })
+    .then(response => response.text()) // O .json() se il server risponde con JSON
+    .then(data => {
+        risultato.innerHTML = data; // Mostra la risposta del server
+		document.getElementById ( "btnAggiungi" ).textContent = "Aggiungi";
+    })
+
+
+  }
+  
+   function editCircoscrizione(index) {
+	document.getElementById ( "denominazione" ).value = document.getElementById ( "denominazione"+index ).innerText
+	document.getElementById ( "numero" ).value = document.getElementById ( "numero"+index ).innerText
+	document.getElementById ( "id_circ" ).value = document.getElementById ( "id_circ"+index ).innerText
+	document.getElementById ( "btnAggiungi" ).textContent = "Salva modifiche"
+//	document.getElementById("riga"+index).style.display = 'none' 
   }
 
-  function modificaCircoscrizione(index) {
-    const c = circoscrizioni[index];
-    document.getElementById("numero").value = c.numero;
-    document.getElementById("denominazione").value = c.denominazione;
-    indiceModifica = index;
-
-    const btn = document.getElementById("btnAggiungi");
-    const btnAnnulla = document.getElementById("btnAnnulla");
-
-    btn.textContent = "Salva modifiche";
-    btn.classList.remove("btn-primary");
-    btn.classList.add("btn-success");
-
-    btnAnnulla.classList.remove("d-none");
-
-    document.querySelector(".card-header").scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  function annullaModifica() {
-    indiceModifica = null;
-    document.getElementById("formCircoscrizione").reset();
-
-    const btn = document.getElementById("btnAggiungi");
-    const btnAnnulla = document.getElementById("btnAnnulla");
-
-    btn.textContent = "Aggiungi";
-    btn.classList.remove("btn-success");
-    btn.classList.add("btn-primary");
-
-    btnAnnulla.classList.add("d-none");
-  }
-
-  function mostraConfermaEliminazione(index) {
-    const c = circoscrizioni[index];
-    if (confirm(`Sei sicuro di voler eliminare la circoscrizione ${c.numero} - ${c.denominazione}?`)) {
-      confermaEliminazione(index);
-    }
-  }
-
-  function confermaEliminazione(index) {
-    circoscrizioni.splice(index, 1);
-    aggiornaTabella();
-    alert("Circoscrizione eliminata.");
-  }
-
-  window.onload = function() {
-    aggiornaTabella();
-  };
 </script>

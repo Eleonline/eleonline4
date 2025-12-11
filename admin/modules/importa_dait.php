@@ -1,6 +1,6 @@
 <?php
 #$tipo_consultazione = 2;
-echo "TEST:OP:$op - TIPOCONS: $tipo_cons";
+echo "AVVISO: OP:$op - TIPOCONS: $tipo_cons<br>";
 switch ($tipo_cons) {
     case 8:
 	case 14:
