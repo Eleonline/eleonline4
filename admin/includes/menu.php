@@ -77,7 +77,7 @@ function getUltimaRevisioneOnline() {
 
     return ['rev' => $rev, 'tempo' => $tempo ?: 'Adesso'];
 }
-global $patch;
+global $patch,$id_cons_gen,$id_cons,$id_comune;
 if(!isset($_SESSION['tipo_cons'])) $_SESSION['tipo_cons']='';
 // Estrai build corrente
 #preg_match('/rev\s*(\d+)/i', $versione, $match);
@@ -164,6 +164,7 @@ $tipo_consultazione = 'comunali';
 $row=verifica_cons($id_cons_gen);
 if(!count($row))$row[0]['id_cons']=0;
 $_SESSION['id_cons']=$row[0]['id_cons'];
+$id_cons=$_SESSION['id_cons'];
 // Array esempio comuni, id => nome
 $row=elenco_comuni();
 foreach($row as $key=>$val)

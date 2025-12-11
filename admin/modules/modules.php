@@ -4,7 +4,8 @@
 define('APP_RUNNING', true);
 require_once '../access.php';
 # Inserimento accesso al db
-global $id_comune;
+global $id_comune, $id_cons_gen, $patch, $id_cons;
+
 
 if (file_exists("../config/config.php")){ 
 	$install="0"; @require_once("../config/config.php"); 
@@ -51,7 +52,6 @@ $sth->execute();
 
 $sth = $dbi->prepare("SET NAMES 'utf8'");
 $sth->execute();
-global $id_cons_gen,$patch;
 require_once '../includes/query.php';
 $row=configurazione();
 $versione=$row[0]['versione'];

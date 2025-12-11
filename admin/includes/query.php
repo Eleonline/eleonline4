@@ -109,7 +109,17 @@ function elenco_fasce($id)
 	return($row);	
 }
 
-function elenco_rilevazioni()
+function elenco_permessi()
+{
+	global $id_cons,$id_comune,$prefix,$dbi;
+	$sql="select t1.*, t2.indirizzo, t3.num_sez, t4.admincomune, t4.adminsuper from ".$prefix."_ele_operatore as t1 left join ".$prefix."_ele_sede as t2 on t1.id_sede=t2.id_sede left join ".$prefix."_ele_sezione as t3 on t1.id_sez=t3.id_sez left join ".$prefix."_authors as t4 on t1.aid=t4.aid where t1.id_cons='$id_cons' order by aid";
+	$sth = $dbi->prepare("$sql");
+	$sth->execute();
+	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+	return($row);	
+}
+
+function elenco_rilevazioni() 
 {
 	global $id_cons_gen,$prefix,$dbi;
 	$sql="select * from ".$prefix."_ele_rilaff where id_cons_gen='$id_cons_gen' order by data,orario";
@@ -129,10 +139,30 @@ function elenco_sedi()
 	return($row);	
 }
 
+function elenco_sezioni()
+{
+	global $id_cons,$prefix,$dbi;
+	$sql="select * from ".$prefix."_ele_sezione where id_cons='$id_cons' order by num_sez";
+	$sth = $dbi->prepare("$sql");
+	$sth->execute();
+	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+	return($row);	
+}
+
 function elenco_utenti()
 {
 	global $id_cons,$id_comune,$prefix,$dbi;
 	$sql="select * from ".$prefix."_authors where id_comune='$id_comune' order by aid";
+	$sth = $dbi->prepare("$sql");
+	$sth->execute();
+	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+	return($row);	
+}
+
+function elenco_utenti_no_permessi()
+{
+	global $id_cons,$id_comune,$prefix,$dbi;
+	$sql="select * from ".$prefix."_authors where id_comune='$id_comune' and admincomune='0' and aid not in (select aid from ".$prefix."_ele_operatore where id_cons='$id_cons') order by aid";
 	$sth = $dbi->prepare("$sql");
 	$sth->execute();
 	$row = $sth->fetchAll(PDO::FETCH_ASSOC);

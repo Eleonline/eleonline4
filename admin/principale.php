@@ -86,6 +86,9 @@ if($permessi>32)
 		case 'salvaUtente':
 			include("modules/salva_utente.php");
 			break;
+		case 'salvaPermesso':
+			include("modules/salva_permesso.php");
+			break;
 	}
 	
 switch ($funzione) {
@@ -116,7 +119,7 @@ switch ($funzione) {
 }		
 
 function ChiSei($idcg){
-global $dbi, $msglogout, $id_cons_gen,$giorniaut;
+global $dbi, $msglogout, $id_cons_gen,$giorniaut,$id_cons;
 
 $aid=$_SESSION['username'];
 $prefix=$_SESSION['prefix'];
