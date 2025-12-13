@@ -92,6 +92,12 @@ if($permessi>32)
 		case 'salvaCircoscrizione':
 			include("modules/salva_circoscrizione.php");
 			break;
+		case 'salvaSede':
+			include("modules/salva_sede.php");
+			break;
+		case 'salvaSezione':
+			include("modules/salva_sezione.php");
+			break;
 	}
 	
 switch ($funzione) {

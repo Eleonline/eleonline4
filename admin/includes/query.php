@@ -142,7 +142,7 @@ function elenco_rilevazioni()
 function elenco_sedi()
 {
 	global $id_cons,$prefix,$dbi;
-	$sql="select * from ".$prefix."_ele_sede where id_cons='$id_cons' order by indirizzo";
+	$sql="select t1.*,t2.descrizione from ".$prefix."_ele_sede as t1 left join ".$prefix."_ele_circoscrizione as t2 on t1.id_circ=t2.id_circ where t1.id_cons='$id_cons' order by t1.indirizzo";
 	$sth = $dbi->prepare("$sql");
 	$sth->execute();
 	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -152,7 +152,7 @@ function elenco_sedi()
 function elenco_sezioni()
 {
 	global $id_cons,$prefix,$dbi;
-	$sql="select * from ".$prefix."_ele_sezione where id_cons='$id_cons' order by num_sez";
+	$sql="select t1.*,t2.id_sede,t2.indirizzo from ".$prefix."_ele_sezione as t1 left join ".$prefix."_ele_sede as t2 on t1.id_sede=t2.id_sede where t1.id_cons='$id_cons' order by t1.num_sez";
 	$sth = $dbi->prepare("$sql");
 	$sth->execute();
 	$row = $sth->fetchAll(PDO::FETCH_ASSOC);

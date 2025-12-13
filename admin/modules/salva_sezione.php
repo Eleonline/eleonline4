@@ -11,20 +11,23 @@ else
 	require_once '../includes/check_access.php';
 
 $param=strtolower($_SERVER['REQUEST_METHOD']) == 'get' ? $_GET : $_POST;
-if (isset($param['descrizione'])) $descrizione=addslashes($param['descrizione']); else $descrizione='';
-if (isset($param['id_circ'])) $id_circ=intval($param['id_circ']); else $id_circ='0';
+if (isset($param['indirizzo'])) $indirizzo=addslashes($param['indirizzo']); else $indirizzo='';
+if (isset($param['id_sez'])) $id_sez=intval($param['id_sez']); else $id_sez='0';
+if (isset($param['id_sede'])) $id_sede=addslashes($param['id_sede']); else $id_sede='';
+if (isset($param['maschi'])) $maschi=addslashes($param['maschi']); else $maschi='';
+if (isset($param['femmine'])) $femmine=addslashes($param['femmine']); else $femmine='';
 if (isset($param['numero'])) $numero=addslashes($param['numero']); else $numero='';
 if (isset($param['op'])) $op=addslashes($param['op']); else $op='';
 
 global $prefix,$aid,$dbi,$id_cons_gen,$id_cons,$id_comune;
 $salvato=0;
-$query="select * from ".$prefix."_ele_circoscrizione where id_circ='$id_circ'";
+$query="select * from ".$prefix."_ele_sezione where id_sez='$id_sez'";
 $res = $dbi->prepare("$query");
 $res->execute();
 if($res->rowCount()) {
 	if($op=='salva') {
 		#update
-		$sql="update ".$prefix."_ele_circoscrizione set descrizione='$descrizione',num_circ='$numero' where id_circ='$id_circ'";
+		$sql="update ".$prefix."_ele_sezione set id_sede='$id_sede',maschi='$maschi',femmine='$femmine',num_sez='$numero' where id_sez='$id_sez'";
 		try {
 			$compl = $dbi->prepare("$sql");
 			$compl->execute();
@@ -35,11 +38,11 @@ if($res->rowCount()) {
 
 	}elseif($op=='cancella'){	
 		#delete
-		$sql="select * from ".$prefix."_ele_sede where id_circ='$id_circ'";
+		$sql="select * from ".$prefix."_ele_voti_parziale where id_sez='$id_sez'";
 		$compl = $dbi->prepare("$sql");
 		$compl->execute();
 		if(!$compl->rowCount()){
-			$sql="delete from ".$prefix."_ele_circoscrizione where id_circ='$id_circ'";
+			$sql="delete from ".$prefix."_ele_sezione where id_sez='$id_sez'";
 			$compl = $dbi->prepare("$sql");
 			$compl->execute();
 			if(!$compl->rowCount()) $salvato=1;
@@ -48,7 +51,7 @@ if($res->rowCount()) {
 	}
 }else{
 	#insert
-		$sql="insert into ".$prefix."_ele_circoscrizione values( '$id_cons','','$numero','$descrizione' )";
+		$sql="insert into ".$prefix."_ele_sezione (id_cons,id_sede,num_sez,maschi,femmine) values( '$id_cons','$id_sede','$numero','$maschi','$femmine')";
 		$compl = $dbi->prepare("$sql");		
 		$compl->execute(); 
 		if(!$compl->rowCount()) $salvato=1;
@@ -61,12 +64,11 @@ if(!$salvato){
 	$sqlog="insert into ".$prefix."_ele_log values('$id_cons','0','$aid','$datal','$orariol','','$riga','".$prefix."_ele_comune')";
 	$res = $dbi->prepare("$sqlog");
 	$res->execute();
-#		echo "Nuovo orario di rilevazione inserito";
 }elseif($salvato==2){
-	echo "<tr><th colspan=\"3\" style=\"text-align:center\">ATTENZIONE - Non è possibile eliminare una circoscrizione che contiene sedi</th></tr>";
+	echo "<tr><th colspan=\"7\" style=\"text-align:center\">ATTENZIONE - Per questa sezione sono state inserite delle rilevazioni di voto. Non è possibile procedere con l'eliminazione</th></tr>";
 }else{	
-	echo "<tr><td colspan=\"3\">Errore, impossibile salvare i dati - $sql</td></tr>";
+	echo "<tr><td colspan=\"7\">Errore, impossibile salvare i dati - $sql</td></tr>";
 }
-include('modules/elenco_circoscrizioni.php');
+include('modules/elenco_sezioni.php');
 
 ?>
