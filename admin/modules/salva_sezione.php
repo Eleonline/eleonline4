@@ -13,10 +13,10 @@ else
 $param=strtolower($_SERVER['REQUEST_METHOD']) == 'get' ? $_GET : $_POST;
 if (isset($param['indirizzo'])) $indirizzo=addslashes($param['indirizzo']); else $indirizzo='';
 if (isset($param['id_sez'])) $id_sez=intval($param['id_sez']); else $id_sez='0';
-if (isset($param['id_sede'])) $id_sede=addslashes($param['id_sede']); else $id_sede='';
-if (isset($param['maschi'])) $maschi=addslashes($param['maschi']); else $maschi='';
-if (isset($param['femmine'])) $femmine=addslashes($param['femmine']); else $femmine='';
-if (isset($param['numero'])) $numero=addslashes($param['numero']); else $numero='';
+if (isset($param['id_sede'])) $id_sede=addslashes($param['id_sede']); else $id_sede='0';
+if (isset($param['maschi'])) $maschi=addslashes($param['maschi']); else $maschi='0';
+if (isset($param['femmine'])) $femmine=addslashes($param['femmine']); else $femmine='0';
+if (isset($param['numero'])) $numero=addslashes($param['numero']); else $numero='0';
 if (isset($param['op'])) $op=addslashes($param['op']); else $op='';
 
 global $prefix,$aid,$dbi,$id_cons_gen,$id_cons,$id_comune;
