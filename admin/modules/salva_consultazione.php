@@ -132,7 +132,7 @@ if($res->rowCount()) {
 		$compl = $dbi->prepare("$sql");		
 		$compl->execute(); 		
 		list($id_cons_gen2)=$compl->fetch(PDO::FETCH_BOTH);
-		$sql="insert into ".$prefix."_ele_cons_comune values( '','$chiusa','$id_comune','$id_cons_gen2','$id_conf','$preferita','$preferenze','$id_fascia','$vismf','$solo_gruppo','$disgiunto','$proiezione')";
+		$sql="insert into ".$prefix."_ele_cons_comune (chiusa, id_comune, id_cons_gen, id_conf, preferita, preferenze, id_fascia, vismf, solo_gruppo, disgiunto, proiezione) values('$chiusa','$id_comune','$id_cons_gen2','$id_conf','$preferita','$preferenze','$id_fascia','$vismf','$solo_gruppo','$disgiunto','$proiezione')";
 		$compl = $dbi->prepare("$sql");
 		$compl->execute(); 
 		if(!$compl->rowCount()) $salvato=1;
