@@ -48,7 +48,7 @@ if($res->rowCount()) {
 	}
 }else{
 	#insert
-		$sql="insert into ".$prefix."_ele_circoscrizione values( '$id_cons','','$numero','$descrizione' )";
+		$sql="insert into ".$prefix."_ele_circoscrizione (id_cons, num_circ, descrizione) values( '$id_cons','$numero','$descrizione' )";
 		$compl = $dbi->prepare("$sql");		
 		$compl->execute(); 
 		if(!$compl->rowCount()) $salvato=1;

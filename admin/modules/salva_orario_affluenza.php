@@ -43,7 +43,7 @@ if($res->rowCount()){
 	include('modules/elenco_rilevazioni.php');
 	return;
 }
-$sql="insert into ".$prefix."_ele_rilaff values('$id_cons_gen', '$orario', '$data')";
+$sql="insert into ".$prefix."_ele_rilaff (id_cons_gen, orario,data) values('$id_cons_gen', '$orario', '$data')";
 
 try {
 		$res = $dbi->prepare("$sql");

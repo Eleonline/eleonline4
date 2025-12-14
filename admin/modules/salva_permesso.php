@@ -43,7 +43,7 @@ if($res->rowCount()) {
 	}
 }else{
 	#insert
-		$sql="insert into ".$prefix."_ele_operatore values( '$id_cons','$sedi','$id_comune','$permessi','$utente','0','$sezioni')";
+		$sql="insert into ".$prefix."_ele_operatore (id_cons, id_sede, id_comune, permessi, aid, id_circ,id_sez) values( '$id_cons','$sedi','$id_comune','$permessi','$utente','0','$sezioni')";
 		$compl = $dbi->prepare("$sql");
 		$compl->execute(); 
 		if($compl->rowCount()) $salvato=1;

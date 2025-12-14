@@ -125,7 +125,7 @@ if($res->rowCount()) {
 	}
 }else{
 	#insert
-		$sql="insert into ".$prefix."_ele_consultazione values( '','$descrizione','$data_inizio','$data_fine','$tipo_cons','$link_dait')";
+		$sql="insert into ".$prefix."_ele_consultazione (descrizione, data_inizio, data_fine, tipo_cons, link_trasparenza) values( '$descrizione','$data_inizio','$data_fine','$tipo_cons','$link_dait')";
 		$compl = $dbi->prepare("$sql");		
 		$compl->execute();
 		$sql="select id_cons_gen from ".$prefix."_ele_consultazione where descrizione='$descrizione' and data_inizio='$data_inizio' and data_fine='$data_fine'";

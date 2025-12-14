@@ -41,7 +41,7 @@ if($res->rowCount()) {
 	}
 }else{
 	#insert
-		$sql="insert into ".$prefix."_authors values( '$username','$nominativo','$id_comune','$email','$password','0','$operatore','$admin','0','it')";
+		$sql="insert into ".$prefix."_authors (aid, name, id_comune, email, pwd, adminop, admincomune, admlanguage) values( '$username','$nominativo','$id_comune','$email','$password','$operatore','$admin','it')";
 		$compl = $dbi->prepare("$sql");
 		$compl->execute(); 
 		if($compl->rowCount()) $salvato=1;

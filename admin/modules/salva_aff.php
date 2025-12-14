@@ -58,13 +58,13 @@ if($chiusa!=1){
 			$resg = $dbi->prepare("$query");
 			$resg->execute();         
 			while(list($id_gruppo)=$resg->fetch(PDO::FETCH_NUM)) {
-				$sql="insert into ".$prefix."_ele_voti_parziale values ('$id_cons', '$id_sez','0','$orario','$data','$voti_u','$voti_d','$voti_t','$id_gruppo')";
+				$sql="insert into ".$prefix."_ele_voti_parziale (id_cons, id_sez, orario, data, voti_uomini, voti_donne, voti_complessivi, id_gruppo) values ('$id_cons', '$id_sez','$orario','$data','$voti_u','$voti_d','$voti_t','$id_gruppo')";
 				$res = $dbi->prepare("$sql");
 				$res->execute();
 				if($res->rowCount()) $salvato=1;					
 			}
 		}else{
-			$sql="insert into ".$prefix."_ele_voti_parziale values ('$id_cons', '$id_sez','0','$orario','$data','$voti_u','$voti_d','$voti_t','$id_gruppo')";
+			$sql="insert into ".$prefix."_ele_voti_parziale (id_cons, id_sez, orario, data, voti_uomini, voti_donne, voti_complessivi, id_gruppo) values ('$id_cons', '$id_sez','$orario','$data','$voti_u','$voti_d','$voti_t','$id_gruppo')";
 			$res = $dbi->prepare("$sql");
 			$res->execute();
 			if($res->rowCount()) $salvato=1;

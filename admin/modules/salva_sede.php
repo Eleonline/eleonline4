@@ -53,7 +53,7 @@ if($res->rowCount()) {
 	}
 }else{
 	#insert
-		$sql="insert into ".$prefix."_ele_sede values( '$id_cons','','$id_circ','$indirizzo','$telefono','','$fax','$responsabile','','','$latitudine','$longitudine','','')";
+		$sql="insert into ".$prefix."_ele_sede (id_cons, id_circ, indirizzo, telefono1, fax, responsabile, latitudine, longitudine) values( '$id_cons','$id_circ','$indirizzo','$telefono','$fax','$responsabile','$latitudine','$longitudine')";
 		$compl = $dbi->prepare("$sql");		
 		$compl->execute(); 
 		if(!$compl->rowCount()) $salvato=1;
