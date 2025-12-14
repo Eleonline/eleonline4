@@ -8,8 +8,11 @@ global $inizioNoGenere;
 $currentUserRole = $_SESSION['ruolo'] ?? 'operatore';
 $row=elenco_sedi();
 $sezioni = elenco_sezioni();
-$ultimo = end($sezioni);
-$maxNumero = $ultimo['num_sez'];
+if(count($sezioni)){
+	$ultimo = end($sezioni);
+	$maxNumero = $ultimo['num_sez'];
+}else 
+	$maxNumero = 0;
 // qui puoi caricare le consultazioni dal DB o array
 $consultazioni = elenco_cons();
 
