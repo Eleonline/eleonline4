@@ -15,7 +15,7 @@ $circoscrizioni = [
   <div class="container-fluid mt-4">
     <div class="card card-primary shadow-sm">
       <div class="card-header">
-        <h3 class="card-title"><i class="fas fa-flag me-2"></i>Gestione Circoscrizioni</h3>
+        <h3 class="card-title" id="titoloGestioneCircoscrizioni"><i class="fas fa-flag me-2"></i>Gestione Circoscrizioni</h3>
       </div>
 
       <div class="card-body table-responsive" style="max-height:400px; overflow-y:auto;">
@@ -124,12 +124,31 @@ function aggiungiCircoscrizione(e) {
 
   }
   
-   function editCircoscrizione(index) {
-	document.getElementById ( "denominazione" ).value = document.getElementById ( "denominazione"+index ).innerText
-	document.getElementById ( "numero" ).value = document.getElementById ( "numero"+index ).innerText
-	document.getElementById ( "id_circ" ).value = document.getElementById ( "id_circ"+index ).innerText
-	document.getElementById ( "btnAggiungi" ).textContent = "Salva modifiche"
-//	document.getElementById("riga"+index).style.display = 'none' 
-  }
+function annullaModifica() {
+    // Reset del form
+    const myForm = document.getElementById('formCircoscrizione');
+    myForm.reset();
+
+    // Ripulisci l'id nascosto
+    document.getElementById('id_circ').value = '';
+
+    // Ripristina il testo del bottone principale
+    document.getElementById('btnAggiungi').textContent = "Aggiungi";
+
+    // Nascondi il bottone Annulla
+    document.getElementById('btnAnnulla').classList.add('d-none');
+}
+
+// Aggiornamento funzione editCircoscrizione
+function editCircoscrizione(index) {
+    document.getElementById("denominazione").value = document.getElementById("denominazione"+index).innerText;
+    document.getElementById("numero").value = document.getElementById("numero"+index).innerText;
+    document.getElementById("id_circ").value = document.getElementById("id_circ"+index).innerText;
+    document.getElementById("btnAggiungi").textContent = "Salva modifiche";
+
+    // Mostra il bottone Annulla
+    document.getElementById("btnAnnulla").classList.remove('d-none');
+}
+
 
 </script>

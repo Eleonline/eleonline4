@@ -135,7 +135,7 @@ require_once '../includes/check_access.php';
           </div>
 
           <button type="submit" class="btn btn-success" id="submitBtn">Aggiungi Consultazione</button>
-          <button type="reset" class="btn btn-secondary" id="cancelEdit">Annulla</button>
+          <button type="button" class="btn btn-secondary" onclick="resetFormConsultazione()">Annulla</button>
         </form>
       </div>
     </div>
@@ -308,5 +308,47 @@ function selezionaInput() {
 			document.getElementById ( "divlegge" ).style.display = 'block';
 			break
 	}
-}	
+}
+
+function resetFormConsultazione() {
+    const form = document.getElementById('consultazioneForm');
+    form.reset(); // reset base dei campi
+    
+    // Ripulisce campo nascosto
+    document.getElementById('id_cons_gen').value = '';
+
+    // Ripristina testo bottone
+    document.getElementById('submitBtn').textContent = "Aggiungi Consultazione";
+
+    // Ripristina valori di select al primo elemento
+    document.getElementById('tipo').selectedIndex = 0;
+    document.getElementById('chiusa').selectedIndex = 0;
+    document.getElementById('id_conf').selectedIndex = 0;
+    document.getElementById('id_fascia').selectedIndex = 0;
+    document.getElementById('vismf').selectedIndex = 0;
+    document.getElementById('solo_gruppo').selectedIndex = 0;
+    document.getElementById('disgiunto').selectedIndex = 0;
+    document.getElementById('proiezione').selectedIndex = 0;
+
+    // Ripristina checkbox
+    document.getElementById('preferita').checked = false;
+
+    // Ripristina valori input text/url
+    document.getElementById('denominazione').value = '';
+    document.getElementById('data_inizio').value = '';
+    document.getElementById('data_fine').value = '';
+    document.getElementById('link').value = '';
+    document.getElementById('preferenze').value = '';
+
+    // Ripristina visibilità div dinamici allo stato iniziale
+    document.getElementById('divpreferenze').style.display = 'block';
+    document.getElementById('divlink').style.display = 'block';
+    document.getElementById('divsologruppo').style.display = 'block';
+    document.getElementById('divdisgiunto').style.display = 'block';
+    document.getElementById('divfascia').style.display = 'block';
+    document.getElementById('divlegge').style.display = 'block';
+    document.getElementById('divproiezione').style.display = 'block';
+}
+
+
 </script>

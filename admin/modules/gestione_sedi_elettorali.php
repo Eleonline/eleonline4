@@ -52,10 +52,15 @@ $circos=elenco_circoscrizioni();
               <label>Responsabile</label>
               <input type="text" id="responsabile" class="form-control">
             </div>
-            <div class="col-md-2 d-flex align-items-end">
-              <button type="submit" class="btn btn-primary w-100" id="btnSalvaSede">Aggiungi</button>
-            </div>
           </div>
+		  <div class="row mt-2">
+		  <div class="col-md-2">
+			<button type="submit" class="btn btn-primary w-100" id="btnSalvaSede">Aggiungi</button>
+		  </div>
+		  <div class="col-md-2">
+			<button type="reset" class="btn btn-secondary w-100" id="btnResetSede" onclick="resetFormSede()">Annulla</button>
+		  </div>
+		</div>
         </form>
       </div>
 <div class="card shadow-sm mb-3">
@@ -172,6 +177,13 @@ debugger;
 
   }
   
+ function resetFormSede() {
+    const myForm = document.getElementById('formSede');
+    myForm.reset();
+    document.getElementById('idSede').value = '';
+    document.getElementById('btnSalvaSede').textContent = "Aggiungi";
+}
+
    function editSede(index) {
 	document.getElementById ( "idCirc" ).selectedIndex = document.getElementById ( "idCirc"+index ).innerText
 	document.getElementById ( "idSede" ).value = document.getElementById ( "idSede"+index ).innerText
