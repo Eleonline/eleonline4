@@ -12,25 +12,10 @@ require_once '../includes/check_access.php';
 
 
 </section>	  
-<script>
-function scegliTipo() { //visualizza/nasconde le select di sedi e sezioni
-	const val=document.getElementById ( "livello" ).value;
-	if(val=='2'){
-		document.getElementById('divelencosedi').style.display = 'none'
-		document.getElementById('divelencosezioni').style.display = 'block'
-	}else if(val=='1') {
-		document.getElementById('divelencosedi').style.display = 'block'
-		document.getElementById('divelencosezioni').style.display = 'none'
-	
-	}else {
-		document.getElementById('divelencosedi').style.display = 'none'
-		document.getElementById('divelencosezioni').style.display = 'none'
-		
-	}
-		
-}
 
-function editUser(id) { debugger
+<script>
+
+function editUser(id) {
   document.getElementById("card-body").style.display = 'block';
   var x = document.getElementById("utente");
   var option = document.createElement("option");
