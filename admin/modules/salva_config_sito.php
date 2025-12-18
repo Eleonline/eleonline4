@@ -21,23 +21,39 @@ if (isset($_GET['googleApiKey'])) $googleApiKey=$_GET['googleApiKey']; else $goo
 if (isset($_GET['multicomune'])) $multicomune=$_GET['multicomune']; else $multicomune='';
 if (isset($_GET['defaultComune'])) $defaultComune=$_GET['defaultComune']; else $defaultComune='';
 if (isset($_GET['op'])) $op=$_GET['op']; else $op='';
-#if (isset($_GET['scrutinata'])) {$scrutinata=$_GET['scrutinata']==false ? false : true;}else $scrutinata=false;
-
 
 $id_cons=$_SESSION['id_cons'];
 $salvato=1;
 
-$sql="update ".$prefix."_config set siteistat='$siteIstat',sitename='$siteName', siteurl='$siteUrl', adminmail='$emailAdmin', multicomune='$multicomune', googlemaps='$mapsProvider', gkey='$googleApiKey'";
+/* ===== UNICA PARTE MODIFICATA (QUI ERA L'ERRORE) ===== */
+$sql = "update ".$prefix."_config 
+        set siteistat = :siteistat,
+            sitename = :sitename,
+            siteurl = :siteurl,
+            adminmail = :adminmail,
+            multicomune = :multicomune,
+            googlemaps = :googlemaps,
+            gkey = :gkey";
 
 try {
-		$res = $dbi->prepare("$sql");
-		$res->execute();
-	}
+    $res = $dbi->prepare($sql);
+    $res->execute([
+        ':siteistat'   => $siteIstat,
+        ':sitename'    => $siteName,
+        ':siteurl'     => $siteUrl,
+        ':adminmail'   => $emailAdmin,
+        ':multicomune' => $multicomune,
+        ':googlemaps'  => $mapsProvider,
+        ':gkey'        => $googleApiKey
+    ]);
+}
 catch(PDOException $e)
-	{
-		echo $sql . "<br>" . $e->getMessage();
-		$salvato=0;
-	}                  
+{
+    echo $sql . "<br>" . $e->getMessage();
+    $salvato=0;
+}
+/* ===== FINE PARTE MODIFICATA ===== */
+
 if($salvato){
 	echo "<br><button id=\"bottoneStato\" style=\"background-color:aquamarine;\" onfocusout=\"document.getElementById('bottoneStato').style.display='none'\" > Dati salvati correttamente $id_comune</button>";
 }else{

@@ -158,7 +158,18 @@ if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
 				document.getElementById("bottoneStato").focus();
 		}
     }
-    xmlhttp.open("GET","../principale.php?funzione=salvaConfigSito&siteIstat="+siteIstat+"&siteName="+siteName+"&siteUrl="+siteUrl+"&emailAdmin="+emailAdmin+"&mapsProvider="+mapsProvider+"&googleApiKey="+googleApiKey,true);
+    xmlhttp.open(
+  "GET",
+  "../principale.php?funzione=salvaConfigSito" +
+  "&siteIstat="    + encodeURIComponent(siteIstat) +
+  "&siteName="     + encodeURIComponent(siteName) +
+  "&siteUrl="      + encodeURIComponent(siteUrl) +
+  "&emailAdmin="   + encodeURIComponent(emailAdmin) +
+  "&mapsProvider=" + encodeURIComponent(mapsProvider) +
+  "&googleApiKey=" + encodeURIComponent(googleApiKey),
+  true
+);
+
     xmlhttp.send();
   }
 
