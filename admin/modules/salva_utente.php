@@ -18,7 +18,7 @@ if (isset($param['nominativo'])) $nominativo=addslashes($param['nominativo']); e
 if (isset($param['op'])) $op=addslashes($param['op']); else $op='';
 if (isset($param['admin'])) $admin=addslashes($param['admin']); else $admin='0';
 if($admin == 'true') { $admin=1; $operatore=0;}
-else $operatore=1;
+else {$admin=0; $operatore=1;}
 global $prefix,$aid,$dbi,$id_comune;
 $salvato=0;
 $query="select * from ".$prefix."_authors where aid='$username'";

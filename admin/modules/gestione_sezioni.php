@@ -118,6 +118,27 @@ function aggiungiSezione(e) {
         });
 }
 
+ function deleteSezione(index) {
+	const id_sezione = document.getElementById('idSezione'+index).innerText;
+    const numero = document.getElementById('numero'+index).innerText;
+    const formData = new FormData();
+    formData.append('funzione', 'salvaSezione');
+    formData.append('id_sez', id_sezione);
+	formData.append('numero', numero);
+	formData.append('op', 'cancella');
+
+    fetch('../principale.php', {
+        method: 'POST',
+        body: formData 
+    })
+    .then(response => response.text()) // O .json() se il server risponde con JSON
+    .then(data => {
+        document.getElementById('risultato').innerHTML = data; // Mostra la risposta del server
+		document.getElementById ( "btnSalvaSezione" ).textContent = "Aggiungi";
+    })
+
+
+  }
 function editSezione(index) {
     document.getElementById("idSezione").value = document.getElementById("idSezione"+index).innerText;
     document.getElementById("idSede").value = document.getElementById("idSede"+index).innerText;
@@ -125,6 +146,8 @@ function editSezione(index) {
     document.getElementById("femmine").value = document.getElementById("femmine"+index).innerText;
     document.getElementById("numero").value = document.getElementById("numero"+index).innerText;
     document.getElementById("btnSalvaSezione").textContent = "Salva modifiche";
+	document.getElementById("numero").focus();
+	
 }
 
 function resetFormSezione() {
@@ -135,8 +158,9 @@ function resetFormSezione() {
 }
 
 function aggiornaNumero() {
-    const sezioni = document.querySelectorAll('#sezioniTable tbody tr');
-    const maxNum = sezioni.length ? Math.max(...Array.from(sezioni).map(r => parseInt(r.querySelector('.numero')?.innerText || 0))) : 0;
-    document.getElementById('numero').value = maxNum + 1;
+//    const sezioni = document.querySelectorAll('#sezioniTable tbody tr');
+//    const maxNum = sezioni.length ? Math.max(...Array.from(sezioni).map(r => parseInt(r.querySelector('.numero')?.innerText || 0))) : 0;
+	const maxNum = document.getElementById("maxNumero").innerText;
+    document.getElementById('numero').value = maxNum;
 }
 </script>

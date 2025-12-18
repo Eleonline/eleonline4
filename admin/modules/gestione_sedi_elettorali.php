@@ -184,8 +184,8 @@ debugger;
     document.getElementById('btnSalvaSede').textContent = "Aggiungi";
 }
 
-   function editSede(index) {
-	document.getElementById ( "idCirc" ).selectedIndex = document.getElementById ( "idCirc"+index ).innerText
+   function editSede(index) { 
+	document.getElementById ( "idCirc" ).value = document.getElementById ( "idCirc"+index ).innerText
 	document.getElementById ( "idSede" ).value = document.getElementById ( "idSede"+index ).innerText
 	document.getElementById ( "indirizzo" ).value = document.getElementById ( "indirizzo"+index ).innerText
 	document.getElementById ( "telefono" ).value = document.getElementById ( "telefono"+index ).innerText

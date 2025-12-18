@@ -30,7 +30,8 @@ function scegliTipo() { //visualizza/nasconde le select di sedi e sezioni
 		
 }
 
-function editUser(id) {
+function editUser(id) { debugger
+  document.getElementById("card-body").style.display = 'block';
   var x = document.getElementById("utente");
   var option = document.createElement("option");
   option.text = document.getElementById('utente'+id).innerText;

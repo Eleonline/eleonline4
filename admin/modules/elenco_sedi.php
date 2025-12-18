@@ -15,9 +15,7 @@ $row = elenco_sedi(); // elenco sedi
             <?= $val['id_sede'] ?>
         </td>
 
-        <td id="idCirc<?= $key ?>" style="display:none;">
-            <?= $val['id_circ'] ?>
-        </td>
+        <td id="idCirc<?= $key ?>" style="display:none;"><?= $val['id_circ'] ?></td>
 
         <td id="descrizione<?= $key ?>">
             <?= $val['descrizione'] ?>

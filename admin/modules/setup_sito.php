@@ -75,8 +75,8 @@ if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
                  title="Seleziona il provider delle mappe da usare per l'interfaccia della sede elettorale. OpenStreetMap è gratuito. Google Maps può richiedere una chiave API e comportare costi."></i>
             </label>
             <select class="form-select" name="googlemaps" id="maps_provider" onchange="toggleApiKeyField()">
-              <option value="openstreetmap" <?= $MAP_PROVIDER === 'openstreetmap' ? 'selected' : '' ?>>OpenStreetMap</option>
-              <option value="google" <?= $MAP_PROVIDER === 'google' ? 'selected' : '' ?>>Google Maps</option>
+              <option value="0" <?= $MAP_PROVIDER === 'openstreetmap' ? 'selected' : '' ?>>OpenStreetMap</option>
+              <option value="1" <?= $MAP_PROVIDER === 'google' ? 'selected' : '' ?>>Google Maps</option>
             </select>
           </div>
 

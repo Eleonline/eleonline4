@@ -40,20 +40,10 @@ $maxNumero++;
     <td id="femmine<?= $key ?>" style="text-align:right; <?= $nascondi ?>"><?= $val['femmine'] ?></td>
     <td id="totale<?= $key ?>" style="text-align:right;"><?= number_format($val['maschi'] + $val['femmine'],0,',','.') ?></td>
     <td>
-        <button class="btn btn-sm btn-warning me-1" onclick="editSezione(<?= $key ?>); scrollToFormTitle();">Modifica</button>
+        <button class="btn btn-sm btn-warning me-1" onclick="editSezione(<?= $key ?>);">Modifica</button>
         <button type="button" class="btn btn-danger btn-sm" onclick="deleteSezione(<?= $key ?>)">Elimina</button>
     </td>
 
 </tr>
 <?php endforeach; ?>
-<script>
-function scrollToFormTitle() {
-    const target = document.getElementById('form-title');
-    if (target) {
-        target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-    }
-}
-</script>
+
