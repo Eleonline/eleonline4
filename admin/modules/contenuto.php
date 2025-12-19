@@ -3,7 +3,7 @@ require_once '../includes/check_access.php';
 
 // Mappa delle pagine admin valide
 $pagesMap = [
-    0 => 'dashboard.php',
+    0 => 'dashboard/dashboard.php',
     1 => 'status_system.php',
     2 => 'logs.php',
     3 => 'setup_sito.php',

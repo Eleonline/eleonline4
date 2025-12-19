@@ -1,0 +1,84 @@
+GUIDA: COME AGGIUNGERE, MODIFICARE O RIMUOVERE CARD/BOX NELLA DASHBOARD
+
+1️⃣ Creare il file della card/box
+
+- Tutte le card/box sono file PHP dentro la cartella:
+  admin/modules/dashboard/cards/
+
+- Box piccolo (small-box):
+  Esempio: box_demo.php
+  ------------------------------------
+  <?php include __DIR__.'/_data_simulati.php'; ?>
+  <div class="small-box bg-purple">
+    <div class="inner">
+      <h3><?= $comune['abitanti'] + 100 ?></h3>
+      <p>Box Demo</p>
+    </div>
+    <div class="icon"><i class="fas fa-star"></i></div>
+  </div>
+
+- Box grande (scheda/card):
+  Esempio: scheda_demo.php
+  ------------------------------------
+  <?php include __DIR__.'/_data_simulati.php'; ?>
+  <div class="card bg-light">
+    <div class="card-header">
+      <h3 class="card-title"><i class="fas fa-star"></i> Scheda Demo</h3>
+    </div>
+    <div class="card-body">
+      <p>Questo è un box demo grande</p>
+    </div>
+  </div>
+
+- Puoi usare il file _data_simulati.php per dati demo già pronti ($comune array).
+
+2️⃣ Aggiungere la card/box all’array $cards
+
+- Apri dashboard.php
+- Trova l’array $cards:
+  ------------------------------------
+  $cards = [
+    'scheda-comune'  => ['file'=>'cards/scheda_comune.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore']],
+    ...
+  ];
+
+- Aggiungi la tua card/box:
+  'box-demo' => ['file'=>'cards/box_demo.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin']],
+  'scheda-demo' => ['file'=>'cards/scheda_scheda_demo.php','col'=>'col-md-6','roles'=>['superuser','admin']],
+
+- col: definisce la dimensione
+  - col-lg-3 col-6 → box piccolo
+  - col-md-6 → box grande
+- roles: definisce chi può vedere il box (superuser, admin, operatore)
+
+3️⃣ Filtri Mostra/Nascondi card
+
+- Il pannello filtri genera automaticamente i checkbox dalle card presenti in $cards
+- Non serve modificare il pannello manualmente
+- La visibilità è salvata automaticamente in LocalStorage
+
+4️⃣ Drag & Drop
+
+- Tutte le card/box sono già trascinabili
+- La loro posizione è salvata in LocalStorage
+- In futuro puoi salvare su database SQL (vedi codice commentato in saveState())
+
+5️⃣ Modificare una card/box
+
+- Apri il file PHP della card in cards/
+- Modifica colori, icone, testo o dati
+- Salva e ricarica la dashboard
+
+6️⃣ Rimuovere una card/box
+
+- Rimuovi la voce corrispondente da $cards in dashboard.php
+- Puoi anche eliminare il file PHP dalla cartella cards/ se non serve più
+
+7️⃣ Note aggiuntive
+
+- Tutti i percorsi degli include devono essere corretti, usare __DIR__ per evitare errori
+- Per dati demo, usa _data_simulati.php
+- Quando aggiungi nuovi box, verranno automaticamente aggiunti ai checkbox e al drag & drop
+- Puoi usare i box demo come **tema o esempio** per nuovi layout/colori/icone
+
+✅ Seguendo questa guida puoi aggiungere, modificare o rimuovere box in pochi minuti senza rompere la dashboard.
