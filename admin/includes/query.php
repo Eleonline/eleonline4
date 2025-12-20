@@ -89,6 +89,26 @@ function elenco_comuni()
 	return($row);	
 }
 
+function elenco_fasce($id)
+{
+	global $id_cons,$id_comune,$prefix,$dbi;
+	$sql="select * from ".$prefix."_ele_fascia where id_conf='$id' order by id_fascia";
+	$sth = $dbi->prepare("$sql");
+	$sth->execute();
+	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+	return($row);	
+}
+
+function elenco_gruppi()
+{
+	global $id_cons,$id_comune,$prefix,$dbi;
+	$sql="select * from ".$prefix."_ele_gruppo where id_cons='$id_cons' order by num_gruppo";
+	$sth = $dbi->prepare("$sql");
+	$sth->execute();
+	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+	return($row);	
+}
+
 function elenco_leggi()
 {
 	global $id_cons,$id_comune,$prefix,$dbi;
@@ -103,16 +123,6 @@ function elenco_liste()
 {
 	global $id_cons,$id_comune,$prefix,$dbi;
 	$sql="select * from ".$prefix."_ele_lista where id_cons='$id_cons' order by num_lista";
-	$sth = $dbi->prepare("$sql");
-	$sth->execute();
-	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
-	return($row);	
-}
-
-function elenco_fasce($id)
-{
-	global $id_cons,$id_comune,$prefix,$dbi;
-	$sql="select * from ".$prefix."_ele_fascia where id_conf='$id' order by id_fascia";
 	$sth = $dbi->prepare("$sql");
 	$sth->execute();
 	$row = $sth->fetchAll(PDO::FETCH_ASSOC);

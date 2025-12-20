@@ -1,5 +1,5 @@
 <?php
-/*
+
 require_once '../includes/check_access.php';
 require_once '../includes/db.php'; // connessione PDO
 
@@ -12,14 +12,14 @@ if (!$data || !isset($_SESSION['username'])) {
 $username = $_SESSION['username'];
 
 // Cancella layout precedente
-$pdo->prepare("DELETE FROM dashboard_layout WHERE username = ?")
+$pdo->prepare("DELETE FROM ".$prefix."_dashboard_layout WHERE username = ?")
     ->execute([$username]);
 
 $pos = 0;
 foreach ($data['order'] as $cardId) {
     $visibile = isset($data['visibility'][$cardId]) && $data['visibility'][$cardId] ? 1 : 0;
     $stmt = $pdo->prepare("
-        INSERT INTO dashboard_layout
+        INSERT INTO ".$prefix."_dashboard_layout
         (username, card_id, posizione, visibile)
         VALUES (?, ?, ?, ?)
     ");
@@ -32,4 +32,4 @@ foreach ($data['order'] as $cardId) {
 }
 
 echo json_encode(['status' => 'ok']);
-*/
+

@@ -104,6 +104,11 @@ function controllo($tabella,$campo,$num)
 	$sql="SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$dbname' AND TABLE_NAME = '$tabella'";
 	$res = $dbi->prepare("$sql");
 	$res->execute();
+	if(!$res->rowCount())
+	{
+		$strlog= "<br>$num) La tabella: $tabella non è presente nel database"; 
+		return 0;
+	}
 	if($res->rowCount() and $campo=='') return 1;
 	while(list($nome)=$res->fetch(PDO::FETCH_NUM)) {if($nome==$campo) { $strlog= "<br>".$num.") Il campo: $campo è presente nella tabella: $tabella"; return 1;}}
 	if($campo) $strlog= "<br>$num) Il campo: $campo non è presente nella tabella: $tabella"; 
@@ -132,6 +137,18 @@ if($res->rowCount()) {
 	$strlog= "<br> Il record cookie_law.php è stato eliminato dalla tabella dei widget, usare privacy.php<br>";
 }	else $strlog= "<br><span style=\"color: green;\">- La tabella ".$prefix."_ele_widget non richiede questo aggiornamento</span><br>";
 
+if(!controllo($prefix.'_dashboard_layout','',++$num))
+{
+	$sql="CREATE TABLE $prefix.'_dashboard_layout (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
+  card_id VARCHAR(50) NOT NULL,
+  posizione INT NOT NULL,
+  visibile TINYINT(1) NOT NULL
+);";
+	$strlog= "<br>".$num.") Creazione tabella per dashboard personalizzata ";
+	$ret=aggiorna($sql,$dbi,'',$num);
+}else $strlog= "<br><span style=\"color: green;\">- La tabella ".$prefix."_ws_consultazione non richiede questo aggiornamento</span><br>";
 
 # CREATE TABLE `".$prefix."_ws_stranieri` (`id_cons` INT(11) NOT NULL, `id_sez` INT(11) NOT NULL , `id_nazione` INT(11) NOT NULL, `numero` INT(11) NOT NULL DEFAULT '0');
 # CREATE TABLE `".$prefix."_ws_nazioni` (`id_nazione` varchar(3) NOT NULL , `descrizione` VARCHAR(60) NOT NULL );

@@ -7,6 +7,9 @@ $SITE_NAME = $row[0]['sitename'];
 $SITE_URL = $row[0]['siteurl'];
 $EMAIL_ADMIN = $row[0]['adminmail'];
 $MAP_PROVIDER = $row[0]['googlemaps']==='1' ? 'google' : 'openstreetmap' ;
+$DOCS='../documenti/';
+if($row[0]['nome_testata'] and is_file($DOCS.$row[0]['nome_testata'])) $SITE_IMAGE = $row[0]['nome_testata']; 
+elseif(is_file($DOCS.'logo.jpg')) $SITE_IMAGE = 'logo.jpg';
 #$SITE_COMUNE = $row[0]['siteistat']>0 ? $row[0]['siteistat'] : $id_comune;
 #$MULTICOMUNE = $row[0]['multicomune']; #==='1' ? 'si' : 'no';
 $gru = [
@@ -26,7 +29,6 @@ foreach($row as $key=>$val){
 #$DEFAULT_COMUNE = 'Comune di Roma';
 #echo "TEST:$SITE_ISTAT: $id_comune:".$_SESSION['id_comune'];
 
-if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
 ?>
 
 <section class="content">
@@ -42,13 +44,13 @@ if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
           <div class="mb-3 d-flex align-items-center">
             <div id="previewImageDiv"
                  style="width: 100px; height: 60px; border: 1px solid #ccc; object-fit: contain; margin-right: 15px;">
-              <img src="<?= htmlspecialchars($SITE_IMAGE) ?>" alt="Anteprima" id="previewImg" style="max-width: 100%; max-height: 100%;">
+              <img src="<?= htmlspecialchars($DOCS.$SITE_IMAGE) ?>" alt="Anteprima" id="previewImg" style="max-width: 100%; max-height: 100%;">
             </div>
             <div class="flex-grow-1">
               <label for="siteImage" class="form-label">Logo del sito</label>
               <input type="text" id="siteImage" name="site_image" class="form-control" value="<?= htmlspecialchars($SITE_IMAGE) ?>">
               <button type="button" class="btn btn-outline-secondary mt-2" id="uploadBtn">Carica</button>
-              <input type="file" id="fileInput" accept="image/*" style="display:none;">
+              <input type="file" id="fileInput" accept="image/jpeg" style="display:none;">
             </div>
           </div>
 
@@ -142,37 +144,42 @@ if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
 
 <script>
   function aggiornaDati(e) {
-    e.preventDefault();
+    e.preventDefault();debugger
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
     const siteIstat = document.getElementById('siteIstat').value;
+    const siteImage = document.getElementById('siteImage').value;
     const siteName = document.getElementById('siteName').value;
     const siteUrl = document.getElementById('siteUrl').value;
     const emailAdmin = document.getElementById('emailAdmin').value;
     const mapsProvider = document.getElementById('maps_provider').value;
     const googleApiKey = document.getElementById('googleApiKey').value;
 
-    // Salvataggio nel DB (commentato)
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-				document.getElementById("risultato").innerHTML = this.responseText;
-				document.getElementById("bottoneStato").focus();
-		}
-    }
-    xmlhttp.open(
-  "GET",
-  "../principale.php?funzione=salvaConfigSito" +
-  "&siteIstat="    + encodeURIComponent(siteIstat) +
-  "&siteName="     + encodeURIComponent(siteName) +
-  "&siteUrl="      + encodeURIComponent(siteUrl) +
-  "&emailAdmin="   + encodeURIComponent(emailAdmin) +
-  "&mapsProvider=" + encodeURIComponent(mapsProvider) +
-  "&googleApiKey=" + encodeURIComponent(googleApiKey),
-  true
-);
+    const formData = new FormData();
+    formData.append('funzione', 'salvaConfigSito');
+    formData.append('siteIstat', siteIstat);
+    formData.append('siteImage', siteImage);
+    formData.append('siteName', siteName);
+    formData.append('siteUrl', siteUrl);
+    formData.append('emailAdmin', emailAdmin);
+    formData.append('mapsProvider', mapsProvider);
+    formData.append('googleApiKey', googleApiKey);
+	if (file) {
+		formData.append('siteImage', file);
+	}
+    formData.append('op', 'salva');
 
-    xmlhttp.send();
+    // Invia la richiesta AJAX usando Fetch
+    fetch('../principale.php', {
+        method: 'POST',
+        body: formData // FormData viene gestito automaticamente da Fetch per l'upload
+    })
+    .then(response => response.text()) // O .json() se il server risponde con JSON
+    .then(data => {
+        document.getElementById("risultato").innerHTML = data; // Mostra la risposta del server
+		document.getElementById("bottoneStato").focus();
+  })
   }
-
   // Tooltip Bootstrap 5 init
   document.addEventListener('DOMContentLoaded', function () {
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -202,7 +209,7 @@ if(is_file('../logo.jpg')) $SITE_IMAGE = '../logo.jpg';
   // Mostra/nasconde campo API Key
   function toggleApiKeyField() {
     const provider = document.getElementById('maps_provider').value;
-    document.getElementById('apikey_row').style.display = (provider === 'google') ? '' : 'none';
+    document.getElementById('apikey_row').style.display = (provider === '1') ? '' : 'none';
   }
   
   function nascondiElemento() {
