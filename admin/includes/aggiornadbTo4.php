@@ -116,6 +116,12 @@ function controllo($tabella,$campo,$num)
 }
 
 $num=0;		
+if(controllo($prefix.'_authors','pwd',++$num))
+{
+	$sql="ALTER TABLE `soraldo_authors` CHANGE `pwd` `pwd` VARCHAR(120) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL; ";
+	$ret=aggiorna($sql,$dbi,'',$num);
+	$strlog= "<br> La tabella dei permessi è stata aggiornata<br>";
+}else $strlog= "<br><span style=\"color: green;\">- La tabella ".$prefix."_authors non richiede questo aggiornamento</span><br>";	
 if(controllo($prefix.'_authors','admincomune',++$num))
 {
 	$sql="UPDATE `".$prefix."_authors` SET `adminsuper` = '0',`admincomune` = '0' WHERE `".$prefix."_authors`.`aid` != 'admin' AND `".$prefix."_authors`.`adminsuper` != '1'";

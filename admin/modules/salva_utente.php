@@ -26,24 +26,84 @@ $res = $dbi->prepare("$query");
 $res->execute();
 if($res->rowCount()) {
 	if($op=='salva') {
-			if($password!='********') {$password=md5($password); $pass=",pwd='$password'"; }else $pass="";
+		if($password!='********') {
+			$password=password_hash($password,PASSWORD_DEFAULT);
 			#update
-			$sql="update ".$prefix."_authors set name='$nominativo',adminop='$operatore',admincomune='$admin', email='$email' $pass where aid='$username'";
-			$compl = $dbi->prepare("$sql");
-			$compl->execute(); 
+			$sql="update ".$prefix."_authors 
+			set name= :name,
+			adminop= :adminop,
+			admincomune= :admincomune,
+			pwd= :pwd,
+			email= :email 
+			where aid= :aid";
+			try {
+				$compl = $dbi->prepare($sql);
+				$compl->execute([
+				':name' => $nominativo,
+				':admincomune' => $admin,
+				':adminop' => $operatore,
+				':pwd' => $password,
+				':email' => $email,
+				':aid' => $username
+				]);
+			}
+			catch(PDOException $e)
+			{
+				echo $e->getMessage();
+			}
 			if($compl->rowCount()) $salvato=1;
+		}else{
+			$sql="update ".$prefix."_authors 
+			set name= :name,
+			adminop= :adminop,
+			admincomune= :admincomune,
+			email= :email 
+			where aid= :aid";
+			try {
+				$compl = $dbi->prepare($sql);
+				$compl->execute([
+				':name' => $nominativo,
+				':admincomune' => $admin,
+				':adminop' => $operatore,
+				':email' => $email,
+				':aid' => $username
+				]);
+			}
+			catch(PDOException $e)
+			{
+				echo $e->getMessage();
+			}
+			if($compl->rowCount()) $salvato=1;
+		}		
 	}elseif($op=='cancella'){
 		#delete
-		$sql="delete from ".$prefix."_authors where  aid='$username'";
-		$compl = $dbi->prepare("$sql");
-		$compl->execute(); 
+		$sql="delete from ".$prefix."_authors where aid= :aid";
+		try {
+			$compl = $dbi->prepare("$sql");
+			$compl->execute([
+				':aid' => $username
+			]);
+		}
+		catch(PDOException $e)
+		{
+			echo $e->getMessage();
+		}
 		if($compl->rowCount()) $salvato=1;
 	}
 }else{
 	#insert
-		$sql="insert into ".$prefix."_authors (aid, name, id_comune, email, pwd, adminop, admincomune, admlanguage) values( '$username','$nominativo','$id_comune','$email','$password','$operatore','$admin','it')";
+		$password=password_hash($password,PASSWORD_DEFAULT);
+		$sql="insert into ".$prefix."_authors (aid, name, id_comune, email, pwd, adminop, admincomune, admlanguage) values( :aid,:name,:id_comune,:email,:pwd,:adminop,:admincomune,'it')";
 		$compl = $dbi->prepare("$sql");
-		$compl->execute(); 
+		$compl->execute([
+				':name' => $nominativo,
+				'id_comune' => $id_comune,
+				':admincomune' => $admin,
+				':adminop' => $operatore,
+				':pwd' => $password,
+				':email' => $email,
+				':aid' => $username
+				]); 
 		if($compl->rowCount()) $salvato=1;
 }
 

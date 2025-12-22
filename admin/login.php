@@ -1,4 +1,5 @@
 <?php
+# ALTER TABLE `soraldo_authors` CHANGE `pwd` `pwd` VARCHAR(120) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 session_start();
 define('APP_RUNNING', true);
 
@@ -67,9 +68,8 @@ if (isset($_POST['username'])) {
 	$pwd=$_POST['password'];
     if (strlen($aid)>25 ) { die ("Nome utente troppo lungo: $aid"); }	
 	if (strstr( $aid," ")) { die ("Gli spazi non sono ammessi nel nome utente: $aid"); }
-	$mpwd=md5($pwd);
 	if (isset($_POST['id_comune']) and intval($_POST['id_comune'])>0) $id_comune=intval($_POST['id_comune']); else $id_comune=$row['siteistat'];
-	$sth = $dbi->prepare("select pwd,adminop,admincomune,adminsuper,counter,admlanguage from ".$prefix."_authors where binary aid='$aid' and pwd='$mpwd' and (id_comune='$id_comune' or adminsuper='1')");
+	$sth = $dbi->prepare("select pwd,adminop,admincomune,adminsuper,counter,admlanguage from ".$prefix."_authors where binary aid='$aid' and (id_comune='$id_comune' or adminsuper='1')");
 	$sth->execute();	
 	$esiste=$sth->rowCount();
 	$row = $sth->fetch(PDO::FETCH_ASSOC);
@@ -77,9 +77,20 @@ if (isset($_POST['username'])) {
 		$_SESSION['msglogout']=2;
 		header("Location: ../logout.php");
 	}else{ 
-		if ($row['pwd']!=$mpwd) {
-			$msglogout=3;
-			header("Location: ../logout.php");				
+		if (!password_verify($pwd,$row['pwd'])) {
+			if(md5($pwd)!=$row['pwd']) {
+				$msglogout=3;
+				header("Location: ../logout.php");
+			}else{
+				$bpwd=password_hash($pwd,PASSWORD_DEFAULT);
+				$sth = $dbi->prepare("update ".$prefix."_authors set pwd=:bpwd where binary aid=:aid and (id_comune=:id_comune or (adminsuper='1'))");
+				$sth->execute([
+				':id_comune' => $id_comune,
+				':bpwd' => $bpwd,
+				':aid' => $aid
+				]);	
+				
+			}
 		}
 		$counter = $row['counter'];
 		$counter++;
