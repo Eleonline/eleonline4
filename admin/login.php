@@ -73,6 +73,7 @@ if (isset($_POST['username'])) {
 	$sth->execute();	
 	$esiste=$sth->rowCount();
 	$row = $sth->fetch(PDO::FETCH_ASSOC);
+	$bpwd=$row['pwd'];
 	if(!$esiste) {
 		$_SESSION['msglogout']=2;
 		header("Location: ../logout.php");
@@ -96,7 +97,7 @@ if (isset($_POST['username'])) {
 		$counter++;
 #			$tmplang=$row['admlanguage'];
 #			if(strlen($tmplang)==2) $language=$tmplang;
-		$sth = $dbi->prepare("update ".$prefix."_authors set counter=$counter where aid='$aid' and pwd='$mpwd' and id_comune='$id_comune'");
+		$sth = $dbi->prepare("update ".$prefix."_authors set counter=$counter where aid='$aid' and pwd='$bpwd' and id_comune='$id_comune'");
 		$sth->execute();
 		$_SESSION['id_comune']=$id_comune;
 		$id_cons_gen=intval(default_cons());
@@ -113,7 +114,7 @@ elseif($row['adminop']) $role='operatore';
 #        list($user, $pass, $role) = explode("|", trim($line));
 #        i f ($_POST['username'] === $user && $_POST['password'] === $pass) {
             $_SESSION['username'] = $aid;
-            $_SESSION['pwd'] = $mpwd;
+            $_SESSION['pwd'] = $bpwd;
             $_SESSION['ruolo'] = $role;
 			$_SESSION['prefix'] = $prefix;
             header("Location: modules/modules.php");

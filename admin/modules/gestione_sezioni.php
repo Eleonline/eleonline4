@@ -93,7 +93,7 @@ $maxNumero = count($sezioni) ? end($sezioni)['num_sez'] : 0;
 
 <script>
 function aggiungiSezione(e) {
-    e.preventDefault();
+    e.preventDefault(); 
     const id_sede = document.getElementById('idSede').value;
     const id_sez = document.getElementById('idSezione').value;
     const numero = document.getElementById('numero').value;
@@ -135,6 +135,7 @@ function aggiungiSezione(e) {
     .then(data => {
         document.getElementById('risultato').innerHTML = data; // Mostra la risposta del server
 		document.getElementById ( "btnSalvaSezione" ).textContent = "Aggiungi";
+		aggiornaNumero();
     })
 
 
@@ -144,6 +145,7 @@ function editSezione(index) {
     document.getElementById("idSede").value = document.getElementById("idSede"+index).innerText;
     document.getElementById("maschi").value = document.getElementById("maschi"+index).innerText;
     document.getElementById("femmine").value = document.getElementById("femmine"+index).innerText;
+    document.getElementById("totale").value = document.getElementById("totale"+index).innerText;
     document.getElementById("numero").value = document.getElementById("numero"+index).innerText;
     document.getElementById("btnSalvaSezione").textContent = "Salva modifiche";
 	document.getElementById("numero").focus();
