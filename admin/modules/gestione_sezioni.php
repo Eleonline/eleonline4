@@ -7,6 +7,7 @@ $dataInizio = strtotime($row[0]['data_inizio']);
 $sezioni = elenco_sezioni();
 $row = elenco_sedi();
 $maxNumero = count($sezioni) ? end($sezioni)['num_sez'] : 0;
+$maxNumero++;
 ?>
 
 <section class="content">
@@ -24,7 +25,7 @@ $maxNumero = count($sezioni) ? end($sezioni)['num_sez'] : 0;
           <div class="form-row">
             <div class="form-group col-md-2">
               <label>Numero Sezione*</label>
-              <input type="number" id="numero" class="form-control" required min="1" value="<?= $maxNumero + 1; ?>">
+              <input type="number" id="numero" class="form-control" required min="1" value="<?= $maxNumero ?>">
             </div>
             <div class="form-group col-md-4">
               <label>Indirizzo (Sede)*</label>

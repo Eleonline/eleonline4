@@ -1,14 +1,13 @@
 <?php
 require_once '../includes/check_access.php';
-
-// Dati fittizi PHP
-$circoscrizioni = [
-    ['numero' => '1', 'denominazione' => 'Centro città'],
-    ['numero' => '2', 'denominazione' => 'Nord'],
-    ['numero' => '3', 'denominazione' => 'Sud'],
-    ['numero' => '4', 'denominazione' => 'Est'],
-    ['numero' => '5', 'denominazione' => 'Ovest'],
-];
+$row = elenco_circoscrizioni();
+if (count($row)) {
+    $ultimo = end($row);
+    $maxNumero = $ultimo['num_circ'];
+} else {
+    $maxNumero = 0;
+}
+$maxNumero++;
 ?>
 
 <section class="content">
@@ -19,7 +18,7 @@ $circoscrizioni = [
       </div>
 
       <div class="card-body table-responsive" style="max-height:400px; overflow-y:auto;">
-        <form id="formCircoscrizione" class="mb-3" onsubmit="aggiungiCircoscrizione(event)">
+        <form id="circoscrizioneForm" class="mb-3" onsubmit="aggiungiCircoscrizione(event)">
           <div class="row">
             <div class="col-md-2" style="display:none">
               <label for="id_circ"></label>
@@ -27,7 +26,7 @@ $circoscrizioni = [
             </div>
             <div class="col-md-2">
               <label for="numero">Numero</label>
-              <input type="number" class="form-control" id="numero" required>
+              <input type="number" class="form-control" id="numero" min="1" value="<?= $maxNumero; ?>" required>
             </div>
             <div class="col-md-7">
               <label for="denominazione">Denominazione</label>
@@ -91,11 +90,10 @@ function aggiungiCircoscrizione(e) {
     })
     .then(response => response.text()) // O .json() se il server risponde con JSON
     .then(data => {
-        risultato.innerHTML = data; // Mostra la risposta del server
-		const myForm = document.getElementById('formCircoscrizione');
-		myForm.reset();
-		document.getElementById ( "btnAggiungi" ).textContent = "Aggiungi";
-    })
+			document.getElementById('risultato').innerHTML = data;
+            resetFormCircoscrizione();
+            aggiornaNumero();
+	})
 
 };
 
@@ -117,8 +115,10 @@ function aggiungiCircoscrizione(e) {
     })
     .then(response => response.text()) // O .json() se il server risponde con JSON
     .then(data => {
-        risultato.innerHTML = data; // Mostra la risposta del server
+        document.getElementById('risultato').innerHTML = data;
 		document.getElementById ( "btnAggiungi" ).textContent = "Aggiungi";
+		resetFormCircoscrizione();
+		aggiornaNumero();
     })
 
 
@@ -126,7 +126,7 @@ function aggiungiCircoscrizione(e) {
   
 function annullaModifica() {
     // Reset del form
-    const myForm = document.getElementById('formCircoscrizione');
+    const myForm = document.getElementById('circoscrizioneForm');
     myForm.reset();
 
     // Ripulisci l'id nascosto
@@ -150,5 +150,26 @@ function editCircoscrizione(index) {
     document.getElementById("btnAnnulla").classList.remove('d-none');
 }
 
+function scrollToGestioneCircoscrizioni() {
+    const target = document.getElementById('titoloGestioneCircoscrizioni');
+    if (target) {
+        target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+}
 
+function resetFormCircoscrizione() {
+    const form = document.getElementById('circoscrizioneForm');
+    form.reset();
+    document.getElementById('id_circ').value = '';
+    document.getElementById('btnAggiungi').textContent = "Aggiungi";
+}
+
+function aggiornaNumero() {
+
+	const maxNum = document.getElementById("maxNumero").innerText;
+    document.getElementById('numero').value = maxNum;
+}
 </script>
