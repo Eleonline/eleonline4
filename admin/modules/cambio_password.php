@@ -1,35 +1,34 @@
 <?php
 require_once '../includes/check_access.php';
 
-// Simulazione utente loggato
-//$_SESSION['username'] = $_SESSION['username'] ?? 'mario.rossi';
 $username = $_SESSION['username'];
 $messaggio = '';
 
-// Connessione MySQL con PDO (commentata)
-// require_once '../includes/db_connection.php'; // Assicurati che questo file definisca $pdo
-#if (!function_exists('cambio_password')) {
-    function cambio_password($vecchia_password, $nuova_password) {
-		global $prefix,$aid,$dbi,$id_comune;
-        $username = $_SESSION['username'];
-#		$vecchia_password=md5($vecchia_password);# die("UPDATE ".$prefix."_authors SET pwd = '$hash' WHERE aid = '$username'");
-        // Recupero hash corrente
-        $stmt = $dbi->prepare("SELECT pwd FROM ".$prefix."_authors WHERE aid = '$username'");
-        $stmt->execute();
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!$row || $vecchia_password!=$row['pwd']) {
-            return 'Vecchia password errata.';
-        }
-        // Aggiornamento con nuova password
-#        $hash = md5($nuova_password);
-        $stmt = $dbi->prepare("UPDATE ".$prefix."_authors SET pwd = '$nuova_password' WHERE aid = '$username'");
-        $stmt->execute();
-		if($stmt->rowCount())
-        return true;
-		else return 'Errore durante l\'aggiornamento.';
-      
+// Funzione per cambiare la password
+function cambio_password($vecchia_password, $nuova_password) {
+    global $prefix, $dbi;
+    $username = $_SESSION['username'];
+
+    // Recupero hash corrente
+    $stmt = $dbi->prepare("SELECT pwd FROM ".$prefix."_authors WHERE aid = :username");
+    $stmt->execute([':username' => $username]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$row || $vecchia_password != $row['pwd']) {
+        return 'Vecchia password errata.';
     }
-#}
+
+    if ($vecchia_password === $nuova_password) {
+        return 'La nuova password non può essere uguale a quella corrente.';
+    }
+
+    // Aggiornamento con nuova password
+    $stmt = $dbi->prepare("UPDATE ".$prefix."_authors SET pwd = :nuova WHERE aid = :username");
+    $stmt->execute([':nuova' => $nuova_password, ':username' => $username]);
+
+    if ($stmt->rowCount()) return true;
+    else return 'Errore durante l\'aggiornamento.';
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $vecchia_password = $_POST['vecchia_password'];
@@ -42,20 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $messaggio = '<div class="alert alert-warning">La nuova password deve contenere almeno 8 caratteri, una maiuscola, una minuscola, un numero e un carattere speciale.</div>';
     } else {
         $test = cambio_password(md5($vecchia_password), md5($nuova_password));
-        if ($test === true)
-         $messaggio = <<<HTML
-	 alert(<?= $test ?>)
-
-HTML;
-
-        elseif (is_string($test))
+        if ($test === true) {
+            $messaggio = '<div class="alert alert-success">Password aggiornata correttamente.</div>';
+        } else {
             $messaggio = '<div class="alert alert-danger">'.$test.'</div>';
-        else
-            $messaggio = '<div class="alert alert-danger">Aggiornamento password fallito. (simulazione)</div>';
+        }
     }
 }
 ?>
-
 
 <section class="content">
   <div class="container-fluid mt-4">
@@ -167,14 +160,14 @@ function valutaForzaPassword() {
   let colore = 'red', larghezza = '20%', messaggio = 'Password debole';
 
   if (forza < 4) {
-    colore = 'red'; larghezza = '20%'; messaggio = 'Password debole'; 
-    conferma.disabled = true; 
+    colore = 'red'; larghezza = '20%'; messaggio = 'Password debole';
+    conferma.disabled = true;
     conferma.value = '';
   } else if (forza < 6) {
-    colore = 'orange'; larghezza = '60%'; messaggio = 'Password forte'; 
+    colore = 'orange'; larghezza = '60%'; messaggio = 'Password forte';
     conferma.disabled = false;
   } else {
-    colore = 'green'; larghezza = '100%'; messaggio = 'Password fortissima 💪'; 
+    colore = 'green'; larghezza = '100%'; messaggio = 'Password fortissima 💪';
     conferma.disabled = false;
   }
 
@@ -188,15 +181,6 @@ function valutaForzaPassword() {
   document.getElementById('requisito-numero').textContent = (/\d/.test(password) ? '✅' : '❌') + ' Un numero';
   document.getElementById('requisito-speciale').textContent = (/[\W_]/.test(password) ? '✅' : '❌') + ' Un carattere speciale';
 }
-
-// Spostiamo la chiamata fuori da ogni blocco
-document.addEventListener("DOMContentLoaded", function () {
-  controllaConfermaPassword(); // fa partire subito il controllo alla pagina caricata
-  if (document.getElementById('overlay-success')) {
-    document.body.style.overflow = 'hidden'; // blocca lo scroll quando il popup è visibile
-  }
-});
-
 
 function controllaConfermaPassword() {
   const password = document.getElementById('nuova_password').value;
@@ -229,10 +213,4 @@ function togglePassword(id, btn) {
     icon.classList.add('fa-eye');
   }
 }
-document.addEventListener("DOMContentLoaded", function () {
-  if (document.getElementById('overlay-success')) {
-    document.body.style.overflow = 'hidden'; // blocca lo scroll
-  }
-});
 </script>
-
