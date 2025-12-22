@@ -170,40 +170,40 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 
 
 <?php if (in_array($_SESSION['ruolo'], ['superuser', 'admin', 'operatore'])): ?>
-        <!-- INFORMAZIONI UTILI -->
-        <li class="nav-item has-treeview <?php echo in_array($op, [14,15,16,17]) ? 'menu-open' : ''; ?>">
-  <a href="#" class="nav-link <?php echo in_array($op, [14,15,16,17]) ? 'active' : ''; ?>">
-    <i class="nav-icon fas fa-info-circle text-info"></i>
-    <p>
-      Carica Informazioni
-      <i class="right fas fa-angle-left"></i>
-    </p>
-  </a>
-  <ul class="nav nav-treeview">
-    <li class="nav-item">
-      <a href="modules.php?op=14&tab=come_si_vota" class="nav-link <?php echo ($op == 14 && $tab == 'come_si_vota') ? 'active' : ''; ?>">
-        <i class="nav-icon fas fa-info-circle text-info"></i><p>Come si vota</p>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="modules.php?op=15&tab=numeri_utili" class="nav-link <?php echo ($op == 15 && $tab == 'numeri_utili') ? 'active' : ''; ?>">
-        <i class="nav-icon fas fa-phone-alt text-success"></i><p>Numeri utili</p>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="modules.php?op=16&tab=servizi" class="nav-link <?php echo ($op == 16 && $tab == 'servizi') ? 'active' : ''; ?>">
-        <i class="nav-icon fas fa-concierge-bell text-primary"></i><p>Servizi</p>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="modules.php?op=17&tab=link" class="nav-link <?php echo ($op == 17 && $tab == 'link') ? 'active' : ''; ?>">
-        <i class="nav-icon fas fa-link text-info"></i><p>Link utili</p>
-      </a>
-    </li>
-  </ul>
-</li>
-
+  <!-- INFORMAZIONI UTILI -->
+  <li class="nav-item has-treeview <?php echo in_array($op, [14,15,16,17]) ? 'menu-open' : ''; ?>">
+    <a href="#" class="nav-link <?php echo in_array($op, [14,15,16,17]) ? 'active' : ''; ?>">
+      <i class="nav-icon fas fa-info-circle text-info"></i>
+      <p>
+        Carica Informazioni
+        <i class="right fas fa-angle-left"></i>
+      </p>
+    </a>
+    <ul class="nav nav-treeview">
+      <li class="nav-item">
+        <a href="modules.php?op=14" class="nav-link <?php echo ($op == 14) ? 'active' : ''; ?>">
+          <i class="nav-icon fas fa-vote-yea me-2 text-info"></i><p>Come si vota</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="modules.php?op=15" class="nav-link <?php echo ($op == 15) ? 'active' : ''; ?>">
+          <i class="nav-icon fas fa-phone-alt me-2 text-success"></i><p>Numeri utili</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="modules.php?op=16" class="nav-link <?php echo ($op == 16) ? 'active' : ''; ?>">
+          <i class="nav-icon fas fa-concierge-bell me-2 text-primary"></i><p>Servizi</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="modules.php?op=17" class="nav-link <?php echo ($op == 17) ? 'active' : ''; ?>">
+          <i class="nav-icon fas fa-link me-2 text-info"></i><p>Link utili</p>
+        </a>
+      </li>
+    </ul>
+  </li>
 <?php endif; ?>
+
 
 <?php if (in_array($_SESSION['ruolo'], ['superuser', 'admin', 'operatore'])): ?>
         <!-- Liste e candidati -->
