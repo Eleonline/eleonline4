@@ -6,7 +6,18 @@ if (is_file('includes/check_access.php')) {
 }
 
 $row = elenco_circoscrizioni();
+if (count($row)) {
+    $ultimo = end($row);
+    $maxNumero = $ultimo['num_circ'];
+} else {
+    $maxNumero = 0;
+}
+$maxNumero++;
 ?>
+<!-- Riga nascosta per JSstyle="display:none;" -->
+<tr id="riga<?= $maxNumero ?>">
+    <td colspan="8" id="maxNumero" ><?= $maxNumero ?></td>
+</tr>
 
 <?php foreach ($row as $key => $val): 
     $id_cons = htmlspecialchars($val['id_cons'], ENT_QUOTES, 'UTF-8');
@@ -25,15 +36,5 @@ $row = elenco_circoscrizioni();
     </td>
 </tr>
 <?php endforeach; ?>
-<script>
-function scrollToGestioneCircoscrizioni() {
-    const target = document.getElementById('titoloGestioneCircoscrizioni');
-    if (target) {
-        target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-    }
-}
-</script>
+
 
