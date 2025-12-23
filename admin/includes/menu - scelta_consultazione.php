@@ -171,34 +171,17 @@ foreach($row as $key=>$val)
 	$comuni[$val['id_comune']] = $val['descrizione'];
 ?>
 
- <!-- Scelta consultazione: dropdown solo su mobile -->
-  <div class="ml-3 d-block d-sm-none dropdown">
-    <a class="btn btn-outline-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownConsultazione" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Scelta consultazione
-    </a>
-    <div class="dropdown-menu p-3" aria-labelledby="dropdownConsultazione" style="min-width: 250px;">
-      <form method="POST" action="modules.php" id="form-consultazione-mobile">
-        <div class="form-group mb-2">
-          <label for="consultazione-mobile">Consultazione</label>
-          <select class="form-control form-control-sm" name="id_cons_gen" id="consultazione-mobile">
-            <?php foreach ($consultazioni as $id => $nome): ?>
-              <option value="<?= $id ?>" <?= ($id == $id_cons_gen) ? 'selected' : '' ?>><?= $nome ?></option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-        <?php /*
-		<div class="form-group mb-2">
-          <label for="comune-mobile">Comune</label>
-          <select class="form-control form-control-sm" name="id_comune" id="comune-mobile">
-            <?php foreach ($comuni as $id => $nomeComune): ?>
-              <option value="<?= $id ?>" <?= ($id === $id_comune) ? 'selected' : '' ?>><?= $nomeComune ?></option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-		*/?>
-      </form>
-    </div>
+ <!-- Scelta consultazione: select solo su mobile -->
+<form class="form-inline ml-3 d-block d-sm-none" method="POST" action="modules.php" id="form-consultazione-mobile">
+  <div class="form-group mb-0">
+    <select class="form-control form-control-sm" name="id_cons_gen" id="consultazione-mobile">
+      <?php foreach ($consultazioni as $id => $nome): ?>
+        <option value="<?= $id ?>" <?= ($id == $id_cons_gen) ? 'selected' : '' ?>><?= $nome ?></option>
+      <?php endforeach; ?>
+    </select>
   </div>
+</form>
+
 
   <!-- Scelta consultazione: form inline solo su desktop -->
   <form class="form-inline ml-3 d-none d-sm-flex" method="POST" action="modules.php" id="form-consultazione">
@@ -216,16 +199,14 @@ foreach($row as $key=>$val)
   </form>
 
 <script>
-  // Submit automatico al cambio select desktop e mobile
-  ['consultazione'].forEach(id => {
-    document.getElementById(id).addEventListener('change', () => {
-      document.getElementById('form-consultazione').submit();
-    });
-    document.getElementById(id + '-mobile').addEventListener('change', () => {
-      document.getElementById('form-consultazione-mobile').submit();
-    });
+  document.getElementById('consultazione-mobile').addEventListener('change', () => {
+    document.getElementById('form-consultazione-mobile').submit();
+  });
+  document.getElementById('consultazione').addEventListener('change', () => {
+    document.getElementById('form-consultazione').submit();
   });
 </script>
+
 
   <!-- Right navbar links -->
   <ul class="navbar-nav ml-auto">
