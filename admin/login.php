@@ -83,6 +83,14 @@ if (isset($_POST['username'])) {
 				$msglogout=3;
 				header("Location: ../logout.php");
 			}else{
+				if($row['admincomune'] or $row['adminsuper']) {
+					$row2=configurazione();
+					$versione=$row2[0]['versione'];
+					$patch=$row2[0]['patch'];
+					if($versione<4) {
+						require_once 'includes/aggiornadbTo4.php';
+					}
+				}
 				$bpwd=password_hash($pwd,PASSWORD_DEFAULT);
 				$sth = $dbi->prepare("update ".$prefix."_authors set pwd=:bpwd where binary aid=:aid and (id_comune=:id_comune or (adminsuper='1'))");
 				$sth->execute([

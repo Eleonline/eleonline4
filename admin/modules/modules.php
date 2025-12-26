@@ -53,12 +53,7 @@ $sth->execute();
 $sth = $dbi->prepare("SET NAMES 'utf8'");
 $sth->execute();
 require_once '../includes/query.php';
-$row=configurazione();
-$versione=$row[0]['versione'];
-$patch=$row[0]['patch'];
-if($versione<4) {
-	require_once '../includes/aggiornadbTo4.php';
-}
+
 ob_start(); // attiva output buffering
 include '../includes/header.php';
 include '../includes/menu.php'; 
