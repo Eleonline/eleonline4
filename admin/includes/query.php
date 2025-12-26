@@ -109,6 +109,16 @@ function elenco_gruppi()
 	return($row);	
 }
 
+function elenco_info($tab)
+{
+	global $id_cons,$id_comune,$prefix,$dbi;
+	$sql="select * from ".$prefix."_ele_$tab where id_cons=$id_cons order by mid asc";
+	$sth = $dbi->prepare("$sql");
+	$sth->execute();
+	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+	return($row);	
+}
+
 function elenco_leggi()
 {
 	global $id_cons,$id_comune,$prefix,$dbi;

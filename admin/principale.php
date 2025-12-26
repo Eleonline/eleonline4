@@ -98,6 +98,9 @@ if($permessi>32)
 		case 'salvaSezione':
 			include("modules/salva_sezione.php");
 			break;
+		case 'salvaInfo':
+			include("modules/salva_info.php");
+			break;
 	}
 	
 switch ($funzione) {
