@@ -37,4 +37,3 @@ $maxNumero++;
 
 </tr>
 <?php endforeach; ?>
-

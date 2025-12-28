@@ -110,11 +110,12 @@ function aggiungiInfo(e) {
 
 
   }
+
 function editInfo(index) {
     document.getElementById("mid").value = document.getElementById("mid"+index).innerText;
     document.getElementById("title").value = document.getElementById("title"+index).innerText;
     document.getElementById("preamble").value = document.getElementById("preamble"+index).innerText;
-    editor.setData(document.getElementById("content"+index).innerText);
+    editor.setData(document.getElementById("content"+index).innerHTML);
     document.getElementById("btnSalvaInfo").textContent = "Salva modifiche";
 	document.getElementById("mid").focus();
 	
