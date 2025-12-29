@@ -13,13 +13,13 @@ $comune = [
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8" >
   <title>Eleonline - <?= htmlspecialchars($comune['nome']) ?></title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Font Awesome (locale) -->
-<link rel="stylesheet" href="../assets/css/all.min.css" />
+<link rel="stylesheet" href="../assets/css/all.min.css" >
 <!-- AdminLTE CSS (locale) -->
-<link rel="stylesheet" href="../css/adminlte.min.css" />
+<link rel="stylesheet" href="../css/adminlte.min.css" >
 <!-- SortableJS (locale) -->
 <script src="../assets/js/Sortable.min.js"></script>
 <link rel="stylesheet" href="../css/altricss.css">

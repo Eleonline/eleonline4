@@ -43,7 +43,7 @@
             <tr>
               <th>Titolo</th>
               <th>Descrizione</th>
-              <th>URL</th>
+              <th style="display:none;">URL</th>
               <th>Azioni</th>
             </tr>
           </thead>

@@ -44,7 +44,7 @@ require_once '../includes/check_access.php';
             <tr>
               <th>Titolo</th>
               <th>Descrizione</th>
-              <th>Testo</th>
+              <th style="display:none;">Testo</th>
               <th>Azioni</th>
             </tr>
           </thead>

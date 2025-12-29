@@ -11,14 +11,15 @@ else
 	require_once '../includes/check_access.php';
 
 $param=strtolower($_SERVER['REQUEST_METHOD']) == 'get' ? $_GET : $_POST;
-if (isset($param['mid'])) $mid=$param['mid']; else $mid='0';
-if (isset($param['title'])) $title=addslashes($param['title']); else $title='';
+if (isset($param['mid'])) $mid=intval($param['mid']); else $mid='0';
+if (isset($param['title'])) $title=$param['title']; else $title='';
 if (isset($param['preamble'])) $preamble=$param['preamble']; else $preamble='';
-if (isset($param['content'])) $content=addslashes($param['content']); else $content='';
+if (isset($param['content'])) $content=$param['content']; else $content='';
 if (isset($param['op'])) $op=addslashes($param['op']); else $op='';
 $tab=$_SESSION['tipo_info']; 
 global $prefix,$aid,$dbi,$id_cons_gen,$id_cons,$id_comune;
 $salvato=0;
+$err=0;
 $query="select * from ".$prefix."_ele_$tab where mid='$mid'";
 $res = $dbi->prepare("$query");
 $res->execute();
@@ -37,6 +38,7 @@ if($res->rowCount()) {
 		}
 		catch(PDOException $e) {
 			echo $e->getMessage();
+			$err=1;
 		}
 		if(!$compl->rowCount()) $salvato=1;
 	}elseif($op=='cancella'){	
@@ -75,7 +77,7 @@ if(!$salvato){
 #		echo "Nuovo orario di rilevazione inserito";
 }elseif($salvato==2){
 	echo "<tr><th colspan=\"3\" style=\"text-align:center\">ATTENZIONE - Non è possibile individuare il record da cancellare</th></tr>";
-}else{	
+}elseif($err==1){	
 	echo "<tr><td colspan=\"3\">Errore, impossibile salvare i dati - $sql</td></tr>";
 }
 

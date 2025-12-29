@@ -63,7 +63,7 @@ require_once '../includes/check_access.php';
           <div class="form-row">		  
             <div class="form-group col-md-1" id="divpreferenze">
 				<label for="preferenze">Preferenze</label>
-				<input type="input" class="form-control" id="preferenze" name="preferenze">
+				<input type="text" class="form-control" id="preferenze" name="preferenze">
 			</div>
 			<?php $row=elenco_leggi(); ?>
 			<div class="form-group col-md-2" id="divlegge">
@@ -215,8 +215,10 @@ function aggiungiConsultazione(e) {
 		myForm.reset();
 		document.getElementById ( "id_cons_gen" ).value = ''
 		document.getElementById ( "submitBtn" ).textContent = "Aggiungi Consultazione"
-
+		aggiornaSelect();
     })
+	
+
 };
 
 
@@ -231,8 +233,10 @@ function aggiungiConsultazione(e) {
     }
     xmlhttp.open("GET","../principale.php?funzione=salvaConsultazione&id_cons_gen="+id_cons_gen+"&op=cancella",true);
     xmlhttp.send();
-	}
-//	document.getElementById("riga"+index).style.display = 'none'
+	aggiornaSelect();	
+	} 
+
+
   }
   
    function editConsultazione(index) { 

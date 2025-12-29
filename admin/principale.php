@@ -101,6 +101,9 @@ if($permessi>32)
 		case 'salvaInfo':
 			include("modules/salva_info.php");
 			break;
+		case 'menuConsultazione':
+			include("modules/elenco_cons_menu.php");
+			break;
 	}
 	
 switch ($funzione) {

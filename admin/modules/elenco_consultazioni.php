@@ -4,8 +4,14 @@ if (is_file('includes/check_access.php')) {
 } else {
     require_once '../includes/check_access.php';
 }
-
+global $id_cons_gen;
+$row=dati_consultazione(0);
+$cambia=count($row);
 $row = elenco_cons(); // elenco consultazioni
+if(!$cambia) {
+	$id_cons_gen=$row[0]['id_cons_gen'];
+	$_SESSION['id_cons_gen']=$id_cons_gen;
+}
 ?>
 
 <?php foreach ($row as $key => $val): ?>
@@ -14,60 +20,62 @@ $row = elenco_cons(); // elenco consultazioni
     ?>
     <tr id="riga<?= $key ?>">
 
-        <!-- CAMPI NASCOSTI -->
-        <td style="display:none;" id="link_trasparenza<?= $key ?>" name="link_trasparenza<?= $key ?>">
-            <?= $val['link_trasparenza'] ?>
-        </td>
-
-        <td style="display:none;" id="id_cons_gen<?= $key ?>" name="id_cons_gen<?= $key ?>">
-            <?= $val['id_cons_gen'] ?>
-        </td>
-
-        <td style="display:none;" id="tipo_cons<?= $key ?>" name="tipo_cons<?= $key ?>">
-            <?= $val['tipo_cons'] ?>
-        </td>
-
-        <td style="display:none;" id="chiusa<?= $key ?>" name="chiusa<?= $key ?>">
-            <?= $val['chiusa'] ?>
-        </td>
-
-        <td style="display:none;" id="id_conf<?= $key ?>" name="id_conf<?= $key ?>">
-            <?= $val['id_conf'] ?>
-        </td>
-
-        <td style="display:none;" id="preferita<?= $key ?>" name="preferita<?= $key ?>">
-            <?= $pref ?>
-        </td>
-
-        <td style="display:none;" id="preferenze<?= $key ?>" name="preferenze<?= $key ?>">
-            <?= $val['preferenze'] ?>
-        </td>
-
-        <td style="display:none;" id="id_fascia<?= $key ?>" name="id_fascia<?= $key ?>">
-            <?= $val['id_fascia'] ?>
-        </td>
-
-        <td style="display:none;" id="vismf<?= $key ?>" name="vismf<?= $key ?>">
-            <?= $val['vismf'] ?>
-        </td>
-
-        <td style="display:none;" id="solo_gruppo<?= $key ?>" name="solo_gruppo<?= $key ?>">
-            <?= $val['solo_gruppo'] ?>
-        </td>
-
-        <td style="display:none;" id="disgiunto<?= $key ?>" name="disgiunto<?= $key ?>">
-            <?= $val['disgiunto'] ?>
-        </td>
-
-        <td style="display:none;" id="proiezione<?= $key ?>" name="proiezione<?= $key ?>">
-            <?= $val['proiezione'] ?>
-        </td>
 
         <!-- PREFERITA -->
         <td class="text-center">
             <?php if ($val['preferita']): ?>
                 *
             <?php endif; ?>
+			        <!-- CAMPI NASCOSTI -->
+        <div style="display:none;" >
+		<div id="link_trasparenza<?= $key ?>">
+            <?= $val['link_trasparenza'] ?>
+		</div>
+ 
+        <div id="id_cons_gen<?= $key ?>">
+            <?= $val['id_cons_gen'] ?>
+        </div>
+
+        <div id="tipo_cons<?= $key ?>">
+            <?= $val['tipo_cons'] ?> 
+        </div>
+
+        <div id="chiusa<?= $key ?>">
+            <?= $val['chiusa'] ?>
+        </div>
+
+        <div id="id_conf<?= $key ?>">
+            <?= $val['id_conf'] ?>
+        </div>
+
+        <div id="preferita<?= $key ?>">
+            <?= $pref ?>
+        </div>
+
+        <div id="preferenze<?= $key ?>">
+            <?= $val['preferenze'] ?>
+        </div>
+
+        <div id="id_fascia<?= $key ?>">
+            <?= $val['id_fascia'] ?>
+        </div>
+
+        <div id="vismf<?= $key ?>">
+            <?= $val['vismf'] ?>
+        </div>
+
+        <div id="solo_gruppo<?= $key ?>">
+            <?= $val['solo_gruppo'] ?>
+        </div>
+
+        <div id="disgiunto<?= $key ?>">
+            <?= $val['disgiunto'] ?>
+        </div>
+
+        <div id="proiezione<?= $key ?>">
+            <?= $val['proiezione'] ?>
+        </div>
+		</div>
         </td>
 
         <!-- DATI VISIBILI -->

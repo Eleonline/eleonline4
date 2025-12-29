@@ -26,11 +26,11 @@ $maxNumero++;
 <?php foreach ($row as $key => $val): ?>
 <tr id="riga<?= $key ?>">
 
-    <td id="mid<?= $key ?>" style="display:none;"><?= $val['mid'] ?></td>
+    
     <td id="title<?= $key ?>"><?= $val['title'] ?></td>
     <td id="preamble<?= $key ?>"><?= $val['preamble'] ?></td>
-    <td id="content<?= $key ?>"><?= $val['content'] ?></td>
-    <td>
+    <td id="content<?= $key ?>" style="display:none;"><?= $val['content'] ?></td>
+    <td><div id="mid<?= $key ?>" style="display:none;"><?= $val['mid'] ?></div>
         <button class="btn btn-sm btn-warning me-1" onclick="editInfo(<?= $key ?>);">Modifica</button>
         <button type="button" class="btn btn-danger btn-sm" onclick="deleteInfo(<?= $key ?>)">Elimina</button>
     </td>
