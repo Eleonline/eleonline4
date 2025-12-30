@@ -18,7 +18,7 @@ $circos=elenco_circoscrizioni();
           <div class="row mb-2">
             <div class="col-md-4">
               <label>Circoscrizione</label>
-              <select id="idCirc" class="form-control" required>
+              <select id="idCirc" class="form-control">
 				<?php foreach($circos as $key=>$val) { ?>
                 <option value="<?= $val['id_circ'] ?>"><?= $val['descrizione'] ?></option>
 				<?php } ?>
@@ -33,9 +33,9 @@ $circos=elenco_circoscrizioni();
                 </button>
               </div>
 
-              <input type="hidden" class="nome_comune" name="nome_comune" value="Capo d'Orlando" />
-              <input type="hidden" class="lat" id="lat" name="lat" value="" />
-              <input type="hidden" class="lng" id="lng" name="lng" value="" />
+              <input type="hidden" class="nome_comune" name="nome_comune" value="Capo d'Orlando" >
+              <input type="hidden" class="lat" id="lat" name="lat" value="" >
+              <input type="hidden" class="lng" id="lng" name="lng" value="" >
             </div>
           </div>
 
@@ -103,7 +103,7 @@ $circos=elenco_circoscrizioni();
 <script>
 function aggiungiSede(e) {
     e.preventDefault();
-debugger;
+
   const id_circ = document.getElementById('idCirc').value;
   const id_sede = document.getElementById('idSede').value;
   const indirizzo = document.getElementById('indirizzo').value.trim();
@@ -210,10 +210,3 @@ document.querySelector('.btnApriMappaForm').addEventListener('click', () => {
   alert("Apri mappa per inserimento/modifica sede (da implementare)");
 });
 </script>
-
-<style>
-.rigaMappa {
-  position: relative;
-}
-/* Aggiungi eventuali stili per la mappa o popup qui */
-</style>

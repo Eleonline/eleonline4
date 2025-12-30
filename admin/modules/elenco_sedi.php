@@ -11,12 +11,6 @@ $row = elenco_sedi(); // elenco sedi
 <?php foreach ($row as $key => $val): ?>
     <tr id="riga<?= $key ?>">
 
-        <td id="idSede<?= $key ?>" style="display:none;">
-            <?= $val['id_sede'] ?>
-        </td>
-
-        <td id="idCirc<?= $key ?>" style="display:none;"><?= $val['id_circ'] ?></td>
-
         <td id="descrizione<?= $key ?>">
             <?= $val['descrizione'] ?>
         </td>
@@ -41,15 +35,11 @@ $row = elenco_sedi(); // elenco sedi
             <?= $val['responsabile'] ?>
         </td>
 
-        <td id="lat<?= $key ?>" style="display:none;">
-            <?= $val['latitudine'] ?>
-        </td>
-
-        <td id="lng<?= $key ?>" style="display:none;">
-            <?= $val['longitudine'] ?>
-        </td>
-
         <td>
+        <div id="idSede<?= $key ?>" style="display:none;"><?= $val['id_sede'] ?></div>
+        <div id="idCirc<?= $key ?>" style="display:none;"><?= $val['id_circ'] ?></div>
+        <div id="lat<?= $key ?>" style="display:none;"><?= $val['latitudine'] ?></div>
+        <div id="lng<?= $key ?>" style="display:none;"><?= $val['longitudine'] ?></div>
             <button type="button"
                     class="btn btn-sm btn-warning me-1"
                     onclick="editSede(<?= $key ?>); scrollToGestioneSedi();">

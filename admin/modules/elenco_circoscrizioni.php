@@ -16,7 +16,7 @@ $maxNumero++;
 ?>
 <!-- Riga nascosta per JSstyle="display:none;" -->
 <tr id="riga<?= $maxNumero ?>">
-    <td colspan="8" id="maxNumero" ><?= $maxNumero ?></td>
+    <td colspan="3" id="maxNumero" style="display:none;"><?= $maxNumero ?></td>
 </tr>
 
 <?php foreach ($row as $key => $val): 
@@ -26,11 +26,9 @@ $maxNumero++;
     $descrizione = htmlspecialchars($val['descrizione'], ENT_QUOTES, 'UTF-8');
 ?>
 <tr id="riga<?= $key ?>">
-    <td id="id_cons<?= $key ?>" style="display:none;"><?= $id_cons ?></td>
-    <td id="id_circ<?= $key ?>" style="display:none;"><?= $id_circ ?></td>
     <td id="numero<?= $key ?>"><?= $numero ?></td>
     <td id="denominazione<?= $key ?>"><?= $descrizione ?></td>
-    <td>
+    <td> <div id="id_cons<?= $key ?>" style="display:none;"><?= $id_cons ?></div><div id="id_circ<?= $key ?>" style="display:none;"><?= $id_circ ?></div>
         <button class="btn btn-sm btn-warning me-1" onclick="editCircoscrizione(<?= $key ?>); scrollToGestioneCircoscrizioni();">Modifica</button>
         <button type="button" class="btn btn-sm btn-danger" onclick="deleteCircoscrizione(<?= $key ?>)">Elimina</button>
     </td>

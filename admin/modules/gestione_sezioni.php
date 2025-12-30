@@ -94,7 +94,12 @@ $maxNumero++;
 
 <script>
 function aggiungiSezione(e) {
-    e.preventDefault(); 
+    e.preventDefault();
+	let controllo = controlloSomma();
+	if ( controllo === 1 ) {
+		alert("La somma tra iscritti maschi e femmine non corrisponde al totale");
+		return
+	}
     const id_sede = document.getElementById('idSede').value;
     const id_sez = document.getElementById('idSezione').value;
     const numero = document.getElementById('numero').value;
@@ -165,5 +170,16 @@ function aggiornaNumero() {
 //    const maxNum = sezioni.length ? Math.max(...Array.from(sezioni).map(r => parseInt(r.querySelector('.numero')?.innerText || 0))) : 0;
 	const maxNum = document.getElementById("maxNumero").innerText;
     document.getElementById('numero').value = maxNum;
+}
+
+function controlloSomma() {
+	let maschi = Number(document.getElementById("maschi").value);
+	let femmine = Number(document.getElementById("femmine").value);
+	let totale = Number(document.getElementById("totale").value);
+	let somma = maschi + femmine;
+	if ( somma=== totale )
+		return 0;
+	else
+		return 1;
 }
 </script>

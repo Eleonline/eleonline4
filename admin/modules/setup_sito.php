@@ -144,7 +144,7 @@ foreach($row as $key=>$val){
 
 <script>
   function aggiornaDati(e) {
-    e.preventDefault();debugger
+    e.preventDefault();
     const fileInput = document.getElementById('fileInput');
     const file = fileInput.files[0];
     const siteIstat = document.getElementById('siteIstat').value;

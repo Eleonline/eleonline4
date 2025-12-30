@@ -170,48 +170,29 @@ $row=elenco_comuni();
 foreach($row as $key=>$val)
 	$comuni[$val['id_comune']] = $val['descrizione'];
 ?>
+  <ul class="navbar-nav">
+    <li class="nav-item">
 
- <!-- Scelta consultazione: dropdown solo su mobile -->
-  <div class="ml-3 d-block d-sm-none dropdown">
-    <a class="btn btn-outline-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownConsultazione" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Scelta consultazione
-    </a>
-    <div class="dropdown-menu p-3" style="min-width: 250px;">
-      <form method="POST" action="modules.php" id="form-consultazione-mobile">
-        <div class="form-group mb-2" id="select-menu">
-		 <select class="form-control form-control-sm" name="id_cons_gen" id="consultazione-mobile">
-            <?php /* foreach ($consultazioni as $id => $nome): ?>
-              <option value="<?= $id ?>" <?= ($id == $id_cons_gen) ? 'selected' : '' ?>><?= $nome ?></option>
-            <?php endforeach; */ include('../modules/elenco_cons_menu.php'); ?>
-        </select></div>
-        <?php /*
-		<div class="form-group mb-2">
-          <label for="comune-mobile">Comune</label>
-          <select class="form-control form-control-sm" name="id_comune" id="comune-mobile">
-            <?php foreach ($comuni as $id => $nomeComune): ?>
-              <option value="<?= $id ?>" <?= ($id === $id_comune) ? 'selected' : '' ?>><?= $nomeComune ?></option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-		*/?>
+ <!-- Scelta consultazione: -->
+    <div class="select-wrapper p-3" style="min-width: 250px;">
+      <form  class="form-inline" method="POST" action="modules.php" id="form-consultazione-mobile">
+        <div class="select-wrapper mb-2" id="select-menu">
+			<div class="form-floating">
+				<div class="form-group col-xs-3">
+					<label class="mr-3" for="consultazione-mobile">Scelta della Consultazione:</label>
+					<select class="form-control form-control-sm" name="id_cons_gen" id="consultazione-mobile">
+						<?php  include('../modules/elenco_cons_menu.php'); ?>
+					</select>
+				</div>
+			</div>
+		</div>
+
       </form>
     </div>
-  </div>
+</li>
+</ul> 
 
-  <!-- Scelta consultazione: form inline solo su desktop -->
-  <form class="form-inline ml-3 d-none d-sm-flex" method="POST" action="modules.php" id="form-consultazione">
-    <span class="navbar-text mr-3 font-weight-bold">Scelta della Consultazione:</span>
-    <select class="form-control form-control-sm mr-2" name="id_cons_gen" id="consultazione">
-      <?php /* foreach ($consultazioni as $id => $nome): ?>
-        <option value="<?= $id ?>" <?= ($id == $id_cons_gen) ? 'selected' : '' ?>><?= $nome ?></option>
-      <?php endforeach; */ include('../modules/elenco_cons_menu.php');?>
-    </select>
-    <?php /*<!--select class="form-control form-control-sm mr-2" name="id_comune" id="comune">
-      <?php foreach ($comuni as $id => $nomeComune): ?>
-        <option value="<?= $id ?>" <?= ($id == $id_comune) ? 'selected' : '' ?>><?= $nomeComune ?></option>
-      <?php endforeach; ?>
-    </select--> */?>
-  </form>
+
 
 <script>
 
@@ -221,13 +202,10 @@ function aggiornaSelect() {
 //    formData.append('id_cons_gen', id_cons_gen);
     fetch('../principale.php', {
         method: 'POST',
-        body: selectCons // FormData viene gestito automaticamente da Fetch per l'upload
+        body: selectCons 
     })
-    .then(response => response.text()) // O .json() se il server risponde con JSON
+    .then(response => response.text()) 
     .then(data => {
-		var elementExists = document.getElementById("consultazione");
-		if(elementExists!== null)
-			document.getElementById ("consultazione").innerHTML = data; // Mostra la risposta del server
 		var elementExists = document.getElementById("consultazione-mobile");
 		if(elementExists!== null)
 			document.getElementById ("consultazione-mobile").innerHTML = data;
@@ -237,9 +215,6 @@ function aggiornaSelect() {
 	
   // Submit automatico al cambio select desktop e mobile
   ['consultazione'].forEach(id => {
-    document.getElementById(id).addEventListener('change', () => {
-      document.getElementById('form-consultazione').submit();
-    });
     document.getElementById(id + '-mobile').addEventListener('change', () => {
       document.getElementById('form-consultazione-mobile').submit();
     });
