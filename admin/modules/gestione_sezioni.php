@@ -177,7 +177,7 @@ function controlloSomma() {
 	let femmine = Number(document.getElementById("femmine").value);
 	let totale = Number(document.getElementById("totale").value);
 	let somma = maschi + femmine;
-	if ( somma=== totale )
+	if ( somma=== totale || totale===0)
 		return 0;
 	else
 		return 1;
