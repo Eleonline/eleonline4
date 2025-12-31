@@ -91,6 +91,36 @@ $maxNumero++;
     </div>
   </div>
 </section>
+<!-- Modal conferma eliminazione sezione -->
+<div class="modal fade" id="confirmDeleteSezioneModal" tabindex="-1" aria-labelledby="confirmDeleteSezioneLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="confirmDeleteSezioneLabel">
+          <i class="fas fa-exclamation-triangle me-2"></i>Conferma eliminazione
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Chiudi">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        Sei sicuro di voler eliminare la sezione <strong id="deleteSezioneNumero"></strong>? Questa azione non può essere annullata.
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <i class="fas fa-times me-1"></i>Annulla
+        </button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteSezioneBtn">
+          <i class="fas fa-trash me-1"></i>Elimina
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <script>
 function aggiungiSezione(e) {
@@ -123,6 +153,23 @@ function aggiungiSezione(e) {
             aggiornaNumero();
         });
 }
+
+let deleteIndexSezione = null;
+
+function confermaEliminaSezione(index) {
+    deleteIndexSezione = index;
+    const numero = document.getElementById('numero'+index).innerText;
+    document.getElementById('deleteSezioneNumero').textContent = numero;
+    $('#confirmDeleteSezioneModal').modal('show');
+}
+
+document.getElementById('confirmDeleteSezioneBtn').addEventListener('click', () => {
+    if(deleteIndexSezione !== null){
+        deleteSezione(deleteIndexSezione); // chiama la funzione esistente
+        deleteIndexSezione = null;
+        $('#confirmDeleteSezioneModal').modal('hide');
+    }
+});
 
  function deleteSezione(index) {
 	const id_sezione = document.getElementById('idSezione'+index).innerText;

@@ -41,7 +41,10 @@ $maxNumero++;
     <td id="totale<?= $key ?>" style="text-align:right;"><?= number_format($val['maschi'] + $val['femmine'],0,',','.') ?></td>
     <td>
         <button class="btn btn-sm btn-warning me-1" onclick="editSezione(<?= $key ?>);">Modifica</button>
-        <button type="button" class="btn btn-danger btn-sm" onclick="deleteSezione(<?= $key ?>)">Elimina</button>
+        <button type="button" class="btn btn-sm btn-danger" onclick="confermaEliminaSezione(<?= $key ?>)">
+    Elimina
+</button>
+
     </td>
 
 </tr>

@@ -80,6 +80,37 @@ $dataFine=$row[0]['data_fine'];
   </div>
 </section>
 
+<!-- Modal conferma eliminazione affluenza -->
+<div class="modal fade" id="confirmDeleteAffluenzaModal" tabindex="-1" aria-labelledby="confirmDeleteAffluenzaLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="confirmDeleteAffluenzaLabel">
+          <i class="fas fa-exclamation-triangle me-2"></i>Conferma eliminazione
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Chiudi">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        Sei sicuro di voler eliminare l'orario di affluenza <strong id="deleteAffluenzaInfo"></strong>? Questa azione non può essere annullata.
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <i class="fas fa-times me-1"></i>Annulla
+        </button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteAffluenzaBtn">
+          <i class="fas fa-trash me-1"></i>Elimina
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <script>
 
   function aggiungiAffluenza(e) {
@@ -110,6 +141,23 @@ $dataFine=$row[0]['data_fine'];
     }).then(r => r.text()).then(console.log);
     */
   }
+let deleteIndexAffluenza = null;
+
+function confermaEliminaAffluenza(index) {
+    deleteIndexAffluenza = index;
+    const data = document.getElementById('data'+index).innerText;
+    const orario = document.getElementById('orario'+index).innerText;
+    document.getElementById('deleteAffluenzaInfo').textContent = data + " " + orario;
+    $('#confirmDeleteAffluenzaModal').modal('show');
+}
+
+document.getElementById('confirmDeleteAffluenzaBtn').addEventListener('click', () => {
+    if(deleteIndexAffluenza !== null){
+        rimuoviAffluenza(deleteIndexAffluenza); // chiama la funzione esistente
+        deleteIndexAffluenza = null;
+        $('#confirmDeleteAffluenzaModal').modal('hide');
+    }
+});
 
   function rimuoviAffluenza(index) {
 	var data = document.getElementById ( "data"+index ).innerText

@@ -47,10 +47,11 @@ $row = elenco_sedi(); // elenco sedi
             </button>
 
             <button type="button"
-                    class="btn btn-sm btn-danger"
-                    onclick="deleteSede(<?= $key ?>)">
-                Elimina
-            </button>
+        class="btn btn-sm btn-danger"
+        onclick="confermaEliminaSede(<?= $key ?>)">
+    Elimina
+</button>
+
         </td>
 
     </tr>

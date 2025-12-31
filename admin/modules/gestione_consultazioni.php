@@ -162,6 +162,36 @@ require_once '../includes/check_access.php';
     </div>
   </div>
 </section>
+<!-- Modal conferma eliminazione consultazione -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="confirmDeleteLabel">
+          <i class="fas fa-exclamation-triangle me-2"></i>Conferma eliminazione
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Chiudi">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        Sei sicuro di voler eliminare la consultazione: <strong id="deleteDenominazione"></strong>? Questa azione non può essere annullata.
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <i class="fas fa-times me-1"></i>Annulla
+        </button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+          <i class="fas fa-trash me-1"></i>Elimina
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <script>
 function aggiungiConsultazione(e) {
@@ -222,22 +252,36 @@ function aggiungiConsultazione(e) {
 };
 
 
-  function deleteConsultazione(index) {
-	if (confirm("Confermi l'eliminazione?") == true) {  
-	var id_cons_gen = document.getElementById ( "id_cons_gen"+index ).innerText
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-				document.getElementById("risultato").innerHTML = this.responseText;
-		}
+let deleteId = null;
+
+function deleteConsultazione(index) {
+    deleteId = document.getElementById("id_cons_gen"+index).innerText;
+    const denominazione = document.getElementById("descrizione"+index).innerText;
+    document.getElementById("deleteDenominazione").textContent = denominazione;
+    $('#confirmDeleteModal').modal('show'); // apri il modal
+}
+
+// Conferma cancellazione
+document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+    if(deleteId) {
+        const formData = new FormData();
+        formData.append('funzione', 'salvaConsultazione');
+        formData.append('id_cons_gen', deleteId);
+        formData.append('op', 'cancella');
+
+        fetch('../principale.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("risultato").innerHTML = data;
+            $('#confirmDeleteModal').modal('hide');
+            deleteId = null;
+        });
     }
-    xmlhttp.open("GET","../principale.php?funzione=salvaConsultazione&id_cons_gen="+id_cons_gen+"&op=cancella",true);
-    xmlhttp.send();
-	aggiornaSelect();	
-	} 
+});
 
-
-  }
   
    function editConsultazione(index) { 
 	document.getElementById ( "id_cons_gen" ).value = document.getElementById ( "id_cons_gen"+index ).innerText

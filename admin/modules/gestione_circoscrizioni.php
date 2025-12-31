@@ -67,6 +67,38 @@ $maxNumero++;
   </div>
 </section>
 
+<!-- Modal conferma eliminazione circoscrizione -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="confirmDeleteLabel">
+          <i class="fas fa-exclamation-triangle me-2"></i>Conferma eliminazione
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Chiudi">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        Sei sicuro di voler eliminare la circoscrizione <strong id="deleteCircoscrizione"></strong>? Questa azione non può essere annullata.
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <i class="fas fa-times me-1"></i>Annulla
+        </button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+          <i class="fas fa-trash me-1"></i>Elimina
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
 <script>
 
 function aggiungiCircoscrizione(e) {
@@ -98,31 +130,41 @@ function aggiungiCircoscrizione(e) {
 };
 
 
-  function deleteCircoscrizione(index) {
-	const denominazione = document.getElementById ( "denominazione"+index ).innerText
-	const numero = document.getElementById ( "numero"+index ).innerText
-	const id_circ = document.getElementById ( "id_circ"+index ).innerText
-    const formData = new FormData();
-    formData.append('funzione', 'salvaCircoscrizione');
-    formData.append('descrizione', denominazione);
-    formData.append('numero', numero);
-    formData.append('id_circ', id_circ);
-    formData.append('op', 'cancella');
+  let deleteIdCirc = null;
 
-    fetch('../principale.php', {
-        method: 'POST',
-        body: formData 
-    })
-    .then(response => response.text()) // O .json() se il server risponde con JSON
-    .then(data => {
-        document.getElementById('risultato').innerHTML = data;
-		document.getElementById ( "btnAggiungi" ).textContent = "Aggiungi";
-		resetFormCircoscrizione();
-		aggiornaNumero();
-    })
+function deleteCircoscrizione(index) {
+    const denominazione = document.getElementById("denominazione"+index).innerText;
+    const numero = document.getElementById("numero"+index).innerText;
+    deleteIdCirc = document.getElementById("id_circ"+index).innerText;
 
+    document.getElementById("deleteCircoscrizione").textContent = numero + " - " + denominazione;
 
-  }
+    $('#confirmDeleteModal').modal('show'); // apri il modal
+}
+
+// Conferma cancellazione
+document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+    if(deleteIdCirc) {
+        const formData = new FormData();
+        formData.append('funzione', 'salvaCircoscrizione');
+        formData.append('id_circ', deleteIdCirc);
+        formData.append('op', 'cancella');
+
+        fetch('../principale.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('risultato').innerHTML = data;
+            $('#confirmDeleteModal').modal('hide');
+            deleteIdCirc = null;
+            resetFormCircoscrizione();
+            aggiornaNumero();
+        });
+    }
+});
+
   
 function annullaModifica() {
     // Reset del form

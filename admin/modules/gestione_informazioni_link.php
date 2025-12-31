@@ -42,8 +42,8 @@
           <thead>
             <tr>
               <th>Titolo</th>
-              <th>Descrizione</th>
-              <th style="display:none;">URL</th>
+              <th>URL</th>
+              <th style="display:none;">Descrizione</th>
               <th>Azioni</th>
             </tr>
           </thead>
@@ -57,8 +57,46 @@
   </div>
 </section>
 
+<!-- Modal conferma eliminazione -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      
+      <!-- Header con icona e colore rosso -->
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="confirmDeleteLabel">
+          <i class="fas fa-exclamation-triangle me-2"></i>Conferma eliminazione
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Chiudi">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <!-- Corpo del modal -->
+		<div class="modal-body">
+		  Sei sicuro di voler eliminare il link: <strong id="deleteTitle"></strong>? Questa azione non può essere annullata.
+		</div>
+
+      <!-- Footer con pulsanti chiari e icone -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <i class="fas fa-times me-1"></i>Annulla
+        </button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+          <i class="fas fa-trash me-1"></i>Elimina
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-build-classic@39.0.0/build/ckeditor.js"></script>
 <script>
+let editor;
+let deleteMid = null; // variabile globale per il link da eliminare
+
 function aggiungiInfo(e) { 
     e.preventDefault(); 
     const tipo = document.getElementById('tipo').value;
@@ -85,27 +123,38 @@ function aggiungiInfo(e) {
         });
 }
 
- function deleteInfo(index) {
-	const mid = document.getElementById('mid'+index).innerText;
-    const formData = new FormData();
-    formData.append('funzione', 'salvaInfo');
-    formData.append('mid', mid);
-	formData.append('op', 'cancella');
-
-    fetch('../principale.php', {
-        method: 'POST',
-        body: formData 
-    })
-    .then(response => response.text()) // O .json() se il server risponde con JSON
-    .then(data => {
-        document.getElementById('risultato').innerHTML = data; // Mostra la risposta del server
-		document.getElementById ( "btnSalvaInfo" ).textContent = "Aggiungi";
-		resetFormInfo();
-		aggiornaNumero();
-    })
+function deleteInfo(index) {
+    deleteMid = document.getElementById('mid'+index).innerText;
+    const titolo = document.getElementById('title'+index).innerText; // prendo il titolo del link
+    document.getElementById('deleteTitle').textContent = titolo;      // lo mostro nel modal
+    $('#confirmDeleteModal').modal('show'); // apro il modal
+}
 
 
-  }
+// Conferma cancellazione dal modal
+document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+    if(deleteMid) {
+        const formData = new FormData();
+        formData.append('funzione', 'salvaInfo');
+        formData.append('mid', deleteMid);
+        formData.append('op', 'cancella');
+
+        fetch('../principale.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('risultato').innerHTML = data;
+            document.getElementById("btnSalvaInfo").textContent = "Aggiungi";
+            resetFormInfo();
+            aggiornaNumero();
+            $('#confirmDeleteModal').modal('hide'); // chiudo il modal
+            deleteMid = null;
+        });
+    }
+});
+
 function editInfo(index) {
     document.getElementById("mid").value = document.getElementById("mid"+index).innerText;
     document.getElementById("title").value = document.getElementById("title"+index).innerText;
@@ -113,7 +162,6 @@ function editInfo(index) {
     editor.setData(document.getElementById("content"+index).innerText);
     document.getElementById("btnSalvaInfo").textContent = "Salva modifiche";
 	document.getElementById("mid").focus();
-	
 }
 
 function resetFormInfo() {
@@ -123,17 +171,18 @@ function resetFormInfo() {
 	editor.setData('');
     document.getElementById('btnSalvaInfo').textContent = "Aggiungi";
 }
+
 function aggiornaNumero() {
 	const maxNum = document.getElementById("maxNumero").innerText;
     document.getElementById('mid').value = maxNum;
 }
 
 ClassicEditor
-	.create( document.querySelector( '#content' ))
-	.then( newEditor => {
-editor = newEditor;
+	.create(document.querySelector('#content'))
+	.then(newEditor => {
+        editor = newEditor;
 	})
-	.catch( error => {
-		console.error( error );
-	} );
+	.catch(error => {
+		console.error(error);
+	});
 </script>

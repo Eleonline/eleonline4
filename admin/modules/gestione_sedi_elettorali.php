@@ -99,6 +99,58 @@ $circos=elenco_circoscrizioni();
     </div>
   </div>
 </section>
+<!-- Modal conferma eliminazione sede -->
+<div class="modal fade" id="confirmDeleteSedeModal" tabindex="-1" aria-labelledby="confirmDeleteSedeLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="confirmDeleteSedeLabel">
+          <i class="fas fa-exclamation-triangle me-2"></i>Conferma eliminazione
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Chiudi">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        Sei sicuro di voler eliminare la sede <strong id="deleteSedeIndirizzo"></strong>? Questa azione non può essere annullata.
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <i class="fas fa-times me-1"></i>Annulla
+        </button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteSedeBtn">
+          <i class="fas fa-trash me-1"></i>Elimina
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+let deleteIdSede = null;
+let deleteIndexSede = null;
+
+function confermaEliminaSede(index) {
+    deleteIndexSede = index;
+    const indirizzo = document.getElementById('indirizzo'+index).innerText.trim();
+    deleteIdSede = document.getElementById('idSede'+index).innerText;
+    document.getElementById('deleteSedeIndirizzo').textContent = indirizzo;
+    $('#confirmDeleteSedeModal').modal('show');
+}
+
+document.getElementById('confirmDeleteSedeBtn').addEventListener('click', () => {
+    if(deleteIdSede !== null && deleteIndexSede !== null){
+        deleteSede(deleteIndexSede); // usa la tua funzione esistente
+        deleteIdSede = null;
+        deleteIndexSede = null;
+        $('#confirmDeleteSedeModal').modal('hide');
+    }
+});
+</script>
 
 <script>
 function aggiungiSede(e) {

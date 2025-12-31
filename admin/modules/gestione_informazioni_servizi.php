@@ -55,6 +55,37 @@
     </div>
   </div>
 </section>
+<!-- Modal conferma eliminazione -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="confirmDeleteLabel">
+          <i class="fas fa-exclamation-triangle me-2"></i>Conferma eliminazione
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Chiudi">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        Sei sicuro di voler eliminare il servizio: <strong id="deleteTitle"></strong>? Questa azione non può essere annullata.
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <i class="fas fa-times me-1"></i>Annulla
+        </button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+          <i class="fas fa-trash me-1"></i>Elimina
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-build-classic@39.0.0/build/ckeditor.js"></script>
 <script>
@@ -84,27 +115,38 @@ function aggiungiInfo(e) {
         });
 }
 
- function deleteInfo(index) {
-	const mid = document.getElementById('mid'+index).innerText;
-    const formData = new FormData();
-    formData.append('funzione', 'salvaInfo');
-    formData.append('mid', mid);
-	formData.append('op', 'cancella');
+ let deleteMid = null;
 
-    fetch('../principale.php', {
-        method: 'POST',
-        body: formData 
-    })
-    .then(response => response.text()) // O .json() se il server risponde con JSON
-    .then(data => {
-        document.getElementById('risultato').innerHTML = data; // Mostra la risposta del server
-		document.getElementById ( "btnSalvaInfo" ).textContent = "Aggiungi";
-		resetFormInfo();
-		aggiornaNumero();
-    })
+function deleteInfo(index) {
+    deleteMid = document.getElementById('mid'+index).innerText;
+    const titolo = document.getElementById('title'+index).innerText; // titolo servizio
+    document.getElementById('deleteTitle').textContent = titolo;      // mostra nel modal
+    $('#confirmDeleteModal').modal('show'); // apri modal
+}
+document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+    if(deleteMid) {
+        const formData = new FormData();
+        formData.append('funzione', 'salvaInfo');
+        formData.append('mid', deleteMid);
+        formData.append('op', 'cancella');
 
+        fetch('../principale.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('risultato').innerHTML = data;
+            document.getElementById("btnSalvaInfo").textContent = "Aggiungi";
+            resetFormInfo();
+            aggiornaNumero();
+            $('#confirmDeleteModal').modal('hide');
+            deleteMid = null;
+        });
+    }
+});
 
-  }
+  
 function editInfo(index) {
     document.getElementById("mid").value = document.getElementById("mid"+index).innerText;
     document.getElementById("title").value = document.getElementById("title"+index).innerText;
