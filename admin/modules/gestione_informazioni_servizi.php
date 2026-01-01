@@ -33,24 +33,24 @@
           <button type="submit" class="btn btn-primary mt-2" id="btnSalvaInfo">Salva</button>
           <button type="reset" class="btn btn-secondary mt-2" onclick="resetFormInfo()">Annulla</button>
         </form>
-
         <hr>
-
         <h5>Elenco Servizi</h5>
-        <table class="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th>Titolo</th>
-              <th>Descrizione</th>
-              <th style="display:none;">Testo</th>
-              <th>Azioni</th>
-            </tr>
-          </thead>
-          <tbody id="risultato">
-         <?php include('elenco_info.php'); ?>
-          </tbody>
-        </table>
 
+		<div class="table-responsive">
+		  <table class="table table-bordered table-hover">
+			<thead>
+			  <tr>
+				<th>Titolo</th>
+				<th>Descrizione</th>
+				<th style="display:none;">Testo</th>
+				<th>Azioni</th>
+			  </tr>
+			</thead>
+			<tbody id="risultato">
+			  <?php include('elenco_info.php'); ?>
+			</tbody>
+		  </table>
+		</div>
       </div>
     </div>
   </div>

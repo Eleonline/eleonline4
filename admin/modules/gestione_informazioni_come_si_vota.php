@@ -36,23 +36,24 @@ require_once '../includes/check_access.php';
         </form>
 
         <hr>
+			<!-- Tabella elenco -->
+			<h5>Elenco Come si vota</h5>
 
-        <!-- Tabella elenco -->
-        <h5>Elenco Come si vota</h5>
-        <table class="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th>Titolo</th>
-              <th>Descrizione</th>
-              <th style="display:none;">Testo</th>
-              <th>Azioni</th>
-            </tr>
-          </thead>
-          <tbody id="risultato">
-         <?php include('elenco_info.php'); ?>
-          </tbody>
-        </table>
-
+			<div class="table-responsive">
+			  <table class="table table-bordered table-hover">
+				<thead>
+				  <tr>
+					<th>Titolo</th>
+					<th>Descrizione</th>
+					<th style="display:none;">Testo</th>
+					<th>Azioni</th>
+				  </tr>
+				</thead>
+				<tbody id="risultato">
+				  <?php include('elenco_info.php'); ?>
+				</tbody>
+			  </table>
+			</div>
       </div>
     </div>
   </div>

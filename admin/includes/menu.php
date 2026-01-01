@@ -170,30 +170,50 @@ $row=elenco_comuni();
 foreach($row as $key=>$val)
 	$comuni[$val['id_comune']] = $val['descrizione'];
 ?>
-  <ul class="navbar-nav">
-    <li class="nav-item">
+<!-- Select consultazione desktop -->
+<ul class="navbar-nav d-none d-sm-flex">
+  <li class="nav-item">
+    <form class="form-inline" method="POST" action="modules.php" id="form-consultazione-desktop">
+      <label for="consultazione-desktop" class="mr-2 mb-0">Consultazione:</label>
+      <select class="form-control form-control-sm" name="id_cons_gen" id="consultazione-desktop">
+        <?php include('../modules/elenco_cons_menu.php'); ?>
+      </select>
+    </form>
+  </li>
+</ul>
 
- <!-- Scelta consultazione: -->
-    <div class="select-wrapper p-3" style="min-width: 250px;">
-      <form  class="form-inline" method="POST" action="modules.php" id="form-consultazione-mobile">
-        <div class="select-wrapper mb-2" id="select-menu">
-			<div class="form-floating">
-				<div class="form-group col-xs-3">
-					<label class="mr-3" for="consultazione-mobile">Scelta della Consultazione:</label>
-					<select class="form-control form-control-sm" name="id_cons_gen" id="consultazione-mobile">
-						<?php  include('../modules/elenco_cons_menu.php'); ?>
-					</select>
-				</div>
-			</div>
-		</div>
+<!-- Select consultazione mobile compatto -->
+<ul class="navbar-nav d-block d-sm-none">
+  <li class="nav-item w-100">
+    <form class="form-inline w-100" method="POST" action="modules.php" id="form-consultazione-mobile">
+      <select class="form-control form-control-sm w-100" name="id_cons_gen" id="consultazione-mobile">
+        <?php include('../modules/elenco_cons_menu.php'); ?>
+      </select>
+    </form>
+  </li>
+</ul>
 
-      </form>
-    </div>
-</li>
-</ul> 
+<style>
+  /* Solo smartphone: adatta select stretta e larga senza label */
+  @media (max-width: 575.98px) {
+    #consultazione-mobile {
+      max-width: 90vw;
+    }
+  }
+</style>
 
 
+<script>
+  // Submit automatico desktop
+  document.getElementById('consultazione-desktop').addEventListener('change', () => {
+    document.getElementById('form-consultazione-desktop').submit();
+  });
 
+  // Submit automatico mobile
+  document.getElementById('consultazione-mobile').addEventListener('change', () => {
+    document.getElementById('form-consultazione-mobile').submit();
+  });
+</script>
 <script>
 
 function aggiornaSelect() {

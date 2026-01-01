@@ -36,22 +36,23 @@
         </form>
 
         <hr>
-
         <h5>Elenco Link Utili</h5>
-        <table class="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th>Titolo</th>
-              <th>URL</th>
-              <th style="display:none;">Descrizione</th>
-              <th>Azioni</th>
-            </tr>
-          </thead>
-          <tbody id="risultato">
-         <?php include('elenco_info.php'); ?>
-          </tbody>
-        </table>
 
+		<div class="table-responsive">
+		  <table class="table table-bordered table-hover">
+			<thead>
+			  <tr>
+				<th>Titolo</th>
+				<th>URL</th>
+				<th style="display:none;">Descrizione</th>
+				<th>Azioni</th>
+			  </tr>
+			</thead>
+			<tbody id="risultato">
+			  <?php include('elenco_info.php'); ?>
+			</tbody>
+		  </table>
+		</div>
       </div>
     </div>
   </div>

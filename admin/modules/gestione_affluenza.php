@@ -58,7 +58,7 @@ $dataFine=$row[0]['data_fine'];
             </div>
           </div>
         </form>
-
+		<div class="table-responsive">
         <table class="table table-striped mt-4" id="affluenzeTable">
           <thead>
             <tr>
@@ -72,6 +72,7 @@ $dataFine=$row[0]['data_fine'];
 		  </tbody>
         </table>
       </div>
+	   </div>
 
       <div class="card-footer">
         <p class="text-muted mb-0">Puoi aggiungere uno o più orari in cui rilevare l'affluenza.</p>

@@ -45,6 +45,7 @@ $_SESSION['tipo_info']='numero';
         <hr>
 
         <h5>Elenco Numeri Utili</h5>
+		<div class="table-responsive">
         <table class="table table-bordered table-hover">
           <thead>
             <tr>
@@ -59,7 +60,7 @@ $_SESSION['tipo_info']='numero';
             <?php include('elenco_info.php'); ?>
           </tbody>
         </table>
-
+		 </div>
       </div>
     </div>
   </div>

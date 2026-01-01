@@ -5,6 +5,27 @@ require_once '../includes/check_access.php';
 <style>
 .sortable-ghost { opacity: .6; border: 2px dashed #007bff; }
 .card, .small-box { cursor: move; }
+/* Smartphone */
+@media (max-width: 767px) {
+  .card, .small-box {
+    cursor: default !important; /* disabilita move su smartphone */
+  }
+
+  #side-toggle-btn {
+    top: calc(56px + 10px); /* altezza navbar + margine */
+    right: 15px;
+    z-index: 1000;
+    padding: 0.25rem 0.5rem; /* bottone più compatto */
+    font-size: 0.85rem;
+  }
+
+  /* Spazio extra per il content-wrapper, se serve */
+  .content-wrapper {
+    padding-top: 66px; /* stessa altezza della navbar su smartphone */
+  }
+}
+
+
 #side-panel {
   position: fixed;
   top: 70px;
@@ -144,8 +165,16 @@ document.querySelectorAll('#side-panel input[type=checkbox]').forEach(cb=>{
   };
 });
 
-// Drag & Drop
-new Sortable(dashboard,{animation:150, ghostClass:'sortable-ghost', onEnd: saveState});
+// Drag & Drop -- disattivo SOLO su smartphone
+if (window.innerWidth >= 768) {
+  new Sortable(dashboard, {
+    animation: 150,
+    ghostClass: 'sortable-ghost',
+    onEnd: saveState
+  });
+}
+
+
 
 // Ripristina tutto al default
 document.getElementById('reset-filters').addEventListener('click', () => {

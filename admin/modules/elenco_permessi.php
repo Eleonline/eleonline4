@@ -106,45 +106,53 @@ if (!count($non_autorizzati)) {
 </div>
 
 <!-- TABELLA -->
-<table class="table table-bordered table-hover" id="usersTable">
-    <thead>
+<div class="card">
+  <div class="card-header bg-secondary text-white">
+    <h3 class="card-title">Permessi Attivi</h3>
+  </div>
+
+  <div class="card-body table-responsive">
+    <table class="table table-bordered table-hover" id="usersTable">
+      <thead>
         <tr>
-            <th>Username</th>
-            <th>Sede</th>
-            <th>Sezione</th>
-            <th>Azioni</th>
+          <th>Username</th>
+          <th>Sede</th>
+          <th>Sezione</th>
+          <th>Azioni</th>
         </tr>
-    </thead>
-    <tbody>
+      </thead>
 
-    <?php
-    $row = elenco_permessi();
-    $i = 0;
-    foreach ($row as $val):
-        $i++;
-    ?>
+      <tbody>
+      <?php
+      $row = elenco_permessi();
+      $i = 0;
+      foreach ($row as $val):
+          $i++;
+      ?>
         <tr id="riga<?= $i ?>">
-            <td id="utente<?= $i ?>"><?= $val['aid'] ?></td>
-            <td id="sedi<?= $i ?>"><?= $val['indirizzo'] ?></td>
-            <td id="sezioni<?= $i ?>"><?= $val['num_sez'] ?></td>
-            <td>
-                <button class="btn btn-sm btn-warning me-1" onclick="editUser(<?= $i ?>)">
-                    Modifica
-                </button>
+          <td id="utente<?= $i ?>"><?= $val['aid'] ?></td>
+          <td id="sedi<?= $i ?>"><?= $val['indirizzo'] ?></td>
+          <td id="sezioni<?= $i ?>"><?= $val['num_sez'] ?></td>
+          <td>
+            <button class="btn btn-sm btn-warning me-1" onclick="editUser(<?= $i ?>)">
+              Modifica
+            </button>
 
-                <?php if (
-                    $currentUserRole != 'operatore' &&
-                    $val['adminsuper'] != 1 &&
-                    $val['admincomune'] != '1'
-                ): ?>
-                    <button class="btn btn-sm btn-danger" onclick="deleteUser(<?= $i ?>)">
-                        Elimina
-                    </button>
-                <?php endif; ?>
-            </td>
+            <?php if (
+              $currentUserRole != 'operatore' &&
+              $val['adminsuper'] != 1 &&
+              $val['admincomune'] != '1'
+            ): ?>
+              <button class="btn btn-sm btn-danger" onclick="deleteUser(<?= $i ?>)">
+                Elimina
+              </button>
+            <?php endif; ?>
+          </td>
         </tr>
-    <?php endforeach; ?>
+      <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-    </tbody>
-</table>
 
