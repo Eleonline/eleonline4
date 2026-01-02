@@ -146,7 +146,7 @@ $numeroAutomatico = $maxNumero + 1;
 ?>
 
 <section class="content">
-  <div class="container-fluid mt-4">
+  <div class="container-fluid">
     <div class="card card-primary shadow-sm">
       <div class="card-header">
         <h3 class="card-title"><i class="fas fa-cogs me-2"></i>Gestione Quesiti Referendari</h3>
@@ -194,7 +194,10 @@ $numeroAutomatico = $maxNumero + 1;
             </div>
           </div>
         </form>
-
+		<div class="card-header bg-secondary text-white">
+    <h3 class="card-title">Elenco Quesiti</h3>
+  </div>
+<div class="table-responsive">
         <table class="table table-bordered table-sm text-center align-middle">
           <thead class="table-secondary">
             <tr>
@@ -233,7 +236,7 @@ $numeroAutomatico = $maxNumero + 1;
             <?php endif; ?>
           </tbody>
         </table>
-
+</div>
       </div>
     </div>
   </div>

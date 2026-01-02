@@ -8,7 +8,7 @@ $predefinito=$row[0]['siteistat'];
 ?>
 
 <section class="content">
-  <div class="container-fluid mt-3">
+  <div class="container-fluid">
     <h2 id="form-title"><i class="fas fa-building"></i> Gestione Enti/Comuni</h2>
 
     <!-- FORM -->

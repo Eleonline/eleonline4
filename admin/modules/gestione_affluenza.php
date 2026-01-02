@@ -20,10 +20,11 @@ $dataFine=$row[0]['data_fine'];
 ?>
 
 <section class="content">
-  <div class="container-fluid mt-4">
+  <div class="container-fluid">
+  <h2><i class="fas fa-clock"></i> Gestione Orari di Affluenza</h2>
     <div class="card card-primary shadow-sm">
       <div class="card-header">
-        <h3 class="card-title"><i class="fas fa-clock me-2"></i>Gestione Orari di Affluenza</h3>
+        <h3 class="card-title">Aggiugni Orari di Affluenza</h3>
       </div>
 
       <div class="card-body">

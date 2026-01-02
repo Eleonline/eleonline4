@@ -3,10 +3,11 @@
 	$_SESSION['tipo_info']='link';
 ?>
 <section class="content">
-  <div class="container-fluid mt-4">
+  <div class="container-fluid">
+  <h2><i class="fas fa-link"></i> Gestione Link Utili</h2>
     <div class="card card-primary shadow-sm">
       <div class="card-header">
-        <h3 class="card-title"><i class="fas fa-link me-2"></i>Link Utili</h3>
+        <h3 class="card-title">Aggiungi Link Utili</h3>
       </div>
       <div class="card-body">
 
@@ -36,8 +37,9 @@
         </form>
 
         <hr>
-        <h5>Elenco Link Utili</h5>
-
+		<div class="card-header bg-secondary text-white">
+			<h3 class="card-title">Elenco Link Utili</h3>
+		</div>
 		<div class="table-responsive">
 		  <table class="table table-bordered table-hover">
 			<thead>

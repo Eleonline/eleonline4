@@ -3,10 +3,11 @@ require_once '../includes/check_access.php';
 	$_SESSION['tipo_info']='come';
 ?>
 <section class="content">
-  <div class="container-fluid mt-4">
+  <div class="container-fluid">
+  <h2><i class="fas fa-vote-yea"></i> Gestione Come si vota</h2>
     <div class="card card-primary shadow-sm">
       <div class="card-header">
-        <h3 class="card-title"><i class="fas fa-vote-yea me-2"></i>Come si vota</h3>
+        <h3 class="card-title">Aggiungi Come si vota</h3>
       </div>
       <div class="card-body">
 
@@ -36,9 +37,10 @@ require_once '../includes/check_access.php';
         </form>
 
         <hr>
-			<!-- Tabella elenco -->
-			<h5>Elenco Come si vota</h5>
-
+		<!-- Tabella elenco -->	
+		<div class="card-header bg-secondary text-white">
+			<h3 class="card-title">Elenco Come si vota</h3>
+		</div>
 			<div class="table-responsive">
 			  <table class="table table-bordered table-hover">
 				<thead>

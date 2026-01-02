@@ -5,10 +5,11 @@ $circos=elenco_circoscrizioni();
 ?>
 
 <section class="content">
-  <div class="container-fluid mt-4">
+  <div class="container-fluid">
+  <h2><i class="fas fa-map-marker-alt"></i> Gestione Sedi Elettorali</h2>
     <div class="card card-primary shadow-sm">
       <div class="card-header">
-       <h3 id="titoloGestioneSedi" class="card-title"><i class="fas fa-map-marker-alt me-2"></i>Gestione Sedi Elettorali</h3>
+       <h3 id="titoloGestioneSedi" class="card-title">Aggiungi Sedi Elettorali</h3>
 
       </div>
 

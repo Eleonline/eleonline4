@@ -2,10 +2,11 @@
 	$_SESSION['tipo_info']='servizio';
 ?>
 <section class="content">
-  <div class="container-fluid mt-4">
+  <div class="container-fluid">
+  <h2><i class="fas fa-concierge-bell"></i> Gestione Servizi</h2>
     <div class="card card-primary shadow-sm">
       <div class="card-header">
-        <h3 class="card-title"><i class="fas fa-concierge-bell me-2"></i>Servizi</h3>
+        <h3 class="card-title">Aggiungi Servizi</h3>
       </div>
       <div class="card-body">
 
@@ -34,8 +35,9 @@
           <button type="reset" class="btn btn-secondary mt-2" onclick="resetFormInfo()">Annulla</button>
         </form>
         <hr>
-        <h5>Elenco Servizi</h5>
-
+       	<div class="card-header bg-secondary text-white">
+			<h3 class="card-title">Elenco Servizi</h3>
+		</div>
 		<div class="table-responsive">
 		  <table class="table table-bordered table-hover">
 			<thead>

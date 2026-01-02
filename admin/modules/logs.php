@@ -130,11 +130,11 @@ if ($logfile) {
 </style>
 
 <section class="content">
-  <div class="container-fluid mt-4">
+  <div class="container-fluid">
     <div class="card card-primary shadow-sm">
       <div class="card-header">
         <h3 class="card-title">
-          <i class="fas fa-file-alt me-2"></i>Visualizzatore Log - <?= htmlspecialchars($logs[$type]['label']) ?>
+          <i class="fas fa-file-alt me-2"></i> Visualizzatore Log - <?= htmlspecialchars($logs[$type]['label']) ?>
         </h3>
       </div>
       <div class="card-body">

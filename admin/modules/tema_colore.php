@@ -44,10 +44,11 @@ foreach ($files as $file) {
 ?>
 
 <section class="content">
-  <div class="container-fluid mt-4">
+  <div class="container-fluid">
+  <h2 id="form-title"><i class="fas fa-palette"></i> Gestione Tema Colore</h2>
     <div class="card card-primary shadow-sm">
       <div class="card-header">
-        <h3 class="card-title"><i class="fas fa-palette me-2"></i>Seleziona Tema Colore</h3>
+        <h3 class="card-title">Seleziona Tema Colore</h3>
       </div>
 	  <div id="risultato"></div>
       <div class="card-body">

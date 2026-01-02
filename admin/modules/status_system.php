@@ -146,10 +146,10 @@ $cpuLoad = getCpuLoad();
 ?>
 
 <section class="content">
-  <div class="container-fluid mt-4">
+  <div class="container-fluid">
     <div class="card shadow-sm">
       <div class="card-header bg-primary">
-        <h3 class="card-title"><i class="fas fa-server me-2"></i>Stato Sistema</h3>
+        <h3 class="card-title"><i class="fas fa-server me-2"></i> Stato Sistema</h3>
       </div>
       <div class="card-body">
         <dl class="row mb-0">

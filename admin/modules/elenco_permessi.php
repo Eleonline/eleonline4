@@ -23,7 +23,7 @@ if (!count($non_autorizzati)) {
 }
 ?>
 
-<div class="container-fluid mt-3">
+<div class="container-fluid">
     <h2>
         <i class="fas fa-users-cog"></i>
         Gestione Permessi per la consultazione "<?= $descrizione ?>"

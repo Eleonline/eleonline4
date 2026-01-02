@@ -4,7 +4,7 @@ require_once '../includes/check_access.php';
 ?>
 
 <section class="content">
-  <div class="container-fluid mt-3">
+  <div class="container-fluid">
     <h2><i class="fas fa-vote-yea"></i> Gestione Consultazioni</h2>
 
     <!-- FORM -->
@@ -61,7 +61,7 @@ require_once '../includes/check_access.php';
             <input type="url" class="form-control" id="link" name="link">
 		  </div>
           <div class="form-row">		  
-            <div class="form-group col-md-1" id="divpreferenze">
+            <div class="form-group col-md-2" id="divpreferenze">
 				<label for="preferenze">Preferenze</label>
 				<input type="text" class="form-control" id="preferenze" name="preferenze">
 			</div>

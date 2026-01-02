@@ -11,10 +11,11 @@ $maxNumero++;
 ?>
 
 <section class="content">
-  <div class="container-fluid mt-4">
+  <div class="container-fluid">
+  <h2><i class="fas fa-flag"></i> Gestione Circoscrizioni</h2>
     <div class="card card-primary shadow-sm">
       <div class="card-header">
-        <h3 class="card-title" id="titoloGestioneCircoscrizioni"><i class="fas fa-flag me-2"></i>Gestione Circoscrizioni</h3>
+        <h3 class="card-title" id="titoloGestioneCircoscrizioni">Aggiungi Circoscrizioni</h3>
       </div>
 
       <div class="card-body table-responsive" style="max-height:400px; overflow-y:auto;">

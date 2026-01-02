@@ -32,10 +32,11 @@ foreach($row as $key=>$val){
 ?>
 
 <section class="content">
-  <div class="container-fluid mt-4">
+  <div class="container-fluid">
+  <h2 id="form-title"><i class="fas fa-cogs"></i> Setup Sito</h2>
     <div class="card card-primary shadow-sm">
       <div class="card-header">
-        <h3 class="card-title" id="form-title"><i class="fas fa-cogs me-2"></i>Setup Sito</h3>
+        <h3 class="card-title" id="form-title">Configura Sito</h3>
       </div>
       <div class="card-body">
         <form id="configSitoForm" onsubmit="aggiornaDati(event)">

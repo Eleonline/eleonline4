@@ -2,10 +2,11 @@
 $_SESSION['tipo_info']='numero';
 ?>
 <section class="content">
-  <div class="container-fluid mt-4">
+  <div class="container-fluid">
+  <h2><i class="fas fa-phone-alt "></i> Gestione Numeri Utili</h2>
     <div class="card card-primary shadow-sm">
       <div class="card-header">
-        <h3 class="card-title"><i class="fas fa-phone-alt me-2"></i>Numeri Utili</h3>
+        <h3 class="card-title">Aggiungi Numeri Utili</h3>
       </div>
       <div class="card-body">
 
@@ -41,10 +42,10 @@ $_SESSION['tipo_info']='numero';
           <button type="submit" class="btn btn-primary mt-2" id="btnSalvaInfo">Salva</button>
           <button type="reset" class="btn btn-secondary mt-2" onclick="resetFormInfo()">Annulla</button>
         </form>
-
         <hr>
-
-        <h5>Elenco Numeri Utili</h5>
+		<div class="card-header bg-secondary text-white">
+			<h3 class="card-title">Elenco Numeri Utili</h3>
+		</div>
 		<div class="table-responsive">
         <table class="table table-bordered table-hover">
           <thead>

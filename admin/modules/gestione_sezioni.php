@@ -11,7 +11,7 @@ $maxNumero++;
 ?>
 
 <section class="content">
-  <div class="container-fluid mt-3">
+  <div class="container-fluid">
     <h2><i class="fas fa-map-marker-alt"></i> Gestione Sezioni</h2>
 
     <!-- FORM -->
