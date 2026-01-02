@@ -1,6 +1,6 @@
 <?php
 require_once '../includes/check_access.php';
-
+include('mappa_popup.php');
 $circos=elenco_circoscrizioni();
 ?>
 
@@ -33,8 +33,8 @@ $circos=elenco_circoscrizioni();
                   <i class="fas fa-map-pin me-2"></i>Apri mappa
                 </button>
               </div>
-
-              <input type="hidden" class="nome_comune" name="nome_comune" value="Capo d'Orlando" >
+			  <!-- popolare di nome comune e lat e lng-->	
+              <input type="hidden" class="nome_comune" name="nome_comune" value="Capo d'Orlando">
               <input type="hidden" class="lat" id="lat" name="lat" value="" >
               <input type="hidden" class="lng" id="lng" name="lng" value="" >
             </div>
@@ -251,15 +251,56 @@ function aggiungiSede(e) {
 
 
 // Funzione per aprire popup mappa per la singola sede (dummy)
-function apriMappaSingola(index) {
-  const s = sedi[index];
-  alert(`Apri mappa per:\n${s.indirizzo}\n(Circoscrizione: ${s.circoscrizione})`);
+//function apriMappaSingola(index) {
+  //const s = sedi[index];
+  //alert(`Apri mappa per:\n${s.indirizzo}\n(Circoscrizione: ${s.circoscrizione})`);
   // Qui puoi integrare il tuo modulo mappa con lat/lng
-}
+//}
 
 // --- Gestione pulsante apri mappa nel form ---
 // Dummy alert (sostituire con apertura popup mappa reale)
+// document.querySelector('.btnApriMappaForm').addEventListener('click', () => {
+  // alert("Apri mappa per inserimento/modifica sede (da implementare)");
+// });
+// --- Gestione pulsante apri mappa nel form  ---
 document.querySelector('.btnApriMappaForm').addEventListener('click', () => {
-  alert("Apri mappa per inserimento/modifica sede (da implementare)");
+  const container = document.querySelector('.rigaMappa');
+  const indir = container.querySelector('.indir');
+  const lat = container.querySelector('.lat');
+  const lng = container.querySelector('.lng');
+  const comuneInput = container.querySelector('.nome_comune');
+
+  const comune = comuneInput ? comuneInput.value.trim() : "";
+  if (!indir) return alert('Input indirizzo non trovato.');
+  const query = indir.value.trim();
+  if (!query) return alert("Inserisci un indirizzo o nome da cercare.");
+
+  const fullQuery = comune ? `${query}, ${comune}` : query;
+  currentInputs = { indir, lat, lng };
+
+  if (maps_provider === 'google') {
+    // Google Maps Geocoding API
+    const apiKey = "LA_TUA_API_KEY_DAL_DB_O_CONFIG"; // già impostata in PHP
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(fullQuery)}&key=${apiKey}`)
+        .then(res => res.json())
+        .then(results => {
+            if (!results.results || results.results.length === 0) return alert('Nessun risultato trovato per "' + fullQuery + '".');
+            const location = results.results[0].geometry.location;
+            apriMappa({ lat: location.lat, lon: location.lng });
+        })
+        .catch(() => alert('Errore durante la ricerca dell\'indirizzo con Google Maps.'));
+} else {
+    // Nominatim OSM
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(fullQuery)}`)
+        .then(res => res.json())
+        .then(results => {
+            if (results.length === 0) return alert('Nessun risultato trovato per "' + fullQuery + '".');
+            apriMappa(results[0]);
+        })
+        .catch(() => alert('Errore durante la ricerca dell\'indirizzo con OSM.'));
+}
+
 });
+
+
 </script>

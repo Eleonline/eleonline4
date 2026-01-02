@@ -62,34 +62,34 @@ if ($maps_provider !== 'google' || empty($google_maps_api_key)) {
   let currentInputs = null;
   let currentLatLng = null;
 
-  // Apri la mappa al click su ogni bottone con classe .btnApriMappa
-  document.querySelectorAll('.btnApriMappa').forEach(button => {
-    button.addEventListener('click', () => {
-      // Trova il container più vicino con classe 'rigaMappa'
-      const container = button.closest('.rigaMappa');
-      const indir = container.querySelector('.indir');
-      const lat = container.querySelector('.lat');
-      const lng = container.querySelector('.lng');
-      const comuneInput = container.querySelector('.nome_comune');
+  //Apri la mappa al click su ogni bottone con classe .btnApriMappa
+  // document.querySelectorAll('.btnApriMappa').forEach(button => {
+    // button.addEventListener('click', () => {
+      //Trova il container più vicino con classe 'rigaMappa'
+      // const container = button.closest('.rigaMappa');
+      // const indir = container.querySelector('.indir');
+      // const lat = container.querySelector('.lat');
+      // const lng = container.querySelector('.lng');
+      // const comuneInput = container.querySelector('.nome_comune');
 
-      const comune = comuneInput ? comuneInput.value.trim() : "";
-      if (!indir) return alert('Input indirizzo non trovato.');
-      const query = indir.value.trim();
-      if (!query) return alert("Inserisci un indirizzo o nome da cercare.");
+      // const comune = comuneInput ? comuneInput.value.trim() : "";
+      // if (!indir) return alert('Input indirizzo non trovato.');
+      // const query = indir.value.trim();
+      // if (!query) return alert("Inserisci un indirizzo o nome da cercare.");
 
-      const fullQuery = comune ? `${query}, ${comune}` : query;
-      currentInputs = { indir, lat, lng };
+      // const fullQuery = comune ? `${query}, ${comune}` : query;
+      // currentInputs = { indir, lat, lng };
 
-      // Ricerca coordinate con Nominatim OSM
-      fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(fullQuery)}`)
-        .then(res => res.json())
-        .then(results => {
-          if (results.length === 0) return alert('Nessun risultato trovato per "' + fullQuery + '".');
-          apriMappa(results[0]);
-        })
-        .catch(() => alert('Errore durante la ricerca dell\'indirizzo.'));
-    });
-  });
+      //Ricerca coordinate con Nominatim OSM
+      // fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(fullQuery)}`)
+        // .then(res => res.json())
+        // .then(results => {
+          // if (results.length === 0) return alert('Nessun risultato trovato per "' + fullQuery + '".');
+          // apriMappa(results[0]);
+        // })
+        // .catch(() => alert('Errore durante la ricerca dell\'indirizzo.'));
+    // });
+  // });
 
   function apriMappa(result) {
     const lat = parseFloat(result.lat);
