@@ -3,13 +3,25 @@ require_once '../includes/check_access.php';
 include('mappa_popup.php');
 $circos=elenco_circoscrizioni();
 ?>
-
+<input type="hidden" id="consultazioneAttiva" value="3">
 <section class="content">
   <div class="container-fluid">
   <h2><i class="fas fa-map-marker-alt"></i> Gestione Sedi Elettorali</h2>
-    <div class="card card-primary shadow-sm">
-      <div class="card-header">
-       <h3 id="titoloGestioneSedi" class="card-title">Aggiungi Sedi Elettorali</h3>
+  <div class="card card-primary shadow-sm">
+      <!-- HEADER CARD CON TITOLO + BOTTONE IMPORTA -->
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h3 id="titoloGestioneSedi" class="card-title">Aggiungi Sedi Elettorali</h3>
+
+        <!-- Bottone Importa -->
+        <button type="button"
+        class="btn btn-warning btn-sm text-dark"
+        data-toggle="modal"
+        data-target="#importConsultaModal"
+        data-toggle="tooltip"
+        title="Attenzione: l'importazione può modificare le sedi esistenti">
+  <i class="fas fa-exclamation-triangle me-1"></i>
+  Importa da altra consultazione
+</button>
 
       </div>
 
@@ -130,6 +142,160 @@ $circos=elenco_circoscrizioni();
     </div>
   </div>
 </div>
+
+<!-- =======================
+     MODAL IMPORTA SEDI
+     ======================= -->
+<div class="modal fade" id="importConsultaModal" tabindex="-1" role="dialog" aria-labelledby="importConsultaLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title" id="importConsultaLabel">
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          Importa sedi da altra consultazione
+        </h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+
+        <!-- AVVISO -->
+        <div class="alert alert-warning">
+          <strong>ATTENZIONE</strong><br>
+          L'importazione può sovrascrivere le sedi già presenti.
+        </div>
+
+        <form id="formImportSedi">
+
+          <div class="row">
+            <div class="col-md-6">
+              <label>Consultazione di origine</label>
+              <select class="form-control" id="consultazioneOrigine" required>
+                <option value="">-- Seleziona consultazione --</option>
+                <option value="1">Europee 2024</option>
+                <option value="2">Regionali 2023</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label>Circoscrizione</label>
+              <select class="form-control" id="circImport">
+                <option value="">Tutte</option>
+                <?php foreach($circos as $val){ ?>
+                  <option value="<?= $val['id_circ'] ?>"><?= $val['descrizione'] ?></option>
+                <?php } ?>
+              </select>
+            </div>
+          </div>
+
+          <hr>
+
+          <!-- CHECKBOX SOVRASCRIVI -->
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="sovrascrivi">
+            <label class="form-check-label" for="sovrascrivi">
+              Sovrascrivi sedi esistenti
+            </label>
+          </div>
+
+          <!-- DOPPIA CONFERMA -->
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="confermaImport">
+            <label class="form-check-label text-danger" for="confermaImport">
+              Confermo di aver compreso i rischi dell'importazione
+            </label>
+          </div>
+
+        </form>
+
+        <div id="importResult" class="mt-3"></div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Annulla
+        </button>
+        <button type="button"
+                class="btn btn-warning text-dark"
+                id="btnImportaSedi"
+                onclick="importaSedi()"
+                disabled>
+          <i class="fas fa-download me-1"></i>Importa
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('confermaImport').addEventListener('change', function () {
+  document.getElementById('btnImportaSedi').disabled = !this.checked;
+});
+</script>
+
+<script>
+function importaSedi() {
+
+  const consultazioneOrigine = document.getElementById('consultazioneOrigine').value;
+  const consultazioneAttiva = document.getElementById('consultazioneAttiva').value;
+  const circ = document.getElementById('circImport').value;
+  const sovrascrivi = document.getElementById('sovrascrivi').checked ? 1 : 0;
+  const conferma = document.getElementById('confermaImport').checked;
+
+  if (!consultazioneOrigine) {
+    alert('Seleziona una consultazione di origine');
+    return;
+  }
+
+  // ⛔ BLOCCO: stessa consultazione
+  if (consultazioneOrigine === consultazioneAttiva) {
+    alert('Non puoi importare dalla stessa consultazione attiva.');
+    return;
+  }
+
+  // ⛔ BLOCCO: conferma non spuntata
+  if (!conferma) {
+    alert('Devi confermare di aver compreso i rischi.');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('funzione', 'importaSedi');
+  formData.append('id_consultazione_origine', consultazioneOrigine);
+  formData.append('id_consultazione_dest', consultazioneAttiva);
+  formData.append('id_circ', circ);
+  formData.append('sovrascrivi', sovrascrivi);
+
+  document.getElementById('importResult').innerHTML =
+    '<div class="alert alert-info">Importazione in corso...</div>';
+
+  fetch('../principale.php', {
+    method: 'POST',
+    body: formData
+  })
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById('importResult').innerHTML =
+      '<div class="alert alert-success">Importazione completata</div>';
+    risultato.innerHTML = data;
+    $('#importConsultaModal').modal('hide');
+  })
+  .catch(() => {
+    document.getElementById('importResult').innerHTML =
+      '<div class="alert alert-danger">Errore durante l’importazione</div>';
+  });
+}
+</script>
+
+
 
 <script>
 let deleteIdSede = null;
@@ -304,3 +470,16 @@ document.querySelector('.btnApriMappaForm').addEventListener('click', () => {
 
 
 </script>
+<?php
+// da utilizzare sul file
+// if ($_POST['funzione'] === 'importaSedi') {
+    // $id_consultazione = $_POST['id_consultazione'];
+    // $id_circ = $_POST['id_circ'];
+    // $sovrascrivi = $_POST['sovrascrivi'];
+
+    // 1️⃣ leggi sedi dalla consultazione origine
+    // 2️⃣ eventuale DELETE se sovrascrivi = 1
+    // 3️⃣ INSERT nelle sedi della consultazione attiva
+    // 4️⃣ include elenco_sedi.php
+//}
+?>

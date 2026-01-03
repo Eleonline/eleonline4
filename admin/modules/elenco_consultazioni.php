@@ -22,10 +22,14 @@ if(!$cambia) {
 
 
         <!-- PREFERITA -->
-        <td class="text-center">
-            <?php if ($val['preferita']): ?>
-                *
-            <?php endif; ?>
+        <td class="text-center"> 
+             <?php if ($val['preferita']): ?>
+        <i class="fas fa-star text-warning"></i>
+	<?php /*?>	
+    <?php else: ?>
+        <i class="far fa-star text-muted"></i>
+    <?php */ ?>
+	<?php endif; ?>
 			        <!-- CAMPI NASCOSTI -->
         <div style="display:none;" >
 		<div id="link_trasparenza<?= $key ?>">
