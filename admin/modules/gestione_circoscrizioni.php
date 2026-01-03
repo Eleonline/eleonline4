@@ -131,7 +131,6 @@ function aggiungiCircoscrizione(e) {
 };
 
 
-  let deleteIdCirc = null;
 
 function deleteCircoscrizione(index) {
     const denominazione = document.getElementById("denominazione"+index).innerText;

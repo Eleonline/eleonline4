@@ -46,7 +46,7 @@ $circos=elenco_circoscrizioni();
                 </button>
               </div>
 			  <!-- popolare di nome comune e lat e lng-->	
-              <input type="hidden" class="nome_comune" name="nome_comune" value="Capo d'Orlando">
+              <input type="hidden" class="nome_comune" name="nome_comune" value="" >
               <input type="hidden" class="lat" id="lat" name="lat" value="" >
               <input type="hidden" class="lng" id="lng" name="lng" value="" >
             </div>

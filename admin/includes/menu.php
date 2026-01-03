@@ -130,7 +130,10 @@ if(isset($_POST['id_cons_gen'])and (count(verifica_cons($_POST['id_cons_gen'])) 
 if(!isset($id_cons_gen) and isset($_SESSION['id_cons_gen'])) $id_cons_gen=$_SESSION['id_cons_gen'];
 if(!isset($id_cons_gen) or !$id_cons_gen) $id_cons_gen=default_cons();
 if(!$id_cons_gen and $role!='superuser') header("Location: ../logout.php");
+$row=dati_consultazione($id_cons_gen);
+$tipo_cons=$row[0]['tipo_cons'];
 $_SESSION['id_cons_gen']=$id_cons_gen;
+$_SESSION['tipo_cons']=$tipo_cons;
 // Array esempio consultazioni, id => nome
 $row=elenco_cons();
 $consultazioni=array();

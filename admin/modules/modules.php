@@ -4,7 +4,7 @@
 define('APP_RUNNING', true);
 require_once '../access.php';
 # Inserimento accesso al db
-global $id_comune, $id_cons_gen, $patch, $id_cons;
+global $id_comune, $id_cons_gen, $patch, $id_cons, $tipo_cons;
 
 
 if (file_exists("../config/config.php")){ 
@@ -53,6 +53,13 @@ $sth->execute();
 $sth = $dbi->prepare("SET NAMES 'utf8'");
 $sth->execute();
 require_once '../includes/query.php';
+if(!isset($_SESSION['id_cons_gen'])){ 
+	$id_cons_gen=default_cons();
+}else{
+	$id_cons_gen=$_SESSION['id_cons_gen'];
+	$tipo_cons=$_SESSION['tipo_cons'];
+}
+require_once '../includes/lang-it.php';
 
 ob_start(); // attiva output buffering
 include '../includes/header.php';

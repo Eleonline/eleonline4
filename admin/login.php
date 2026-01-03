@@ -108,8 +108,11 @@ if (isset($_POST['username'])) {
 		$sth = $dbi->prepare("update ".$prefix."_authors set counter=$counter where aid='$aid' and pwd='$bpwd' and id_comune='$id_comune'");
 		$sth->execute();
 		$_SESSION['id_comune']=$id_comune;
-		$id_cons_gen=intval(default_cons());
+		$def=default_cons();
+		$id_cons_gen=$def[0];
+		$tipo_cons=$def[3];
 		$_SESSION['id_cons_gen']=$id_cons_gen;
+		$_SESSION['tipo_cons']=$tipo_cons;
 	}
 if($row['adminsuper']) $role='superuser';
 elseif($row['admincomune']) $role='admin';
