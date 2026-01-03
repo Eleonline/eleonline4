@@ -10,38 +10,36 @@ $_SESSION['tipo_info']='numero';
       </div>
       <div class="card-body">
 
-        <form id="infoForm" onsubmit="aggiungiInfo(event)">
-          <div class="form-group" style="display:none;">
-            <label>Tipo</label>
-            <input type="text" name="tipo" id="tipo" class="form-control" value="<?= $_SESSION['tipo_info'] ?>">
-          </div>
-          <div class="form-group" style="display:none;">
-            <label>Posizione</label>
-            <input type="text" name="mid" id="mid" class="form-control" value="">
-          </div>
-          <div class="form-group">
-            <label>Titolo/Ufficio</label>
-            <input type="text" name="titolo" id="title" class="form-control" value="">
-          </div>
-          <div class="form-group">
-            <label>Sede</label>
-            <textarea name="preamble" id="preamble" class="form-control" rows="2"></textarea>
-          </div>
-			<div class="form-row row">
-			  <div class="form-group col-md-6">
-				<label>N. Telefono 1</label>
-				<input type="text" name="telefono1" id="telefono1" class="form-control" maxlength="20" placeholder="Telefono 1">
-			  </div>
-			  <div class="form-group col-md-6">
-				<label>N. Telefono 2</label>
-				<input type="text" name="telefono2" id="telefono2" class="form-control" maxlength="20" placeholder="Telefono 2">
-			  </div>
-			</div>
+       <form id="infoForm" onsubmit="aggiungiInfo(event)">
+    <div class="form-group" style="display:none;">
+        <label>Tipo</label>
+        <input type="text" name="tipo" id="tipo" class="form-control" value="<?= $_SESSION['tipo_info'] ?>">
+    </div>
 
+    <div class="form-group" style="display:none;">
+        <label>Posizione</label>
+        <input type="text" name="mid" id="mid" class="form-control" value="">
+    </div>
 
-          <button type="submit" class="btn btn-primary mt-2" id="btnSalvaInfo">Salva</button>
-          <button type="reset" class="btn btn-secondary mt-2" onclick="resetFormInfo()">Annulla</button>
-        </form>
+    <div class="form-group">
+        <label>Titolo/Ufficio</label>
+        <input type="text" name="title" id="title" class="form-control" value="">
+    </div>
+
+    <div class="form-group">
+        <label>Sede</label>
+        <textarea name="preamble" id="preamble" class="form-control" rows="2"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Numero di telefono</label>
+        <input type="text" name="content" id="content" class="form-control" maxlength="20" placeholder="Numero di telefono">
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2" id="btnSalvaInfo">Salva</button>
+    <button type="reset" class="btn btn-secondary mt-2" onclick="resetFormInfo()">Annulla</button>
+</form>
+
         <hr>
 		<div class="card-header bg-secondary text-white">
 			<h3 class="card-title">Elenco Numeri Utili</h3>
@@ -97,14 +95,14 @@ $_SESSION['tipo_info']='numero';
 <script>
 let deleteMid = null;
 
+// Funzione Aggiungi / Salva
 function aggiungiInfo(e) { 
     e.preventDefault(); 
     const tipo = document.getElementById('tipo').value;
     const mid = document.getElementById('mid').value;
     const title = document.getElementById('title').value;
     const preamble = document.getElementById('preamble').value;
-    const telefono1 = document.getElementById('telefono1').value;
-	const telefono2 = document.getElementById('telefono2').value;
+    const content = document.getElementById('content').value; // unico numero
 
     const formData = new FormData();
     formData.append('funzione', 'salvaInfo');
@@ -112,8 +110,7 @@ function aggiungiInfo(e) {
     formData.append('mid', mid);
     formData.append('title', title);
     formData.append('preamble', preamble);
-    formData.append('telefono1', telefono1);
-	formData.append('telefono2', telefono2);
+    formData.append('content', content);
     formData.append('op', 'salva');
 
     fetch('../principale.php', { method: 'POST', body: formData })
@@ -125,13 +122,23 @@ function aggiungiInfo(e) {
         });
 }
 
-function deleteInfo(index) {
-    deleteMid = document.getElementById('mid'+index).innerText;
-    const titolo = document.getElementById('title'+index).innerText; // leggo il titolo/ufficio
-    document.getElementById('deleteTitle').textContent = titolo;      // lo mostro nel modal
-    $('#confirmDeleteModal').modal('show'); // apro il modal
+// Funzione Modifica
+function editInfo(index) {
+    document.getElementById("mid").value = document.getElementById("mid"+index).innerText;
+    document.getElementById("title").value = document.getElementById("title"+index).innerText;
+    document.getElementById("preamble").value = document.getElementById("preamble"+index).innerText;
+    document.getElementById("content").value = document.getElementById("content"+index).innerText;
+    document.getElementById("btnSalvaInfo").textContent = "Salva modifiche";
+    document.getElementById("mid").focus();
 }
 
+// Funzione Elimina con modale
+function deleteInfo(index) {
+    deleteMid = document.getElementById('mid'+index).innerText;
+    const titolo = document.getElementById('title'+index).innerText;
+    document.getElementById('deleteTitle').textContent = titolo;
+    $('#confirmDeleteModal').modal('show'); // apri modale
+}
 
 document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
     if(deleteMid) {
@@ -144,7 +151,6 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
         .then(response => response.text())
         .then(data => {
             document.getElementById('risultato').innerHTML = data;
-            document.getElementById("btnSalvaInfo").textContent = "Aggiungi";
             resetFormInfo();
             aggiornaNumero();
             $('#confirmDeleteModal').modal('hide');
@@ -153,25 +159,17 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
     }
 });
 
-function editInfo(index) {
-    document.getElementById("mid").value = document.getElementById("mid"+index).innerText;
-    document.getElementById("title").value = document.getElementById("title"+index).innerText;
-    document.getElementById("preamble").value = document.getElementById("preamble"+index).innerText;
-    document.getElementById("telefono1").value = document.getElementById("telefono1"+index).innerText;
-	document.getElementById("telefono2").value = document.getElementById("telefono2"+index).innerText;
-    document.getElementById("btnSalvaInfo").textContent = "Salva modifiche";
-    document.getElementById("mid").focus();
-}
-
+// Reset Form
 function resetFormInfo() {
-    const form = document.getElementById('infoForm');
-    form.reset();
+    document.getElementById('infoForm').reset();
     document.getElementById('mid').value = '';
     document.getElementById('btnSalvaInfo').textContent = "Aggiungi";
 }
 
+// Aggiorna numero progressivo (mid)
 function aggiornaNumero() {
     const maxNum = document.getElementById("maxNumero").innerText;
     document.getElementById('mid').value = maxNum;
 }
+
 </script>

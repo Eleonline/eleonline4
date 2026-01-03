@@ -29,38 +29,60 @@ require_once '../includes/check_access.php';
 <script>
 let deleteUtente = null;
 
+// Gestione visibilità dei div in base al livello
 function scegliTipo() {
     const val = document.getElementById("livello").value;
-    if(val=='2'){
-        document.getElementById('divelencosedi').style.display = 'none';
-        document.getElementById('divelencosezioni').style.display = 'block';
-    } else if(val=='1') {
-        document.getElementById('divelencosedi').style.display = 'block';
-        document.getElementById('divelencosezioni').style.display = 'none';
-    } else {
-        document.getElementById('divelencosedi').style.display = 'none';
-        document.getElementById('divelencosezioni').style.display = 'none';
-    }
+    document.getElementById('divelencosedi').style.display = val == '1' ? 'block' : 'none';
+    document.getElementById('divelencosezioni').style.display = val == '2' ? 'block' : 'none';
 }
 
+// Modifica utente
 function editUser(id) {
-    document.getElementById("card-body").style.display = 'block';
-    var x = document.getElementById("utente");
-    var option = document.createElement("option");
-    option.text = document.getElementById('utente'+id).innerText;
-    x.add(option);
-    const elementi = x.options.length - 1;
-    document.getElementById('utente').selectedIndex = elementi;
+    const cardBody = document.getElementById("card-body");
+    const selectUtente = document.getElementById("utente");
+    const submitBtn = document.getElementById("submitBtn");
+    const formTitle = document.getElementById("form-title");
 
-    document.getElementById("submitBtn").textContent = "Salva modifiche";
+    // Mostra il form
+    cardBody.style.display = 'block';
+
+    // Recupera nome utente selezionato
+    const nomeUtente = document.getElementById('utente'+id).innerText;
+
+    // Se l'opzione esiste già, selezionala, altrimenti la aggiungi
+    let opTrovata = false;
+    for(let i=0; i<selectUtente.options.length; i++){
+        if(selectUtente.options[i].text === nomeUtente){
+            selectUtente.selectedIndex = i;
+            opTrovata = true;
+            break;
+        }
+    }
+
+    if(!opTrovata){
+        // Svuota e aggiungi solo questa opzione
+        selectUtente.innerHTML = "";
+        const option = document.createElement("option");
+        option.text = nomeUtente;
+        selectUtente.add(option);
+        selectUtente.selectedIndex = 0;
+    }
+
+    // Mostra il pulsante e aggiorna il testo
+    submitBtn.style.display = 'block';
+    submitBtn.textContent = "Salva modifiche";
+
+    // Aggiorna titolo form
+    formTitle.innerText = "Modifica permesso utente";
 }
 
+// Aggiungi o salva utente
 function aggiungiUser(e) {
     e.preventDefault();
-    var sedi = 0;
-    var sezioni = 0;
     const livello = document.getElementById("livello").value;
     const utente = document.getElementById("utente").value;
+    let sedi = 0, sezioni = 0;
+
     if(livello == 1) sedi = document.getElementById("sedi").value;
     else if(livello == 2) sezioni = document.getElementById("sezioni").value;
 
@@ -75,40 +97,70 @@ function aggiungiUser(e) {
         .then(response => response.text())
         .then(data => {
             const myForm = document.getElementById('userForm');
+            const risultato = document.getElementById('risultato');
+
+            // Aggiorna elenco utenti
             risultato.innerHTML = data;
             myForm.reset();
-            document.getElementById("submitBtn").textContent = "Aggiungi Utente";
-            var x = document.getElementById("utente");
-            if(x.options.length == 0) {
-                document.getElementById("submitBtn").style.display='none';
-                document.getElementById("form-title").innerText = "Non sono presenti altri utenti da autorizzare";
+
+            const selectUtente = document.getElementById("utente");
+            const submitBtn = document.getElementById("submitBtn");
+            const formTitle = document.getElementById("form-title");
+
+            // Seleziona solo il primo utente disponibile
+            if(selectUtente.options.length > 0){
+                selectUtente.selectedIndex = 0;
+                submitBtn.style.display = 'block';
+                submitBtn.textContent = "Aggiungi Utente";
+                formTitle.innerText = "Aggiungi il permesso per un utente";
+            } else {
+                submitBtn.style.display = 'none';
+                formTitle.innerText = "Non sono presenti altri utenti da autorizzare";
             }
         });
 }
 
+// Mostra modal conferma cancellazione
 function deleteUser(index) {
     deleteUtente = document.getElementById("utente"+index).innerText;
     document.getElementById("deleteUtente").textContent = deleteUtente;
     $('#confirmDeletePermessoModal').modal('show');
 }
 
+// Conferma cancellazione
 document.getElementById('confirmDeletePermessoBtn').addEventListener('click', function() {
-    if(deleteUtente) {
-        const formData = new FormData();
-        formData.append('funzione', 'salvaPermesso');
-        formData.append('utente', deleteUtente);
-        formData.append('op', 'cancella');
+    if(!deleteUtente) return;
 
-        fetch('../principale.php', { method: 'POST', body: formData })
-            .then(response => response.text())
-            .then(data => {
-                risultato.innerHTML = data;
-                deleteUtente = null;
-                $('#confirmDeletePermessoModal').modal('hide');
-                document.getElementById("submitBtn").style.display='block';
-                document.getElementById("submitBtn").textContent = "Aggiungi Utente";
-                document.getElementById("form-title").innerText = "Aggiungi il permesso per un utente";
-            });
-    }
+    const formData = new FormData();
+    formData.append('funzione', 'salvaPermesso');
+    formData.append('utente', deleteUtente);
+    formData.append('op', 'cancella');
+
+    fetch('../principale.php', { method: 'POST', body: formData })
+        .then(response => response.text())
+        .then(data => {
+            const risultato = document.getElementById('risultato');
+            risultato.innerHTML = data;
+
+            deleteUtente = null;
+            $('#confirmDeletePermessoModal').modal('hide');
+
+            const selectUtente = document.getElementById("utente");
+            const submitBtn = document.getElementById("submitBtn");
+            const formTitle = document.getElementById("form-title");
+
+            // Seleziona il primo utente disponibile o mostra messaggio
+            if(selectUtente.options.length > 0){
+                selectUtente.selectedIndex = 0;
+                submitBtn.style.display = 'block';
+                submitBtn.textContent = "Aggiungi Utente";
+                formTitle.innerText = "Aggiungi il permesso per un utente";
+            } else {
+                selectUtente.innerHTML = "";
+                submitBtn.style.display = 'none';
+                formTitle.innerText = "Non sono presenti altri utenti da autorizzare";
+            }
+        });
 });
 </script>
+
