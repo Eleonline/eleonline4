@@ -53,8 +53,12 @@ $sth->execute();
 $sth = $dbi->prepare("SET NAMES 'utf8'");
 $sth->execute();
 require_once '../includes/query.php';
-if(!isset($_SESSION['id_cons_gen'])){ 
-	$id_cons_gen=default_cons();
+if(!isset($_SESSION['id_cons_gen']) and !$id_cons_gen){ 
+	$row=default_cons();
+	$id_cons_gen=$row['id_cons_gen'];
+	$tipo_cons=$row['tipo_cons'];
+	$_SESSION['id_cons_gen']=$id_cons_gen;
+	$_SESSION['tipo_cons']=$tipo_cons;
 }else{
 	$id_cons_gen=$_SESSION['id_cons_gen'];
 	$tipo_cons=$_SESSION['tipo_cons'];

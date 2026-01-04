@@ -2,7 +2,7 @@
 require_once '../includes/check_access.php';
 ?>
 <section class="content">
-  <div class="container-fluid">
+  <div class="container-fluid mt-3">
     <h2><i class="fas fa-users-cog"></i> Gestione Utenti</h2>
 
     <!-- FORM -->

@@ -161,10 +161,9 @@ elseif($row['adminop']) $role='operatore';
 	<?php if(isset($_SESSION['msglogout'])) { ?>
 		Login fallito:
 	<?php echo $_SESSION['msglogout']."<br>"; unset ($_SESSION['msglogout']); }?>		
-	<!-- soòo per demo 
 	User: admin Psw: admin123 Ruolo:admin<br>
 	User: superuser Psw:superpass Ruolo:superuser<br>
-	User: operatore Psw:operapass Ruolo:	operatore<br> -->
+<!--	User: operatore Psw:operapass Ruolo:	operatore<br> -->
 	</div>
     <!-- /.login-logo -->
     <div class="card">
