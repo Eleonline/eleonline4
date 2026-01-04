@@ -29,7 +29,7 @@ $maxNumero++;
       <div class="card-body">
         <form id="gruppoForm" method="post" enctype="multipart/form-data" onsubmit="aggiungiGruppo(event)">
           <input type="hidden" id="id_gruppo" name="id_gruppo">
-          <input type="hidden" name="tipo_candidato" value="<?= $tipo_candidato ?>">
+          <input type="hidden" name="tipo_candidato" value="<?= $tipo_cons ?>">
 
           <div class="form-row" style="align-items:center; gap:0.5rem;">
             <div class="form-group" style="flex: 0 0 80px; margin-bottom:0;">

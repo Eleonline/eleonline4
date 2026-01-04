@@ -222,14 +222,6 @@ global $dbi,$prefix,$id_comune,$id_cons_gen,$id_cons;
 	list($id_cons_pred)=$sth->fetch(PDO::FETCH_NUM);
 	if(!$sth->rowCount() or !$id_cons_pred)
 	{
-	/*	$sql="SELECT siteistat FROM ".$prefix."_config";
-		$sth = $dbi->prepare("$sql");
-		$sth->execute();
-		list($id_comune)=$sth->fetch(PDO::FETCH_NUM); 
-		$sql="SELECT id_cons FROM ".$prefix."_ele_comune where id_comune='$id_comune' ";
-		$sth = $dbi->prepare("$sql");
-		$sth->execute();
-		list($id_cons_pred)=$sth->fetch(PDO::FETCH_NUM);*/
 		if(!$id_cons_pred)
 		{
 			$sql="SELECT id_cons FROM ".$prefix."_ele_cons_comune where id_comune='$id_comune' and chiusa<'2' order by id_cons desc limit 0,1";

@@ -69,6 +69,7 @@ $inizioNoGenere = strtotime('2025/06/30');
 		  <div class="form-group col-12 col-sm-6 col-md-4" id="divlegge">
 			<label for="id_conf">Legge elettorale</label>
 			<select class="form-control" id="id_conf" name="id_conf">
+				<option value="0" ></option>
 			  <?php $i=0; foreach($row as $val) { ?>
 				<option value="<?= $val['id_conf'] ?>" <?php if(!$i++) echo "selected"; ?>><?= $val['descrizione'] ?></option>
 			  <?php } ?>
@@ -85,6 +86,7 @@ $inizioNoGenere = strtotime('2025/06/30');
 		  <div class="form-group col-12 col-sm-6 col-md-2" id="divfascia">
 			<label for="id_fascia">Abitanti</label>
 			<select class="form-control" id="id_fascia" name="id_fascia">
+			  <option value="0"></option>
 			  <option value="1">0 - 3.000</option>
 			  <option value="2">3.001 - 10.000</option>
 			  <option value="3">10.001 - 15.000</option>
