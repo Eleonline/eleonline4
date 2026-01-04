@@ -1,6 +1,6 @@
 <?php
 require_once '../includes/check_access.php';
-
+$inizioNoGenere = strtotime('2025/06/30');
 ?>
 
 <section class="content">
@@ -48,7 +48,7 @@ require_once '../includes/check_access.php';
             </div>
             <div class="form-group col-md-2">
               <label for="data_inizio">Data Inizio*</label>
-              <input type="date" class="form-control" id="data_inizio" name="data_inizio" required>
+              <input type="date" class="form-control" id="data_inizio" name="data_inizio" required onchange="selezionaInput()">
             </div>
             <div class="form-group col-md-2">
               <label for="data_fine">Data Fine*</label>
@@ -60,73 +60,72 @@ require_once '../includes/check_access.php';
             <label for="link">Link DAIT Trasparenza</label>
             <input type="url" class="form-control" id="link" name="link">
 		  </div>
-          <div class="form-row">		  
-            <div class="form-group col-md-2" id="divpreferenze">
-				<label for="preferenze">Preferenze</label>
-				<input type="text" class="form-control" id="preferenze" name="preferenze">
-			</div>
-			<?php $row=elenco_leggi(); ?>
-			<div class="form-group col-md-2" id="divlegge">
-				<label for="id_conf">Legge elettorale</label>
-				<select class="form-control" id="id_conf" name="id_conf">
-				<?php $i=0; foreach($row as $val) { ?>
-					<option value="<?= $val['id_conf'] ?>" <?php if(!$i++) echo "selected"; ?>><?= $val['descrizione'] ?></option>
-				<?php } ?>
-				</select>				
-			</div>
-			<div class="form-group col-md-2" id="divstato">
-				<label for="chiusa">Stato</label>
-				<select class="form-control" id="chiusa" name="chiusa">
-                <option value="0">Attiva</option>
-                <option value="1">Chiusa</option>
-                <option value="2">Nulla</option>
-              </select>				
-			</div>
-			<div class="form-group col-md-2" id="divfascia">
-				<label for="id_fascia">Abitanti</label>
-				<select class="form-control" id="id_fascia" name="id_fascia">
-                <option value="1">0 - 3.000</option>
-                <option value="2">3.001 - 10.000</option>
-                <option value="3">10.001 - 15.000</option>
-                <option value="4">15.001 - 30.000</option>
-                <option value="5">30.001 - 100.000</option>
-                <option value="6">100.001 - 250.000</option>
-                <option value="7">250.001 - 500.000</option>
-                <option value="8">500.001 - 1.000.000</option>
-                <option value="9">Oltre 1.000.000</option>
-              </select>				
-			</div>
+      <div class="form-row">		  
+		  <div class="form-group col-12 col-sm-6 col-md-2" id="divpreferenze">
+			<label for="preferenze">Preferenze</label>
+			<input type="text" class="form-control" id="preferenze" name="preferenze">
 		  </div>
-          <div class="form-row">		  		  
-			<div class="form-group col-md-2" id="divdisgiunto">
-				<label for="disgiunto">Voto disgiunto</label>
-				<select class="form-control" id="disgiunto" name="disgiunto">
-				<option value="0">No</option>
-                <option value="1">Si</option>
-              </select>				
-			</div>
-			<div class="form-group col-md-2" id="divsologruppo">
-				<label for="solo_gruppo">Ai soli gruppi</label>
-				<select class="form-control" id="solo_gruppo" name="solo_gruppo">
-				<option value="0">No</option>
-                <option value="1">Si</option>
-              </select>				
-			</div>
-			<div class="form-group col-md-2" id="divvismf">
-				<label for="vismf">Affluenze per genere</label>
-				<select class="form-control" id="vismf" name="vismf">
-				<option value="0">No</option>
-                <option value="1">Si</option>
-              </select>				
-			</div>
-			<div class="form-group col-md-2" id="divproiezione">
-				<label for="disgiunto">Proiezione consiglio</label>
-				<select class="form-control" id="proiezione" name="proiezione">
-				<option value="0">No</option>
-                <option value="1">Si</option>
-              </select>				
-			</div>
-          </div>
+		  <?php $row = elenco_leggi(); ?>
+		  <div class="form-group col-12 col-sm-6 col-md-4" id="divlegge">
+			<label for="id_conf">Legge elettorale</label>
+			<select class="form-control" id="id_conf" name="id_conf">
+			  <?php $i=0; foreach($row as $val) { ?>
+				<option value="<?= $val['id_conf'] ?>" <?php if(!$i++) echo "selected"; ?>><?= $val['descrizione'] ?></option>
+			  <?php } ?>
+			</select>				
+		  </div>
+		  <div class="form-group col-12 col-sm-6 col-md-2" id="divstato">
+			<label for="chiusa">Stato</label>
+			<select class="form-control" id="chiusa" name="chiusa">
+			  <option value="0">Attiva</option>
+			  <option value="1">Chiusa</option>
+			  <option value="2">Nulla</option>
+			</select>				
+		  </div>
+		  <div class="form-group col-12 col-sm-6 col-md-2" id="divfascia">
+			<label for="id_fascia">Abitanti</label>
+			<select class="form-control" id="id_fascia" name="id_fascia">
+			  <option value="1">0 - 3.000</option>
+			  <option value="2">3.001 - 10.000</option>
+			  <option value="3">10.001 - 15.000</option>
+			  <option value="4">15.001 - 30.000</option>
+			  <option value="5">30.001 - 100.000</option>
+			  <option value="6">100.001 - 250.000</option>
+			  <option value="7">250.001 - 500.000</option>
+			  <option value="8">500.001 - 1.000.000</option>
+			  <option value="9">Oltre 1.000.000</option>
+			</select>				
+		  </div>
+		  <div class="form-group col-12 col-sm-6 col-md-2" id="divdisgiunto">
+			<label for="disgiunto">Voto disgiunto</label>
+			<select class="form-control" id="disgiunto" name="disgiunto">
+			  <option value="0">No</option>
+			  <option value="1">Si</option>
+			</select>				
+		  </div>
+		  <div class="form-group col-12 col-sm-6 col-md-2" id="divsologruppo">
+			<label for="solo_gruppo">Ai soli gruppi</label>
+			<select class="form-control" id="solo_gruppo" name="solo_gruppo">
+			  <option value="0">No</option>
+			  <option value="1">Si</option>
+			</select>				
+		  </div>
+		  <div class="form-group col-12 col-sm-6 col-md-3" id="divvismf">
+			<label for="vismf">Affluenze per genere</label>
+			<select class="form-control" id="vismf" name="vismf">
+			  <option value="0">No</option>
+			  <option value="1">Si</option>
+			</select>				
+		  </div>
+		  <div class="form-group col-12 col-sm-6 col-md-2" id="divproiezione">
+			<label for="proiezione">Proiezione consiglio</label>
+			<select class="form-control" id="proiezione" name="proiezione">
+			  <option value="0">No</option>
+			  <option value="1">Si</option>
+			</select>				
+		  </div>
+		</div>
+
 
           <div class="form-group form-check">
             <input type="checkbox" class="form-check-input" id="preferita" name="preferita">
@@ -192,6 +191,26 @@ require_once '../includes/check_access.php';
     </div>
   </div>
 </div>
+
+<script>
+const dataInizioInput = document.getElementById("data_inizio");
+const dataFineInput = document.getElementById("data_fine");
+
+// Controllo quando cambia la data fine
+dataFineInput.addEventListener("change", () => {
+    if (dataInizioInput.value && dataFineInput.value) {
+        const inizio = new Date(dataInizioInput.value);
+        const fine = new Date(dataFineInput.value);
+
+        if (fine < inizio) {
+            alert("La data di fine non può essere precedente alla data di inizio!");
+            dataFineInput.value = ""; // reset della data errata
+            dataFineInput.focus();
+        }
+    }
+});
+</script>
+
 
 <script>
 function aggiungiConsultazione(e) {
@@ -321,7 +340,6 @@ function selezionaInput() {
 		case "12":
 		case "13":
 		case "14":
-		
 			document.getElementById ( "divpreferenze" ).style.display = 'block';
 			document.getElementById ( "divlink" ).style.display = 'block';
 			document.getElementById ( "divsologruppo" ).style.display = 'none';
@@ -340,6 +358,7 @@ function selezionaInput() {
 		case "3":
 		case "4":
 			document.getElementById ( "divproiezione" ).style.display = 'block';
+			break;
 		case "9":
 		case "10":
 		case "11":
@@ -356,7 +375,69 @@ function selezionaInput() {
 			document.getElementById ( "divlegge" ).style.display = 'block';
 			break
 	}
+}function selezionaInput() {
+	const tipo = document.getElementById("tipo").value;
+	const dataInizioInput = document.getElementById("data_inizio").value;
+	const inizioNoGenere = new Date("2025-06-30"); // data limite
+	let dataInizio = dataInizioInput ? new Date(dataInizioInput) : null;
+
+	// Gestione visibilità in base al tipo
+	document.getElementById("divproiezione").style.display = 'none';
+
+	switch(tipo) {
+		case "1":
+		case "5":
+		case "6":
+		case "7":
+		case "8":
+		case "12":
+		case "13":
+		case "14":
+			document.getElementById("divpreferenze").style.display = 'block';
+			document.getElementById("divlink").style.display = 'block';
+			document.getElementById("divsologruppo").style.display = 'none';
+			document.getElementById("divdisgiunto").style.display = 'none';
+			document.getElementById("divfascia").style.display = 'none';
+			document.getElementById("divlegge").style.display = 'none';
+			break;
+		case "2":
+			document.getElementById("divpreferenze").style.display = 'none';
+			document.getElementById("divlink").style.display = 'none';
+			document.getElementById("divsologruppo").style.display = 'none';
+			document.getElementById("divdisgiunto").style.display = 'none';
+			document.getElementById("divfascia").style.display = 'none';
+			document.getElementById("divlegge").style.display = 'none';
+			break;
+		case "3":
+		case "4":
+			document.getElementById("divproiezione").style.display = 'block';
+			break;
+		case "9":
+		case "10":
+		case "11":
+		case "15":
+		case "16":
+		case "17":
+		case "18":
+		case "19":
+			document.getElementById("divpreferenze").style.display = 'block';
+			document.getElementById("divlink").style.display = 'block';
+			document.getElementById("divsologruppo").style.display = 'block';
+			document.getElementById("divdisgiunto").style.display = 'block';
+			document.getElementById("divfascia").style.display = 'block';
+			document.getElementById("divlegge").style.display = 'block';
+			document.getElementById("divproiezione").style.display = 'block';
+			break;
+	}
+
+	// Controllo affluenze per genere in base alla data
+	if(dataInizio && dataInizio > inizioNoGenere) {
+		document.getElementById("divvismf").style.display = 'none';
+	} else {
+		document.getElementById("divvismf").style.display = 'block';
+	}
 }
+
 
 function resetFormConsultazione() {
     const form = document.getElementById('consultazioneForm');
