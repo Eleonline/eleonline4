@@ -87,10 +87,8 @@ require_once '../includes/check_access.php';
   </div>
 </div>
 
-<!-- CKEditor 5 Classic -->
-<script src="https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-build-classic@39.0.0/build/ckeditor.js"></script>
-
-
+<!-- <script src="https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-build-classic@39.0.0/build/ckeditor.js"></script> -->
+<script src="../js/ckeditor.js"></script>
 <script>
 function aggiungiInfo(e) { 
     e.preventDefault(); 

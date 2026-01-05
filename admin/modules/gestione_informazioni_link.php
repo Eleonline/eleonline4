@@ -95,7 +95,8 @@
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-build-classic@39.0.0/build/ckeditor.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-build-classic@39.0.0/build/ckeditor.js"></script> -->
+<script src="../js/ckeditor.js"></script>
 <script>
 let editor;
 let deleteMid = null; // variabile globale per il link da eliminare
