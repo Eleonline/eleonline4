@@ -7,7 +7,7 @@
   <h2><i class="fas fa-link"></i> Gestione Link Utili</h2>
     <div class="card card-primary shadow-sm">
       <div class="card-header">
-        <h3 class="card-title">Aggiungi Link Utili</h3>
+        <h3 class="card-title" id="form-title">Aggiungi Link Utili</h3>
       </div>
       <div class="card-body">
 
@@ -46,7 +46,7 @@
 			  <tr>
 				<th>Titolo</th>
 				<th>URL</th>
-				<th style="display:none;">Descrizione</th>
+				<th>Descrizione</th>
 				<th>Azioni</th>
 			  </tr>
 			</thead>
@@ -181,11 +181,21 @@ function aggiornaNumero() {
 }
 
 ClassicEditor
-	.create(document.querySelector('#content'))
-	.then(newEditor => {
+    .create(document.querySelector('#content'))
+    .then(newEditor => {
         editor = newEditor;
-	})
-	.catch(error => {
-		console.error(error);
-	});
+
+        // Imposta altezza iniziale
+        editor.ui.view.editable.element.style.height = '100px';
+        editor.ui.view.editable.element.style.minHeight = '100px';
+
+        // Mantieni altezza anche quando si clicca dentro
+        editor.editing.view.change(writer => {
+            writer.setStyle('height', '100px', editor.editing.view.document.getRoot());
+        });
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
 </script>

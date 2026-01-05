@@ -6,7 +6,7 @@ $_SESSION['tipo_info']='numero';
   <h2><i class="fas fa-phone-alt "></i> Gestione Numeri Utili</h2>
     <div class="card card-primary shadow-sm">
       <div class="card-header">
-        <h3 class="card-title">Aggiungi Numeri Utili</h3>
+        <h3 class="card-title" id="form-title">Aggiungi Numeri Utili</h3>
       </div>
       <div class="card-body">
 
@@ -31,10 +31,11 @@ $_SESSION['tipo_info']='numero';
         <textarea name="preamble" id="preamble" class="form-control" rows="2"></textarea>
     </div>
 
-    <div class="form-group">
-        <label>Numero di telefono</label>
-        <input type="text" name="content" id="content" class="form-control" maxlength="20" placeholder="Numero di telefono">
-    </div>
+   <div class="form-group">
+    <label>Numero di telefono</label>
+    <textarea name="content" id="content" class="form-control" placeholder="Numero di telefono"></textarea>
+</div>
+
 
     <button type="submit" class="btn btn-primary mt-2" id="btnSalvaInfo">Salva</button>
     <button type="reset" class="btn btn-secondary mt-2" onclick="resetFormInfo()">Annulla</button>
@@ -50,7 +51,7 @@ $_SESSION['tipo_info']='numero';
             <tr>
               <th>Titolo/Ufficio</th>
               <th>Sede</th>
-              <th style="display:none;">Telefono 1</th>
+              <th>Telefono 1</th>
 			  <th style="display:none;">Telefono 2</th>
               <th>Azioni</th>
             </tr>
@@ -91,7 +92,7 @@ $_SESSION['tipo_info']='numero';
     </div>
   </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-build-classic@39.0.0/build/ckeditor.js"></script>
 <script>
 let deleteMid = null;
 
@@ -102,7 +103,7 @@ function aggiungiInfo(e) {
     const mid = document.getElementById('mid').value;
     const title = document.getElementById('title').value;
     const preamble = document.getElementById('preamble').value;
-    const content = document.getElementById('content').value; // unico numero
+    const content = contentEditor ? contentEditor.getData() : document.getElementById('content').value;
 
     const formData = new FormData();
     formData.append('funzione', 'salvaInfo');
@@ -127,7 +128,14 @@ function editInfo(index) {
     document.getElementById("mid").value = document.getElementById("mid"+index).innerText;
     document.getElementById("title").value = document.getElementById("title"+index).innerText;
     document.getElementById("preamble").value = document.getElementById("preamble"+index).innerText;
+  if(contentEditor) {
+    contentEditor.setData(document.getElementById("content"+index).innerHTML);
+} else {
     document.getElementById("content").value = document.getElementById("content"+index).innerText;
+}
+
+
+
     document.getElementById("btnSalvaInfo").textContent = "Salva modifiche";
     document.getElementById("mid").focus();
 }
@@ -163,13 +171,44 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
 function resetFormInfo() {
     document.getElementById('infoForm').reset();
     document.getElementById('mid').value = '';
+    if(contentEditor) contentEditor.setData(''); // reset CKEditor
     document.getElementById('btnSalvaInfo').textContent = "Aggiungi";
 }
+
 
 // Aggiorna numero progressivo (mid)
 function aggiornaNumero() {
     const maxNum = document.getElementById("maxNumero").innerText;
     document.getElementById('mid').value = maxNum;
+}
+
+let contentEditor = null;
+
+// inizializzazione CKEditor
+ClassicEditor
+    .create(document.querySelector('#content'))
+    .then(newEditor => {
+        contentEditor = newEditor;
+
+        // altezza fissa a 150px
+        contentEditor.ui.view.editable.element.style.height = '150px';
+        contentEditor.ui.view.editable.element.style.minHeight = '150px';
+
+        // mantieni altezza anche quando si clicca dentro
+        contentEditor.editing.view.change(writer => {
+            writer.setStyle('height', '150px', contentEditor.editing.view.document.getRoot());
+        });
+    })
+    .catch(error => console.error(error));
+
+// quando leggi il contenuto nella funzione aggiungiInfo
+const content = contentEditor ? contentEditor.getData() : document.getElementById('content').value;
+
+// quando modifichi un record
+if(contentEditor) {
+    contentEditor.setData(document.getElementById("content"+index).innerText);
+} else {
+    document.getElementById("content").value = document.getElementById("content"+index).innerText;
 }
 
 </script>
