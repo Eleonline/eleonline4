@@ -4,7 +4,7 @@ if (is_file('includes/check_access.php')) {
 } else {
     require_once '../includes/check_access.php';
 }
-
+$tipo_cons=$_SESSION['tipo_cons'];
 $row = elenco_gruppi();
 if (count($row)) {
     $ultimo = end($row);
@@ -20,7 +20,7 @@ $maxNumero++;
 </tr>
 
 <?php foreach ($row as $key => $val): 
-    $id_cons     = htmlspecialchars($val['id_cons']     ?? '', ENT_QUOTES, 'UTF-8');
+$id_cons     = htmlspecialchars($val['id_cons']     ?? '', ENT_QUOTES, 'UTF-8');
 $id_gruppo   = htmlspecialchars($val['id_gruppo']   ?? '', ENT_QUOTES, 'UTF-8');
 $numero      = htmlspecialchars($val['num_gruppo']  ?? '', ENT_QUOTES, 'UTF-8');
 $descrizione = htmlspecialchars($val['descrizione'] ?? '', ENT_QUOTES, 'UTF-8');

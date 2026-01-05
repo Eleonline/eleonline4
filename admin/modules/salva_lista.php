@@ -14,21 +14,15 @@ $param=strtolower($_SERVER['REQUEST_METHOD']) == 'get' ? $_GET : $_POST;
 if (isset($param['descrizione'])) $descrizione=$param['descrizione']; else $descrizione='';
 if (isset($param['op'])) $op=$param['op']; else $op='';
 if (isset($param['numero'])) $numero=intval($param['numero']); else $numero='';
-if (isset($param['id_gruppo'])) $id_gruppo=$param['id_gruppo']; else $id_gruppo='';
-if (isset($param['id_circ'])) $id_circ=$param['id_circ']; else $id_circ=0;
-if (isset($param['num_circ'])) $num_circ=$param['num_circ']; else $num_circ=0;
-if (isset($param['flag_simbolo'])) $flag_simbolo=$param['flag_simbolo']; else $flag_simbolo=0;
-if (isset($param['flag_programma'])) $flag_programma=$param['flag_programma']; else $flag_programma=0;
-if (isset($param['flag_cv'])) $flag_cv=$param['flag_cv']; else $flag_cv=0;
-if (isset($param['flag_cg'])) $flag_cg=$param['flag_cg']; else $flag_cg=0;
+if (isset($param['id_lista'])) $id_lista=$param['id_lista']; else $id_lista='';
+if (isset($param['id_gruppo'])) $id_gruppo=$param['id_gruppo']; else $id_gruppo=0;
+if (isset($param['num_gruppo'])) $num_gruppo=$param['num_gruppo']; else $num_gruppo=0;
+if (isset($param['flag_simbolo'])) $flag_simbolo=addslashes($param['flag_simbolo']); else $flag_simbolo=0;
 global $id_comune,$id_cons_gen,$id_cons,$prefix,$aid,$dbi;
 
 $pathdoc="../client/documenti/$id_comune/$id_cons_gen/";
 $pathbak="../client/documenti/backup/$id_comune/$id_cons_gen/";
-$nameimg="img_gruppo".$numero."_".str_replace(" ","_",$descrizione).".jpg";
-$namecv="cv_gruppo".$numero."_".str_replace(" ","_",$descrizione).".pdf";
-$namecg="cg_gruppo".$numero."_".str_replace(" ","_",$descrizione).".pdf";
-$nameprg="prg_gruppo".$numero."_".str_replace(" ","_",$descrizione).".pdf";
+$nameimg="img_lista".$numero."_".str_replace(" ","_",$descrizione).".jpg";
 
 if (!is_dir($pathdoc."img")) mkdir($pathdoc."img", 0777, true);
 if (!is_dir($pathdoc."cv")) mkdir($pathdoc."cv", 0777, true);
@@ -55,119 +49,68 @@ if(isset($_FILES['simbolo']['name']) and $_FILES['simbolo']['name']) {
 	$filestemma=$_FILES['simbolo']['tmp_name'];
 	$filestemma=imgresize($filestemma);
 	file_put_contents($pathdoc."img/".$nameimg, $filestemma);
-#	move_uploaded_file($_FILES['simbolo']['tmp_name'],$pathdoc."img/".$nameimg);
 	$nomestemma=", simbolo = :nameimg";
 	$preimg= ", :nameimg";
 	$campi.= ",simbolo ";
 }
-if(isset($_FILES['programma']['name']) and $_FILES['programma']['name']) {
-	if(is_file($pathdoc."programmi/".$nameprg)) 
-		rename($pathdoc."programmi/".$nameprg,$pathbak."programmi/".$nameprg);
-	move_uploaded_file($_FILES['programma']['tmp_name'],$pathdoc."programmi/".$nameprg);
-	$nomeprg=", prognome=:nameprg";
-	$preimg.=",:nameprg";
-	$campi.= ", prognome ";
-}
-if(isset($_FILES['cv']['name']) and $_FILES['cv']['name']) {
-	if(is_file($pathdoc."cv/".$namecv)) 
-		rename($pathdoc."cv/".$namecv,$pathbak."cv/".$namecv);
-	move_uploaded_file($_FILES['cv']['tmp_name'],$pathdoc."cv/".$namecv);
-	$nomecv=", cv=:namecv";
-	$preimg.=",:namecv";
-	$campi.= ", cv ";
-}
-if(isset($_FILES['cg']['name']) and $_FILES['cg']['name']) {
-	if(is_file($pathdoc."cg/".$namecg)) 
-		rename($pathdoc."cg/".$namecg,$pathbak."cg/".$namecg);
-	move_uploaded_file($_FILES['cg']['tmp_name'],$pathdoc."cg/".$namecg);
-	$nomecg=", cg=:namecg";
-	$preimg.=",:namecg";
-	$campi.= ", cg ";
-}
+
 #####
 
 $salvato=0;
-if($op=='cancella_parziale') {
-	$cond='';
-	if ($flag_simbolo){
-		if(is_file($pathdoc."img/".$nameimg))
-			rename($pathdoc."img/".$nameimg,$pathbak."img/".$nameimg);
-		$cond.="simbolo=''";
-	}	
-	if ($flag_cv) {
-		if(is_file($pathdoc."cv".$namecv))
-			rename($pathdoc."cv".$namecv,$pathbak."cv".$namecv);
-		if(mb_strlen($cond)) $cond.=',';
-		$cond.="cv=''";
-	}
-	if ($flag_cg){
-		if(is_file($pathdoc."cg".$namecg))
-			rename($pathdoc."cg".$namecg,$pathbak."cg".$namecg);
-		if(mb_strlen($cond)) $cond.=',';
-		$cond.="cg=''";
-	}	
-	if ($flag_programma){
-		if(is_file($pathdoc."programmi".$nameprg))
-			rename($pathdoc."programmi".$nameprg,$pathbak."programmi".$nameprg);
-		if(mb_strlen($cond)) $cond.=',';
-		$cond.="prognome=''";
-	}
-	$sql="update ".$prefix."_ele_gruppo set $cond where id_gruppo=:id_gruppo";
+if($op=='cancella_parziale' and $flag_simbolo==1) {
+	if (is_file($pathdoc."img/".$nameimg))
+		rename($pathdoc."img/".$nameimg,$pathbak."img/".$nameimg);
+	$sql="update ".$prefix."_ele_lista set simbolo='' where id_lista=:id_lista";
 	$sql2=$sql;
 	$compl = $dbi->prepare("$sql");
 	try {
-	$compl->bindParam(':id_gruppo', $id_gruppo, PDO::PARAM_INT);
+	$compl->bindParam(':id_lista', $id_lista, PDO::PARAM_INT);
 	$compl->execute();
 	} catch(PDOException $e) {
 		echo $e->getMessage();
 		$salvato=1;
 	}
+	
 }else{
 	if($op=='cancella') {
 		if (is_file($pathdoc."img/".$nameimg))
 			rename($pathdoc."img/".$nameimg,$pathbak."img/".$nameimg);
-		if (is_file($pathdoc."cv".$namecv))
-			rename($pathdoc."cv".$namecv,$pathbak."cv".$namecv);
-		if (is_file($pathdoc."cg".$namecg))
-			rename($pathdoc."cg".$namecg,$pathbak."cg".$namecg);
-		if (is_file($pathdoc."programmi".$nameprg))
-			rename($pathdoc."programmi".$nameprg,$pathbak."programmi".$nameprg);
-		$sql="delete from ".$prefix."_ele_gruppo where id_gruppo=:id_gruppo";
+		$sql="delete from ".$prefix."_ele_lista where id_lista=:id_lista";
 		$sql2=$sql;
 		$compl = $dbi->prepare("$sql");
 		try {
-		$compl->bindParam(':id_gruppo', $id_gruppo, PDO::PARAM_INT);
+		$compl->bindParam(':id_lista', $id_lista, PDO::PARAM_INT);
 		$compl->execute();
 		} catch(PDOException $e) {
 			echo $e->getMessage();
 			$salvato=1;
 		}
 	}else{
-		$query="select * from ".$prefix."_ele_gruppo where id_gruppo=:id_gruppo";
+		$query="select * from ".$prefix."_ele_lista where id_lista=:id_lista";
 		$res = $dbi->prepare("$query");
 		$res->execute([
-			':id_gruppo' => $id_gruppo
+			':id_lista' => $id_lista
 		]);
 		if($res->rowCount()) { //update
 
-			$sql="update ".$prefix."_ele_gruppo set descrizione=:descrizione,num_gruppo=:numero $nomestemma $nomeprg $nomecv $nomecg where  id_gruppo=:id_gruppo";
-			$compl = $dbi->prepare("$sql");
-			$compl->bindParam(':descrizione', $descrizione, PDO::PARAM_STR);
-			$compl->bindParam(':numero', $numero, PDO::PARAM_INT);
-			if(mb_strlen($nomestemma))
-				$compl->bindParam(':nameimg', $nameimg, PDO::PARAM_STR);
-			if(mb_strlen($nomeprg))
-				$compl->bindParam(':nameprg', $nameprg, PDO::PARAM_STR);
-			if(mb_strlen($nomecv))
-				$compl->bindParam(':namecv', $namecv, PDO::PARAM_STR);
-			if(mb_strlen($nomecg))
-				$compl->bindParam(':namecg', $namecg, PDO::PARAM_STR);
-			$compl->bindParam(':id_gruppo', $id_gruppo, PDO::PARAM_INT);		
-			$compl->execute(); 
-			if(!$compl->rowCount()) $salvato=1;
+			$sql="update ".$prefix."_ele_lista set descrizione=:descrizione,num_lista=:numero,id_gruppo=:id_gruppo,num_gruppo=:num_gruppo $nomestemma where  id_lista=:id_lista";
+			try {
+				$compl = $dbi->prepare("$sql");
+				$compl->bindParam(':descrizione', $descrizione, PDO::PARAM_STR);
+				$compl->bindParam(':numero', $numero, PDO::PARAM_INT);
+				$compl->bindParam(':id_gruppo', $id_gruppo, PDO::PARAM_INT);
+				$compl->bindParam(':num_gruppo', $num_gruppo, PDO::PARAM_INT);
+				if(mb_strlen($nomestemma))
+					$compl->bindParam(':nameimg', $nameimg, PDO::PARAM_STR);
+				$compl->bindParam(':id_lista', $id_lista, PDO::PARAM_INT);		
+				$compl->execute(); 
+			} catch(PDOException $e) {
+				echo $e->getMessage();
+				$salvato=1;
+			}
 		}else{
 			#insert
-			$sql="insert into ".$prefix."_ele_gruppo (id_cons, num_gruppo, descrizione, id_circ, num_circ $campi) values( :id_cons, :numero, :descrizione, :id_circ, :num_circ $preimg )";
+			$sql="insert into ".$prefix."_ele_lista (id_cons, num_lista, descrizione, id_gruppo, num_gruppo $campi) values( :id_cons, :numero, :descrizione, :id_gruppo, :num_gruppo $preimg )";
 			try {
 				$compl = $dbi->prepare("$sql");
 				$compl->bindParam(':id_cons', $id_cons, PDO::PARAM_INT);
@@ -175,14 +118,8 @@ if($op=='cancella_parziale') {
 				$compl->bindParam(':descrizione', $descrizione, PDO::PARAM_STR);
 				if(mb_strlen($nomestemma))
 					$compl->bindParam(':nameimg', $nameimg, PDO::PARAM_STR);
-				if(mb_strlen($nomeprg))
-					$compl->bindParam(':nameprg', $nameprg, PDO::PARAM_STR);
-				if(mb_strlen($nomecv))
-					$compl->bindParam(':namecv', $namecv, PDO::PARAM_STR);
-				if(mb_strlen($nomecg))
-					$compl->bindParam(':namecg', $namecg, PDO::PARAM_STR);
-				$compl->bindParam(':id_circ', $id_circ, PDO::PARAM_INT);		
-				$compl->bindParam(':num_circ', $num_circ, PDO::PARAM_INT);		
+				$compl->bindParam(':id_gruppo', $id_gruppo, PDO::PARAM_INT);		
+				$compl->bindParam(':num_gruppo', $num_gruppo, PDO::PARAM_INT);		
 				$compl->execute();
 			} catch(PDOException $e) {
 				echo $e->getMessage();
@@ -202,7 +139,7 @@ if(!$salvato){
 }else{
 	echo "<tr><td colspan=\"8\">Errore, impossibile salvare i dati - $sql</td></tr>";
 }
-include('modules/elenco_gruppi.php');
+include('modules/elenco_liste.php');
 
 function imgresize($file) {
     $source_pic = $file;

@@ -107,6 +107,9 @@ if($permessi>32)
 		case 'salvaGruppo': 
 			include("modules/salva_gruppo.php");
 			break;
+		case 'salvaLista': 
+			include("modules/salva_lista.php");
+			break;
 	}
 	
 switch ($funzione) {
