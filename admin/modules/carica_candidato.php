@@ -24,7 +24,7 @@ $maxNumero++;
 
     <div class="card mb-4" id="formCandidatoCard">
       <div class="card-header bg-primary text-white">
-        <h3 class="card-title">Aggiungi / Modifica Candidato</h3>
+        <h3 class="card-title" id="titoloGruppo">Aggiungi / Modifica Candidato</h3>
       </div>
       <div class="card-body">
         <form id="gruppoForm" method="post" enctype="multipart/form-data" onsubmit="aggiungiGruppo(event)">
@@ -114,8 +114,52 @@ $maxNumero++;
       </div>
 
       <div class="modal-body">
-        Sei sicuro di voler eliminare il gruppo <strong id="deleteGruppo"></strong>? Questa azione non può essere annullata.
-      </div>
+
+  <p>
+    Sei sicuro di voler eliminare il gruppo
+    <strong id="deleteGruppo"></strong>?
+  </p>
+
+  <hr>
+
+  <p class="mb-2"><strong>Eliminazione selettiva (opzionale):</strong></p>
+
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="flag_simbolo">
+    <label class="form-check-label" for="flag_simbolo">
+      Simbolo
+    </label>
+  </div>
+
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="flag_programma">
+    <label class="form-check-label" for="flag_programma">
+      Programma
+    </label>
+  </div>
+
+  <?php if ($tipo_cons === 3): ?>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="flag_cv">
+    <label class="form-check-label" for="flag_cv">
+      Curriculum Vitae
+    </label>
+  </div>
+
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="flag_cg">
+    <label class="form-check-label" for="flag_cg">
+      Certificato Penale
+    </label>
+  </div>
+  <?php endif; ?>
+
+  <small class="text-muted d-block mt-2">
+    Se non selezioni nulla verrà eliminato l’intero candidato.
+  </small>
+
+</div>
+
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -194,14 +238,27 @@ function deleteGruppo(index) {
 
 // Conferma cancellazione
 document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
-    if(deleteIdGruppo) {
-		
+    if (deleteIdGruppo) {
+
+        const delSimbolo   = document.getElementById('flag_simbolo')?.checked;
+        const delProgramma = document.getElementById('flag_programma')?.checked;
+        const delCv        = document.getElementById('flag_cv')?.checked;
+        const delCg        = document.getElementById('flag_cg')?.checked;
+
         const formData = new FormData();
         formData.append('funzione', 'salvaGruppo');
         formData.append('id_gruppo', deleteIdGruppo);
         formData.append('descrizione', denominazione);
         formData.append('numero', numero);
+
+        // 👉 per ora SEMPRE cancella (compatibile con codice attuale)
         formData.append('op', 'cancella');
+
+        // 👉 flag pronti per il PHP (non rompono nulla)
+        if (delSimbolo)   formData.append('flag_simbolo', 1);
+        if (delProgramma) formData.append('flag_programma', 1);
+        if (delCv)        formData.append('flag_cv', 1);
+        if (delCg)        formData.append('flag_cg', 1);
 
         fetch('../principale.php', {
             method: 'POST',
@@ -217,6 +274,7 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
         });
     }
 });
+
 
   
 function annullaModifica() {
@@ -243,10 +301,12 @@ function editGruppo(index) {
 
     // Mostra il bottone Annulla
     document.getElementById("btnAnnulla").classList.remove('d-none');
+	
+	scrollToGestioneGruppo();
 }
 
 function scrollToGestioneGruppo() {
-    const target = document.getElementById('numero');
+    const target = document.getElementById('titoloGruppo');
     if (target) {
         target.scrollIntoView({
             behavior: 'smooth',
@@ -254,6 +314,7 @@ function scrollToGestioneGruppo() {
         });
     }
 }
+
 
 function resetFormGruppo() {
     const form = document.getElementById('gruppoForm');

@@ -20,15 +20,15 @@ $maxNumero++;
 </tr>
 
 <?php foreach ($row as $key => $val): 
-    $id_cons = htmlspecialchars($val['id_cons'], ENT_QUOTES, 'UTF-8');
-    $id_gruppo = htmlspecialchars($val['id_gruppo'], ENT_QUOTES, 'UTF-8');
-    $numero = htmlspecialchars($val['num_gruppo'], ENT_QUOTES, 'UTF-8');
-    $descrizione = htmlspecialchars($val['descrizione'], ENT_QUOTES, 'UTF-8');
-    $simbolo = htmlspecialchars($val['simbolo'], ENT_QUOTES, 'UTF-8');
-    $prognome = htmlspecialchars($val['prognome'], ENT_QUOTES, 'UTF-8');
-    $cv = htmlspecialchars($val['cv'], ENT_QUOTES, 'UTF-8');
-    $cg = htmlspecialchars($val['cg'], ENT_QUOTES, 'UTF-8');
-	
+    $id_cons     = htmlspecialchars($val['id_cons']     ?? '', ENT_QUOTES, 'UTF-8');
+$id_gruppo   = htmlspecialchars($val['id_gruppo']   ?? '', ENT_QUOTES, 'UTF-8');
+$numero      = htmlspecialchars($val['num_gruppo']  ?? '', ENT_QUOTES, 'UTF-8');
+$descrizione = htmlspecialchars($val['descrizione'] ?? '', ENT_QUOTES, 'UTF-8');
+$simbolo     = htmlspecialchars($val['simbolo']     ?? '', ENT_QUOTES, 'UTF-8');
+$prognome    = htmlspecialchars($val['prognome']    ?? '', ENT_QUOTES, 'UTF-8');
+$cv          = htmlspecialchars($val['cv']          ?? '', ENT_QUOTES, 'UTF-8');
+$cg          = htmlspecialchars($val['cg']          ?? '', ENT_QUOTES, 'UTF-8');
+
 ?>
 <tr id="riga<?= $key ?>">
     <td id="numero<?= $key ?>"><?= $numero ?></td>
