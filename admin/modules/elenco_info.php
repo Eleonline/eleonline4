@@ -6,7 +6,7 @@ else
 
 $tab = $_SESSION['tipo_info'];
 $row = elenco_info($tab);
-
+#$nascondi = ($inizioNoGenere > $dataInizio) ? '' : 'display:none;';
 /* Numero massimo mid */
 if (count($row)) {
     $ultimo = end($row);
