@@ -236,44 +236,50 @@ function deleteGruppo(index) {
     $('#confirmDeleteModal').modal('show'); // apri il modal
 }
 
-// Conferma cancellazione
+// Conferma cancellazione (totale o parziale)
 document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
-    if (deleteIdGruppo) {
+    if (!deleteIdGruppo) return;
 
-        const delSimbolo   = document.getElementById('flag_simbolo')?.checked;
-        const delProgramma = document.getElementById('flag_programma')?.checked;
-        const delCv        = document.getElementById('flag_cv')?.checked;
-        const delCg        = document.getElementById('flag_cg')?.checked;
+    const delSimbolo   = document.getElementById('flag_simbolo')?.checked;
+    const delProgramma = document.getElementById('flag_programma')?.checked;
+    const delCv        = document.getElementById('flag_cv')?.checked;
+    const delCg        = document.getElementById('flag_cg')?.checked;
 
-        const formData = new FormData();
-        formData.append('funzione', 'salvaGruppo');
-        formData.append('id_gruppo', deleteIdGruppo);
-        formData.append('descrizione', denominazione);
-        formData.append('numero', numero);
+    const eliminazioneParziale = delSimbolo || delProgramma || delCv || delCg;
 
-        // 👉 per ora SEMPRE cancella (compatibile con codice attuale)
-        formData.append('op', 'cancella');
+    const formData = new FormData();
+    formData.append('funzione', 'salvaGruppo');
+    formData.append('id_gruppo', deleteIdGruppo);
+    formData.append('descrizione', denominazione);
+    formData.append('numero', numero);
 
-        // 👉 flag pronti per il PHP (non rompono nulla)
+    if (eliminazioneParziale) {
+        // 🟡 eliminazione parziale
+        formData.append('op', 'cancella_parziale');
+
         if (delSimbolo)   formData.append('flag_simbolo', 1);
         if (delProgramma) formData.append('flag_programma', 1);
         if (delCv)        formData.append('flag_cv', 1);
         if (delCg)        formData.append('flag_cg', 1);
-
-        fetch('../principale.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('risultato').innerHTML = data;
-            $('#confirmDeleteModal').modal('hide');
-            deleteIdGruppo = null;
-            resetFormGruppo();
-            aggiornaNumero();
-        });
+    } else {
+        // 🔴 eliminazione totale
+        formData.append('op', 'cancella');
     }
+
+    fetch('../principale.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('risultato').innerHTML = data;
+        $('#confirmDeleteModal').modal('hide');
+        deleteIdGruppo = null;
+        resetFormGruppo();
+        aggiornaNumero();
+    });
 });
+
 
 
   
