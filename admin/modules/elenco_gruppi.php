@@ -35,10 +35,14 @@ $cg          = htmlspecialchars($val['cg']          ?? '', ENT_QUOTES, 'UTF-8');
     <td id="denominazione<?= $key ?>"><?= $descrizione ?></td>
 	<td id="simbolo<?= $key ?>"><?= $simbolo ?></td>
 	<td id="prognome<?= $key ?>"><?= $prognome ?></td>
+	<?php if ($tipo_cons === 3): ?>
 	<td id="cv<?= $key ?>"><?= $cv ?></td>
 	<td id="cg<?= $key ?>"><?= $cg ?></td>
-    <td> <div id="id_cons<?= $key ?>" style="display:none;"><?= $id_cons ?></div><div id="id_gruppo<?= $key ?>" style="display:none;"><?= $id_gruppo ?></div>
-        <button class="btn btn-sm btn-warning me-1" onclick="editGruppo(<?= $key ?>); scrollToGestioneGruppo();">Modifica</button>
+	<?php endif; ?>
+    <td> 
+	<div id="id_cons<?= $key ?>" style="display:none;"><?= $id_cons ?></div>
+	<div id="id_gruppo<?= $key ?>" style="display:none;"><?= $id_gruppo ?></div>
+        <button class="btn btn-sm btn-warning me-1" onclick="editGruppo(<?= $key ?>); scrollToFormTitle();">Modifica</button>
         <button type="button" class="btn btn-sm btn-danger" onclick="deleteGruppo(<?= $key ?>)">Elimina</button>
     </td>
 </tr>

@@ -24,7 +24,7 @@ $maxNumero++;
 
     <div class="card mb-4" id="formCandidatoCard">
       <div class="card-header bg-primary text-white">
-        <h3 class="card-title" id="titoloGruppo">Aggiungi / Modifica Candidato</h3>
+        <h3 class="card-title" id="form-title">Aggiungi / Modifica Candidato</h3>
       </div>
       <div class="card-body">
         <form id="gruppoForm" method="post" enctype="multipart/form-data" onsubmit="aggiungiGruppo(event)">
@@ -308,11 +308,11 @@ function editGruppo(index) {
     // Mostra il bottone Annulla
     document.getElementById("btnAnnulla").classList.remove('d-none');
 	
-	scrollToGestioneGruppo();
+	//scrollToGestioneGruppo();
 }
 
-function scrollToGestioneGruppo() {
-    const target = document.getElementById('titoloGruppo');
+function scrollToFormTitle() {
+    const target = document.getElementById('form-title');
     if (target) {
         target.scrollIntoView({
             behavior: 'smooth',
@@ -320,6 +320,7 @@ function scrollToGestioneGruppo() {
         });
     }
 }
+
 
 
 function resetFormGruppo() {
