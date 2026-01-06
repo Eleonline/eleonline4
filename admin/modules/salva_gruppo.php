@@ -55,7 +55,6 @@ if(isset($_FILES['simbolo']['name']) and $_FILES['simbolo']['name']) {
 	$filestemma=$_FILES['simbolo']['tmp_name'];
 	$filestemma=imgresize($filestemma);
 	file_put_contents($pathdoc."img/".$nameimg, $filestemma);
-#	move_uploaded_file($_FILES['simbolo']['tmp_name'],$pathdoc."img/".$nameimg);
 	$nomestemma=", simbolo = :nameimg";
 	$preimg= ", :nameimg";
 	$campi.= ",simbolo ";

@@ -190,6 +190,18 @@ function dati_generali()
 	$row=array($tot,$maschi,$femmine,$numcirco,$sedi,$sez,$gruppi,$liste,$candi);
 	return($row);
 }
+
+function dati_lista($num_lista=1)
+{
+	global $id_cons,$prefix,$dbi;
+	$sql="select * from ".$prefix."_ele_lista where id_cons=$id_cons and num_lista='$num_lista'";
+	$sth = $dbi->prepare("$sql");
+	$sth->execute();
+	$row = $sth->fetchAll(); 
+	return($row);	
+	
+}
+
 function dati_sede($id_sede)
 {
 	global $id_cons,$prefix,$dbi;
@@ -294,7 +306,7 @@ function elenco_candidati($idlista)
 {
 	global $id_cons,$prefix,$dbi;
 	if($idlista) $filtro="and id_lista=$idlista"; else $filtro='';
-	$sql="SELECT id_cand,num_lista,num_cand,concat(cognome,' ', nome) as nominativo,0,id_lista,cv,cg FROM ".$prefix."_ele_candidato where id_cons='$id_cons' $filtro order by num_lista,num_cand";
+	$sql="SELECT id_cand,num_lista,num_cand,cognome,nome,0,id_lista,cv,cg FROM ".$prefix."_ele_candidato where id_cons='$id_cons' $filtro order by num_lista,num_cand";
 	$sth = $dbi->prepare("$sql");
 	$sth->execute();
 	$row = $sth->fetchAll();

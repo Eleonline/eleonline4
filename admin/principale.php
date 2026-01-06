@@ -110,6 +110,9 @@ if($permessi>32)
 		case 'salvaLista': 
 			include("modules/salva_lista.php");
 			break;
+		case 'salvaCandidato': 
+			include("modules/salva_candidato.php");
+			break;
 	}
 	
 switch ($funzione) {
