@@ -42,8 +42,9 @@ $simbolo     = htmlspecialchars($val['simbolo']     ?? '', ENT_QUOTES, 'UTF-8');
 		<td
 	<?php } ?>
 		id="gruppo<?= $key ?>"><?= $grp[$val['num_gruppo']] ?></td>
-    <td id="denominazione<?= $key ?>"><?= $val['descrizione'] ?></td>
-	<td id="simbolo<?= $key ?>"><?= $simbolo ?></td>
+    <td id="denominazione<?= $key ?>" style="word-break: break-word; max-width:250px; white-space:normal;"><?= $val['descrizione'] ?></td>
+<td id="simbolo<?= $key ?>" style="word-break: break-word; max-width:150px; white-space:normal;"><?= $simbolo ?></td>
+
     <td> <div id="id_lista<?= $key ?>" style="display:none;"><?= $id_lista ?></div><div id="id_cons<?= $key ?>" style="display:none;"><?= $id_cons ?></div><div id="id_gruppo<?= $key ?>" style="display:none;"><?= $id_gruppo ?></div><div id="num_gruppo<?= $key ?>" style="display:none;"><?= $num_gruppo ?></div>
         <button class="btn btn-sm btn-warning me-1" onclick="editLista(<?= $key ?>); scrollToGestioneLista();">Modifica</button>
         <button type="button" class="btn btn-sm btn-danger" onclick="deleteLista(<?= $key ?>)">Elimina</button>
