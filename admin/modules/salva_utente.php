@@ -50,8 +50,8 @@ if($res->rowCount()) {
 			catch(PDOException $e)
 			{
 				echo $e->getMessage();
+				$salvato=1;
 			}
-			if($compl->rowCount()) $salvato=1;
 		}else{
 			$sql="update ".$prefix."_authors 
 			set name= :name,
@@ -72,8 +72,8 @@ if($res->rowCount()) {
 			catch(PDOException $e)
 			{
 				echo $e->getMessage();
+				$salvato=1;
 			}
-			if($compl->rowCount()) $salvato=1;
 		}		
 	}elseif($op=='cancella'){
 		#delete
@@ -87,13 +87,14 @@ if($res->rowCount()) {
 		catch(PDOException $e)
 		{
 			echo $e->getMessage();
+			$salvato=1;
 		}
-		if($compl->rowCount()) $salvato=1;
 	}
 }else{
 	#insert
 		$password=password_hash($password,PASSWORD_DEFAULT);
 		$sql="insert into ".$prefix."_authors (aid, name, id_comune, email, pwd, adminop, admincomune, admlanguage) values( :aid,:name,:id_comune,:email,:pwd,:adminop,:admincomune,'it')";
+		try {
 		$compl = $dbi->prepare("$sql");
 		$compl->execute([
 				':name' => $nominativo,
@@ -104,10 +105,15 @@ if($res->rowCount()) {
 				':email' => $email,
 				':aid' => $username
 				]); 
-		if($compl->rowCount()) $salvato=1;
+		}
+		catch(PDOException $e)
+		{
+			echo $e->getMessage();
+			$salvato=1;
+		}
 }
 
-if($salvato){
+if(!$salvato){
 	$datal=date('Y-m-d');
 	$orariol=date(' H:i:s');
 	$riga=addslashes($sql);

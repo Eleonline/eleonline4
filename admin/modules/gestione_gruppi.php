@@ -174,14 +174,22 @@ $maxNumero++;
 function aggiungiGruppo(e) {
     e.preventDefault();
 
-    var fileInput = document.getElementById('simbolo');
-    var simbolo = fileInput.files[0];
-    var fileInput = document.getElementById('programma');
-    var programma = fileInput.files[0];
-    var fileInput = document.getElementById('cv');
-    var cv = fileInput.files[0];
-    var fileInput = document.getElementById('cg');
-    var cg = fileInput.files[0];
+	if(document.getElementById('simbolo')!==null){
+		var fileInput = document.getElementById('simbolo');
+		var simbolo = fileInput.files[0];
+	}
+	if(document.getElementById('programma')!==null){
+		var fileInput = document.getElementById('programma');
+		var programma = fileInput.files[0];
+	}
+	if(document.getElementById('cv')!==null){
+		var fileInput = document.getElementById('cv');
+		var cv = fileInput.files[0];
+	}
+	if(document.getElementById('cv')!==null){
+		var fileInput = document.getElementById('cg');
+		var cg = fileInput.files[0];
+	}
 	
     const id_gruppo = document.getElementById("id_gruppo").value;
     const numero = document.getElementById("numero").value;

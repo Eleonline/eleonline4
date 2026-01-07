@@ -95,7 +95,7 @@ foreach($row as $key=>$val){
               [Vai alla Google Cloud Console]
             </a>
           </div>
-
+ <?php /*
           <!-- MULTICOMUNE -->
           <!--div class="mb-3">
             <label for="multicomune" class="form-label">Gestione multicomune?</label>
@@ -108,8 +108,8 @@ foreach($row as $key=>$val){
           <!-- COMUNE DI DEFAULT -->
           <!--div class="mb-3" id="defaultComuneRow" style="<?= $MULTICOMUNE === '1' ? '' : 'display:none;' ?>">
             <label for="defaultComune" class="form-label">Comune visualizzato per default</label>
-            <select class="form-select" name="default_comune" id="defaultComune">
-              <?php foreach ($comuni_disponibili as $comune): ?>
+            <select class="form-select" name="default_comune" id="defaultComune"> */
+              foreach ($comuni_disponibili as $comune): ?>
                 <option value="<?= $comune[1] ?>" <?= $SITE_ISTAT === $comune[1] ? 'selected' : '' ?>>
                   <?= htmlspecialchars($comune[0]) ?>
                 </option>
