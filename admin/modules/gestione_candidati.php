@@ -36,9 +36,10 @@ $maxNumero++;
           <div class="form-row" style="align-items:center; gap:0.5rem;">
 			<?php $row = elenco_liste(); if(count($row)) $visualizza=''; else $visualizza='style="display:none;"';?>
 
-            <div class="col-md-4" <?= $visualizza ?>>
-              <label>Lista</label>
-              <select class="form-group" id="idLista" onchange="aggiornaLista()">
+            <div class="row" <?= $visualizza ?>>
+              <label  class="col-sm-3 col-form-label">Lista</label>
+			  <div class="col-sm-9">
+              <select class="form-control form-control-sm" id="idLista" onchange="aggiornaLista()">
 				<option value="0"></option>
 				<?php foreach($row as $key=>$val) { ?>
                 <option value="<?= $val['id_lista'] ?>" <?php if($val['id_lista']==$id_lista) echo "selected";?>><?= $val['descrizione'] ?></option>
@@ -47,7 +48,10 @@ $maxNumero++;
 			<?php foreach($row as $key=>$val) { ?>
 			  <div id="ng<?= $val['id_lista'] ?>"  style="display:none;"><?= $val['num_lista'] ?></div>
 			<?php } ?>
+			</div>
             </div>
+		</div>
+          <div class="form-row" style="align-items:center; gap:0.5rem;">		
             <div class="form-group" style="flex: 0 0 80px; margin-bottom:0;">
               <label for="numero" style="font-weight:600; font-size:0.9rem;">Posizione*</label>
               <input type="number" class="form-control" id="numero" min="1" value="<?= $maxNumero; ?>" required>

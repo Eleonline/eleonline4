@@ -90,7 +90,7 @@ if($op=='cancella_parziale') {
 	$cond='';
 	if ($flag_simbolo){
 		if(is_file($pathdoc."img/".$nameimg))
-			rename($pathdoc."img/".$nameimg,$pathbak."img/".$nameimg);
+			rename($pathdoc."img/".$nameimg,$pathbak."img/".$nameimg); else echo "TEST: ".$pathdoc."img/".$nameimg;
 		$cond.="simbolo=''";
 	}	
 	if ($flag_cv) {

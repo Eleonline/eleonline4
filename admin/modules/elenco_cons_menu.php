@@ -11,9 +11,12 @@ $row = elenco_cons(); // elenco consultazioni
  #         <select class="form-control form-control-sm" name="id_cons_gen" id="consultazione-mobile">
 ?>
 <?php foreach ($row as $key => $val):
-	if($id_cons_gen==$val['id_cons_gen']) 
+	if($id_cons_gen==$val['id_cons_gen']) {
 		$selezionata='selected';
-	else
+		$rl=dati_lista(1);
+		$id_lista=$rl[0]['id_lista'];
+		$_SESSION['id_lista']=$id_lista;
+	}else
 		$selezionata='';
 ?>
 	<option value="<?= $val['id_cons_gen'] ?>" <?= $selezionata ?>><?= $val['descrizione'] ?></option>
