@@ -100,6 +100,10 @@ $candidato = htmlspecialchars(ucfirst(_CANDIDATO));
               <th <?= $visualizza ?>>Lista</th>
               <th>Cognome</th>
               <th>Nome</th>
+			  <?php if ($tipo_cons === 3): ?>
+			  <th>Curriculum Vitae</th>
+              <th>Certificato Penale</th>
+			  <?php endif; ?>
               <th style="text-align:center;">Azioni</th>
             </tr>
           </thead>
@@ -285,6 +289,7 @@ function aggiornaLista() {
     const formData = new FormData();
     formData.append('funzione', 'salvaCandidato');
     formData.append('id_lista', id_lista);
+	formData.append('tipo_cons', <?= $tipo_cons ?>); 
     formData.append('op', 'aggiorna');
 
     fetch('../principale.php', {
