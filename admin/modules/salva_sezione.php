@@ -33,6 +33,7 @@ if($res->rowCount()) {
 			$compl->execute();
 		}
 		catch(PDOException $e) {
+			echo $e->getMessage();
 			$salvato=1;
 		}
 
@@ -43,18 +44,28 @@ if($res->rowCount()) {
 		$compl->execute();
 		if(!$compl->rowCount()){
 			$sql="delete from ".$prefix."_ele_sezione where id_sez='$id_sez'";
-			$compl = $dbi->prepare("$sql");
-			$compl->execute();
-			if(!$compl->rowCount()) $salvato=1;
+			try {
+				$compl = $dbi->prepare("$sql");
+				$compl->execute();
+			}
+			catch(PDOException $e) {
+				echo $e->getMessage();
+				$salvato=1;
+			}
 		}else
 			$salvato=2;
 	}
 }else{
 	#insert
-		$sql="insert into ".$prefix."_ele_sezione (id_cons,id_sede,num_sez,maschi,femmine) values( '$id_cons','$id_sede','$numero','$maschi','$femmine')";
+	$sql="insert into ".$prefix."_ele_sezione (id_cons,id_sede,num_sez,maschi,femmine) values( '$id_cons','$id_sede','$numero','$maschi','$femmine')";
+	try {
 		$compl = $dbi->prepare("$sql");		
 		$compl->execute(); 
-		if(!$compl->rowCount()) $salvato=1;
+	}
+	catch(PDOException $e) {
+		echo $e->getMessage();
+		$salvato=1;
+	}
 }
 
 if(!$salvato){
@@ -67,7 +78,7 @@ if(!$salvato){
 }elseif($salvato==2){
 	echo "<tr><th colspan=\"7\" style=\"text-align:center\">ATTENZIONE - Per questa sezione sono state inserite delle rilevazioni di voto. Non è possibile procedere con l'eliminazione</th></tr>";
 }else{	
-	echo "<tr><td colspan=\"7\">Errore, impossibile salvare i dati - $sql</td></tr>";
+	echo "<tr><td colspan=\"7\">Errore impossibile salvare i dati - $sql</td></tr>";
 }
 include('modules/elenco_sezioni.php');
 

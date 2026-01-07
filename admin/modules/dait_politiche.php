@@ -66,9 +66,9 @@ function filtradati($csvData)
 #più collegi uninominali in un collegio plurinominale
 	global $collegio,$tipo_cons;
 	if($tipo_cons==7 or $tipo_cons==10 or $tipo_cons==16 or $tipo_cons==19)
-		$corrispondenza=file_get_contents("modules/Elezioni/collegi_senato.txt");
+		$corrispondenza=file_get_contents("../includes/collegi_senato.txt");
 	else
-		$corrispondenza=file_get_contents("modules/Elezioni/collegi_camera.txt");
+		$corrispondenza=file_get_contents("../includes/collegi_camera.txt");
 	$tmp=explode("\n",$corrispondenza);
 	foreach($tmp as $val){
 		$collegicamera[]=explode("\t",strtoupper($val));
@@ -204,8 +204,8 @@ if ($confermaDati === "no") {
             4 – Copia il link CSV di "Liste e Candidati"<br>
             5 – Inserisci qui sotto e procedi</p>
 
-          <form id="filter-form" method="post" action="modules.php?op=81">
-            <input type="hidden" name="op" value="importadait">
+          <form id="filter-form" method="post" action="modules.php">
+            <input type="hidden" name="op" value="81">
             <input type="hidden" name="id_cons_gen" value="<?php echo $id_cons_gen; ?>">
 
             <div class="mb-3">
@@ -218,8 +218,8 @@ if ($confermaDati === "no") {
 
           <?php if (!empty($fileUrl) && !empty($csvData[0])): ?>
             <hr>
-            <form method="post" action="modules.php?op=81">
-              <input type="hidden" name="op" value="importadait">
+            <form method="post" action="modules.php">
+              <input type="hidden" name="op" value="81">
               <input type="hidden" name="id_cons_gen" value="<?php echo $id_cons_gen; ?>">
               <input type="hidden" name="file_url" value="<?php echo htmlspecialchars($fileUrl); ?>">
 
@@ -268,8 +268,8 @@ if ($confermaDati === "no") {
           <h3 class="card-title">Dati per Collegio: <?php echo htmlspecialchars($collegio); ?></h3>
         </div>
         <div class="card-body">
-          <form method="post" action="modules.php?op=81" class="mb-3">
-            <input type="hidden" name="op" value="importadait">
+          <form method="post" action="modules.php" class="mb-3">
+            <input type="hidden" name="op" value="81">
             <input type="hidden" name="id_cons_gen" value="<?php echo $id_cons_gen; ?>">
             <input type="hidden" name="file_url" value="<?php echo htmlspecialchars($fileUrl); ?>">
             <input type="hidden" name="circoscrizione" value="<?php echo htmlspecialchars($circoscrizione); ?>">
@@ -326,20 +326,20 @@ if ($confermaDati === "no") {
 	$sql="delete from ".$prefix."_ele_voti_lista where id_cons='$id_cons'";
 	$reslnew = $dbi->prepare("$sql");
 	$reslnew->execute();	
-	$sql="delete from ".$prefix."_ele_candidati where id_cons='$id_cons'";
+	$sql="delete from ".$prefix."_ele_candidato where id_cons='$id_cons'";
 	$reslnew = $dbi->prepare("$sql");
 	$reslnew->execute();	
-	$sql="delete from ".$prefix."_ele_voti_candidati where id_cons='$id_cons'";
+	$sql="delete from ".$prefix."_ele_voti_candidato where id_cons='$id_cons'";
 	$reslnew = $dbi->prepare("$sql");
 	$reslnew->execute();	
 	$gruppo='';
 	$numgruppo=1;
 	$lista='';
 	$numlista=1;#	echo "TEST1: ".count($filteredData);
-	foreach ($filteredData as $row){
+	foreach ($filteredData as $row){ 
 		if($gruppo!=$row[0]){
 			$gruppo=$row[0];
-			$valori = $id_cons.", null,'".$numgruppo."',".$dbi->quote($row[0]).",'0','0','0','0','',null,'','','0'"; 
+			$valori = $id_cons.", null,'".$numgruppo."',".$dbi->quote($row[0]).",'','','0','0','',null,'','','0',null"; 
 			$sql="insert into ".$prefix."_ele_gruppo values($valori)";#echo "<br>TEST: $valori";
 			try {
 				$res_gruppo = $dbi->prepare("$sql");
@@ -377,7 +377,7 @@ if ($confermaDati === "no") {
 		}
 		if(!isset($row[2])) continue;
 		$valori="null,'$id_cons','$newidl','$newnuml',".$dbi->quote($row[2]).",'','','','".$numcand++."','','','0'";
-		$sql="insert into ".$prefix."_ele_candidati values($valori)";  #die("VAL:$sql");
+		$sql="insert into ".$prefix."_ele_candidato values($valori)";  #die("VAL:$sql");
 		try {
 			$res_lista = $dbi->prepare("$sql");
 			$res_lista->execute();
@@ -388,7 +388,7 @@ if ($confermaDati === "no") {
 		}                  
 		unset($valori);		
 	}
-#	Header("Location: modules.php?op=81?op=lista&id_cons_gen=$id_cons_gen");
+	Header("Location: modules.php?op=27");
 
 }
 

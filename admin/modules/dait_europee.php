@@ -154,10 +154,10 @@ if (isset($_POST['verifica']) && $_POST['verifica'] === 'si') {
 	$sql="delete from ".$prefix."_ele_voti_lista where id_cons='$id_cons'";
 	$reslnew = $dbi->prepare("$sql");
 	$reslnew->execute();	
-	$sql="delete from ".$prefix."_ele_candidati where id_cons='$id_cons'";
+	$sql="delete from ".$prefix."_ele_candidato where id_cons='$id_cons'";
 	$reslnew = $dbi->prepare("$sql");
 	$reslnew->execute();	
-	$sql="delete from ".$prefix."_ele_voti_candidati where id_cons='$id_cons'";
+	$sql="delete from ".$prefix."_ele_voti_candidato where id_cons='$id_cons'";
 	$reslnew = $dbi->prepare("$sql");
 	$reslnew->execute();	
 	$sql="delete from ".$prefix."_ele_voti_parziale where id_cons='$id_cons'";
@@ -188,7 +188,7 @@ if (isset($_POST['verifica']) && $_POST['verifica'] === 'si') {
 			unset($valori);
 		}
 		$valori="null,'$id_cons','$newidl','$newnuml',".$dbi->quote($row[3]).",".$dbi->quote($row[2]).",'','','".$numcand++."','','','0'";
-		$sql="insert into ".$prefix."_ele_candidati values($valori)";
+		$sql="insert into ".$prefix."_ele_candidato values($valori)";
 		try {
 			$res_lista = $dbi->prepare("$sql");
 			$res_lista->execute();

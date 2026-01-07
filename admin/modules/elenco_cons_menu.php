@@ -14,8 +14,10 @@ $row = elenco_cons(); // elenco consultazioni
 	if($id_cons_gen==$val['id_cons_gen']) {
 		$selezionata='selected';
 		$rl=dati_lista(1);
-		$id_lista=$rl[0]['id_lista'];
-		$_SESSION['id_lista']=$id_lista;
+		if(count($rl)){
+			$id_lista=$rl[0]['id_lista'];
+			$_SESSION['id_lista']=$id_lista;
+		}
 	}else
 		$selezionata='';
 ?>

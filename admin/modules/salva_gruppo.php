@@ -150,20 +150,24 @@ if($op=='cancella_parziale') {
 		if($res->rowCount()) { //update
 
 			$sql="update ".$prefix."_ele_gruppo set descrizione=:descrizione,num_gruppo=:numero $nomestemma $nomeprg $nomecv $nomecg where  id_gruppo=:id_gruppo";
-			$compl = $dbi->prepare("$sql");
-			$compl->bindParam(':descrizione', $descrizione, PDO::PARAM_STR);
-			$compl->bindParam(':numero', $numero, PDO::PARAM_INT);
-			if(mb_strlen($nomestemma))
-				$compl->bindParam(':nameimg', $nameimg, PDO::PARAM_STR);
-			if(mb_strlen($nomeprg))
-				$compl->bindParam(':nameprg', $nameprg, PDO::PARAM_STR);
-			if(mb_strlen($nomecv))
-				$compl->bindParam(':namecv', $namecv, PDO::PARAM_STR);
-			if(mb_strlen($nomecg))
-				$compl->bindParam(':namecg', $namecg, PDO::PARAM_STR);
-			$compl->bindParam(':id_gruppo', $id_gruppo, PDO::PARAM_INT);		
-			$compl->execute(); 
-			if(!$compl->rowCount()) $salvato=1;
+			try {
+				$compl = $dbi->prepare("$sql");
+				$compl->bindParam(':descrizione', $descrizione, PDO::PARAM_STR);
+				$compl->bindParam(':numero', $numero, PDO::PARAM_INT);
+				if(mb_strlen($nomestemma))
+					$compl->bindParam(':nameimg', $nameimg, PDO::PARAM_STR);
+				if(mb_strlen($nomeprg))
+					$compl->bindParam(':nameprg', $nameprg, PDO::PARAM_STR);
+				if(mb_strlen($nomecv))
+					$compl->bindParam(':namecv', $namecv, PDO::PARAM_STR);
+				if(mb_strlen($nomecg))
+					$compl->bindParam(':namecg', $namecg, PDO::PARAM_STR);
+				$compl->bindParam(':id_gruppo', $id_gruppo, PDO::PARAM_INT);		
+				$compl->execute(); 
+			} catch(PDOException $e) {
+				echo $e->getMessage();
+				$salvato=1;
+			}
 		}else{
 			#insert
 			$sql="insert into ".$prefix."_ele_gruppo (id_cons, num_gruppo, descrizione, id_circ, num_circ $campi) values( :id_cons, :numero, :descrizione, :id_circ, :num_circ $preimg )";
