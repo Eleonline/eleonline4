@@ -46,7 +46,7 @@ $circos=elenco_circoscrizioni();
                 </button>
               </div>
 			  <!-- popolare di nome comune e lat e lng-->	
-              <input type="hidden" class="nome_comune" name="nome_comune" value="" >
+              <input type="hidden" class="nome_comune" name="nome_comune" value="capo d'orlando" >
               <input type="hidden" class="lat" id="lat" name="lat" value="" >
               <input type="hidden" class="lng" id="lng" name="lng" value="" >
             </div>
@@ -239,9 +239,7 @@ $circos=elenco_circoscrizioni();
 document.getElementById('confermaImport').addEventListener('change', function () {
   document.getElementById('btnImportaSedi').disabled = !this.checked;
 });
-</script>
 
-<script>
 function importaSedi() {
 
   const consultazioneOrigine = document.getElementById('consultazioneOrigine').value;
@@ -314,49 +312,117 @@ document.getElementById('confirmDeleteSedeBtn').addEventListener('click', () => 
     }
 });
 
+// --- Funzione principale per aggiungere o modificare una sede ---
 function aggiungiSede(e) {
     e.preventDefault();
 
-  const id_circ = document.getElementById('idCirc').value;
-  const id_sede = document.getElementById('idSede').value;
-  const indirizzo = document.getElementById('indirizzo').value.trim();
-  const telefono = document.getElementById('telefono').value.trim();
-  const fax = document.getElementById('fax').value.trim();
-  const lat = document.getElementById('lat').value.trim();
-  const lng = document.getElementById('lng').value.trim();
-  const responsabile = document.getElementById('responsabile').value.trim();
+    const id_circ = document.getElementById('idCirc').value;
+    const id_sede = document.getElementById('idSede').value;
+    const indirizzo = document.getElementById('indirizzo').value.trim();
+    const telefono = document.getElementById('telefono').value.trim();
+    const fax = document.getElementById('fax').value.trim();
+    const responsabile = document.getElementById('responsabile').value.trim();
+    const latInput = document.getElementById('lat');
+    const lngInput = document.getElementById('lng');
+    const nomeComuneInput = document.querySelector('.nome_comune');
 
-  if (!indirizzo) {
-    alert("L'Indirizzo è obbligatorio.");
-    return;
-  }
-    const btn = document.getElementById("btnAggiungi");
+    if (!indirizzo) {
+        alert("L'Indirizzo è obbligatorio.");
+        return;
+    }
 
-    const formData = new FormData();
-    formData.append('funzione', 'salvaSede');
-    formData.append('indirizzo', indirizzo);
-    formData.append('telefono', telefono);
-    formData.append('id_circ', id_circ);
-    formData.append('id_sede', id_sede);
-	formData.append('fax', fax);
-    formData.append('responsabile', responsabile);
-	formData.append('op', 'salva');
+    // --- funzione interna per inviare form ---
+    function inviaForm() {
+        const formData = new FormData();
+        formData.append('funzione', 'salvaSede');
+        formData.append('id_circ', id_circ);
+        formData.append('id_sede', id_sede);
+        formData.append('indirizzo', indirizzo);
+        formData.append('telefono', telefono);
+        formData.append('fax', fax);
+        formData.append('responsabile', responsabile);
+        formData.append('latitudine', latInput.value);
+        formData.append('longitudine', lngInput.value);
+        formData.append('op', 'salva');
 
-    fetch('../principale.php', {
-        method: 'POST',
-        body: formData 
+        fetch('../principale.php', { method: 'POST', body: formData })
+            .then(res => res.text())
+            .then(data => {
+                risultato.innerHTML = data;
+
+                // reset form
+                const myForm = document.getElementById('formSede');
+                myForm.reset();
+                latInput.value = '';
+                lngInput.value = '';
+                document.getElementById("idSede").value = '';
+                document.getElementById("btnSalvaSede").textContent = "Aggiungi";
+                document.getElementById("titoloGestioneSedi").textContent = "Aggiungi Sedi Elettorali";
+            })
+            .catch(err => alert("Errore durante il salvataggio: " + err));
+    }
+
+    // --- Geocoding automatico se lat/lng vuoti ---
+    if (!latInput.value || !lngInput.value) {
+        const comune = nomeComuneInput ? nomeComuneInput.value.trim() : "";
+        const fullQuery = comune ? `${indirizzo}, ${comune}` : indirizzo;
+
+        fetch("https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + encodeURIComponent(fullQuery), {
+            headers: { 'User-Agent': 'Eleonline/1.0' } // importante per OSM
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (!data || !data.length) {
+                alert("Indirizzo non trovato: " + fullQuery);
+                return;
+            }
+            latInput.value = parseFloat(data[0].lat);
+            lngInput.value = parseFloat(data[0].lon);
+
+            // Invia form solo dopo aver popolato lat/lng
+            inviaForm();
+        })
+        .catch(err => alert("Errore geocoding: " + err));
+    } else {
+        // lat/lng già presenti -> invia subito
+        inviaForm();
+    }
+}
+
+// --- Gestione pulsante Apri Mappa (manuale) ---
+document.querySelector('.btnApriMappaForm').addEventListener('click', () => {
+    const container = document.querySelector('.rigaMappa');
+    const indir = container.querySelector('.indir');
+    const lat = container.querySelector('.lat');
+    const lng = container.querySelector('.lng');
+    const comuneInput = container.querySelector('.nome_comune');
+
+    const comune = comuneInput ? comuneInput.value.trim() : "";
+    const query = indir.value.trim();
+    if (!query) return alert("Inserisci un indirizzo o nome da cercare.");
+
+    const fullQuery = comune ? `${query}, ${comune}` : query;
+
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(fullQuery)}`, {
+        headers: { 'User-Agent': 'Eleonline/1.0' }
     })
-    .then(response => response.text()) // O .json() se il server risponde con JSON
-    .then(data => {
-        risultato.innerHTML = data; // Mostra la risposta del server
-		const myForm = document.getElementById('formSede');
-		myForm.reset();
-		document.getElementById ( "btnSalvaSede" ).textContent = "Aggiungi";
-		document.getElementById("titoloGestioneSedi").textContent = "Aggiungi Sedi Elettorali";
-		document.getElementById('idSede').value='';
-    })
+    .then(res => res.json())
+    .then(results => {
+        if (!results.length) return alert('Nessun risultato trovato per "' + fullQuery + '".');
+        const location = results[0];
 
-};
+        // Aggiorna campi lat/lng
+        lat.value = parseFloat(location.lat);
+        lng.value = parseFloat(location.lon);
+
+        // Qui puoi aprire un popup mappa se vuoi (opzionale)
+        //alert(`Indirizzo trovato!\nLat: ${lat.value}\nLng: ${lng.value}\nPuoi correggere sulla mappa se necessario.`);
+    })
+    .catch(() => alert('Errore durante la ricerca dell\'indirizzo con OSM.'));
+});
+
+
+
 
 
   function deleteSede(index) { 

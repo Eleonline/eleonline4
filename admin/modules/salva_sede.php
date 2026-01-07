@@ -29,7 +29,7 @@ $res->execute();
 if($res->rowCount()) {
 	if($op=='salva') {
 		#update
-		$sql="update ".$prefix."_ele_sede set indirizzo='$indirizzo',id_circ='$id_circ',responsabile='$responsabile',telefono1='$telefono',fax='$fax' where id_sede='$id_sede'";
+		$sql="update ".$prefix."_ele_sede set indirizzo='$indirizzo',id_circ='$id_circ',responsabile='$responsabile',telefono1='$telefono',fax='$fax',latitudine='$latitudine',longitudine='$longitudine' where id_sede='$id_sede'";
 		try {
 			$compl = $dbi->prepare("$sql");
 			$compl->execute();
