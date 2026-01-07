@@ -6,7 +6,7 @@
   <h2><i class="fas fa-concierge-bell"></i> Gestione Servizi</h2>
     <div class="card card-primary shadow-sm">
       <div class="card-header">
-        <h3 class="card-title" id="form-title">Aggiungi Servizi</h3>
+        <h3 class="card-title" id="form-title">Aggiungi / Modifica Servizi</h3>
       </div>
       <div class="card-body">
 

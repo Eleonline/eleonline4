@@ -16,11 +16,11 @@ $maxNumero++;
 
 <section class="content">
   <div class="container-fluid mt-3">
-    <h2><i class="fas fa-user-tie mr-2"></i><?= htmlspecialchars(ucfirst(_GRUPPO)) ?></h2>
+    <h2><i class="fas fa-user-tie mr-2"></i>Gestione <?= htmlspecialchars(ucfirst(_GRUPPO)) ?></h2>
 
     <div class="card mb-4" id="formCandidatoCard">
       <div class="card-header bg-primary text-white">
-        <h3 class="card-title" id="form-title">Aggiungi / Modifica Candidato</h3>
+        <h3 class="card-title" id="form-title">Aggiungi <?= htmlspecialchars(ucfirst(_GRUPPO)) ?></h3>
       </div>
       <div class="card-body">
         <form id="gruppoForm" method="post" enctype="multipart/form-data" onsubmit="aggiungiGruppo(event)">
@@ -216,6 +216,7 @@ function aggiungiGruppo(e) {
 			document.getElementById('risultato').innerHTML = data;
             resetFormGruppo();
             aggiornaNumero();
+			document.getElementById('form-title').textContent = "Aggiungi <?= htmlspecialchars(ucfirst(_GRUPPO)) ?>";
 	})
 
 };
@@ -289,6 +290,8 @@ function annullaModifica() {
 
     // Ripristina il testo del bottone principale
     document.getElementById('btnAggiungi').textContent = "Aggiungi";
+	
+	 document.getElementById('form-title').textContent = "Aggiungi <?= htmlspecialchars(ucfirst(_GRUPPO)) ?>";
 
     // Nascondi il bottone Annulla
     document.getElementById('btnAnnulla').classList.add('d-none');
@@ -300,7 +303,7 @@ function editGruppo(index) {
     document.getElementById("numero").value = document.getElementById("numero"+index).innerText;
     document.getElementById("id_gruppo").value = document.getElementById("id_gruppo"+index).innerText;
     document.getElementById("btnAggiungi").textContent = "Salva modifiche";
-
+	document.getElementById("form-title").textContent = "Modifica <?= htmlspecialchars(ucfirst(_GRUPPO)) ?>";
     // Mostra il bottone Annulla
     document.getElementById("btnAnnulla").classList.remove('d-none');
 	
@@ -323,6 +326,7 @@ function resetFormGruppo() {
     form.reset();
     document.getElementById('id_gruppo').value = '';
     document.getElementById('btnAggiungi').textContent = "Aggiungi";
+	document.getElementById('form-title').textContent = "Aggiungi <?= htmlspecialchars(ucfirst(_GRUPPO)) ?>";
 }
 
 function aggiornaNumero() {

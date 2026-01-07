@@ -266,6 +266,7 @@ function aggiungiConsultazione(e) {
 		myForm.reset();
 		document.getElementById ( "id_cons_gen" ).value = ''
 		document.getElementById ( "submitBtn" ).textContent = "Aggiungi Consultazione"
+		document.getElementById("form-title").textContent = "Aggiungi Consultazione";
 		aggiornaSelect();
     })
 	
@@ -325,6 +326,7 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
 	document.getElementById ( "proiezione" ).selectedIndex = document.getElementById ( "proiezione"+index ).innerText
 
 	document.getElementById ( "submitBtn" ).textContent = "Salva modifiche"
+	document.getElementById("form-title").textContent = "Modifica Consultazione";
 //	document.getElementById("riga"+index).style.display = 'none' 
 	selezionaInput()
   }

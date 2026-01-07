@@ -113,6 +113,7 @@ function aggiungiInfo(e) {
             document.getElementById('risultato').innerHTML = data;
             resetFormInfo();
             aggiornaNumero();
+			document.getElementById("form-title").textContent = "Aggiungi Come si vota";
         });
 }
 
@@ -140,26 +141,40 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
         })
         .then(response => response.text())
         .then(data => {
-            document.getElementById('risultato').innerHTML = data;
-            document.getElementById("btnSalvaInfo").textContent = "Aggiungi";
-            resetFormInfo();
-            aggiornaNumero();
-            $('#confirmDeleteModal').modal('hide'); // chiudo il modal
-            deleteMid = null;
-        });
+			document.getElementById('risultato').innerHTML = data;
+			resetFormInfo();
+			aggiornaNumero();
+
+			document.getElementById("form-title").textContent = "Aggiungi Come si vota";
+
+			$('#confirmDeleteModal').modal('hide');
+			deleteMid = null;
+		});
+
     }
 });
 
 
 function editInfo(index) {
-    document.getElementById("mid").value = document.getElementById("mid"+index).innerText;
-    document.getElementById("title").value = document.getElementById("title"+index).innerText;
-    document.getElementById("preamble").value = document.getElementById("preamble"+index).innerText;
-    editor.setData(document.getElementById("content"+index).innerHTML);
+    document.getElementById("mid").value =
+        document.getElementById("mid"+index).innerText;
+
+    document.getElementById("title").value =
+        document.getElementById("title"+index).innerText;
+
+    document.getElementById("preamble").value =
+        document.getElementById("preamble"+index).innerText;
+
+    editor.setData(
+        document.getElementById("content"+index).innerHTML
+    );
+
     document.getElementById("btnSalvaInfo").textContent = "Salva modifiche";
-	document.getElementById("mid").focus();
-	
+    document.getElementById("form-title").textContent = "Modifica Come si vota";
+
+    document.getElementById("mid").focus();
 }
+
 
 function resetFormInfo() {
     const form = document.getElementById('infoForm');
@@ -167,6 +182,7 @@ function resetFormInfo() {
     document.getElementById('mid').value = '';
 	editor.setData('');
     document.getElementById('btnSalvaInfo').textContent = "Aggiungi";
+	document.getElementById("form-title").textContent = "Aggiungi Come si vota";
 }
 function aggiornaNumero() {
 	const maxNum = document.getElementById("maxNumero").innerText;

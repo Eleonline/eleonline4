@@ -98,12 +98,14 @@ function editUser(id) {
     document.getElementById('admin').checked = adminVal == 1;
 
     document.getElementById("submitBtn").textContent = "Salva modifiche";
+	document.getElementById("form-title").textContent = "Modifica Utente";
 }
 
 function resetFormUser() {
     const form = document.getElementById('userForm');
     form.reset();
     document.getElementById('submitBtn').textContent = "Aggiungi Utente";
+	document.getElementById('form-title').textContent = "Aggiungi Utente";
     document.getElementById('admin').checked = false;
 }
 

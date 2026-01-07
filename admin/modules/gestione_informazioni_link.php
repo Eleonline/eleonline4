@@ -124,6 +124,7 @@ function aggiungiInfo(e) {
             document.getElementById('risultato').innerHTML = data;
             resetFormInfo();
             aggiornaNumero();
+			document.getElementById("form-title").textContent = "Aggiungi Link Utili";
         });
 }
 
@@ -151,8 +152,10 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
         .then(data => {
             document.getElementById('risultato').innerHTML = data;
             document.getElementById("btnSalvaInfo").textContent = "Aggiungi";
+			document.getElementById("form-title").textContent = "Aggiungi Link Utili";
             resetFormInfo();
             aggiornaNumero();
+			document.getElementById("form-title").textContent = "Aggiungi Link Utili";
             $('#confirmDeleteModal').modal('hide'); // chiudo il modal
             deleteMid = null;
         });
@@ -165,6 +168,7 @@ function editInfo(index) {
     document.getElementById("preamble").value = document.getElementById("preamble"+index).innerText;
     editor.setData(document.getElementById("content"+index).innerText);
     document.getElementById("btnSalvaInfo").textContent = "Salva modifiche";
+	document.getElementById("form-title").textContent = "Modifica Link Utili";
 	document.getElementById("mid").focus();
 }
 
@@ -174,6 +178,7 @@ function resetFormInfo() {
     document.getElementById('mid').value = '';
 	editor.setData('');
     document.getElementById('btnSalvaInfo').textContent = "Aggiungi";
+	document.getElementById("form-title").textContent = "Aggiungi Link Utili";
 }
 
 function aggiornaNumero() {

@@ -273,9 +273,6 @@ function importaSezioni() {
   });
 }
 
-</script>
-
-<script>
 function aggiungiSezione(e) {
     e.preventDefault();
 	let controllo = controlloSomma();
@@ -304,6 +301,7 @@ function aggiungiSezione(e) {
             document.getElementById('risultato').innerHTML = data;
             resetFormSezione();
             aggiornaNumero();
+			document.getElementById('form-title').textContent = "Aggiungi Sezione";
         });
 }
 
@@ -341,6 +339,7 @@ document.getElementById('confirmDeleteSezioneBtn').addEventListener('click', () 
     .then(data => {
         document.getElementById('risultato').innerHTML = data; // Mostra la risposta del server
 		document.getElementById ( "btnSalvaSezione" ).textContent = "Aggiungi";
+		document.getElementById('form-title').textContent = "Aggiungi Sezione";
 		aggiornaNumero();
     })
 
@@ -354,6 +353,7 @@ function editSezione(index) {
     document.getElementById("totale").value = document.getElementById("totale"+index).innerText;
     document.getElementById("numero").value = document.getElementById("numero"+index).innerText;
     document.getElementById("btnSalvaSezione").textContent = "Salva modifiche";
+	 document.getElementById("form-title").textContent = "Modifica Sezione";
 	document.getElementById("numero").focus();
 	
 }
@@ -363,6 +363,7 @@ function resetFormSezione() {
     form.reset();
     document.getElementById('idSezione').value = '';
     document.getElementById('btnSalvaSezione').textContent = "Aggiungi sezione";
+	document.getElementById('form-title').textContent = "Aggiungi Sezione";
 }
 
 function aggiornaNumero() {
