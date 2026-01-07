@@ -180,11 +180,14 @@ $candidato = htmlspecialchars(ucfirst(_CANDIDATO));
 
 function aggiungiCandidato(e) {
     e.preventDefault();
-
-    var fileInput = document.getElementById('cv');
-    var cv = fileInput.files[0];
-    var fileInput = document.getElementById('cg');
-    var cg = fileInput.files[0];
+	if(document.getElementById('cv')!==null) {
+		var fileInput = document.getElementById('cv');
+		var cv = fileInput.files[0];
+	}
+	if(document.getElementById('cg')!==null) {
+		var fileInput = document.getElementById('cg');
+		var cg = fileInput.files[0];
+	}
     const id_candidato = document.getElementById("id_candidato").value;
 	if (document.getElementById("idLista").value == 0) {
 		id_lista=0;
