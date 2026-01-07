@@ -123,10 +123,13 @@ function aggiungiCircoscrizione(e) {
     })
     .then(response => response.text()) // O .json() se il server risponde con JSON
     .then(data => {
-			document.getElementById('risultato').innerHTML = data;
-            resetFormCircoscrizione();
-            aggiornaNumero();
-	})
+    document.getElementById('risultato').innerHTML = data;
+    resetFormCircoscrizione();
+    aggiornaNumero();
+
+    document.getElementById('titoloGestioneCircoscrizioni').textContent = "Aggiungi Circoscrizioni";
+})
+
 
 };
 
@@ -176,6 +179,7 @@ function annullaModifica() {
 
     // Ripristina il testo del bottone principale
     document.getElementById('btnAggiungi').textContent = "Aggiungi";
+	document.getElementById('titoloGestioneCircoscrizioni').textContent = "Aggiungi Circoscrizioni";
 
     // Nascondi il bottone Annulla
     document.getElementById('btnAnnulla').classList.add('d-none');
@@ -187,6 +191,8 @@ function editCircoscrizione(index) {
     document.getElementById("numero").value = document.getElementById("numero"+index).innerText;
     document.getElementById("id_circ").value = document.getElementById("id_circ"+index).innerText;
     document.getElementById("btnAggiungi").textContent = "Salva modifiche";
+	document.getElementById("titoloGestioneCircoscrizioni").textContent = "Modifica Circoscrizione";
+
 
     // Mostra il bottone Annulla
     document.getElementById("btnAnnulla").classList.remove('d-none');

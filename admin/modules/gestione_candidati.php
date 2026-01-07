@@ -18,15 +18,16 @@ if (count($row)) {
     $maxNumero = 0;
 }
 $maxNumero++;
+$candidato = htmlspecialchars(ucfirst(_CANDIDATO));
 ?>
 
 <section class="content">
   <div class="container-fluid mt-3">
-    <h2><i class="fas fa-user-tie mr-2"></i><?= htmlspecialchars(ucfirst(_CANDIDATO)) ?></h2>
+    <h2><i class="fas fa-user-tie mr-2"></i>Gestione <?= $candidato ?> <?= ($candidato !== 'Listino bloccato') ? ' di Lista' : '' ?></h2>
 
     <div class="card mb-4" id="formCandidatoCard">
       <div class="card-header bg-primary text-white">
-        <h3 class="card-title" id="titoloCandidato">Aggiungi / Modifica Candidato</h3>
+        <h3 class="card-title" id="titoloCandidato">Aggiungi <?= $candidato ?> <?= ($candidato !== 'Listino bloccato') ? ' di Lista' : '' ?></h3>
       </div>
       <div class="card-body">
         <form id="candidatoForm" method="post" enctype="multipart/form-data" onsubmit="aggiungiCandidato(event)">
@@ -99,6 +100,10 @@ $maxNumero++;
               <th <?= $visualizza ?>>Lista</th>
               <th>Cognome</th>
               <th>Nome</th>
+			  <?php if ($tipo_cons === 3): ?>
+			  <th>Curriculum Vitae</th>
+              <th>Certificato Penale</th>
+			  <?php endif; ?>
               <th style="text-align:center;">Azioni</th>
             </tr>
           </thead>
@@ -215,11 +220,13 @@ function aggiungiCandidato(e) {
     })
     .then(response => response.text()) // O .json() se il server risponde con JSON
     .then(data => {
-			document.getElementById('risultato').innerHTML = data;
-            resetFormCandidato();
-            aggiornaNumero();
-	})
+    document.getElementById('risultato').innerHTML = data;
+    resetFormCandidato();
+    aggiornaNumero();
 
+    document.getElementById('titoloCandidato').textContent =
+        "Aggiungi <?= $candidato ?> <?= ($candidato !== 'Listino bloccato') ? ' di Lista' : '' ?>";
+	})
 }
 
 
@@ -282,6 +289,7 @@ function aggiornaLista() {
     const formData = new FormData();
     formData.append('funzione', 'salvaCandidato');
     formData.append('id_lista', id_lista);
+	formData.append('tipo_cons', <?= $tipo_cons ?>); 
     formData.append('op', 'aggiorna');
 
     fetch('../principale.php', {
@@ -296,20 +304,15 @@ function aggiornaLista() {
 	})
  }
 
-
-  
 function annullaModifica() {
-    // Reset del form
     const myForm = document.getElementById('candidatoForm');
     myForm.reset();
 
-    // Ripulisci l'id nascosto
     document.getElementById('id_candidato').value = '';
-
-    // Ripristina il testo del bottone principale
     document.getElementById('btnAggiungi').textContent = "Aggiungi";
+    document.getElementById('titoloCandidato').textContent =
+        "Aggiungi <?= $candidato ?> <?= ($candidato !== 'Listino bloccato') ? ' di Lista' : '' ?>";
 
-    // Nascondi il bottone Annulla
     document.getElementById('btnAnnulla').classList.add('d-none');
 }
 
@@ -319,15 +322,20 @@ function editCandidato(index) {
     document.getElementById("nome").value = document.getElementById("nome"+index).innerText;
     document.getElementById("numero").value = document.getElementById("numero"+index).innerText;
     document.getElementById("id_candidato").value = document.getElementById("id_candidato"+index).innerText;
-	if (document.getElementById("num_lista"+index) !== null )
-		document.getElementById("idLista").selectedIndex = document.getElementById("num_lista"+index).innerText;
-    document.getElementById("btnAggiungi").textContent = "Salva modifiche";
 
-    // Mostra il bottone Annulla
+    if (document.getElementById("num_lista"+index) !== null)
+        document.getElementById("idLista").selectedIndex =
+            document.getElementById("num_lista"+index).innerText;
+
+    document.getElementById("btnAggiungi").textContent = "Salva modifiche";
+    document.getElementById("titoloCandidato").textContent =
+        "Modifica <?= $candidato ?> <?= ($candidato !== 'Listino bloccato') ? ' di Lista' : '' ?>";
+
     document.getElementById("btnAnnulla").classList.remove('d-none');
-	
-	scrollToGestioneCandidato();
+
+    scrollToGestioneCandidato();
 }
+
 
 function scrollToGestioneCandidato() {
     const target = document.getElementById('titoloCandidato');
@@ -342,12 +350,18 @@ function scrollToGestioneCandidato() {
 
 function resetFormCandidato() {
     const form = document.getElementById('candidatoForm');
-	lista = document.getElementById('idLista').selectedIndex;
+    const lista = document.getElementById('idLista').selectedIndex;
+
     form.reset();  
     document.getElementById('idLista').selectedIndex = lista;
     document.getElementById('id_candidato').value = '';
     document.getElementById('btnAggiungi').textContent = "Aggiungi";
+    document.getElementById('titoloCandidato').textContent =
+        "Aggiungi <?= $candidato ?> <?= ($candidato !== 'Listino bloccato') ? ' di Lista' : '' ?>";
+
+    document.getElementById('btnAnnulla').classList.add('d-none');
 }
+
 
 function aggiornaNumero() {
 

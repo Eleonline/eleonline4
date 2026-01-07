@@ -121,6 +121,7 @@ function aggiungiInfo(e) {
             document.getElementById('risultato').innerHTML = data;
             resetFormInfo();
             aggiornaNumero();
+			document.getElementById("form-title").textContent = "Aggiungi Numeri Utili";
         });
 }
 
@@ -138,6 +139,7 @@ function editInfo(index) {
 
 
     document.getElementById("btnSalvaInfo").textContent = "Salva modifiche";
+	document.getElementById("form-title").textContent = "Modifica Numeri Utili";
     document.getElementById("mid").focus();
 }
 
@@ -162,6 +164,7 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
             document.getElementById('risultato').innerHTML = data;
             resetFormInfo();
             aggiornaNumero();
+			document.getElementById("form-title").textContent = "Aggiungi Numeri Utili";
             $('#confirmDeleteModal').modal('hide');
             deleteMid = null;
         });
@@ -174,6 +177,7 @@ function resetFormInfo() {
     document.getElementById('mid').value = '';
     if(contentEditor) contentEditor.setData(''); // reset CKEditor
     document.getElementById('btnSalvaInfo').textContent = "Aggiungi";
+	document.getElementById("form-title").textContent = "Aggiungi Numeri Utili";
 }
 
 

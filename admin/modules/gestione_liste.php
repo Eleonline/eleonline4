@@ -16,11 +16,11 @@ $maxNumero++;
 
 <section class="content">
   <div class="container-fluid mt-3">
-    <h2><i class="fas fa-user-tie mr-2"></i><?= htmlspecialchars(ucfirst(_LISTA)) ?></h2>
+    <h2><i class="fas fa-user-tie mr-2"></i>Gestione <?= htmlspecialchars(ucfirst(_LISTA)) ?></h2>
 
     <div class="card mb-4" id="formCandidatoCard">
       <div class="card-header bg-primary text-white">
-        <h3 class="card-title" id="titoloLista">Aggiungi / Modifica Lista</h3>
+        <h3 class="card-title" id="titoloLista">Aggiungi <?= htmlspecialchars(ucfirst(_LISTA)) ?></h3>
       </div>
       <div class="card-body">
         <form id="listaForm" method="post" enctype="multipart/form-data" onsubmit="aggiungiLista(event)">
@@ -180,6 +180,7 @@ function aggiungiLista(e) {
 			document.getElementById('risultato').innerHTML = data;
             resetFormLista();
             aggiornaNumero();
+			document.getElementById("titoloLista").textContent = "Aggiungi <?= htmlspecialchars(ucfirst(_LISTA)) ?>";
 	})
 
 }
@@ -231,6 +232,7 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
         deleteIdLista = null;
         resetFormLista();
         aggiornaNumero();
+		document.getElementById("titoloLista").textContent = "Aggiungi <?= htmlspecialchars(ucfirst(_LISTA)) ?>";
     });
 });
 
@@ -247,6 +249,8 @@ function annullaModifica() {
 
     // Ripristina il testo del bottone principale
     document.getElementById('btnAggiungi').textContent = "Aggiungi";
+	
+	document.getElementById("titoloLista").textContent = "Aggiungi <?= htmlspecialchars(ucfirst(_LISTA)) ?>";
 
     // Nascondi il bottone Annulla
     document.getElementById('btnAnnulla').classList.add('d-none');
@@ -260,7 +264,7 @@ function editLista(index) {
 	if (document.getElementById("num_gruppo"+index).innerText !== null )
 		document.getElementById("idGruppo").selectedIndex = document.getElementById("num_gruppo"+index).innerText;
     document.getElementById("btnAggiungi").textContent = "Salva modifiche";
-
+	document.getElementById("titoloLista").textContent = "Modifica <?= htmlspecialchars(ucfirst(_LISTA)) ?>";
     // Mostra il bottone Annulla
     document.getElementById("btnAnnulla").classList.remove('d-none');
 	
@@ -283,6 +287,7 @@ function resetFormLista() {
     form.reset();
     document.getElementById('id_lista').value = '';
     document.getElementById('btnAggiungi').textContent = "Aggiungi";
+	document.getElementById("titoloLista").textContent = "Aggiungi <?= htmlspecialchars(ucfirst(_LISTA)) ?>";
 }
 
 function aggiornaNumero() {

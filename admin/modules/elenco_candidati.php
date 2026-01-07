@@ -18,6 +18,7 @@ if (count($row)) {
     $maxNumero = 0;
 }
 $maxNumero++;
+$tipo_cons = $tipo_cons ?? $_SESSION['tipo_cons']; // garantisce che sia sempre valorizzato
 ?>
 <!-- Riga nascosta per JSstyle="display:none;" -->
 <tr id="riga<?= $maxNumero ?>">
@@ -45,8 +46,17 @@ $cg     = htmlspecialchars($val['cg']     ?? '', ENT_QUOTES, 'UTF-8');
 		<td
 	<?php } ?>
 		id="lista<?= $key ?>"><?= $grp[$val['num_lista']] ?></td>
-    <td id="cognome<?= $key ?>"><?= $cognome ?></td><td id="nome<?= $key ?>"><?= $nome; ?></td>
-    <td class="col-2"  style="text-align:center;"><div id="id_candidato<?= $key ?>" style="display:none;"><?= $id_cand ?></div><div id="id_cons<?= $key ?>" style="display:none;"><?= $id_cons ?></div><div id="id_lista<?= $key ?>" style="display:none;"><?= $id_lista ?></div><div id="num_lista<?= $key ?>" style="display:none;"><?= $num_lista ?></div>
+    <td id="cognome<?= $key ?>"><?= $cognome ?></td>
+	<td id="nome<?= $key ?>"><?= $nome; ?></td>
+    <?php if ($tipo_cons === 3): ?>
+	<td id="cv<?= $key ?>"><?= $cv ?></td>
+	<td id="cg<?= $key ?>"><?= $cg ?></td>
+	<?php endif; ?>
+	<td class="col-2"  style="text-align:center;">
+	<div id="id_candidato<?= $key ?>" style="display:none;"><?= $id_cand ?></div>
+	<div id="id_cons<?= $key ?>" style="display:none;"><?= $id_cons ?></div>
+	<div id="id_lista<?= $key ?>" style="display:none;"><?= $id_lista ?></div>
+	<div id="num_lista<?= $key ?>" style="display:none;"><?= $num_lista ?></div>
         <button class="btn btn-sm btn-warning me-1" onclick="editCandidato(<?= $key ?>); scrollToGestioneCandidato();">Modifica</button>
         <button type="button" class="btn btn-sm btn-danger" onclick="deleteCandidato(<?= $key ?>)">Elimina</button>
     </td>

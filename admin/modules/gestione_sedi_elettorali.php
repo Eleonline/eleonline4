@@ -293,11 +293,7 @@ function importaSedi() {
       '<div class="alert alert-danger">Errore durante l’importazione</div>';
   });
 }
-</script>
 
-
-
-<script>
 let deleteIdSede = null;
 let deleteIndexSede = null;
 
@@ -317,9 +313,7 @@ document.getElementById('confirmDeleteSedeBtn').addEventListener('click', () => 
         $('#confirmDeleteSedeModal').modal('hide');
     }
 });
-</script>
 
-<script>
 function aggiungiSede(e) {
     e.preventDefault();
 
@@ -358,6 +352,7 @@ function aggiungiSede(e) {
 		const myForm = document.getElementById('formSede');
 		myForm.reset();
 		document.getElementById ( "btnSalvaSede" ).textContent = "Aggiungi";
+		document.getElementById("titoloGestioneSedi").textContent = "Aggiungi Sedi Elettorali";
 		document.getElementById('idSede').value='';
     })
 
@@ -391,6 +386,7 @@ function aggiungiSede(e) {
     .then(data => {
         risultato.innerHTML = data; // Mostra la risposta del server
 		document.getElementById ( "btnSalvaSede" ).textContent = "Aggiungi";
+		document.getElementById("titoloGestioneSedi").textContent = "Aggiungi Sedi Elettorali";
     })
 
 
@@ -401,6 +397,7 @@ function aggiungiSede(e) {
     myForm.reset();
     document.getElementById('idSede').value = '';
     document.getElementById('btnSalvaSede').textContent = "Aggiungi";
+	document.getElementById("titoloGestioneSedi").textContent = "Aggiungi Sedi Elettorali";
 }
 
    function editSede(index) { 
@@ -413,6 +410,7 @@ function aggiungiSede(e) {
 	document.getElementById ( "lat" ).value = document.getElementById ( "lat"+index ).innerText
 	document.getElementById ( "responsabile" ).value = document.getElementById ( "responsabile"+index ).innerText
 	document.getElementById ( "btnSalvaSede" ).textContent = "Salva modifiche"
+	document.getElementById("titoloGestioneSedi").textContent = "Modifica Sede Elettorale";
   }
 
 
