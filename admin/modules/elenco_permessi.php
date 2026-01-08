@@ -132,8 +132,18 @@ if (!count($non_autorizzati)) {
         <tr id="riga<?= $i ?>">
           <td id="utente<?= $i ?>"><?= $val['aid'] ?></td>
           <td id="sedi<?= $i ?>"><?= $val['indirizzo'] ?></td>
-          <td id="sezioni<?= $i ?>"><?php if(!mb_strlen($val['indirizzo']) and !mb_strlen($val['num_sez'])) echo "TUTTE"; else echo $val['num_sez'] ?></td>
-          <td><div id="id_sede<?= $i ?>" style="display:none;"><?= $val['id_sede'] ?></div>><div id="id_sez<?= $i ?>" style="display:none;"><?= $val['id_sez'] ?></div>
+          <td id="sezioni<?php echo $i; ?>">
+<?php
+if (empty($val['indirizzo']) && empty($val['num_sez'])) {
+    echo "TUTTE";
+} else {
+    echo htmlspecialchars($val['num_sez'] ?? '', ENT_QUOTES, 'UTF-8');
+}
+?>
+</td>
+          <td>
+		  <div id="id_sede<?= $i ?>" style="display:none;"><?= $val['id_sede'] ?></div>
+		  <div id="id_sez<?= $i ?>" style="display:none;"><?= $val['id_sez'] ?></div>
             <button class="btn btn-sm btn-warning me-1" onclick="editUser(<?= $i ?>)">
               Modifica
             </button>
