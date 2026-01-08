@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/check_access.php';
 $inizioNoGenere = strtotime('2025/06/30');
+global $genere;
 ?>
 
 <section class="content">
@@ -75,14 +76,6 @@ $inizioNoGenere = strtotime('2025/06/30');
 			  <?php } ?>
 			</select>				
 		  </div>
-		  <div class="form-group col-12 col-sm-6 col-md-2" id="divstato">
-			<label for="chiusa">Stato</label>
-			<select class="form-control" id="chiusa" name="chiusa">
-			  <option value="0">Attiva</option>
-			  <option value="1">Chiusa</option>
-			  <option value="2">Nulla</option>
-			</select>				
-		  </div>
 		  <div class="form-group col-12 col-sm-6 col-md-2" id="divfascia">
 			<label for="id_fascia">Abitanti</label>
 			<select class="form-control" id="id_fascia" name="id_fascia">
@@ -96,6 +89,15 @@ $inizioNoGenere = strtotime('2025/06/30');
 			  <option value="7">250.001 - 500.000</option>
 			  <option value="8">500.001 - 1.000.000</option>
 			  <option value="9">Oltre 1.000.000</option>
+			</select>				
+		  </div>
+		
+		  <div class="form-group col-12 col-sm-6 col-md-2" id="divstato">
+			<label for="chiusa">Stato</label>
+			<select class="form-control" id="chiusa" name="chiusa">
+			  <option value="0">Attiva</option>
+			  <option value="1">Chiusa</option>
+			  <option value="2">Nulla</option>
 			</select>				
 		  </div>
 		  <div class="form-group col-12 col-sm-6 col-md-2" id="divdisgiunto">
@@ -331,55 +333,7 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
 	selezionaInput()
   }
   
-
 function selezionaInput() {
-	const tipo = document.getElementById ( "tipo" ).value
-	document.getElementById ( "divproiezione" ).style.display = 'none';
-	switch (tipo) {
-		case "1":
-		case "5":
-		case "6":
-		case "7":
-		case "8":
-		case "12":
-		case "13":
-		case "14":
-			document.getElementById ( "divpreferenze" ).style.display = 'block';
-			document.getElementById ( "divlink" ).style.display = 'block';
-			document.getElementById ( "divsologruppo" ).style.display = 'none';
-			document.getElementById ( "divdisgiunto" ).style.display = 'none';
-			document.getElementById ( "divfascia" ).style.display = 'none';
-			document.getElementById ( "divlegge" ).style.display = 'none';
-			break
-		case "2":
-			document.getElementById ( "divpreferenze" ).style.display = 'none';
-			document.getElementById ( "divlink" ).style.display = 'none';
-			document.getElementById ( "divsologruppo" ).style.display = 'none';
-			document.getElementById ( "divdisgiunto" ).style.display = 'none';
-			document.getElementById ( "divfascia" ).style.display = 'none';
-			document.getElementById ( "divlegge" ).style.display = 'none';
-			break;
-		case "3":
-		case "4":
-			document.getElementById ( "divproiezione" ).style.display = 'block';
-			break;
-		case "9":
-		case "10":
-		case "11":
-		case "15":
-		case "16":
-		case "17":
-		case "18":
-		case "19":
-			document.getElementById ( "divpreferenze" ).style.display = 'block';
-			document.getElementById ( "divlink" ).style.display = 'block';
-			document.getElementById ( "divsologruppo" ).style.display = 'block';
-			document.getElementById ( "divdisgiunto" ).style.display = 'block';
-			document.getElementById ( "divfascia" ).style.display = 'block';
-			document.getElementById ( "divlegge" ).style.display = 'block';
-			break
-	}
-}function selezionaInput() {
 	const tipo = document.getElementById("tipo").value;
 	const dataInizioInput = document.getElementById("data_inizio").value;
 	const inizioNoGenere = new Date("2025-06-30"); // data limite
@@ -390,12 +344,25 @@ function selezionaInput() {
 
 	switch(tipo) {
 		case "1":
-		case "5":
+		case "9":
+		case "10":
+		case "11":
+		case "12":
+		case "15":
+		case "16":
+		case "17":
+		case "18":
+		case "19":
+			document.getElementById("divpreferenze").style.display = 'block';
+			document.getElementById("divlink").style.display = 'block';
+			document.getElementById("divsologruppo").style.display = 'block';
+			document.getElementById("divdisgiunto").style.display = 'block';
+			document.getElementById("divlegge").style.display = 'none';
+			document.getElementById("divfascia").style.display = 'none';
+			break;
 		case "6":
 		case "7":
 		case "8":
-		case "12":
-		case "13":
 		case "14":
 			document.getElementById("divpreferenze").style.display = 'block';
 			document.getElementById("divlink").style.display = 'block';
@@ -405,6 +372,9 @@ function selezionaInput() {
 			document.getElementById("divlegge").style.display = 'none';
 			break;
 		case "2":
+		case "5":
+		case "13":
+			document.getElementById("divproiezione").style.display = 'none';
 			document.getElementById("divpreferenze").style.display = 'none';
 			document.getElementById("divlink").style.display = 'none';
 			document.getElementById("divsologruppo").style.display = 'none';
@@ -415,22 +385,12 @@ function selezionaInput() {
 		case "3":
 		case "4":
 			document.getElementById("divproiezione").style.display = 'block';
-			break;
-		case "9":
-		case "10":
-		case "11":
-		case "15":
-		case "16":
-		case "17":
-		case "18":
-		case "19":
 			document.getElementById("divpreferenze").style.display = 'block';
 			document.getElementById("divlink").style.display = 'block';
 			document.getElementById("divsologruppo").style.display = 'block';
 			document.getElementById("divdisgiunto").style.display = 'block';
 			document.getElementById("divfascia").style.display = 'block';
 			document.getElementById("divlegge").style.display = 'block';
-			document.getElementById("divproiezione").style.display = 'block';
 			break;
 	}
 

@@ -1,5 +1,4 @@
 <?php
-// Protezione da accesso diretto
 if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
     header("Location: ../index.php");
     exit;
@@ -16,6 +15,9 @@ $CLIENT='';
 # Evita il rellentamento in accesso per l'amministratore ma non si ha la visualizzazione in grassetto della voce Aggiornamento 
 $contr_agg=1;
 
+# se uguale a 1 il voto di lista e di gruppo sono completamente scollegati (ad esempio possibilità di esprimere voto di lista senza voto al gruppo)
+$votoscollegato=0;
+
 #numero di liste e gruppi visualizzati nella pagina
 $offsetliste=16;
 $offsetgruppi=15;
@@ -23,7 +25,10 @@ $offsetgruppi=15;
 # giorni di autorizzazione dopo la scadenza della consultazione per gli operatori
 $giorniaut=30;
 
+# data di entrata in vigore della legge 72/2025 - abolizione liste di genere, formato 'YYYY/MM/DD' 
+$inizioNoGenere=strtotime('2025/06/30');
+
 # $LINK e fileback vanno lasciate vuote, vengono gestite da programma per contenere il nome del file di backup e l'indirizzo completo per scaricare la consultazione e come discrimine per la funzione di restore
 $LINK='';
-$fileback='';
+$fileback=''; 
 ?>
