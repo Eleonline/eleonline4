@@ -205,12 +205,12 @@ function importaCircoscrizioni() {
     alert('Seleziona una consultazione di origine');
     return;
   }
-
+// ⛔ BLOCCO: stessa consultazione
   if (consultazioneOrigine === consultazioneAttiva.toString()) {
     alert('Non puoi importare dalla stessa consultazione attiva.');
     return;
   }
-
+// ⛔ BLOCCO: conferma non spuntata
   if (!conferma) {
     alert('Devi confermare di aver compreso i rischi.');
     return;

@@ -1,6 +1,5 @@
 <?php
 require_once '../includes/check_access.php';
-include('mappa_popup.php');
 $circos=elenco_circoscrizioni();
 ?>
 <input type="hidden" id="consultazioneAttiva" value="3">
@@ -129,7 +128,9 @@ $circos=elenco_circoscrizioni();
     </div>
   </div>
 </div>
-
+<?php 
+include('mappa_popup.php');
+?>
 <script>
 
 let deleteIdSede = null;
@@ -229,41 +230,6 @@ function aggiungiSede(e) {
     }
 }
 
-// --- Gestione pulsante Apri Mappa (manuale) ---
-document.querySelector('.btnApriMappaForm').addEventListener('click', () => {
-    const container = document.querySelector('.rigaMappa');
-    const indir = container.querySelector('.indir');
-    const lat = container.querySelector('.lat');
-    const lng = container.querySelector('.lng');
-    const comuneInput = container.querySelector('.nome_comune');
-
-    const comune = comuneInput ? comuneInput.value.trim() : "";
-    const query = indir.value.trim();
-    if (!query) return alert("Inserisci un indirizzo o nome da cercare.");
-
-    const fullQuery = comune ? `${query}, ${comune}` : query;
-
-    fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(fullQuery)}`, {
-        headers: { 'User-Agent': 'Eleonline/1.0' }
-    })
-    .then(res => res.json())
-    .then(results => {
-        if (!results.length) return alert('Nessun risultato trovato per "' + fullQuery + '".');
-        const location = results[0];
-
-        // Aggiorna campi lat/lng
-        lat.value = parseFloat(location.lat);
-        lng.value = parseFloat(location.lon);
-
-        // Qui puoi aprire un popup mappa se vuoi (opzionale)
-        //alert(`Indirizzo trovato!\nLat: ${lat.value}\nLng: ${lng.value}\nPuoi correggere sulla mappa se necessario.`);
-    })
-    .catch(() => alert('Errore durante la ricerca dell\'indirizzo con OSM.'));
-});
-
-
-
-
 
   function deleteSede(index) { 
 	const id_circ = document.getElementById('idCirc'+index).innerText;
@@ -279,9 +245,7 @@ document.querySelector('.btnApriMappaForm').addEventListener('click', () => {
     formData.append('id_circ', id_circ);
     formData.append('id_sede', id_sede);
 	formData.append('fax', fax);
-	formData.append('latitudine', lat);
-	formData.append('longitudine', lng);
-    formData.append('responsabile', responsabile);
+	formData.append('responsabile', responsabile);
 	formData.append('op', 'cancella');
 
     fetch('../principale.php', {
@@ -319,19 +283,6 @@ document.querySelector('.btnApriMappaForm').addEventListener('click', () => {
 	document.getElementById("titoloGestioneSedi").textContent = "Modifica Sede Elettorale";
   }
 
-
-// Funzione per aprire popup mappa per la singola sede (dummy)
-//function apriMappaSingola(index) {
-  //const s = sedi[index];
-  //alert(`Apri mappa per:\n${s.indirizzo}\n(Circoscrizione: ${s.circoscrizione})`);
-  // Qui puoi integrare il tuo modulo mappa con lat/lng
-//}
-
-// --- Gestione pulsante apri mappa nel form ---
-// Dummy alert (sostituire con apertura popup mappa reale)
-// document.querySelector('.btnApriMappaForm').addEventListener('click', () => {
-  // alert("Apri mappa per inserimento/modifica sede (da implementare)");
-// });
 // --- Gestione pulsante apri mappa nel form  ---
 document.querySelector('.btnApriMappaForm').addEventListener('click', () => {
   const container = document.querySelector('.rigaMappa');
@@ -372,18 +323,58 @@ document.querySelector('.btnApriMappaForm').addEventListener('click', () => {
 
 });
 
+function apriMappaSoloVisualizza(lat, lon, indirizzo) {
+    const mapPopup = document.getElementById('mapPopup');
+    const mapDiv = document.getElementById('map');
+
+    mapPopup.style.display = 'block';
+
+    if (maps_provider === 'google') {
+        if (!gmap) {
+            gmap = new google.maps.Map(mapDiv, {
+                center: { lat: lat, lng: lon },
+                zoom: 16
+            });
+            gmarker = new google.maps.Marker({
+                position: { lat: lat, lng: lon },
+                map: gmap,
+                draggable: false
+            });
+        } else {
+            gmap.setCenter({ lat: lat, lng: lon });
+            gmarker.setPosition({ lat: lat, lng: lon });
+        }
+
+        ginfoWindow.setContent(`<strong>${indirizzo}</strong><br>Lat: ${lat.toFixed(6)}, Lon: ${lon.toFixed(6)}`);
+        ginfoWindow.open(gmap, gmarker);
+
+    } else {
+        // OpenStreetMap + Leaflet
+        if (!map) {
+            map = L.map('map').setView([lat, lon], 16);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+        } else {
+            map.setView([lat, lon], 16);
+        }
+
+        if (marker) {
+            marker.setLatLng([lat, lon]);
+        } else {
+            marker = L.marker([lat, lon], { draggable: false }).addTo(map);
+        }
+
+        if (!popupMarker) {
+            popupMarker = L.popup({ closeButton: false, offset: [0, -30] });
+        }
+
+        popupMarker.setLatLng([lat, lon])
+                   .setContent(`<strong>${indirizzo}</strong><br>Lat: ${lat.toFixed(6)}, Lon: ${lon.toFixed(6)}`)
+                   .openOn(map);
+    }
+}
+
+
 
 </script>
-<?php
-// da utilizzare sul file
-// if ($_POST['funzione'] === 'importaSedi') {
-    // $id_consultazione = $_POST['id_consultazione'];
-    // $id_circ = $_POST['id_circ'];
-    // $sovrascrivi = $_POST['sovrascrivi'];
-
-    // 1️⃣ leggi sedi dalla consultazione origine
-    // 2️⃣ eventuale DELETE se sovrascrivi = 1
-    // 3️⃣ INSERT nelle sedi della consultazione attiva
-    // 4️⃣ include elenco_sedi.php
-//}
-?>

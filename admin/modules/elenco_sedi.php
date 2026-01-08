@@ -19,9 +19,22 @@ $row = elenco_sedi(); // elenco sedi
             <?= $val['indirizzo'] ?>
         </td>
 
-        <td id="mappa<?= $key ?>">
-            <?= $val['filemappa'] ?>
-        </td>
+		<td id="mappa<?= $key ?>" class="text-center align-middle">
+			<?php if (!empty($val['latitudine']) && !empty($val['longitudine'])): ?>
+				<button type="button"
+						class="btn btn-sm btn-info me-1"
+						onclick="apriMappaSoloVisualizza(<?= $val['latitudine'] ?>, <?= $val['longitudine'] ?>, '<?= addslashes($val['indirizzo']) ?>')"
+						title="Visualizza mappa">
+					<i class="fas fa-map-marked-alt"></i>
+				</button>
+			<?php elseif (!empty($val['filemappa'])): ?>
+				<?= $val['filemappa'] ?>
+			<?php else: ?>
+				<button type="button" class="btn btn-sm btn-secondary" disabled>
+					Nessuna mappa
+				</button>
+			<?php endif; ?>
+		</td>
 
         <td id="telefono<?= $key ?>">
             <?= $val['telefono1'] ?>
@@ -40,17 +53,20 @@ $row = elenco_sedi(); // elenco sedi
         <div id="idCirc<?= $key ?>" style="display:none;"><?= $val['id_circ'] ?></div>
         <div id="lat<?= $key ?>" style="display:none;"><?= $val['latitudine'] ?></div>
         <div id="lng<?= $key ?>" style="display:none;"><?= $val['longitudine'] ?></div>
-            <button type="button"
-                    class="btn btn-sm btn-warning me-1"
-                    onclick="editSede(<?= $key ?>); scrollToGestioneSedi();">
-                Modifica
-            </button>
+            <td>
+        <button type="button"
+            class="btn btn-sm btn-warning me-1"
+            onclick="editSede(<?= $key ?>); scrollToGestioneSedi();">
+        Modifica
+    </button>
 
-            <button type="button"
-        class="btn btn-sm btn-danger"
-        onclick="confermaEliminaSede(<?= $key ?>)">
-    Elimina
-</button>
+    <button type="button"
+            class="btn btn-sm btn-danger"
+            onclick="confermaEliminaSede(<?= $key ?>)">
+        Elimina
+    </button>
+</td>
+
 
         </td>
 
