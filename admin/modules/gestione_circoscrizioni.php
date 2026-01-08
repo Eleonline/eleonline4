@@ -14,9 +14,21 @@ $maxNumero++;
   <div class="container-fluid">
   <h2><i class="fas fa-flag"></i> Gestione Circoscrizioni</h2>
     <div class="card card-primary shadow-sm">
-      <div class="card-header">
-        <h3 class="card-title" id="titoloGestioneCircoscrizioni">Aggiungi Circoscrizioni</h3>
-      </div>
+      <div class="card-header d-flex justify-content-between align-items-center">
+    <h3 class="card-title" id="titoloGestioneCircoscrizioni">Aggiungi Circoscrizioni</h3>
+
+    <!-- Bottone Importa -->
+    <button type="button"
+            class="btn btn-warning btn-sm text-dark"
+            data-toggle="modal"
+            data-target="#importCircModal"
+            data-toggle="tooltip"
+            title="Attenzione: l'importazione può modificare le circoscrizioni esistenti">
+      <i class="fas fa-exclamation-triangle me-1"></i>
+      Importa da altra consultazione
+    </button>
+</div>
+
 
       <div class="card-body table-responsive" style="max-height:400px; overflow-y:auto;">
         <form id="circoscrizioneForm" class="mb-3" onsubmit="aggiungiCircoscrizione(event)">
@@ -98,9 +110,137 @@ $maxNumero++;
     </div>
   </div>
 </div>
+<!-- =======================
+     MODAL IMPORTA CIRCOSCRIZIONI
+     ======================= -->
+<div class="modal fade" id="importCircModal" tabindex="-1" role="dialog" aria-labelledby="importCircLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title" id="importCircLabel">
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          Importa circoscrizioni da altra consultazione
+        </h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+
+        <div class="alert alert-warning">
+          <strong>ATTENZIONE</strong><br>
+          L'importazione può sovrascrivere le circoscrizioni, sedi e sezioni già presenti.
+        </div>
+
+        <form id="formImportCirc">
+          <div class="row">
+            <div class="col-md-6">
+              <label>Consultazione di origine</label>
+              <select class="form-control" id="consultazioneOrigineCirc" required>
+                <option value="">-- Seleziona consultazione --</option>
+                <option value="1">Europee 2024</option>
+                <option value="2">Regionali 2023</option>
+              </select>
+            </div>
+          </div>
+
+          <hr>
+
+          <!-- CHECKBOX SOVRASCRIVI -->
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="sovrascriviCirc">
+            <label class="form-check-label" for="sovrascriviCirc">
+              Sovrascrivi circoscrizioni esistenti
+            </label>
+          </div>
+
+          <!-- DOPPIA CONFERMA -->
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="confermaImportCirc">
+            <label class="form-check-label text-danger" for="confermaImportCirc">
+              Confermo di aver compreso i rischi dell'importazione
+            </label>
+          </div>
+        </form>
+
+        <div id="importResultCirc" class="mt-3"></div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+        <button type="button"
+                class="btn btn-warning text-dark"
+                id="btnImportaCirc"
+                onclick="importaCircoscrizioni()"
+                disabled>
+          <i class="fas fa-download me-1"></i>Importa
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 
 <script>
+// Abilita il bottone solo se conferma spuntata
+document.getElementById('confermaImportCirc').addEventListener('change', function () {
+  document.getElementById('btnImportaCirc').disabled = !this.checked;
+});
+
+function importaCircoscrizioni() {
+
+  const consultazioneOrigine = document.getElementById('consultazioneOrigineCirc').value;
+  const sovrascrivi = document.getElementById('sovrascriviCirc').checked ? 1 : 0;
+  const conferma = document.getElementById('confermaImportCirc').checked;
+  const consultazioneAttiva = 3; // o recupera dinamicamente
+
+  if (!consultazioneOrigine) {
+    alert('Seleziona una consultazione di origine');
+    return;
+  }
+
+  if (consultazioneOrigine === consultazioneAttiva.toString()) {
+    alert('Non puoi importare dalla stessa consultazione attiva.');
+    return;
+  }
+
+  if (!conferma) {
+    alert('Devi confermare di aver compreso i rischi.');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('funzione', 'importaCircoscrizioni');
+  formData.append('id_consultazione_origine', consultazioneOrigine);
+  formData.append('id_consultazione_dest', consultazioneAttiva);
+  formData.append('sovrascrivi', sovrascrivi);
+
+  document.getElementById('importResultCirc').innerHTML =
+    '<div class="alert alert-info">Importazione in corso...</div>';
+
+  fetch('../principale.php', {
+    method: 'POST',
+    body: formData
+  })
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById('importResultCirc').innerHTML =
+      '<div class="alert alert-success">Importazione completata</div>';
+    document.getElementById('risultato').innerHTML = data; // Aggiorna tabella circoscrizioni
+    $('#importCircModal').modal('hide');
+  })
+  .catch(() => {
+    document.getElementById('importResultCirc').innerHTML =
+      '<div class="alert alert-danger">Errore durante l’importazione</div>';
+  });
+}
 
 function aggiungiCircoscrizione(e) {
     e.preventDefault();
@@ -221,3 +361,33 @@ function aggiornaNumero() {
     document.getElementById('numero').value = maxNum;
 }
 </script>
+<?php
+// if ($_POST['funzione'] === 'importaCircoscrizioni') {
+    // $id_consultazione_orig = $_POST['id_consultazione_orig'];
+    // $id_consultazione_dest = $_POST['id_consultazione_dest'];
+    // $sovrascrivi = $_POST['sovrascrivi'];
+
+    //1️⃣ Leggi tutte le circoscrizioni, sedi e sezioni dalla consultazione origine
+    // $circos = getCircoscrizioniByConsultazione($id_consultazione_orig); // funzione da implementare
+
+    //2️⃣ Se sovrascrivi = 1, cancella dati esistenti della consultazione dest
+    // if ($sovrascrivi) {
+        // cancellaCircoscrizioniConsultazione($id_consultazione_dest); // funzione da implementare
+    // }
+
+    //3️⃣ Inserisci circoscrizioni + sedi + sezioni nella consultazione attiva
+    // foreach ($circos as $c) {
+        // $id_new = inserisciCircoscrizione($id_consultazione_dest, $c); // funzione da implementare
+        // foreach ($c['sedi'] as $sede) {
+            // $id_sede = inserisciSede($id_new, $sede);
+            // foreach ($sede['sezioni'] as $sezione) {
+                // inserisciSezione($id_sede, $sezione);
+            // }
+        // }
+    // }
+
+    //4️⃣ Restituisci l’elenco aggiornato (puoi includere il file elenco_circoscrizioni.php)
+    // include('elenco_circoscrizioni.php');
+    // exit;
+// }
+?>
