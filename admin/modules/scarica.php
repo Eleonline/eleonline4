@@ -45,17 +45,16 @@ if (isset($param['id_comune2'])) $id_comune2=intval($param['id_comune2']); else 
               <label for="id_cons_gen2">Scegli la consultazione</label>
 			  <?php echo $rem_cons; ?> 
             </div>
-			<?php }elseif($fase>1){ ?>
-            <div class="col-md-7">
-              <label for="id_cons_gen2">Consultazione</label>
-			<div id="id_cons_gen2" class=\"col-md-7\"><?= $_GET[$_GET['id_cons_gen2']] ?></div>
-			</div>
-			  <?php } ?>
+			<?php } ?>
 		  </div>
           <div class="form-row mt-5">		
 			 <?php if($fase==2) { 
 				$rem_cons="<script type=\"text/javascript\" src=\"$indirizzoweb/file.php?fase=2&id_cons_gen2=$id_cons_gen2\"></script>";
 			?>			 
+            <div class="col-md-7">
+              <label for="id_cons_gen2">Consultazione</label>
+			<div id="id_cons_gen2" class=\"col-md-7\"><?= $_GET[$_GET['id_cons_gen2']] ?></div>
+			</div>
 			<input type="hidden" name="id_cons_gen" value="<?= $id_cons_gen ?>"><input type="hidden" name="op" value="20"><input type="hidden" name="fase" value="3"><input type="hidden" name="indirizzoweb" value="<?= $indirizzoweb ?>">			 
 			<div class="col-md-7" id="divComune">
               <label for="comuneWeb">Scegli il comune </label>
