@@ -56,7 +56,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
             <li class="nav-item"><a href="modules.php?op=3" class="nav-link <?php echo ($op == 3) ? 'active' : ''; ?>"><i class="nav-icon fas fa-sliders-h text-danger"></i><p>Configurazione Sito</p></a></li>
             <li class="nav-item"><a href="modules.php?op=4" class="nav-link <?php echo ($op == 4) ? 'active' : ''; ?>"><i class="nav-icon fas fa-palette text-warning"></i><p>Tema colore</p></a></li>
             <!-- <li class="nav-item"><a href="modules.php?op=200" class="nav-link <?php echo ($op == 5) ? 'active' : ''; ?>"><i class="nav-icon fas fa-chart-pie text-primary"></i><p>Config. D'Hondt</p></a></li>-->
-            <!--li class="nav-item"><a href="modules.php?op=6" class="nav-link <?php echo ($op == 6) ? 'active' : ''; ?>"><i class="nav-icon fas fa-city text-secondary"></i><p>Anagrafica Enti/Comuni</p></a></li-->
+            <li class="nav-item"><a href="modules.php?op=6" class="nav-link <?php echo ($op == 6) ? 'active' : ''; ?>"><i class="nav-icon fas fa-city text-secondary"></i><p>Anagrafica Enti/Comuni</p></a></li>
 			<li class="nav-item"><a href="modules.php?op=7" class="nav-link <?php echo ($op == 7) ? 'active' : ''; ?>"><i class="nav-icon fas fa-sync-alt text-warning"></i><p>Aggiornamento Rev</p></a></li>         
 		 </ul>
         </li>

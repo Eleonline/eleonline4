@@ -80,6 +80,9 @@ if($permessi>32)
 		case 'salvaConfigSito':
 			include("modules/salva_config_sito.php");
 			break;
+		case 'salvaComune':
+			include("modules/salva_comune.php");
+			break;
 		case 'salvaConsultazione':
 			include("modules/salva_consultazione.php");
 			break;

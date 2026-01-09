@@ -31,8 +31,9 @@ $circos=elenco_circoscrizioni();
                   <i class="fas fa-map-pin me-2"></i>Apri mappa
                 </button>
               </div>
-			  <!-- popolare di nome comune e lat e lng-->	
-              <input type="hidden" class="nome_comune" name="nome_comune" value="capo d'orlando" >
+			  <!-- popolare di nome comune e lat e lng-->
+				<?php $rowcomune=dati_comune(); ?>
+              <input type="hidden" class="nome_comune" name="nome_comune" value="<?= $rowcomune[0]['descrizione'] ?>" >
               <input type="hidden" class="lat" id="lat" name="lat" value="" >
               <input type="hidden" class="lng" id="lng" name="lng" value="" >
             </div>

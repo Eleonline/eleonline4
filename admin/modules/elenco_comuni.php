@@ -21,20 +21,21 @@ $i=$val['abitanti'];
 if($val['id_fascia']==8) break;
 }
 $fasce[8] = "Oltre 1.000.000";
-foreach($enti as $key=>$val){ if(!isset($fasce[$val['abitanti']])) continue; 
-  echo "<tr><td><input type=\"hidden\" id=\"cap$key\" value=\"".$val['cap']."\"><input type=\"hidden\" id=\"email$key\" value=\"".$val['email']."\"><input type=\"hidden\" id=\"centralino$key\" value=\"".$val['centralino']."\"><input type=\"hidden\" id=\"fax$key\" value=\"".$val['fax']."\"> </td>
-  <td><img src=\"../principale.php?funzione=immagine&amp;id_comune=".$val['codice_istat']."&amp;simbolo=".$val['simbolo']."\" width=\"50px\" alt=\"foto\"></td>
-  <td id=\"denominazione$key\">".$val['denominazione']."</td>
-  <td id=\"indirizzo$key\">".$val['indirizzo']."</td>
-  <td><input type=\"hidden\" id=\"abitanti$key\" value=\"".$val['abitanti']."\">".$fasce[$val['abitanti']]."</td>
-  <td id=\"codiceIstat$key\">".$val['codice_istat']."</td><td>"; 
-  if($val['capoluogo']) {
-	  echo "<input type=\"hidden\" id=\"capoluogo$key\" value=\"1\">";
-	  echo 'si'; 
-  }else{
-	  echo "<input type=\"hidden\" id=\"capoluogo$key\" value=\"0\">";
-	  echo 'no'; 
-  }
-  echo "</td><td><button type=\"button\" class=\"btn btn-danger btn-sm\" onclick=\"editEnte($key)\">Modifica</button> <button type=\"button\" class=\"btn btn-danger btn-sm\" onclick=\"deleteEnte($key)\">Elimina</button></td></tr>";
-}			
+if(isset($enti))
+	foreach($enti as $key=>$val){ if(!isset($fasce[$val['abitanti']])) continue; 
+	  echo "<tr><td><input type=\"hidden\" id=\"cap$key\" value=\"".$val['cap']."\"><input type=\"hidden\" id=\"email$key\" value=\"".$val['email']."\"><input type=\"hidden\" id=\"centralino$key\" value=\"".$val['centralino']."\"><input type=\"hidden\" id=\"fax$key\" value=\"".$val['fax']."\"> </td>
+	  <td><img src=\"../principale.php?funzione=immagine&amp;id_comune=".$val['codice_istat']."&amp;simbolo=".$val['simbolo']."\" width=\"50px\" alt=\"foto\"></td>
+	  <td id=\"denominazione$key\">".$val['denominazione']."</td>
+	  <td id=\"indirizzo$key\">".$val['indirizzo']."</td>
+	  <td><input type=\"hidden\" id=\"abitanti$key\" value=\"".$val['abitanti']."\">".$fasce[$val['abitanti']]."</td>
+	  <td id=\"codiceIstat$key\">".$val['codice_istat']."</td><td>"; 
+	  if($val['capoluogo']) {
+		  echo "<input type=\"hidden\" id=\"capoluogo$key\" value=\"1\">";
+		  echo 'si'; 
+	  }else{
+		  echo "<input type=\"hidden\" id=\"capoluogo$key\" value=\"0\">";
+		  echo 'no'; 
+	  }
+	  echo "</td><td><button type=\"button\" class=\"btn btn-danger btn-sm\" onclick=\"editEnte($key)\">Modifica</button> <button type=\"button\" class=\"btn btn-danger btn-sm\" onclick=\"deleteEnte($key)\">Elimina</button></td></tr>";
+	}			
 ?>
