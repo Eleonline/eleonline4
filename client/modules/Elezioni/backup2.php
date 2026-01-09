@@ -11,14 +11,23 @@ list($id_cons)=$res->fetch(PDO::FETCH_NUM);
 $sql="select * from ".$prefix."_ele_cons_comune where id_cons='$id_cons'" ;
 scarica_array($sql,$prefix."_ele_cons_comune");
 
-$sql="select * from ".$prefix."_ele_gruppo where id_cons='$id_cons'" ;
-scarica_array($sql,$prefix."_ele_gruppo");
+$sql="select * from ".$prefix."_ele_link where id_cons='$id_cons'" ;
+scarica_array($sql,$prefix."_ele_link");
 
-$sql="select * from ".$prefix."_ele_lista where id_cons='$id_cons'" ;
-scarica_array($sql,$prefix."_ele_lista");
+$sql="select * from ".$prefix."_ele_come where id_cons='$id_cons'" ;
+scarica_array($sql,$prefix."_ele_come");
 
-$sql="select * from ".$prefix."_ele_candidati where id_cons='$id_cons'" ;
-scarica_array($sql,$prefix."_ele_candidati");
+$sql="select * from ".$prefix."_ele_numero where id_cons='$id_cons'" ;
+scarica_array($sql,$prefix."_ele_numero");
+
+$sql="select * from ".$prefix."_ele_servizio where id_cons='$id_cons'" ;
+scarica_array($sql,$prefix."_ele_servizio");
+
+$sql="select * from ".$prefix."_ele_rilaff where id_cons='$id_cons_gen'" ;
+scarica_array($sql,$prefix."_ele_rilaff");
+
+$sql="select * from ".$prefix."_ele_voti_parziale where id_cons='$id_cons'" ;
+scarica_array($sql,$prefix."_ele_voti_parziale");
 
 $sql="select * from ".$prefix."_ele_circoscrizione where id_cons='$id_cons'" ;
 scarica_array($sql,$prefix."_ele_circoscrizione");
@@ -26,23 +35,20 @@ scarica_array($sql,$prefix."_ele_circoscrizione");
 $sql="select * from ".$prefix."_ele_sede where id_cons='$id_cons'" ;
 scarica_array($sql,$prefix."_ele_sede");
 
-$sql="select * from ".$prefix."_ele_sezioni where id_cons='$id_cons'" ;
-scarica_array($sql,$prefix."_ele_sezioni");
+$sql="select * from ".$prefix."_ele_sezione where id_cons='$id_cons'" ;
+scarica_array($sql,$prefix."_ele_sezione");
 
-$sql="select * from ".$prefix."_ele_link where id_cons='$id_cons'" ;
-scarica_array($sql,$prefix."_ele_link");
+$sql="select * from ".$prefix."_ele_gruppo where id_cons='$id_cons'" ;
+scarica_array($sql,$prefix."_ele_gruppo");
 
-$sql="select * from ".$prefix."_ele_come where id_cons='$id_cons'" ;
-scarica_array($sql,$prefix."_ele_come");
+$sql="select * from ".$prefix."_ele_lista where id_cons='$id_cons'" ;
+scarica_array($sql,$prefix."_ele_lista");
 
-$sql="select * from ".$prefix."_ele_numeri where id_cons='$id_cons'" ;
-scarica_array($sql,$prefix."_ele_numeri");
+$sql="select * from ".$prefix."_ele_candidato where id_cons='$id_cons'" ;
+scarica_array($sql,$prefix."_ele_candidato");
 
-$sql="select * from ".$prefix."_ele_servizi where id_cons='$id_cons'" ;
-scarica_array($sql,$prefix."_ele_servizi");
-
-$sql="select * from ".$prefix."_ele_voti_candidati where id_cons='$id_cons'" ;
-scarica_array($sql,$prefix."_ele_voti_candidati");
+$sql="select * from ".$prefix."_ele_voti_candidato where id_cons='$id_cons'" ;
+scarica_array($sql,$prefix."_ele_voti_candidato");
 
 $sql="select * from ".$prefix."_ele_voti_gruppo where id_cons='$id_cons'" ;
 scarica_array($sql,$prefix."_ele_voti_gruppo");
