@@ -1,62 +1,73 @@
 <?php 
 	require_once '../includes/check_access.php'; 
-	$_SESSION['tipo_info']='link';
+	$_SESSION['tipo_info'] = 'link';
 ?>
 <section class="content">
   <div class="container-fluid">
-  <h2><i class="fas fa-link"></i> Gestione Link Utili</h2>
-    <div class="card card-primary shadow-sm">
+
+    <h2><i class="fas fa-link"></i> Gestione Link Utili</h2>
+
+    <!-- ========================= -->
+    <!-- CARD FORM -->
+    <!-- ========================= -->
+    <div class="card card-primary shadow-sm mb-3">
       <div class="card-header">
         <h3 class="card-title" id="form-title">Aggiungi Link Utili</h3>
       </div>
-      <div class="card-body">
 
+      <div class="card-body">
         <form id="infoForm" onsubmit="aggiungiInfo(event)">
-          <div class="form-group" style="display:none;">
-            <label>Tipo</label>
-            <input type="text" name="tipo" id="tipo" class="form-control" value="<?= $_SESSION['tipo_info'] ?>">
-          </div>
-          <div class="form-group" style="display:none;">
-            <label>Posizione</label>
-            <input type="text" name="mid" id="mid" class="form-control" value="">
-          </div>
+
+          <input type="hidden" name="tipo" id="tipo" value="<?= $_SESSION['tipo_info'] ?>">
+          <input type="hidden" name="mid" id="mid" value="">
+
           <div class="form-group">
             <label>Titolo</label>
-             <input type="text" name="titolo" id="title" class="form-control" value="">
+            <input type="text" name="title" id="title" class="form-control">
           </div>
+
           <div class="form-group">
             <label>URL</label>
-            <input type="url" name="preamble" id="preamble" class="form-control" value="">
+            <input type="url" name="preamble" id="preamble" class="form-control">
           </div>
+
           <div class="form-group">
             <label>Descrizione</label>
             <textarea name="content" id="content" class="form-control" rows="3"></textarea>
           </div>
+
           <button type="submit" class="btn btn-primary mt-2" id="btnSalvaInfo">Salva</button>
           <button type="reset" class="btn btn-secondary mt-2" onclick="resetFormInfo()">Annulla</button>
-        </form>
 
-        <hr>
-		<div class="card-header bg-secondary text-white">
-			<h3 class="card-title">Elenco Link Utili</h3>
-		</div>
-		<div class="table-responsive">
-		  <table class="table table-bordered table-hover">
-			<thead>
-			  <tr>
-				<th>Titolo</th>
-				<th>URL</th>
-				<th>Descrizione</th>
-				<th>Azioni</th>
-			  </tr>
-			</thead>
-			<tbody id="risultato">
-			  <?php include('elenco_info.php'); ?>
-			</tbody>
-		  </table>
-		</div>
+        </form>
       </div>
     </div>
+
+    <!-- ========================= -->
+    <!-- CARD LISTA -->
+    <!-- ========================= -->
+    <div class="card shadow-sm">
+      <div class="card-header bg-secondary text-white">
+        <h3 class="card-title">Elenco Link Utili</h3>
+      </div>
+
+      <div class="card-body table-responsive">
+        <table class="table table-bordered table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Titolo</th>
+              <th>URL</th>
+              <th>Descrizione</th>
+              <th>Azioni</th>
+            </tr>
+          </thead>
+          <tbody id="risultato">
+            <?php include('elenco_info.php'); ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 </section>
 

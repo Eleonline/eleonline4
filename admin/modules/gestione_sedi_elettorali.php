@@ -66,7 +66,7 @@ $circos=elenco_circoscrizioni();
   <div class="card-header bg-secondary text-white">
     <h3 class="card-title">Lista Sedi</h3>
   </div>
-  <div class="card-body table-responsive" style="max-height:450px; overflow-y:auto; border: 1px solid #dee2e6; border-radius: 0 0 0.25rem 0.25rem;">
+  <div class="card-body table-responsive">
     <table class="table table-striped mb-0" id="tabellaSedi">
       <thead>
         <tr>

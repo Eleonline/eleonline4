@@ -21,64 +21,85 @@ $dataFine=$row[0]['data_fine'];
 
 <section class="content">
   <div class="container-fluid">
-  <h2><i class="fas fa-clock"></i> Gestione Orari di Affluenza</h2>
-    <div class="card card-primary shadow-sm">
+
+    <h2><i class="fas fa-clock"></i> Gestione Orari di Affluenza</h2>
+
+    <!-- ========================= -->
+    <!-- CARD FORM -->
+    <!-- ========================= -->
+    <div class="card card-primary shadow-sm mb-3">
       <div class="card-header">
-        <h3 class="card-title">Aggiugni Orari di Affluenza</h3>
+        <h3 class="card-title">Aggiungi Orario di Affluenza</h3>
       </div>
 
       <div class="card-body">
         <form id="affluenzaForm" onsubmit="aggiungiAffluenza(event)">
-          <div class="row g-3 align-items-end">
+          <div class="row align-items-end">
+
             <div class="col-12 col-md-3">
-              <label for="data" class="form-label">Data</label>
-              <input type="date" id="data" class="form-control" required 
-                min="<?php echo $dataInizio; ?>" max="<?php echo $dataFine; ?>" value="<?php echo $dataInizio; ?>">
+              <label>Data</label>
+              <input type="date" id="data" class="form-control"
+                     min="<?= $dataInizio ?>" max="<?= $dataFine ?>"
+                     value="<?= $dataInizio ?>" required>
             </div>
 
             <div class="col-6 col-md-2">
-              <label for="ora" class="form-label">Ora</label>
+              <label>Ora</label>
               <select id="ora" class="form-control" required>
                 <?php for ($i = 0; $i < 24; $i++): ?>
-                  <option value="<?= str_pad($i, 2, '0', STR_PAD_LEFT) ?>"><?= str_pad($i, 2, '0', STR_PAD_LEFT) ?></option>
+                  <option value="<?= str_pad($i, 2, '0', STR_PAD_LEFT) ?>">
+                    <?= str_pad($i, 2, '0', STR_PAD_LEFT) ?>
+                  </option>
                 <?php endfor; ?>
               </select>
             </div>
 
             <div class="col-6 col-md-2">
-              <label for="minuto" class="form-label">Minuti</label>
+              <label>Minuti</label>
               <select id="minuto" class="form-control" required>
                 <?php foreach ([0, 15, 30, 45] as $m): ?>
-                  <option value="<?= str_pad($m, 2, '0', STR_PAD_LEFT) ?>"><?= str_pad($m, 2, '0', STR_PAD_LEFT) ?></option>
+                  <option value="<?= str_pad($m, 2, '0', STR_PAD_LEFT) ?>">
+                    <?= str_pad($m, 2, '0', STR_PAD_LEFT) ?>
+                  </option>
                 <?php endforeach; ?>
               </select>
             </div>
 
             <div class="col-12 col-md-2">
-              <button type="submit" class="btn btn-primary w-100">Aggiungi</button>
+              <button type="submit" class="btn btn-primary w-100 mt-2 mt-md-0">
+                Aggiungi
+              </button>
             </div>
+
           </div>
         </form>
-		<div class="table-responsive">
-        <table class="table table-striped mt-4" id="affluenzeTable">
+      </div>
+    </div>
+
+    <!-- ========================= -->
+    <!-- CARD LISTA -->
+    <!-- ========================= -->
+    <div class="card shadow-sm">
+      <div class="card-header bg-secondary text-white">
+        <h3 class="card-title">Orari Inseriti</h3>
+      </div>
+
+      <div class="card-body table-responsive">
+        <table class="table table-bordered table-hover mb-0">
           <thead>
             <tr>
-              <th style="width: 30%">Data</th>
-              <th style="width: 20%">Orario</th>
-              <th style="width: 20%">Azione</th>
+              <th>Data</th>
+              <th>Orario</th>
+              <th>Azioni</th>
             </tr>
           </thead>
           <tbody id="risultato">
-		  <?php include('elenco_rilevazioni.php'); ?>
-		  </tbody>
+            <?php include('elenco_rilevazioni.php'); ?>
+          </tbody>
         </table>
       </div>
-	   </div>
-
-      <div class="card-footer">
-        <p class="text-muted mb-0">Puoi aggiungere uno o più orari in cui rilevare l'affluenza.</p>
-      </div>
     </div>
+
   </div>
 </section>
 

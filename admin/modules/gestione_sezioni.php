@@ -66,7 +66,7 @@ $maxNumero++;
     </div>
 
     <!-- LISTA SEZIONI -->
-    <div class="card">
+    <div class="card mb-4">
       <div class="card-header bg-secondary text-white">
         <h3 class="card-title">Lista Sezioni</h3>
       </div>
