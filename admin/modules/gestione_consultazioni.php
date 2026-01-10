@@ -2,6 +2,7 @@
 require_once '../includes/check_access.php';
 $inizioNoGenere = strtotime('2025/06/30');
 global $genere;
+$tipi=elenco_tipi();
 ?>
 
 <section class="content">
@@ -21,25 +22,9 @@ global $genere;
               <label for="tipo">Tipo*</label>
               <select class="form-control" id="tipo" name="tipo" onchange="selezionaInput()" required>
                 <option value="">Seleziona...</option>
-                <option value="1">PROVINCIALI</option>
-                <option value="2">REFERENDUM</option>
-                <option value="3">COMUNALI</option>
-                <option value="4">CIRCOSCRIZIONALI</option>
-                <option value="5">BALLOTTAGGIO COMUNALI</option>
-                <option value="6">CAMERA</option>
-                <option value="7">SENATO</option>
-                <option value="8">EUROPEE</option>
-                <option value="9">REGIONALI</option>
-                <option value="10">SENATO CON GRUPPI</option>
-                <option value="11">CAMERA CON GRUPPI</option>
-                <option value="12">PROVINCIALI CON COLLEGI</option>
-                <option value="13">BALLOTTAGGIO PROVINCIALI</option>
-                <option value="14">EUROPEE CON COLLEGI</option>
-                <option value="15">CAMERA CON GRUPPI E COLLEGI</option>
-                <option value="16">SENATO CON GRUPPI E COLLEGI</option>
-                <option value="17">REGIONALI CON COLLEGI</option>
-                <option value="18">CAMERA - Rosatellum 2.0</option>
-                <option value="19">SENATO - Rosatellum 2.0</option>
+				<?php foreach($tipi as $key=>$val) { ?>
+                <option value="<?= $val['tipo_cons'] ?>"><?= $val['descrizione'] ?></option>
+				<?php } ?>
               </select>
             </div>
             <div class="form-group col-md-5">
@@ -69,28 +54,41 @@ global $genere;
 		  <div class="form-group col-12 col-sm-6 col-md-4" id="divlegge">
 			<label for="id_conf">Legge elettorale</label>
 			<select class="form-control" id="id_conf" name="id_conf">
-				<option value="0" ></option>
+				<option value="0" >Seleziona...</option>
 			  <?php $i=0; foreach($row as $val) { ?>
-				<option value="<?= $val['id_conf'] ?>" <?php if(!$i++) echo "selected"; ?>><?= $val['descrizione'] ?></option>
+				<option value="<?= $val['id_conf'] ?>"><?= $val['descrizione'] ?></option>
 			  <?php } ?>
 			</select>				
 		  </div>
-		  <div class="form-group col-12 col-sm-6 col-md-2" id="divfascia">
-			<label for="id_fascia">Abitanti</label>
-			<select class="form-control" id="id_fascia" name="id_fascia">
-			  <option value="0"></option>
-			  <option value="1">0 - 3.000</option>
-			  <option value="2">3.001 - 10.000</option>
-			  <option value="3">10.001 - 15.000</option>
-			  <option value="4">15.001 - 30.000</option>
-			  <option value="5">30.001 - 100.000</option>
-			  <option value="6">100.001 - 250.000</option>
-			  <option value="7">250.001 - 500.000</option>
-			  <option value="8">500.001 - 1.000.000</option>
-			  <option value="9">Oltre 1.000.000</option>
-			</select>				
-		  </div>
-		
+			<div class="form-group col-12 col-sm-6 col-md-2" id="divfascia">
+				<label for="id_fascia">Abitanti</label>
+				<select class="form-control" id="id_fascia" name="id_fascia">
+					<option value="0">Seleziona...</option>
+					<?php
+					$fasce = elenco_fasce(1);  // chiami la funzione
+					$precedente = 0;
+
+					foreach ($fasce as $riga) {
+
+						$id = $riga['id_fascia'];
+						$abitanti = (int)$riga['abitanti'];
+
+						// ultima fascia → Oltre 1000000
+						if ($id == count($fasce)) {
+							$testo = 'Oltre ' . $precedente;
+						} else {
+							$testo = $precedente . ' - ' . $abitanti;
+						}
+
+						echo '<option value="'.$id.'">'.$testo.'</option>';
+
+						// aggiornamento per la fascia successiva
+						$precedente = $abitanti + 1;
+					}
+					?>
+				</select>
+			</div>
+
 		  <div class="form-group col-12 col-sm-6 col-md-2" id="divstato">
 			<label for="chiusa">Stato</label>
 			<select class="form-control" id="chiusa" name="chiusa">
