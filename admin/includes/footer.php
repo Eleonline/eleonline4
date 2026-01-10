@@ -1,12 +1,15 @@
 <?php
 require_once '../includes/check_access.php';
 ?>
-  <!-- Footer -->
-  <footer class="main-footer text-center">
-    <strong>Eleonline &copy; 2025</strong>
-  </footer>
 </div> <!-- /.content-wrapper -->
+</div> <!-- /.content-container -->
+
+<footer class="main-footer text-center">
+  <strong>Eleonline &copy; 2025</strong>
+</footer>
+
 </div> <!-- /.wrapper -->
+
 
 <!-- JS -->
  <script src="../plugins/jquery/jquery-3.6.0.min.js"></script>

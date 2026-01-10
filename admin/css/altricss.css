@@ -11,6 +11,13 @@
   display: flex;
   overflow: hidden;
 }
+
+.content-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 50px; /* altezza footer */
+}
+
 .main-sidebar .brand-link {
   display: flex;
   align-items: center;  /* centra verticalmente contenuto */
@@ -73,3 +80,12 @@
     }
   }
 
+html, body {
+  height: 100%;
+}
+
+.wrapper {
+  min-height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+}

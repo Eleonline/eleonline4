@@ -206,6 +206,11 @@ document.getElementById('wizardForm')?.addEventListener('submit', function (e) {
         window.location.href = indirizzo;
     <?php endif; ?>
 });
+document.querySelectorAll('.remote-load').forEach(box => {
+    const selects = box.querySelectorAll('select');
+    selects.forEach(s => s.classList.add('form-control')); // forza responsive
+});
+
 </script>
 
 </section>

@@ -6,7 +6,7 @@
   <h2><i class="fas fa-concierge-bell"></i> Gestione Servizi</h2>
     <div class="card card-primary shadow-sm">
       <div class="card-header">
-        <h3 class="card-title" id="form-title">Aggiungi / Modifica Servizi</h3>
+        <h3 class="card-title" id="form-title">Aggiungi Servizi</h3>
       </div>
       <div class="card-body">
 
@@ -113,6 +113,7 @@ function aggiungiInfo(e) {
             document.getElementById('risultato').innerHTML = data;
             resetFormInfo();
             aggiornaNumero();
+			document.getElementById("form-title").textContent = "Aggiungi Servizi";
         });
 }
 
@@ -141,6 +142,7 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
             document.getElementById("btnSalvaInfo").textContent = "Aggiungi";
             resetFormInfo();
             aggiornaNumero();
+			document.getElementById("form-title").textContent = "Aggiungi Servizi";
             $('#confirmDeleteModal').modal('hide');
             deleteMid = null;
         });
@@ -154,6 +156,7 @@ function editInfo(index) {
     document.getElementById("preamble").value = document.getElementById("preamble"+index).innerText;
     editor.setData(document.getElementById("content"+index).innerText);
     document.getElementById("btnSalvaInfo").textContent = "Salva modifiche";
+	document.getElementById("form-title").textContent = "Modifica Servizio";
 	document.getElementById("mid").focus();
 	
 }
@@ -164,6 +167,7 @@ function resetFormInfo() {
     document.getElementById('mid').value = '';
 	editor.setData('');
     document.getElementById('btnSalvaInfo').textContent = "Aggiungi";
+	document.getElementById("form-title").textContent = "Aggiungi Servizi";
 }
 function aggiornaNumero() {
 	const maxNum = document.getElementById("maxNumero").innerText;

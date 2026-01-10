@@ -186,13 +186,13 @@ elseif($row['adminop']) $role='operatore';
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="password" name="password" class="form-control" placeholder="Password" required />
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-lock"></span>
-              </div>
-            </div>
-          </div>
+			<input type="password" name="password" id="passwordInput" class="form-control" placeholder="Password" required />
+			<div class="input-group-append">
+				<div class="input-group-text" style="cursor:pointer;" onclick="togglePassword()">
+					<span id="togglePassword" class="fas fa-eye"></span>
+				</div>
+		    </div>
+</div>
 		<?php if($multicomune) { ?>
 		  <label for="comuneSelect">Seleziona il Comune</label>
 		  <div class="input-group mb-3">
@@ -216,6 +216,21 @@ elseif($row['adminop']) $role='operatore';
       <!-- /.login-card-body -->
     </div>
   </div>
+  <script>
+function togglePassword() {
+    const input = document.getElementById('passwordInput');
+    const icon = document.getElementById('togglePassword');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+</script>
   <!-- AdminLTE and dependencies -->
   <script src="plugins/jquery/jquery.min.js"></script>
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>

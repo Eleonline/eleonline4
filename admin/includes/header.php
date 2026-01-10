@@ -35,6 +35,6 @@ $comune = [
   
   
 </head>
- <body class="hold-transition sidebar-mini layout-footer-fixed">
+ <body class="hold-transition sidebar-mini">
 <!--<body class="hold-transition sidebar-mini sidebar-collapse layout-footer-fixed">-->
 <div class="wrapper">

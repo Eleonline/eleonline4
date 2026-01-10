@@ -16,7 +16,6 @@ global $genere;
       <div class="card-body">
         <form id="consultazioneForm"  onsubmit="aggiungiConsultazione(event)">
           <input type="hidden" name="id_cons_gen" id="id_cons_gen">
-
           <div class="form-row">
             <div class="form-group col-md-3">
               <label for="tipo">Tipo*</label>
