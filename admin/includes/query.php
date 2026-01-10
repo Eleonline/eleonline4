@@ -372,7 +372,7 @@ global $dbi,$prefix;
 function elenco_cons()
 {
 global $dbi,$prefix,$id_comune;
-	$sql="SELECT t1.*,t2.chiusa,t2.id_conf,t2.preferita,t2.preferenze,t2.id_fascia,t2.vismf,t2.solo_gruppo,t2.disgiunto,t2.proiezione FROM ".$prefix."_ele_consultazione as t1,".$prefix."_ele_cons_comune as t2 where t1.id_cons_gen=t2.id_cons_gen and t2.id_comune=$id_comune and t2.chiusa<'2' order by t1.data_inizio desc";
+	$sql="SELECT t1.*,t2.chiusa,t2.id_conf,t2.preferita,t2.preferenze,t2.id_fascia,t2.vismf,t2.solo_gruppo,t2.disgiunto,t2.proiezione,t3.descrizione as tipodescr FROM ".$prefix."_ele_consultazione as t1,".$prefix."_ele_cons_comune as t2,".$prefix."_ele_tipo as t3 where t1.id_cons_gen=t2.id_cons_gen and t1.tipo_cons=t3.tipo_cons and t2.id_comune=$id_comune and t2.chiusa<'2' order by t1.data_inizio desc";
 	$sth = $dbi->prepare("$sql");
 	$sth->execute();	
 	$row = $sth->fetchAll(PDO::FETCH_ASSOC);

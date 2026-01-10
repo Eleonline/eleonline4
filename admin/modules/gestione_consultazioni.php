@@ -152,6 +152,7 @@ global $genere;
           <thead>
             <tr>
               <th style="width:30px;"></th> <!-- colonna stella senza titolo -->
+              <th>Tipo</th>
               <th>Denominazione</th>
               <th>Data Inizio</th>
               <th>Data Fine</th>

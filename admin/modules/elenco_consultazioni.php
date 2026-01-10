@@ -83,6 +83,9 @@ if(!$cambia) {
         </td>
 
         <!-- DATI VISIBILI -->
+        <td id="tipoCons<?= $key ?>">
+            <?= $val['tipodescr'] ?>
+        </td>
         <td id="descrizione<?= $key ?>">
             <?= $val['descrizione'] ?>
         </td>
