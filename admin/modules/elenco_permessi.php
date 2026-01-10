@@ -56,7 +56,7 @@ if (!count($non_autorizzati)) {
                     </div>
 
                     <!-- LIVELLO -->
-                    <div class="form-group col-md-3" id="divlivello">
+                    <div class="form-group col-md-4" id="divlivello">
                         <label for="livello">Livello di autorizzazione</label>
                         <select class="form-control" id="livello" name="livello" onchange="scegliTipo()">
                             <option value="0">Tutte le sezioni</option>
