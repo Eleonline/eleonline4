@@ -30,7 +30,13 @@ function insgruppo()
 			if ($key==2) $numgruppo= $campo;
 		}		
 		$i=$numcampi;
-		if($numcampi<$campiloc) while($i<$campiloc) {$valori.=",''";$i++;}
+		if($numcampi<$campiloc) 
+			while($i<$campiloc) 
+			{
+				if($i==13) $valori.=",'0'";
+				else $valori.=",null";
+				$i++;
+			}
 		if(isset($valori)){ 
 			$sql="insert into ".$prefix."_ele_gruppo values($valori)";
 			try {
@@ -87,7 +93,13 @@ global $ar_lista,$idcns;
 			else $valori.="'".$campo."',";
 		}
 		$i=$ultimocampo;
-		if($ultimocampo<$campiloc) while($i<$campiloc) {$valori.=",''";$i++;}
+		if($ultimocampo<$campiloc) 
+			while($i<$campiloc) 
+			{
+				if($i==11) $valori.=",null";
+				else $valori.=",null";
+				$i++;			
+			}
 #		if($ultimocampo==9) $valori.=",''";
 #		if($key==$ultimocampo){
 			if ($okl) {$okl=0;continue;}
@@ -134,7 +146,11 @@ function inscandi()
 			else $valori.= ",'".utf8_encode($campo)."'";
 		}
 		if(isset($valori) and $valori!=''){
-			for($x=count($rigacandi);$x<$campiloc;$x++) $valori.=",''";
+			for($x=count($rigacandi);$x<$campiloc;$x++) 
+				if($x==10) $valori.=",''";
+				elseif($x==11) $valori.=",''";
+				elseif($x==12) $valori.=",'0'";
+				else $valori.=",''";
 			if ($okc) {$okc=0;continue;}
 			$sql="insert into ".$prefix."_ele_candidato values($valori)";
 			try {
