@@ -1,7 +1,20 @@
 <?php
 require_once '../includes/check_access.php';
 
+// ======= LOGS CONFIGURATI =======
 $logs = [
+    'login' => [
+        'label' => 'Log Login',
+        'paths' => [
+            __DIR__ . '/../logs/login_attempts.log',
+        ],
+    ],
+    'accesso_negato' => [
+        'label' => 'Log Accesso Negato',
+        'paths' => [
+            __DIR__ . '/../logs/accessi_negati.log',
+        ],
+    ],
     'access' => [
         'label' => 'Log Apache Access',
         'paths' => [
@@ -34,11 +47,11 @@ $logs = [
     ],
 ];
 
-$type = filter_input(INPUT_GET, 'type', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? 'access';
+$type = filter_input(INPUT_GET, 'type', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? 'login';
 $filter = trim(filter_input(INPUT_GET, 'filter', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '');
 $auto = filter_input(INPUT_GET, 'auto', FILTER_VALIDATE_BOOLEAN) ?? false;
 
-if (!isset($logs[$type])) $type = 'access';
+if (!isset($logs[$type])) $type = 'login';
 
 function findLogFile(array $paths) {
     foreach ($paths as $file) {
@@ -50,7 +63,6 @@ function findLogFile(array $paths) {
 }
 
 $logfile = findLogFile($logs[$type]['paths']);
-
 $logContent = '';
 
 if ($logfile) {
@@ -66,14 +78,24 @@ if ($logfile) {
             if ($filter === '' || stripos($lineRaw, $filter) !== false) {
                 $lineSafe = htmlspecialchars($lineRaw);
 
+                // ===== Classi log =====
                 $levelClass = '';
                 $lineLower = strtolower($lineRaw);
-                if (strpos($lineLower, 'error') !== false) {
-                    $levelClass = 'log-error';
-                } elseif (strpos($lineLower, 'warn') !== false) {
-                    $levelClass = 'log-warn';
-                } elseif (strpos($lineLower, 'notice') !== false || strpos($lineLower, 'info') !== false) {
-                    $levelClass = 'log-info';
+
+                if ($type === 'login') {
+                    if (strpos($lineLower, 'ok') !== false) {
+                        $levelClass = 'log-login-ok';
+                    } elseif (strpos($lineLower, 'fail') !== false) {
+                        $levelClass = 'log-login-fail';
+                    }
+                } else {
+                    if (strpos($lineLower, 'fail') !== false || strpos($lineLower, 'error') !== false) {
+                        $levelClass = 'log-error';
+                    } elseif (strpos($lineLower, 'warn') !== false) {
+                        $levelClass = 'log-warn';
+                    } elseif (strpos($lineLower, 'notice') !== false || strpos($lineLower, 'info') !== false || strpos($lineLower, 'ok') !== false) {
+                        $levelClass = 'log-info';
+                    }
                 }
 
                 if ($filter !== '') {
@@ -96,37 +118,16 @@ if ($logfile) {
 ?>
 
 <style>
-  .log-error {
-    color: #a94442;
-    background-color: #f2dede;
-    padding: 2px 6px;
-    border-radius: 3px;
-    margin-bottom: 1px;
-  }
-  .log-warn {
-    color: #8a6d3b;
-    background-color: #fcf8e3;
-    padding: 2px 6px;
-    border-radius: 3px;
-    margin-bottom: 1px;
-  }
-  .log-info {
-    color: #31708f;
-    background-color: #d9edf7;
-    padding: 2px 6px;
-    border-radius: 3px;
-    margin-bottom: 1px;
-  }
-  mark {
-    background-color: yellow;
-    color: black;
-  }
-  #loadingIndicator {
-    display: none;
-    font-weight: 600;
-    color: #31708f;
-    margin-bottom: 0.5rem;
-  }
+  .log-error { color: #a94442; background-color: #f2dede; padding: 2px 6px; border-radius: 3px; margin-bottom: 1px; }
+  .log-warn { color: #8a6d3b; background-color: #fcf8e3; padding: 2px 6px; border-radius: 3px; margin-bottom: 1px; }
+  .log-info { color: #31708f; background-color: #d9edf7; padding: 2px 6px; border-radius: 3px; margin-bottom: 1px; }
+
+  /* LOGIN LOGS */
+  .log-login-ok { color: #155724; background-color: #d4edda; padding: 2px 6px; border-radius: 3px; margin-bottom: 1px; }
+  .log-login-fail { color: #721c24; background-color: #f8d7da; padding: 2px 6px; border-radius: 3px; margin-bottom: 1px; }
+
+  mark { background-color: yellow; color: black; }
+  #loadingIndicator { display: none; font-weight: 600; color: #31708f; margin-bottom: 0.5rem; }
 </style>
 
 <section class="content">
@@ -176,7 +177,7 @@ if ($logfile) {
 
       </div>
       <div class="card-footer">
-        <!-- Se vuoi aggiungere qualcosa qui -->
+        <!-- Footer -->
       </div>
     </div>
   </div>
@@ -199,7 +200,6 @@ if ($logfile) {
 
   function fetchLog() {
     if (loadingIndicator) loadingIndicator.style.display = 'block';
-
     const params = new URLSearchParams(window.location.search);
     fetch(window.location.pathname + '?' + params.toString())
       .then(res => res.text())
@@ -213,33 +213,20 @@ if ($logfile) {
         }
         if (loadingIndicator) loadingIndicator.style.display = 'none';
       })
-      .catch(() => {
-        if (loadingIndicator) loadingIndicator.style.display = 'none';
-      });
+      .catch(() => { if (loadingIndicator) loadingIndicator.style.display = 'none'; });
   }
 
   function startAutoUpdate() {
-    if (!autoUpdateInterval) {
-      autoUpdateInterval = setInterval(fetchLog, 30000);
-    }
+    if (!autoUpdateInterval) { autoUpdateInterval = setInterval(fetchLog, 30000); }
   }
 
   function stopAutoUpdate() {
-    if (autoUpdateInterval) {
-      clearInterval(autoUpdateInterval);
-      autoUpdateInterval = null;
-    }
+    if (autoUpdateInterval) { clearInterval(autoUpdateInterval); autoUpdateInterval = null; }
   }
 
   autoCheckbox.addEventListener('change', () => {
-    if (autoCheckbox.checked) {
-      startAutoUpdate();
-    } else {
-      stopAutoUpdate();
-    }
+    if (autoCheckbox.checked) startAutoUpdate(); else stopAutoUpdate();
   });
 
-  if (autoCheckbox.checked) {
-    startAutoUpdate();
-  }
+  if (autoCheckbox.checked) startAutoUpdate();
 </script>
