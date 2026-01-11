@@ -25,7 +25,7 @@ $pagesMap = [
 	18 => 'pagina_in_costruzionei.php',
 	19 => 'importa_dait.php',
 	20 => 'scarica_lista.php',
-	21 => 'importa.php',
+	21 => 'importa_lista.php',
 	22 => 'autorizza_comuni.php',
 	23 => 'gestione_gruppi.php',
 	24 => 'gestione_gruppi.php',
@@ -49,6 +49,7 @@ $pagesMap = [
 	101 => 'cambio_password.php',
 	150 => '../ws/index.php',
     // importa_dait
+	79 => 'importa_dait_non_valido.php',
 	80 => 'dait_europee.php',
 	81 => 'dait_politiche.php',
 	// Aggiungi altre pagine admin qui
