@@ -22,6 +22,7 @@ function insgruppo()
 		foreach($rigagruppo as $key=>$campo){
 			if ($key==0) $valori="'$idcns',";
 			elseif ($key==1) {$valori.= "null"; $oldidg=$campo;}
+			elseif ($campo==null) $valori.= ",null";
 			elseif ($key==6) $valori.= ",0";
 			elseif($key==4) $valori.=",'".utf8_encode($campo)."'";
 			elseif($key==7) {if($numcampi==9) $valori.=",0"; $valori.= ",'".$campo."'";}
@@ -90,6 +91,7 @@ global $ar_lista,$idcns;
 			elseif ($key==3) {$valori.= "'$newidg',"; if ($campo!=$oldidg) $okl=1;}
 			elseif ($key==4) $valori.= "$numgruppo,"; 
 			elseif ($key==($ultimocampo-1) ) $valori.= "'$campo'"; 
+			elseif ($campo==null) $valori.= "null,";
 			else $valori.="'".$campo."',";
 		}
 		$i=$ultimocampo;
