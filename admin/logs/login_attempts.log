@@ -1,0 +1,15 @@
+[2026-01-11 15:21:30] LOGIN OK | IP: 127.0.0.1 | Utente: Rhiannon | Comune: 83009
+[2026-01-11 15:30:34] LOGIN FAIL | IP: 127.0.0.1 | Utente: Rhiannon | Comune: 83009
+[2026-01-11 15:30:46] LOGIN FAIL | IP: 127.0.0.1 | Utente: Rhiannon | Comune: 83009
+[2026-01-11 15:33:42] LOGIN OK | IP: 127.0.0.1 | Utente: Rhiannon | Comune: 83009
+[2026-01-11 15:33:49] LOGIN FAIL | IP: 127.0.0.1 | Utente: Rhiannon | Comune: 83009
+[2026-01-11 16:10:36] LOGIN FAIL | IP: 127.0.0.1 | Utente: Rhiannon | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+[2026-01-11 16:10:45] LOGIN FAIL | IP: 127.0.0.1 | Utente: Rhiannon | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+[2026-01-11 16:11:38] LOGIN FAIL | IP: 127.0.0.1 | Utente: aaa | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+[2026-01-11 16:14:45] LOGIN OK | IP: 127.0.0.1 | Utente: Rhiannon | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+[2026-01-11 16:19:22] LOGIN FAIL | IP: 127.0.0.1 | Utente: Rhiannon | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+[2026-01-11 16:19:27] LOGIN FAIL | IP: 127.0.0.1 | Utente: Rhiannon | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+[2026-01-11 16:20:24] LOGIN FAIL | IP: 127.0.0.1 | Utente: Rhiannon | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+[2026-01-11 16:20:52] LOGIN OK | IP: 127.0.0.1 | Utente: Rhiannon | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+[2026-01-11 16:20:59] LOGIN FAIL | IP: 127.0.0.1 | Utente: Rhiannon | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+[2026-01-11 16:21:05] LOGIN FAIL | IP: 127.0.0.1 | Utente: Rhiannon | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
