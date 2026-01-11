@@ -1,10 +1,10 @@
 <?php
 require_once '../includes/check_access.php';
-
+/*
 $param=strtolower($_SERVER['REQUEST_METHOD']) == 'get' ? $_GET : $_POST;
 $id_cons_gen=intval($_SESSION['id_cons_gen']);
 if (isset($param['datafile'])) $datafile=addslashes($param['datafile']); else $datafile='';
-
+*/
 function insgruppo()
 {
 	global $prefix, $dbi;
@@ -152,12 +152,14 @@ function inscandi()
 
 
 
-
+function importa($cons) {
+	global $prefix, $id_comune, $id_cons_gen, $dbi,$idcns;
 $sql="SELECT t1.id_cons, t2.descrizione FROM ".$prefix."_ele_cons_comune as t1 left join ".$prefix."_ele_consultazione as t2 on t1.id_cons_gen=t2.id_cons_gen where t1.id_comune='$id_comune' and t2.id_cons_gen='$id_cons_gen'";
 $res = $dbi->prepare("$sql");
 $res->execute();	
 list($id_cons,$descrizione) = $res->fetch(PDO::FETCH_NUM);
-if (!isset($_FILES['datafile']['tmp_name']) or !is_uploaded_file($_FILES['datafile']['tmp_name'])) 
+#if (!isset($_FILES['datafile']['tmp_name']) or !is_uploaded_file($_FILES['datafile']['tmp_name'])) 
+if(!$cons)
 {
 	if (isset($_GET['help'])) $help=intval($_GET['help']);
    	global $help,$language;
@@ -192,9 +194,9 @@ if (!isset($_FILES['datafile']['tmp_name']) or !is_uploaded_file($_FILES['datafi
 	$sql="delete from ".$prefix."_ele_gruppo where id_cons=$idcns";
 	$res_del = $dbi->prepare("$sql");
 	$res_del->execute();	
-	$datafile=$_FILES['datafile']['tmp_name'];
-	$arrFile = file($datafile);
-	$handle = fopen($datafile, "r");
+#	$datafile=$_FILES['datafile']['tmp_name'];
+#$lines = preg_split('/\n|\r\n?/', $cons); echo $lines[0]."TEST".$;
+	$arrFile = preg_split('/\n|\r\n?/', $cons); #file($datafile);
 	$test=array();
 	$errore=0;
 	$fine=0;
@@ -212,24 +214,25 @@ if (!isset($_FILES['datafile']['tmp_name']) or !is_uploaded_file($_FILES['datafi
 	$currentLine = 0;
 	$x=0;$k=0;
 	$y=0;
+	global $ar_gruppo, $ar_lista, $ar_candi;
 	$ar_gruppo=array(array());
 	$ar_lista=array(array());
 	$ar_candi=array(array());
 	$z=0;
-	$tab=substr($arrFile[$currentLine],1,-2);
+	$tab=substr($arrFile[$currentLine],1,-1);
 	$conf=$tabs[$x];
-	if($k==0) {while (substr($arrFile[$currentLine],1,-2)!=$conf and $currentLine <= $cntFile) $currentLine++; $k++;}
+	if($k==0) {while (substr($arrFile[$currentLine],1,-1)!=$conf and $currentLine <= $cntFile) $currentLine++; $k++;}
 	$currentLine++;
 	while($currentLine <= $cntFile and $fine==0){
 		if(isset($arrFile[$currentLine])){ 
-			$appo=substr($arrFile[$currentLine],1,-2);
+			$appo=substr($arrFile[$currentLine],1,-1); 
 			if($appo==$prefix."_ele_candidati") $appo=$prefix."_ele_candidato";
 		}else $appo='';
 		if (isset($tabs[($x+1)]) and $appo==$tabs[($x+1)]){ $x++;$conf=$tabs[$x];$currentLine++; continue;}
 		$test=explode(':',$appo);
 		if(!is_array($test)) {die("errore di import<br>");}
 		foreach($test as $key=>$val) { 
-			if ($conf==$prefix."_ele_gruppo"){
+			if ($conf==$prefix."_ele_gruppo"){ 
 				$ar_gruppo[$z][$key]=addslashes(base64_decode($val));
 			}
 			elseif ($conf==$prefix."_ele_lista"){
@@ -283,7 +286,6 @@ if (!isset($_FILES['datafile']['tmp_name']) or !is_uploaded_file($_FILES['datafi
 			$currentLine++;
 			$z++;
 	}
-	fclose($handle);
 	if ($numgruppo){
 		Header("Location: modules.php?op=27&id_cons_gen=$id_cons_gen");
 	}
@@ -293,5 +295,5 @@ if (!isset($_FILES['datafile']['tmp_name']) or !is_uploaded_file($_FILES['datafi
 	else Header("Location: modules.php?op=28&id_cons_gen=$id_cons_gen");
 
 }
-
+}
 ?>

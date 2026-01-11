@@ -101,9 +101,10 @@ $indirizzoweb  = isset($param['indirizzoweb']) ? addslashes($param['indirizzoweb
           <input type="hidden" name="fase" value="3">
           <input type="hidden" name="indirizzoweb" value="<?= htmlspecialchars($indirizzoweb) ?>">
           <input type="hidden" name="id_cons_gen2" value="<?= intval($id_cons_gen2) ?>">
+          <input type="hidden" name="descr_cons" value="<?= $_GET[$_GET['id_cons_gen2']] ?>">
 
           <div class="alert alert-success py-2">
-            <i class="fas fa-flag"></i> Consultazione selezionata
+            <i class="fas fa-flag"></i> Consultazione selezionata: <?= $_GET[$_GET['id_cons_gen2']] ?> 
           </div>
 
           <div class="form-group">
@@ -135,11 +136,11 @@ $indirizzoweb  = isset($param['indirizzoweb']) ? addslashes($param['indirizzoweb
               </li>
               <li class="mt-2">
                 <i class="fas fa-flag text-success"></i>
-                <strong> Consultazione:</strong> ID <?= intval($id_cons_gen2) ?>
+                <strong> Consultazione:</strong> <?= $_GET['descr_cons'] ?>
               </li>
               <li class="mt-2">
                 <i class="fas fa-city text-info"></i>
-                <strong> Comune:</strong> ID <?= intval($id_comune2) ?>
+                <strong> Comune:</strong> ID <?= intval($id_comune2) ?> 
               </li>
             </ul>
 
@@ -148,7 +149,14 @@ $indirizzoweb  = isset($param['indirizzoweb']) ? addslashes($param['indirizzoweb
             </p>
           </div>
         <?php } ?>
-
+        <!-- FASE 4 – IMPORT -->
+        <?php if ($fase == 4) { 
+		$indirizzo=file_get_contents(htmlspecialchars($indirizzoweb)."/modules.php?op=backup&id_cons_gen=".intval($id_cons_gen2)."&id_comune=".intval($id_comune2));
+		include_once('importa.php');
+		importa($indirizzo);
+		}
+		?>
+		
       </div>
 
       <!-- FOOTER BOTTONI -->
@@ -164,7 +172,7 @@ $indirizzoweb  = isset($param['indirizzoweb']) ? addslashes($param['indirizzoweb
           </div>
 
           <div class="col-6 text-right">
-            <?php if ($fase < 3) { ?>
+            <?php if ($fase < 4) { ?>
               <button type="submit" class="btn btn-primary btn-block btn-lg submit-btn">
                 Prosegui <i class="fas fa-arrow-right"></i>
               </button>
@@ -189,7 +197,7 @@ document.getElementById('wizardForm')?.addEventListener('submit', function (e) {
     btn.disabled = true;
 
     // Se siamo in fase 3, redirect immediato
-    <?php if($fase == 3): ?>
+    <?php if($fase == 5): ?>
         e.preventDefault();
 
         const id_cons = <?= intval($id_cons_gen2) ?>;
