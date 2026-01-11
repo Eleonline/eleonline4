@@ -79,8 +79,8 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
         </li>
 <?php endif; ?>
 <?php if (in_array($_SESSION['ruolo'], ['superuser', 'admin', 'operatore'])): ?>
-<li class="nav-item has-treeview <?php echo in_array($op, [18, 19, 20, 21, 80, 81]) ? 'menu-open' : ''; ?>">
-  <a href="#" class="nav-link <?php echo in_array($op, [18, 19, 20, 21, 80, 81]) ? 'active' : ''; ?>">
+<li class="nav-item has-treeview <?php echo in_array($op, [18, 19, 20, 21, 79, 80, 81, 150]) ? 'menu-open' : ''; ?>">
+  <a href="#" class="nav-link <?php echo in_array($op, [18, 19, 20, 21, 79, 80, 81, 150]) ? 'active' : ''; ?>">
     <i class="nav-icon fas fa-file-import text-primary"></i>
     <p>
       Importa/Esporta Dati
@@ -95,7 +95,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
       </a>
     </li>
     <li class="nav-item">
-      <a href="modules.php?op=19" class="nav-link <?php echo ($op == 19 or $op == 80 or $op == 81) ? 'active' : ''; ?>">
+      <a href="modules.php?op=19" class="nav-link <?php echo ($op == 19 or $op == 79 or $op == 80 or $op == 81) ? 'active' : ''; ?>">
         <i class="nav-icon fas fa-download text-success"></i>
         <p>Importa da DAIT</p>
       </a>

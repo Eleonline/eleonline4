@@ -49,6 +49,7 @@ $pagesMap = [
 	101 => 'cambio_password.php',
 	150 => '../ws/index.php',
     // importa_dait
+	79 => 'importa_dait_non_valido.php',
 	80 => 'dait_europee.php',
 	81 => 'dait_politiche.php',
 	// Aggiungi altre pagine admin qui
