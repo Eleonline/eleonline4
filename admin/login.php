@@ -86,7 +86,7 @@ if (isset($_POST['username'])) {
 			if(md5($pwd)!=$row['pwd']) {
 				login_log($aid, 'PASSWORD_ERRATA', $id_comune); // LOG
 				$msglogout=3;
-				header("Location: logout.php");
+				include("logout.php");
 			}else{
 				if($row['admincomune'] or $row['adminsuper']) {
 					$row2=configurazione();

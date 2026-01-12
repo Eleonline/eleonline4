@@ -306,13 +306,6 @@ if(!$cons)
 			$currentLine++;
 			$z++;
 	}
-	if ($numgruppo){
-		//Header("Location: modules.php?op=27&id_cons_gen=$id_cons_gen");
-	}
-	elseif ($numlista) {
-		//Header("Location: modules.php?op=28&id_cons_gen=$id_cons_gen");
-	}
-	else //Header("Location: modules.php?op=28&id_cons_gen=$id_cons_gen");
 
 }
 }
