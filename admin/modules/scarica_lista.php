@@ -57,7 +57,7 @@ $indirizzoweb  = isset($param['indirizzoweb']) ? addslashes($param['indirizzoweb
     <form id="wizardForm" action="modules.php" method="get">
       <div class="card-body">
 
-        <!-- FASE 0 -->
+        <!-- FASE 0 – SERVER -->
         <?php if ($fase == 0) { ?>
           <input type="hidden" name="op" value="20">
           <input type="hidden" name="fase" value="1">
@@ -115,76 +115,91 @@ $indirizzoweb  = isset($param['indirizzoweb']) ? addslashes($param['indirizzoweb
           </div>
         <?php } ?>
 
-        <!-- FASE 3 – CONFERMA -->
-        <?php if ($fase == 3) { ?>
-          <input type="hidden" name="op" value="20">
-          <input type="hidden" name="fase" value="4">
-          <input type="hidden" name="indirizzoweb" value="<?= htmlspecialchars($indirizzoweb) ?>">
-          <input type="hidden" name="id_cons_gen2" value="<?= intval($id_cons_gen2) ?>">
-          <input type="hidden" name="id_comune2" value="<?= intval($id_comune2) ?>">
+       <!-- FASE 3 – CONFERMA -->
+<?php if ($fase == 3) { ?>
+    <input type="hidden" name="op" value="20">
+    <input type="hidden" name="fase" value="4">
+    <input type="hidden" name="indirizzoweb" value="<?= htmlspecialchars($indirizzoweb) ?>">
+    <input type="hidden" name="id_cons_gen2" value="<?= intval($id_cons_gen2) ?>">
+    <input type="hidden" name="id_comune2" value="<?= intval($id_comune2) ?>">
 
-          <div class="alert alert-warning p-3 border border-warning rounded">
-            <h5>
-              <i class="fas fa-exclamation-triangle"></i>
-              Conferma importazione
-            </h5>
+    <div class="alert alert-warning p-3 border border-warning rounded">
+        <h5>
+            <i class="fas fa-exclamation-triangle"></i>
+            Conferma importazione
+        </h5>
 
-            <ul class="list-unstyled mt-3">
-              <li>
+        <ul class="list-unstyled mt-3">
+            <li>
                 <i class="fas fa-globe text-primary"></i>
                 <strong> Server:</strong> <?= htmlspecialchars($indirizzoweb) ?>
-              </li>
-              <li class="mt-2">
+            </li>
+            <li class="mt-2">
                 <i class="fas fa-flag text-success"></i>
                 <strong> Consultazione:</strong> <?= $_GET['descr_cons'] ?>
-              </li>
-              <li class="mt-2">
+            </li>
+            <li class="mt-2">
                 <i class="fas fa-city text-info"></i>
                 <strong> Comune:</strong> ID <?= intval($id_comune2) ?> 
-              </li>
-            </ul>
+            </li>
+        </ul>
 
-            <p class="text-danger mt-2 mb-0">
-              L’operazione importerà le liste dal comune selezionato.
-            </p>
-          </div>
-        <?php } ?>
-        <!-- FASE 4 – IMPORT -->
+        <p class="text-danger mt-2 mb-0">
+            L’operazione importerà le liste e candidati dal comune selezionato.
+        </p>
+    </div>
+<?php } ?>
+
+
+        <!-- FASE 4 – IMPORTAZIONE DATI -->
         <?php if ($fase == 4) { 
-		$indirizzo=file_get_contents(htmlspecialchars($indirizzoweb)."/modules.php?op=backup&id_cons_gen=".intval($id_cons_gen2)."&id_comune=".intval($id_comune2));
-		include_once('importa.php');
-		importa($indirizzo);
-		}
-		?>
-		
+            $url_dati = rtrim($indirizzoweb, '/') 
+                      . "/modules.php?op=backup&id_cons_gen=" . intval($id_cons_gen2) 
+                      . "&id_comune=" . intval($id_comune2);
+
+            $dati_remoti = @file_get_contents($url_dati);
+
+            if ($dati_remoti === false) {
+                echo '<div class="alert alert-danger">Errore: impossibile recuperare i dati dal server remoto.</div>';
+            } else {
+                echo '<div class="alert alert-info">Importazione delle liste e candidati in corso...</div>';
+                include_once('importa.php');
+                importa($dati_remoti);
+                echo '<div class="alert alert-success mt-2">Importazione completata!</div>';
+            }
+        } ?>
+
       </div>
 
       <!-- FOOTER BOTTONI -->
-      <div class="card-footer">
-        <div class="row">
-          <div class="col-6">
+<div class="card-footer">
+    <div class="row">
+        <div class="col-6">
             <?php if ($fase > 0) { ?>
-              <a class="btn btn-secondary btn-block btn-lg mb-2"
-                 href="modules.php?op=20&fase=<?= $fase_prec ?>&indirizzoweb=<?= urlencode($indirizzoweb) ?>&id_cons_gen2=<?= $id_cons_gen2 ?>&id_comune2=<?= $id_comune2 ?>">
-                <i class="fas fa-arrow-left"></i> Indietro
-              </a>
+                <a class="btn btn-secondary btn-block btn-lg mb-2"
+                   href="modules.php?op=20&fase=<?= $fase_prec ?>&indirizzoweb=<?= urlencode($indirizzoweb) ?>&id_cons_gen2=<?= $id_cons_gen2 ?>&id_comune2=<?= $id_comune2 ?>">
+                    <i class="fas fa-arrow-left"></i> Indietro
+                </a>
             <?php } ?>
-          </div>
-
-          <div class="col-6 text-right">
-            <?php if ($fase < 4) { ?>
-              <button type="submit" class="btn btn-primary btn-block btn-lg submit-btn">
-                Prosegui <i class="fas fa-arrow-right"></i>
-              </button>
-            <?php } else { ?>
-              <button type="submit" class="btn btn-danger btn-block btn-lg submit-btn">
-                <i class="fas fa-cloud-download-alt"></i> Avvia importazione
-                <i class="fas fa-spinner fa-spin d-none ms-2"></i>
-              </button>
-            <?php } ?>
-          </div>
         </div>
-      </div>
+
+        <div class="col-6 text-right">
+            <?php if ($fase < 3) { ?>
+                <!-- Fasi 0,1,2 -->
+                <button type="submit" class="btn btn-primary btn-block btn-lg submit-btn">
+                    Prosegui <i class="fas fa-arrow-right"></i>
+                </button>
+            <?php } elseif ($fase == 3) { ?>
+                <!-- Fase 3: Conferma -->
+                <button type="submit" class="btn btn-danger btn-block btn-lg submit-btn">
+                    <i class="fas fa-cloud-download-alt"></i> Avvia importazione
+                    <i class="fas fa-spinner fa-spin d-none ms-2"></i>
+                </button>
+            <?php } ?>
+        </div>
+    </div>
+</div>
+
     </form>
   </div>
 </div>
@@ -193,32 +208,13 @@ $indirizzoweb  = isset($param['indirizzoweb']) ? addslashes($param['indirizzoweb
 <script>
 document.getElementById('wizardForm')?.addEventListener('submit', function (e) {
     const btn = this.querySelector('.submit-btn');
-    btn.querySelector('.fa-spinner')?.classList.remove('d-none'); // mostra spinner
+    btn.querySelector('.fa-spinner')?.classList.remove('d-none');
     btn.disabled = true;
-
-    // Se siamo in fase 3, redirect immediato
-    <?php if($fase == 5): ?>
-        e.preventDefault();
-
-        const id_cons = <?= intval($id_cons_gen2) ?>;
-        const id_com = <?= intval($id_comune2) ?>;
-
-        if(!id_cons || !id_com){
-            alert("Errore: consultazione o comune non selezionato.");
-            btn.disabled = false;
-            btn.querySelector('.fa-spinner')?.classList.add('d-none');
-            return;
-        }
-
-        const indirizzo = "<?= htmlspecialchars($indirizzoweb) ?>/modules.php?op=backup&id_cons_gen=<?= intval($id_cons_gen2) ?>&id_comune=<?= intval($id_comune2) ?>";
-        window.location.href = indirizzo;
-    <?php endif; ?>
 });
 document.querySelectorAll('.remote-load').forEach(box => {
     const selects = box.querySelectorAll('select');
-    selects.forEach(s => s.classList.add('form-control')); // forza responsive
+    selects.forEach(s => s.classList.add('form-control'));
 });
-
 </script>
 
 </section>

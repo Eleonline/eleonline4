@@ -2,3 +2,8 @@ admin/config/config.php
 client/config.php
 admin/modules/gestione_informazioni - Copia.php
 admin/documenti/soraldo_ele_comuni-stemma.jpg
+admin/documenti/Comune CAPO D'ORLANDO 30.jpg
+logo.jpg
+admin/login - Copia.php
+/admin/logs
+*.log
