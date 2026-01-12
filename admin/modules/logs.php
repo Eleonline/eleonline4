@@ -64,7 +64,6 @@ function findLogFile(array $paths) {
 
 $logfile = findLogFile($logs[$type]['paths']);
 $logContent = '';
-
 if ($logfile) {
     $lines = [];
     try {
@@ -105,6 +104,10 @@ if ($logfile) {
                 $lines[] = '<div class="' . $levelClass . '">' . $lineSafe . '</div>';
             }
         }
+
+        // invertiamo l’array per mostrare prima le ultime righe
+        $lines = array_reverse($lines);
+
         $logContent = implode("", $lines);
         if (trim($logContent) === '') {
             $logContent = "<div>Nessuna riga trovata.</div>";
@@ -115,6 +118,7 @@ if ($logfile) {
 } else {
     $logContent = "<div>Nessun file di log trovato o leggibile per {$logs[$type]['label']}.</div>";
 }
+
 ?>
 
 <style>
