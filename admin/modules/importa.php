@@ -176,6 +176,8 @@ $sql="SELECT t1.id_cons, t2.descrizione FROM ".$prefix."_ele_cons_comune as t1 l
 $res = $dbi->prepare("$sql");
 $res->execute();	
 list($id_cons,$descrizione) = $res->fetch(PDO::FETCH_NUM);
+#Esegue il backup della consultazione corrente per eventuale recupero
+include_once('../includes/backup.php');
 #if (!isset($_FILES['datafile']['tmp_name']) or !is_uploaded_file($_FILES['datafile']['tmp_name'])) 
 if(!$cons)
 {

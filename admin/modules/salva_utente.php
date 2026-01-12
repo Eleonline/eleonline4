@@ -21,7 +21,7 @@ if($admin == 'true') { $admin=1; $operatore=0;}
 else {$admin=0; $operatore=1;}
 global $prefix,$aid,$dbi,$id_comune;
 $salvato=0;
-$query="select * from ".$prefix."_authors where aid='$username'";
+$query="select * from ".$prefix."_authors where aid='$username' and id_comune='$id_comune'";
 $res = $dbi->prepare("$query");
 $res->execute();
 if($res->rowCount()) {
