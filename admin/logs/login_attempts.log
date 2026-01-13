@@ -25,3 +25,15 @@
 [2026-01-12 12:10:53] LOGIN OK | IP: 127.0.0.1 | Utente: test | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
 [2026-01-12 12:11:04] LOGIN FAIL | IP: 127.0.0.1 | Utente: test | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
 [2026-01-12 12:11:21] LOGIN OK | IP: 127.0.0.1 | Utente: test | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+[2026-01-12 13:24:02] LOGIN FAIL | IP: 127.0.0.1 | Utente: test4 | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+[2026-01-12 13:24:12] LOGIN FAIL | IP: 127.0.0.1 | Utente: test | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+[2026-01-12 13:24:19] LOGIN OK | IP: 127.0.0.1 | Utente: suser | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+[2026-01-12 13:26:31] LOGIN FAIL | IP: 127.0.0.1 | Utente: test | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+[2026-01-12 13:28:15] LOGIN OK | IP: 127.0.0.1 | Utente: test | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+[2026-01-12 13:28:54] LOGIN FAIL | IP: 127.0.0.1 | Utente: test | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+[2026-01-12 13:30:03] LOGIN FAIL | IP: 127.0.0.1 | Utente: CalogeraGraziano | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+[2026-01-12 13:30:28] LOGIN OK | IP: 127.0.0.1 | Utente: CalogeraGraziano | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+[2026-01-12 13:33:20] LOGIN OK | IP: 127.0.0.1 | Utente: suser | Comune: 83009 | UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+2026-01-12 14:14:31 | test | LOGIN_OK | comune:83009 | IP:127.0.0.1 | UA:Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+2026-01-12 14:14:43 | test | PASSWORD_ERRATA | comune:83009 | IP:127.0.0.1 | UA:Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+2026-01-12 22:19:49 | suser | LOGIN_OK | comune:83009 | IP:127.0.0.1 | UA:Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0

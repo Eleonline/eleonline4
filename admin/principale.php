@@ -149,32 +149,25 @@ switch ($funzione) {
 }		
 
 function ChiSei($idcg){
-global $dbi, $msglogout, $id_cons_gen,$giorniaut,$id_cons;
+global $dbi, $msglogout, $id_cons_gen,$giorniaut,$id_cons,$id_comune;
 
 $aid=$_SESSION['username'];
 $prefix=$_SESSION['prefix'];
-$pwd=$_SESSION['pwd'];
-$id_comune=$_SESSION['id_comune'];
+$ruolo=$_SESSION['ruolo'];
+$idcom=$_SESSION['id_comune'];
 $perms=0;
-$sql="select adminsuper, admincomune, adminop  from ".$prefix."_authors where aid='$aid' and pwd='$pwd' and (id_comune='$id_comune' or id_comune='0')";
-$sth = $dbi->prepare("$sql");
-$sth->execute();	
-$row = $sth->fetch(PDO::FETCH_BOTH);	
-if($row){
-	$adminsuper=$row[0];
-	$admincomune=$row[1];
-	$oper=$row[2];
-}else{
-	$adminsuper=0;
-	$admincomune=0;
-	$oper=1;
-}
-	if ($adminsuper==1)
+if($id_comune==$idcom){
+	if ($ruolo=='superuser')
 		return 256;
-	elseif ($admincomune==1) 
+	elseif ($ruolo=='admin') 
 		return 64;
-	elseif($oper) {$msglogout=1; return 0;} # id_cons='$id_cons' and 
-	else {
+	elseif($ruolo=='operatore') #{$msglogout=1; return 0;} # id_cons='$id_cons' and 
+		return 32;
+}
+return 0;
+		
+/*	
+	{
 		$sql="select t1.id_cons, t1.id_cons_gen from ".$prefix."_ele_cons_comune as t1, ".$prefix."_ele_consultazione as t2 where t1.id_cons_gen=t2.id_cons_gen and t1.chiusa='0' and t1.id_comune='$id_comune' and date_add(t2.data_fine, interval $giorniaut day)>CURDATE()";
 		$sth = $dbi->prepare("$sql");
 		$sth->execute();	
@@ -186,7 +179,7 @@ if($row){
 		$sth->execute();
 		list($perms) = $sth->fetch(PDO::FETCH_NUM);
 		return $perms;
-	}
+	}*/
 }
 
 ?>
