@@ -163,7 +163,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
     <li class="nav-item">
       <a href="modules.php?op=21" class="nav-link <?php echo ($op == 21) ? 'active' : ''; ?>">
         <i class="nav-icon fas fa-file-upload text-danger"></i>
-        <p>Importa liste</p>
+        <p>Ripristina dati</p>
       </a>
     </li>
   </ul>

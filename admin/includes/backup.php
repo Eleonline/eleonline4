@@ -57,14 +57,18 @@ $filebk.=scarica_array($sql,$prefix."_ele_voti_parziale");
 $sql="select * from ".$prefix."_ele_voti_ref where id_cons='$id_cons'" ;
 $filebk.=scarica_array($sql,$prefix."_ele_voti_ref");
 #salva la variabile su file zip
-$zip = new ZipArchive();
-$filename = "../documenti/backup/file bak_$id_cons.zip";
-if ($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
-    exit("Non è possibile aprire il file <$filename>\n");
-}
-$zip->addFromString("file bak_$id_cons.txt", $filebk);
-$zip->close();
-
+#$zip = new ZipArchive();
+$filename = "../documenti/backup/file_bak_$id_cons.txt";
+#if ($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
+#    exit("Non è possibile aprire il file <$filename>\n");
+	
+#}
+#$zip->addFromString("file_bak_$id_cons.txt", $filebk);
+#$zip->close();
+$file=fopen($filename, 'w');
+fwrite($file, "$filebk");
+fclose($file);
+if(is_file($filename)) echo "TEST: creato"; else echo "Niente file";
 function scarica_array($sql,$tab){
 	global $dbi;
 		

@@ -1,10 +1,7 @@
 <?php
 require_once '../includes/check_access.php';
-/*
-$param=strtolower($_SERVER['REQUEST_METHOD']) == 'get' ? $_GET : $_POST;
-$id_cons_gen=intval($_SESSION['id_cons_gen']);
-if (isset($param['datafile'])) $datafile=addslashes($param['datafile']); else $datafile='';
-*/
+
+
 function insgruppo()
 {
 	global $prefix, $dbi;
