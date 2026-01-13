@@ -8,6 +8,7 @@ $pagesMap = [
     2 => 'logs.php',
     3 => 'setup_sito.php',
 	4 => 'tema_colore.php',
+	5 => 'admin_unlock.php',
 	200 => 'config_hondt.php',
 	6 => 'gestione_enti_comuni.php',
 	7 => 'aggiornamento_git.php',

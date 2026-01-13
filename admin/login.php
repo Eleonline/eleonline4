@@ -12,7 +12,7 @@ function login_log($user, $esito, $id_comune) {
 
 /* ===== BLOCCO DOPO 4 TENTATIVI FALLITI ===== */
 define('MAX_LOGIN_ATTEMPTS', 4);
-define('LOGIN_BLOCK_TIME', 300); // 5 minuti
+define('LOGIN_BLOCK_TIME', 120); // 2 minuti
 
 function login_block_file($user) {
     return __DIR__ . '/logs/login_block_' . md5($user) . '.json';
@@ -50,6 +50,48 @@ function register_login_fail($user) {
 
 function clear_login_fail($user) {
     $file = login_block_file($user);
+    if (file_exists($file)) unlink($file);
+}
+
+/* ===== ANTI-BRUTEFORCE IP ===== */
+define('MAX_IP_ATTEMPTS', 10);
+define('IP_BLOCK_TIME', 86400); // 24 ore
+
+function ip_block_file($ip) {
+    return __DIR__ . '/logs/ip_block_' . md5($ip) . '.json';
+}
+
+function is_ip_blocked($ip) {
+    $file = ip_block_file($ip);
+    if (!file_exists($file)) return false;
+
+    $data = json_decode(file_get_contents($file), true);
+    if (!$data) return false;
+
+    if (($data['attempts'] ?? 0) >= MAX_IP_ATTEMPTS) {
+        $elapsed = time() - ($data['last_attempt'] ?? 0);
+        if ($elapsed < IP_BLOCK_TIME) {
+            return IP_BLOCK_TIME - $elapsed;
+        } else {
+            unlink($file);
+        }
+    }
+    return false;
+}
+
+function register_ip_fail($ip) {
+    $file = ip_block_file($ip);
+    $data = ['attempts' => 0, 'last_attempt' => time()];
+    if (file_exists($file)) {
+        $data = json_decode(file_get_contents($file), true);
+    }
+    $data['attempts']++;
+    $data['last_attempt'] = time();
+    file_put_contents($file, json_encode($data));
+}
+
+function clear_ip_fail($ip) {
+    $file = ip_block_file($ip);
     if (file_exists($file)) unlink($file);
 }
 
@@ -105,8 +147,19 @@ if (isset($_POST['username'], $_POST['password'])) {
 
     $aid = trim($_POST['username']);
     $pwd = $_POST['password'];
+    $ip = $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN';
 
-    // BLOCCO LOGIN
+    // BLOCCO IP
+    $ip_block = is_ip_blocked($ip);
+    if ($ip_block !== false) {
+        $_SESSION['msglogout'] = 5;
+        $_SESSION['last_login_user'] = $aid;
+        $_SESSION['block_seconds'] = $ip_block;
+        header("Location: login.php");
+        exit;
+    }
+
+    // BLOCCO LOGIN USER
     $block_time = is_login_blocked($aid);
     if ($block_time !== false) {
         $_SESSION['msglogout'] = 4;
@@ -137,6 +190,7 @@ if (isset($_POST['username'], $_POST['password'])) {
     // UTENTE NON TROVATO
     if (!$row) {
         register_login_fail($aid);
+        register_ip_fail($ip);
         login_log($aid, 'UTENTE_NON_TROVATO', $id_comune);
         $_SESSION['msglogout'] = 2;
         $_SESSION['last_login_user'] = $aid;
@@ -170,6 +224,7 @@ if (isset($_POST['username'], $_POST['password'])) {
 
     if (!$password_ok) {
         register_login_fail($aid);
+        register_ip_fail($ip);
         $_SESSION['last_login_user'] = $aid;
 
         $upd = $dbi->prepare("
@@ -191,6 +246,7 @@ if (isset($_POST['username'], $_POST['password'])) {
 
     // LOGIN OK
     clear_login_fail($aid);
+    clear_ip_fail($ip);
     $upd = $dbi->prepare("
         UPDATE {$prefix}_authors
         SET counter = 0
@@ -228,6 +284,7 @@ if (isset($_POST['username'], $_POST['password'])) {
 $block_seconds = 0;
 $remaining_attempts = MAX_LOGIN_ATTEMPTS; // default
 $user = $_SESSION['last_login_user'] ?? null;
+$ip = $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN';
 
 if ($user) {
     $file = login_block_file($user);
@@ -235,22 +292,38 @@ if ($user) {
     if(file_exists($file)) {
         $data = json_decode(file_get_contents($file), true);
         $attempts = $data['attempts'] ?? 0;
-
-        // Se supera i tentativi massimi, calcola il countdown
         if($attempts >= MAX_LOGIN_ATTEMPTS) {
             $elapsed = time() - ($data['last_attempt'] ?? 0);
             if($elapsed < LOGIN_BLOCK_TIME) {
                 $block_seconds = LOGIN_BLOCK_TIME - $elapsed;
             } else {
-                unlink($file); // sblocca
+                unlink($file);
                 $attempts = 0;
             }
         }
     }
-
-    // Calcola tentativi rimanenti, non negativo
     $remaining_attempts = MAX_LOGIN_ATTEMPTS - $attempts;
     if($remaining_attempts < 0) $remaining_attempts = 0;
+}
+
+// IP countdown
+$ip_block_seconds = 0;
+$ip_attempts = 0;
+if ($ip) {
+    $file = ip_block_file($ip);
+    if(file_exists($file)) {
+        $data = json_decode(file_get_contents($file), true);
+        $ip_attempts = $data['attempts'] ?? 0;
+        if($ip_attempts >= MAX_IP_ATTEMPTS) {
+            $elapsed = time() - ($data['last_attempt'] ?? 0);
+            if($elapsed < IP_BLOCK_TIME) {
+                $ip_block_seconds = IP_BLOCK_TIME - $elapsed;
+            } else {
+                unlink($file);
+                $ip_attempts = 0;
+            }
+        }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -265,27 +338,30 @@ if ($user) {
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
-    <div class="login-logo"><a href="#"><b>Admin</b>Eleonline</a></div>
-    <div>
-<?php if($user && isset($_SESSION['msglogout'])): 
+<div class="login-logo"><a href="#"><b>Admin</b>Eleonline</a></div>
+<div>
+<?php 
+if($user && isset($_SESSION['msglogout'])): 
 $msg = '';
 switch($_SESSION['msglogout']) {
     case 1: $msg = "Utente non trovato"; break;
     case 2: $msg = "Utente non trovato / ID comune non valido"; break;
     case 3: $msg = "Password errata"; break;
     case 4: $msg = "Troppi tentativi errati. Riprova tra <span id='countdown'>--:--</span>"; break;
+    case 5: $msg = "Troppi tentativi dall’indirizzo IP. Riprova tra <span id='countdown'>--:--</span>"; break;
     default: $msg = "Login fallito";
 }
 echo "<div style='color:red;margin-bottom:10px;'>Login fallito: $msg</div>";
 
-// Mostra sempre i tentativi rimanenti
+// tentativi rimanenti user
 echo "<div style='color:orange;margin-bottom:10px;'>
-      Tentativi rimasti: $remaining_attempts / ".MAX_LOGIN_ATTEMPTS."</div>";
+      Tentativi rimanenti: $remaining_attempts / ".MAX_LOGIN_ATTEMPTS."</div>";
 
-// se bloccato, mostra countdown
-if($block_seconds > 0) {
+// se bloccato user o IP, mostra countdown
+$block = max($block_seconds, $ip_block_seconds);
+if($block > 0) {
     echo "<script>
-    let remaining = $block_seconds;
+    let remaining = $block;
     function updateCountdown() {
         if(remaining <= 0) {
             document.getElementById('countdown').innerText = '0:00';
@@ -301,9 +377,10 @@ if($block_seconds > 0) {
     updateCountdown();
     </script>";
 }
+unset($_SESSION['msglogout']);
 ?>
 <?php endif; ?>
-    </div>
+</div>
 
 <div class="card">
 <div class="card-body login-card-body">
@@ -338,25 +415,6 @@ if($block_seconds > 0) {
 </div>
 </div>
 </div>
-
-<?php if($block_seconds > 0): ?>
-<script>
-let remaining = <?php echo $block_seconds; ?>;
-function updateCountdown() {
-    if(remaining <= 0) {
-        document.getElementById('countdown').innerText = "0:00";
-        return;
-    }
-    let minutes = Math.floor(remaining/60);
-    let seconds = remaining%60;
-    if(seconds<10) seconds="0"+seconds;
-    document.getElementById('countdown').innerText = minutes + ":" + seconds;
-    remaining--;
-    setTimeout(updateCountdown, 1000);
-}
-updateCountdown();
-</script>
-<?php endif; ?>
 
 <script>
 function togglePassword() {

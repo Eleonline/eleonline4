@@ -19,7 +19,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 		
 <?php if (in_array($_SESSION['ruolo'], ['superuser', 'admin'])): ?>
         <!-- DASHBOARD -->
-       <li class="nav-item has-treeview <?php echo in_array($op, [1, 2]) ? 'menu-open' : ''; ?>">
+       <li class="nav-item has-treeview <?php echo in_array($op, [1, 2, 5]) ? 'menu-open' : ''; ?>">
   <a href="#" class="nav-link <?php echo in_array($op, [1, 2]) ? 'active' : ''; ?>">
     <i class="nav-icon fas fa-desktop text-primary"></i>
     <p>
@@ -40,6 +40,12 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
         <p>Log Attività</p>
       </a>
     </li>
+	<li class="nav-item">
+  <a href="modules.php?op=5" class="nav-link <?php echo ($op == 5) ? 'active' : ''; ?>">
+    <i class="nav-icon fas fa-user-lock text-danger"></i>
+    <p>Sblocco IP</p>
+  </a>
+</li>
   </ul>
 </li>
 <?php endif; ?>
