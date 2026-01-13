@@ -7,6 +7,24 @@ if (is_file('includes/check_access.php')) {
 
 global $currentUserRole;
 $row = elenco_utenti(); // elenco utenti
+
+// Funzioni per blocco login
+function login_block_file($user) {
+    return __DIR__ . '/../logs/login_block_' . md5($user) . '.json';
+}
+
+function is_login_blocked($user) {
+    $file = login_block_file($user);
+    if (!file_exists($file)) return false;
+    $data = json_decode(file_get_contents($file), true);
+    if (!$data) return false;
+    if (($data['attempts'] ?? 0) >= 4) {
+        $elapsed = time() - ($data['last_attempt'] ?? 0);
+        if ($elapsed < 300) return true;
+        unlink($file);
+    }
+    return false;
+}
 ?>
 
 <?php foreach ($row as $key => $val): ?>
@@ -17,6 +35,8 @@ $row = elenco_utenti(); // elenco utenti
             $val['adminsuper'] != 1 &&
             $val['admincomune'] != '1'
         );
+
+        $blocked = is_login_blocked($val['aid']);
     ?>
     <tr id="riga<?= $key ?>">
 
@@ -54,6 +74,14 @@ $row = elenco_utenti(); // elenco utenti
                     Elimina
                 </button>
             <?php endif; ?>
+
+            <?php if($blocked): ?>
+                <button type="button"
+                        class="btn btn-sm btn-warning"
+                        onclick="unblockUser('<?= $val['aid'] ?>', <?= $key ?>)">
+                    Sblocca
+                </button>
+            <?php endif; ?>
         </td>
 
     </tr>
@@ -63,10 +91,22 @@ $row = elenco_utenti(); // elenco utenti
 function scrollToFormTitle() {
     const target = document.getElementById('form-title');
     if (target) {
-        target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+}
+
+// Funzione AJAX per sbloccare utente
+function unblockUser(username, key) {
+    if(!confirm(`Sbloccare l'utente ${username}?`)) return;
+
+    $.post('unblock_user.php', { username: username }, function(data) {
+        if(data.success) {
+            alert(`Utente ${username} sbloccato!`);
+            // Rimuove il bottone Sblocca
+            $(`#riga${key} button:contains("Sblocca")`).remove();
+        } else {
+            alert('Errore: impossibile sbloccare l\'utente.');
+        }
+    }, 'json');
 }
 </script>
