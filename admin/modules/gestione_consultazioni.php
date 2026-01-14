@@ -46,15 +46,16 @@ $tipi=elenco_tipi();
             <input type="url" class="form-control" id="link" name="link">
 		  </div>
       <div class="form-row">		  
-		  <div class="form-group col-12 col-sm-6 col-md-2" id="divpreferenze">
-			<label for="preferenze">Preferenze</label>
-			<input type="text" class="form-control" id="preferenze" name="preferenze">
-		  </div>
+		    <div class="form-group col-12 col-sm-6 col-md-2" id="divpreferenze">
+			  <label for="preferenze">Preferenze</label>
+			  <input type="number" class="form-control" id="preferenze" name="preferenze" value="1" min="1" step="1" required>
+			</div>
+
 		  <?php $row = elenco_leggi(); ?>
 		  <div class="form-group col-12 col-sm-6 col-md-4" id="divlegge">
 			<label for="id_conf">Legge elettorale</label>
 			<select class="form-control" id="id_conf" name="id_conf">
-				<option value="0" >Seleziona...</option>
+				<option value="" >Seleziona...</option>
 			  <?php $i=0; foreach($row as $val) { ?>
 				<option value="<?= $val['id_conf'] ?>"><?= $val['descrizione'] ?></option>
 			  <?php } ?>
@@ -63,7 +64,7 @@ $tipi=elenco_tipi();
 			<div class="form-group col-12 col-sm-6 col-md-2" id="divfascia">
 				<label for="id_fascia">Abitanti</label>
 				<select class="form-control" id="id_fascia" name="id_fascia">
-					<option value="0">Seleziona...</option>
+					<option value="">Seleziona...</option>
 					<?php
 					$fasce = elenco_fasce(1);  // chiami la funzione
 					$precedente = 0;
@@ -339,7 +340,8 @@ function selezionaInput() {
 
 	// Gestione visibilità in base al tipo
 	document.getElementById("divproiezione").style.display = 'none';
-
+	document.getElementById("id_conf").required = false;
+	document.getElementById("id_fascia").required = false;
 	switch(tipo) {
 		case "1":
 		case "9":
@@ -389,6 +391,9 @@ function selezionaInput() {
 			document.getElementById("divdisgiunto").style.display = 'block';
 			document.getElementById("divfascia").style.display = 'block';
 			document.getElementById("divlegge").style.display = 'block';
+			document.getElementById("id_conf").required = true;
+			document.getElementById("id_fascia").required = true;
+			idConf.required = true;
 			break;
 	}
 
@@ -415,7 +420,9 @@ function resetFormConsultazione() {
     document.getElementById('tipo').selectedIndex = 0;
     document.getElementById('chiusa').selectedIndex = 0;
     document.getElementById('id_conf').selectedIndex = 0;
+	document.getElementById("id_conf").required = false;
     document.getElementById('id_fascia').selectedIndex = 0;
+	document.getElementById("id_fascia").required = false;
     document.getElementById('vismf').selectedIndex = 0;
     document.getElementById('solo_gruppo').selectedIndex = 0;
     document.getElementById('disgiunto').selectedIndex = 0;
@@ -429,7 +436,7 @@ function resetFormConsultazione() {
     document.getElementById('data_inizio').value = '';
     document.getElementById('data_fine').value = '';
     document.getElementById('link').value = '';
-    document.getElementById('preferenze').value = '';
+    document.getElementById('preferenze').value = '1';
 
     // Ripristina visibilità div dinamici allo stato iniziale
     document.getElementById('divpreferenze').style.display = 'block';
@@ -440,6 +447,4 @@ function resetFormConsultazione() {
     document.getElementById('divlegge').style.display = 'block';
     document.getElementById('divproiezione').style.display = 'block';
 }
-
-
 </script>

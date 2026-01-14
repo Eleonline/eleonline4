@@ -147,16 +147,9 @@ if (empty($val['indirizzo']) && empty($val['num_sez'])) {
             <button class="btn btn-sm btn-warning me-1" onclick="editUser(<?= $i ?>)">
               Modifica
             </button>
-
-            <?php if (
-              $currentUserRole != 'operatore' &&
-              $val['adminsuper'] != 1 &&
-              $val['admincomune'] != '1'
-            ): ?>
               <button class="btn btn-sm btn-danger" onclick="deleteUser(<?= $i ?>)">
                 Elimina
               </button>
-            <?php endif; ?>
           </td>
         </tr>
       <?php endforeach; ?>
