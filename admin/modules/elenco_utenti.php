@@ -4,7 +4,7 @@ if (is_file('includes/check_access.php')) {
 } else {
     require_once '../includes/check_access.php';
 }
-
+$currentUserRole = $_SESSION['ruolo'] ?? '';
 global $currentUserRole;
 $row = elenco_utenti(); // elenco utenti
 
@@ -29,25 +29,26 @@ function is_login_blocked($user) {
 
 <?php foreach ($row as $key => $val): ?>
     <?php
+        // Nascondi Superuser e Admin agli operatori
+        if ($_SESSION['ruolo'] === 'operatore' && ($val['adminsuper'] || $val['admincomune'])) {
+            continue; // salta la riga
+        }
+
         $key++; // mantiene l'indicizzazione originale
-        $canDelete = (
-            $currentUserRole != 'operatore' &&
-            $val['adminsuper'] != 1 &&
-            $val['admincomune'] != '1'
-        );
+        // Bottone elimina solo se l'utente non è superuser o admin
+        $canDelete = ($val['adminsuper'] != 1 && $val['admincomune'] != 1);
 
         $blocked = is_login_blocked($val['aid']);
     ?>
     <tr id="riga<?= $key ?>">
-		<td id="username<?= $key ?>">
-           	<?php if ($val['adminop'] == 1 && $val['adminsuper'] == 1): ?>
-				Super Amministratore
-			<?php elseif ($val['adminop'] == 1 && $val['adminsuper'] == 0): ?>
-				Operatore
-			<?php endif; ?>
-			<?php if ($val['admincomune']): ?>
-				Amministratore
-			<?php endif; ?>
+        <td id="username<?= $key ?>">
+            <?php if ($val['adminsuper']): ?>
+                Superuser
+            <?php elseif ($val['admincomune']): ?>
+                Amministratore
+            <?php elseif ($val['adminop']): ?>
+                Operatore
+            <?php endif; ?>
         </td>
         <td id="username<?= $key ?>">
             <?= $val['aid'] ?>
