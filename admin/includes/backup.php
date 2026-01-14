@@ -58,7 +58,8 @@ $sql="select * from ".$prefix."_ele_voti_ref where id_cons='$id_cons'" ;
 $filebk.=scarica_array($sql,$prefix."_ele_voti_ref");
 #salva la variabile su file zip
 #$zip = new ZipArchive();
-$filename = "../../client/documenti/backup/file_bak_$id_cons.txt";
+if (!is_dir("../documenti/backup/")) mkdir("../documenti/backup/", 0777, true);
+$filename = "../documenti/backup/file_bak_$id_cons.txt";
 #if ($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
 #    exit("Non è possibile aprire il file <$filename>\n");
 	
