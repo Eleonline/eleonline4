@@ -39,7 +39,16 @@ function is_login_blocked($user) {
         $blocked = is_login_blocked($val['aid']);
     ?>
     <tr id="riga<?= $key ?>">
-
+		<td id="username<?= $key ?>">
+           	<?php if ($val['adminop'] == 1 && $val['adminsuper'] == 1): ?>
+				Super Amministratore
+			<?php elseif ($val['adminop'] == 1 && $val['adminsuper'] == 0): ?>
+				Operatore
+			<?php endif; ?>
+			<?php if ($val['admincomune']): ?>
+				Amministratore
+			<?php endif; ?>
+        </td>
         <td id="username<?= $key ?>">
             <?= $val['aid'] ?>
         </td>

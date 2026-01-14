@@ -340,6 +340,9 @@ if ($ip) {
 <div class="login-box">
 <div class="login-logo"><a href="#"><b>Admin</b>Eleonline</a></div>
 <div>
+User: admin Psw: admin123 Ruolo:admin<br>
+User: superuser Psw:superpass Ruolo:superuser<br>
+<!--	User: operatore Psw:operapass Ruolo:	operatore<br> -->
 <?php 
 if($user && isset($_SESSION['msglogout'])): 
 $msg = '';

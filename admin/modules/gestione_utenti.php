@@ -51,6 +51,7 @@ require_once '../includes/check_access.php';
         <table class="table table-bordered table-hover" id="usersTable">
           <thead>
             <tr>
+			  <th>Ruolo</th>
               <th>Username</th>
               <th>Email</th>
               <th>Nominativo</th>

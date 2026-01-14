@@ -95,30 +95,33 @@ foreach($row as $key=>$val){
               [Vai alla Google Cloud Console]
             </a>
           </div>
- <?php /*
-          <!-- MULTICOMUNE -->
-          <!--div class="mb-3">
-            <label for="multicomune" class="form-label">Gestione multicomune?</label>
-            <select class="form-select" name="multicomune" id="multicomune" onchange="toggleComuneDefault()">
-              <option value="1" <?= $MULTICOMUNE === '1' ? 'selected' : '' ?>>Si</option>
-              <option value="0" <?= $MULTICOMUNE === '0' ? 'selected' : '' ?>>No</option>
-            </select>
-          </div-->
 
-          <!-- COMUNE DI DEFAULT -->
-          <!--div class="mb-3" id="defaultComuneRow" style="<?= $MULTICOMUNE === '1' ? '' : 'display:none;' ?>">
-            <label for="defaultComune" class="form-label">Comune visualizzato per default</label>
-            <select class="form-select" name="default_comune" id="defaultComune"> */
-              foreach ($comuni_disponibili as $comune): ?>
-                <option value="<?= $comune[1] ?>" <?= $SITE_ISTAT === $comune[1] ? 'selected' : '' ?>>
-                  <?= htmlspecialchars($comune[0]) ?>
-                </option>
-              <?php endforeach; ?>
-            </select>
-          </div-->
+<?php /*
+<!-- MULTICOMUNE -->
+<div class="mb-3">
+  <label for="multicomune" class="form-label">Gestione multicomune?</label>
+  <select class="form-select" name="multicomune" id="multicomune" onchange="toggleComuneDefault()">
+    <option value="1" <?= isset($MULTICOMUNE) && $MULTICOMUNE === '1' ? 'selected' : '' ?>>Si</option>
+    <option value="0" <?= isset($MULTICOMUNE) && $MULTICOMUNE === '0' ? 'selected' : '' ?>>No</option>
+  </select>
+</div>
+
+<!-- COMUNE DI DEFAULT -->
+<div class="mb-3" id="defaultComuneRow" style="<?= (isset($MULTICOMUNE) && $MULTICOMUNE === '1') ? '' : 'display:none;' ?>">
+  <label for="defaultComune" class="form-label">Comune visualizzato per default</label>
+  <select class="form-select" name="default_comune" id="defaultComune">
+    <?php foreach ($comuni_disponibili as $comune): ?>
+      <option value="<?= $comune[1] ?>" <?= $SITE_ISTAT === $comune[1] ? 'selected' : '' ?>>
+        <?= htmlspecialchars($comune[0]) ?>
+      </option>
+    <?php endforeach; ?>
+  </select>
+</div>
+
+
 		
 		<!-- VERIFICA DATI OPERATORE PRESIDENTE -->
-<!--div class="mb-3">
+<div class="mb-3">
   <label for="verifica_operatore" class="form-label">
     Verifica dati operatore presidente
     <i class="fas fa-circle-info text-primary ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -128,8 +131,8 @@ foreach($row as $key=>$val){
     <option value="si" <?= (isset($VERIFICA_OPERATORE) && $VERIFICA_OPERATORE === 'si') ? 'selected' : '' ?>>Si</option>
     <option value="no" <?= (isset($VERIFICA_OPERATORE) && $VERIFICA_OPERATORE === 'no') ? 'selected' : '' ?>>No</option>
   </select>
-</div-->
-
+</div> 
+*/ ?>
 		
           <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">Salva</button>
