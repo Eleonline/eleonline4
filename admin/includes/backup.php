@@ -68,7 +68,7 @@ $filename = "../../client/documenti/backup/file_bak_$id_cons.txt";
 $file=fopen($filename, 'w');
 fwrite($file, "$filebk");
 fclose($file);
-if(is_file($filename))
+
 function scarica_array($sql,$tab){
 	global $dbi;
 		
