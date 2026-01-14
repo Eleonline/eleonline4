@@ -27,16 +27,17 @@ $stemmanome=''; $stemmablob='';
 $cond2=''; 
 $cond3='';
 if(isset($_FILES['stemma'])) {
+$pathdoc="../client/documenti/img/";
 	$STEMM=$_FILES['stemma'];
 	$filestemma=$STEMM['tmp_name'];
-	$nomestemma=$STEMM['name'];
+	$nomestemma="logo.jpg";
 	#### Controllo della dimensione del file immagine
 	if ($filestemma){
 		$filestemma=imgresize($filestemma);
-		$stemmablob=addslashes($filestemma);
+		file_put_contents($pathdoc."logo.jpg", $filestemma);
 		$stemmanome=addslashes($nomestemma);
-		$cond2=", simbolo='$stemmanome', stemma='$stemmablob'";
-		$cond3="and simbolo='$stemmanome' and stemma='$stemmablob'";
+		$cond2=", simbolo='$stemmanome', stemma=''";
+		$cond3="and simbolo='$stemmanome' and stemma=''";
 		$cond4=", simbolo='$stemmanome'";
 	} else {
 	#		if ( $delsimb=='false') $cond2=", simbolo='', stemma=''"; # aggiungere controllo per eliminazione stemma
@@ -50,51 +51,45 @@ if(isset($_FILES['stemma'])) {
 
 global $prefix,$aid,$dbi;
 $salvato=0;
-$query="select * from ".$prefix."_ele_comune where id_comune='$id_comune'";
+$query="select * from ".$prefix."_ele_comune";
+$res = $dbi->prepare("$query");
+$res->execute();
+if($res->rowCount()>1) {
+	$sql="delete from ".$prefix."_ele_comune where  id_comune!='$id_comune'";
+	$sql2=$sql;
+	$compl = $dbi->prepare("$sql");
+	$compl->execute(); 
+}	
+$query="select * from ".$prefix."_ele_comune";
 $res = $dbi->prepare("$query");
 $res->execute();
 if($res->rowCount()) {
 	if($op=='salva') {
-		$sql2="descrizione='$descrizione' and indirizzo='$indirizzo' and cap='$cap' and email='$email' and centralino='$centralino' and fax='$fax' and fascia='$fascia' and capoluogo='$capoluogo'";
-		$sql="select * from ".$prefix."_ele_comune where descrizione='$descrizione' and indirizzo='$indirizzo' and cap='$cap' and email='$email' and centralino='$centralino' and fax='$fax' and fascia='$fascia' and capoluogo='$capoluogo' $cond3";
-		$res = $dbi->prepare("$sql");
-		$res->execute();
-		if(!$res->rowCount()) {
-			#update
-			$sql="update ".$prefix."_ele_comune set descrizione='$descrizione',indirizzo='$indirizzo',cap='$cap',email='$email',centralino='$centralino',fax='$fax',fascia='$fascia',capoluogo='$capoluogo' $cond2 where  id_comune='$id_comune'";
-			$compl = $dbi->prepare("$sql");
-			$compl->execute(); 
-			if($compl->rowCount()) $salvato=1;
-		}else $salvato=1;
-	}elseif($op=='cancella'){
-		#delete
-		$sql="delete from ".$prefix."_ele_comune where  id_comune='$id_comune'";
-		$sql2=$sql;
+		#update
+		$sql="update ".$prefix."_ele_comune set descrizione='$descrizione',indirizzo='$indirizzo',cap='$cap',email='$email',centralino='$centralino',fax='$fax',fascia='$fascia',capoluogo='$capoluogo' $cond2 where  id_comune='$id_comune'";
 		$compl = $dbi->prepare("$sql");
 		$compl->execute(); 
-		if($compl->rowCount()) $salvato=1;
 	}
 }else{
 	#insert
-		$sql2="values( '$id_comune','$descrizione','$indirizzo','$centralino','$fax','$email','$fascia','$capoluogo','$stemmanome')";
+#		$sql2="values( '$id_comune','$descrizione','$indirizzo','$centralino','$fax','$email','$fascia','$capoluogo','$stemmanome')";
 		$sql="insert into ".$prefix."_ele_comune values( '$id_comune','$descrizione','$indirizzo','$centralino','$fax','$email','$fascia','$capoluogo','$stemmanome','$stemmablob','0','$cap','')";
 		$compl = $dbi->prepare("$sql");
 		$compl->execute(); 
-		if($compl->rowCount()) $salvato=1;
 }
 
-if($salvato){
+if(!$salvato){
 	$datal=date('Y-m-d');
 	$orariol=date(' H:i:s');
-	$riga=addslashes($sql2);
+	$riga=addslashes($sql);
 	$sqlog="insert into ".$prefix."_ele_log values('$id_cons','0','$aid','$datal','$orariol','','$riga','".$prefix."_ele_comune')";
 	$res = $dbi->prepare("$sqlog");
 	$res->execute();
-#		echo "Nuovo orario di rilevazione inserito";
+	echo "<br><button id=\"bottoneStato\" style=\"background-color:aquamarine;\" onfocusout=\"document.getElementById('bottoneStato').style.display='none'\" > Dati salvati correttamente  </button>";
 }else{
-	echo "<tr><td colspan=\"8\">Errore, impossibile salvare i dati - $sql</td></tr>";
+	echo "Errore, impossibile salvare i dati - $sql";
 }
-include('modules/elenco_comuni.php');
+
 
 function imgresize($file) {
     $source_pic = $file;
