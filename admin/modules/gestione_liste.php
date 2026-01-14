@@ -53,6 +53,7 @@ $maxNumero++;
 		  </div>	
           <div class="form-row mt-2" style="display:flex; gap:0.5rem;">
             <div class="form-group flex-fill" style="margin-bottom:0;">
+              <img id="anteprimaStemma" src="" alt="Anteprima stemma" style="max-height: 80px; margin-top: 5px;" onerror="this.style.visibility='hidden'">
               <label for="simbolo" style="font-weight:600; font-size:0.85rem;">Simbolo<br><small>(max 300x300)</small></label>
               <input type="file" id="simbolo" name="simbolo" class="form-control-file" accept="image/*" style="font-size:0.85rem;">
             </div>
@@ -260,6 +261,10 @@ function annullaModifica() {
 function editLista(index) { 
     document.getElementById("denominazione").value = document.getElementById("denominazione"+index).innerText;
     document.getElementById("numero").value = document.getElementById("numero"+index).innerText;
+	const url = "../../client/documenti/<?= $id_comune."/".$id_cons ?>/img/"+document.getElementById("simbolo"+index).innerText;
+
+		document.getElementById("anteprimaStemma").src = url;
+
     document.getElementById("id_lista").value = document.getElementById("id_lista"+index).innerText;
 	if (document.getElementById("num_gruppo"+index).innerText !== null )
 		document.getElementById("idGruppo").selectedIndex = document.getElementById("num_gruppo"+index).innerText;
@@ -295,4 +300,5 @@ function aggiornaNumero() {
 	maxNum = document.getElementById("maxNumero").innerText;
     document.getElementById('numero').value = maxNum;
 }
+
 </script>

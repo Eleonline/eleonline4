@@ -20,8 +20,8 @@ if (isset($param['num_gruppo'])) $num_gruppo=$param['num_gruppo']; else $num_gru
 if (isset($param['flag_simbolo'])) $flag_simbolo=addslashes($param['flag_simbolo']); else $flag_simbolo=0;
 global $id_comune,$id_cons_gen,$id_cons,$prefix,$aid,$dbi;
 
-$pathdoc="../client/documenti/$id_comune/$id_cons_gen/";
-$pathbak="../client/documenti/backup/$id_comune/$id_cons_gen/";
+$pathdoc="../client/documenti/$id_comune/$id_cons/";
+$pathbak="../client/documenti/backup/$id_comune/$id_cons/";
 $nameimg="img_lista".$numero."_".str_replace(" ","_",$descrizione).".jpg";
 
 if (!is_dir($pathdoc."img")) mkdir($pathdoc."img", 0777, true);

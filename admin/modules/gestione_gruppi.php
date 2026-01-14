@@ -39,6 +39,7 @@ $maxNumero++;
 		  </div>	
           <div class="form-row mt-2" style="display:flex; gap:0.5rem;">
             <div class="form-group flex-fill" style="margin-bottom:0;">
+              <img id="anteprimaStemma" src="" alt="Anteprima stemma" style="max-height: 80px; margin-top: 5px;">
               <label for="simbolo" style="font-weight:600; font-size:0.85rem;">Simbolo<br><small>(max 300x300)</small></label>
               <input type="file" id="simbolo" name="simbolo" class="form-control-file" accept="image/*" style="font-size:0.85rem;">
             </div>
@@ -308,6 +309,7 @@ function annullaModifica() {
 // Aggiornamento funzione editCircoscrizione
 function editGruppo(index) {
     document.getElementById("denominazione").value = document.getElementById("denominazione"+index).innerText;
+	document.getElementById("anteprimaStemma").src="../../client/documenti/<?= $id_comune."/".$id_cons ?>/img/"+document.getElementById("simbolo"+index).innerText;
     document.getElementById("numero").value = document.getElementById("numero"+index).innerText;
     document.getElementById("id_gruppo").value = document.getElementById("id_gruppo"+index).innerText;
     document.getElementById("btnAggiungi").textContent = "Salva modifiche";

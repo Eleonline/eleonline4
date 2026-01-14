@@ -23,8 +23,8 @@ if (isset($param['flag_cv'])) $flag_cv=$param['flag_cv']; else $flag_cv=0;
 if (isset($param['flag_cg'])) $flag_cg=$param['flag_cg']; else $flag_cg=0;
 global $id_comune,$id_cons_gen,$id_cons,$prefix,$aid,$dbi;
 
-$pathdoc="../client/documenti/$id_comune/$id_cons_gen/";
-$pathbak="../client/documenti/backup/$id_comune/$id_cons_gen/";
+$pathdoc="../client/documenti/$id_comune/$id_cons/";
+$pathbak="../client/documenti/backup/$id_comune/$id_cons/";
 $nameimg="img_gruppo".$numero."_".str_replace(" ","_",$descrizione).".jpg";
 $namecv="cv_gruppo".$numero."_".str_replace(" ","_",$descrizione).".pdf";
 $namecg="cg_gruppo".$numero."_".str_replace(" ","_",$descrizione).".pdf";
@@ -90,7 +90,7 @@ if($op=='cancella_parziale') {
 	$cond='';
 	if ($flag_simbolo){
 		if(is_file($pathdoc."img/".$nameimg))
-			rename($pathdoc."img/".$nameimg,$pathbak."img/".$nameimg); else echo "TEST: ".$pathdoc."img/".$nameimg;
+			rename($pathdoc."img/".$nameimg,$pathbak."img/".$nameimg);
 		$cond.="simbolo=''";
 	}	
 	if ($flag_cv) {

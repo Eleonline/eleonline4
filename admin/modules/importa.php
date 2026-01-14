@@ -5,7 +5,7 @@ require_once '../includes/check_access.php';
 function insgruppo()
 {
 	global $prefix, $dbi;
-	global $ar_gruppo,$ar_lista,$ar_candi,$idcns,$dbname;
+	global $ar_gruppo,$ar_lista,$ar_candi,$idcns,$dbname,$pathdoc,$pathbak;
 
 	foreach ($ar_gruppo as $rigagruppo){
 		$newidg=0;
@@ -19,13 +19,23 @@ function insgruppo()
 		foreach($rigagruppo as $key=>$campo){
 			if ($key==0) $valori="'$idcns',";
 			elseif ($key==1) {$valori.= "null"; $oldidg=$campo;}
+			elseif ($key==2) {$valori.= ",$campo"; $numg=$campo;}
 			elseif ($campo==null) $valori.= ",null";
+			elseif($key==3) {
+				$descrizione=stripslashes($campo);
+				$descrizione=strtoupper(preg_replace(array("/\'/",'/\s/'),"_",$descrizione));
+				$valori.=",'".utf8_encode($campo)."'";
+				$descrizione="img_gruppo".$numg."_".$descrizione.".jpg";
+			}
+			elseif($key==4) $valori.=",'$descrizione'";
+			elseif ($key==5) {$valori.= ",null"; $stemma=stripslashes($campo);}
 			elseif ($key==6) $valori.= ",0";
-			elseif($key==4) $valori.=",'".utf8_encode($campo)."'";
 			elseif($key==7) {if($numcampi==9) $valori.=",0"; $valori.= ",'".$campo."'";}
 			elseif($key==8)  {$valori.=",'".utf8_encode($campo)."'";$isnew=1;}
+			elseif ($key==9) $valori.= ",null";
 			else $valori.= ",'".$campo."'";
 			if ($key==2) $numgruppo= $campo;
+			elseif($key==9) $programma=stripslashes($campo);
 		}		
 		$i=$numcampi;
 		if($numcampi<$campiloc) 
@@ -54,6 +64,18 @@ function insgruppo()
 				$_SESSION['gruppi']['idg_'.$oldidg]=$newidg;
 				$_SESSION['gruppi']['numg_'.$numgruppo]=$numgruppo;						
 			}
+			$nameimg="$descrizione"; #img_gruppo".$numgruppo."_".str_replace(" ","_",$descrizione).".jpg";
+			$nameprg="prg_gruppo".$numgruppo."_".str_replace(" ","_",$descrizione).".pdf";
+			if(isset($stemma) and mb_strlen($stemma)) {
+				if(file_exists($pathdoc."img/".$nameimg))
+					rename($pathdoc."img/".$nameimg,$pathbak."img/".$nameimg);
+				file_put_contents($pathdoc."img/".$nameimg, $stemma);
+			}
+			if(mb_strlen($programma)) {
+				if(file_exists($pathdoc."programmi/".$nameimg))
+					rename($pathdoc."programmi/".$nameimg,$pathbak."programmi/".$nameimg);
+				file_put_contents($pathdoc."programmi/".$nameimg, $programma);
+			}
 		}
 	}
 }
@@ -61,7 +83,7 @@ function insgruppo()
 function inslista()
 {
 global $prefix, $dbi,$dbname;
-global $ar_lista,$idcns;
+global $ar_lista,$idcns,$pathdoc,$pathbak;
 	foreach ($ar_lista as $rigalista){ 
 		if(!isset($rigalista[3])) continue;
 		$oldidl=0;
@@ -87,6 +109,14 @@ global $ar_lista,$idcns;
 			elseif ($key==2) {$valori.="'$campo',";$numlista= $campo;}
 			elseif ($key==3) {$valori.= "'$newidg',"; if ($campo!=$oldidg) $okl=1;}
 			elseif ($key==4) $valori.= "$numgruppo,"; 
+			elseif ($key==7) {
+				$descrizione=stripslashes($campo);
+				$descrizione=strtoupper(preg_replace(array("/\'/",'/\s/'),"_",$descrizione));
+				$valori.="'".utf8_encode($campo)."',";
+				$descrizione="img_lista".$numlista."_".str_replace(" ","_",$descrizione).".jpg";
+			}
+			elseif ($key==8) $valori.= "'$descrizione',"; 
+			elseif ($key==9) {$valori.= "null,"; $stemma=stripslashes($campo);} 
 			elseif ($key==($ultimocampo-1) ) $valori.= "'$campo'"; 
 			elseif ($campo==null) $valori.= "null,";
 			else $valori.="'".$campo."',";
@@ -99,28 +129,32 @@ global $ar_lista,$idcns;
 				else $valori.=",null";
 				$i++;			
 			}
-#		if($ultimocampo==9) $valori.=",''";
-#		if($key==$ultimocampo){
-			if ($okl) {$okl=0;continue;}
-			$sql="insert into ".$prefix."_ele_lista values($valori)";
-			try {
-				$res_lista = $dbi->prepare("$sql");
-				$res_lista->execute();
-			}
-			catch(PDOException $e)
-			{
-				echo $sql . "<br>" . $e->getMessage(); die();
-			}                  
-				
-			$sql="select id_lista from ".$prefix."_ele_lista where num_lista='$numlista' and id_cons='$idcns'";
-			$reslnew = $dbi->prepare("$sql");
-			$reslnew->execute();	
-			list ($newidl) = $reslnew->fetch(PDO::FETCH_NUM);
-			unset($valori);
-			if($oldidl){
-				$_SESSION['liste']['idl_'.$oldidl]=$newidl; 
-			}
-#		} 
+		if ($okl) {$okl=0;continue;}
+		$sql="insert into ".$prefix."_ele_lista values($valori)";
+		try {
+			$res_lista = $dbi->prepare("$sql");
+			$res_lista->execute();
+		}
+		catch(PDOException $e)
+		{
+			echo $sql . "<br>" . $e->getMessage(); die();
+		}                  
+			
+		$sql="select id_lista from ".$prefix."_ele_lista where num_lista='$numlista' and id_cons='$idcns'";
+		$reslnew = $dbi->prepare("$sql");
+		$reslnew->execute();	
+		list ($newidl) = $reslnew->fetch(PDO::FETCH_NUM);
+		unset($valori);
+		if($oldidl){
+			$_SESSION['liste']['idl_'.$oldidl]=$newidl; 
+		}
+		$nameimg="$descrizione";
+		if(mb_strlen($stemma)) {
+			if(file_exists($pathdoc."img/".$nameimg))
+				rename($pathdoc."img/".$nameimg,$pathbak."img/".$nameimg);
+			file_put_contents($pathdoc."img/".$nameimg, $stemma);
+		}
+		
 	}
 }
 
@@ -168,11 +202,34 @@ function inscandi()
 
 
 function importa($cons) {
-	global $prefix, $id_comune, $id_cons_gen, $dbi,$idcns;
+	global $prefix, $id_comune, $id_cons_gen, $dbi,$idcns,$id_cons,$pathdoc,$pathbak;
+	
 $sql="SELECT t1.id_cons, t2.descrizione FROM ".$prefix."_ele_cons_comune as t1 left join ".$prefix."_ele_consultazione as t2 on t1.id_cons_gen=t2.id_cons_gen where t1.id_comune='$id_comune' and t2.id_cons_gen='$id_cons_gen'";
 $res = $dbi->prepare("$sql");
 $res->execute();	
 list($id_cons,$descrizione) = $res->fetch(PDO::FETCH_NUM);
+$pathdoc="../../client/documenti/$id_comune/$id_cons";
+$pathbak="../../client/documenti/backup/$id_comune/$id_cons";
+if (!is_dir($pathbak)) mkdir($pathbak, 0777, true);
+delTree("../../client/documenti/backup/$id_comune/$id_cons/img");
+delTree("../../client/documenti/backup/$id_comune/$id_cons/cg");
+delTree("../../client/documenti/backup/$id_comune/$id_cons/cv");
+delTree("../../client/documenti/backup/$id_comune/$id_cons/programmi");
+rename($pathdoc."/img",$pathbak."/img");
+rename($pathdoc."/cg",$pathbak."/cg");
+rename($pathdoc."/cv",$pathbak."/cv");
+rename($pathdoc."/programmi",$pathbak."/programmi");
+if (!is_dir($pathdoc."/img")) mkdir($pathdoc."/img", 0777, true);
+if (!is_dir($pathdoc."/cv")) mkdir($pathdoc."/cv", 0777, true);
+if (!is_dir($pathdoc."/cg")) mkdir($pathdoc."/cg", 0777, true);
+if (!is_dir($pathdoc."/programmi")) mkdir($pathdoc."/programmi", 0777, true);
+if (!is_dir($pathbak."/img")) mkdir($pathbak."/img", 0777, true);
+if (!is_dir($pathbak."/cv")) mkdir($pathbak."/cv", 0777, true);
+if (!is_dir($pathbak."/cg")) mkdir($pathbak."/cg", 0777, true);
+if (!is_dir($pathbak."/programmi")) mkdir($pathbak."/programmi", 0777, true);
+$pathdoc.="/";
+$pathbak.="/";
+
 #Esegue il backup della consultazione corrente per eventuale recupero
 include_once('../includes/backup.php');
 #if (!isset($_FILES['datafile']['tmp_name']) or !is_uploaded_file($_FILES['datafile']['tmp_name'])) 
@@ -306,4 +363,17 @@ if(!$cons)
 
 }
 }
+
+function delTree($dir) {
+	if(!is_dir($dir)) return;
+   $files = array_diff(scandir($dir), array('.','..'));
+    foreach ($files as $file) {
+		if (is_dir("$dir/$file")) 
+		  delTree("$dir/$file");
+		else
+			unlink("$dir/$file");
+    }
+	
+    return rmdir($dir);
+  }
 ?>
