@@ -85,10 +85,11 @@ function cons_pubblica($id)
 	else return false;
 }
 
-function dati_comune()
+function dati_comune($id)
 {
 global $dbi,$prefix,$id_comune;
-	$sql="SELECT * FROM ".$prefix."_ele_comune where id_comune=$id_comune";
+	if(!$id) $id=$id_comune;
+	$sql="SELECT * FROM ".$prefix."_ele_comune where id_comune='$id'";
 	$sth = $dbi->prepare("$sql");
 	$sth->execute();	
 	$row = $sth->fetchAll();

@@ -32,7 +32,7 @@ $circos=elenco_circoscrizioni();
                 </button>
               </div>
 			  <!-- popolare di nome comune e lat e lng-->
-				<?php $rowcomune=dati_comune(); ?>
+				<?php $rowcomune=dati_comune(0); ?>
               <input type="hidden" class="nome_comune" name="nome_comune" value="<?= $rowcomune[0]['descrizione'] ?>" >
               <input type="hidden" class="lat" id="lat" name="lat" value="" >
               <input type="hidden" class="lng" id="lng" name="lng" value="" >
