@@ -182,7 +182,11 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
           <a href="#" class="nav-link <?php echo in_array($op, [23, 24, 25, 26, 27, 28, 29, 30]) ? 'active' : ''; ?>">
             <i class="nav-icon fas fa-list-alt text-warning"></i>
             <p>
-               Gestione Liste e candidati 
+			<?php if ($tipo_consultazione == 'referendum'): ?>
+				Gestione Referendum
+			<?php else: ?>
+				Gestione Liste e candidati
+			<?php endif; ?>			
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>

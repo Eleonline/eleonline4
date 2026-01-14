@@ -9,12 +9,12 @@ $predefinito=$row[0]['siteistat'];
 
 <section class="content">
   <div class="container-fluid">
-    <h2 id="form-title"><i class="fas fa-building"></i> Gestione Enti/Comuni</h2>
+    <h2><i class="fas fa-building"></i> Gestione Enti/Comuni</h2>
 
     <!-- FORM -->
     <div class="card mb-4">
       <div class="card-header bg-primary text-white">
-        <h3 class="card-title" id="form-subtitle">Aggiungi Ente</h3>
+        <h3 class="card-title" id="form-title">Aggiungi Ente</h3>
       </div>
       <div class="card-body">
         <form id="enteForm" enctype="multipart/form-data"  onsubmit="aggiungiComune(event)">
@@ -92,7 +92,12 @@ $predefinito=$row[0]['siteistat'];
             </div-->
           </div>
           <button type="submit" class="btn btn-success" id="submitBtn">Aggiungi ente</button>
-          <button type="reset" class="btn btn-secondary" id="cancelEdit">Annulla</button>
+          <button type="button"
+        class="btn btn-secondary"
+        onclick="resetFormEnte()">
+    Annulla
+</button>
+
         </form>
       </div>
     </div>
@@ -166,19 +171,10 @@ function aggiungiComune(e) {
     })
     .then(response => response.text()) // O .json() se il server risponde con JSON
     .then(data => {
-        risultato.innerHTML = data; // Mostra la risposta del server
-		document.getElementById ( "submitBtn" ).textContent = "Aggiungi ente";
-		document.getElementById ( "stemma" ).value = '';
-		document.getElementById ( "denominazione" ).value = '';
-		document.getElementById ( "indirizzo" ).value = "";
-		document.getElementById ( "cap" ).value = '';
-		document.getElementById ( "email" ).value = '';
-		document.getElementById ( "centralino" ).value = '';
-		document.getElementById ( "fax" ).value = '';
-		document.getElementById ( "abitanti" ).selectedIndex = 0;
-		document.getElementById ( "codice_istat" ).value = '';
-		document.getElementById ( "capoluogo" ).selectedIndex = 0;
-    })
+    risultato.innerHTML = data;
+    resetFormEnte(); 
+})
+
     .catch(error => {
         console.error('Errore durante l\'upload:', error);
         risultato.innerHTML = 'Si è verificato un errore durante l\'upload.';
@@ -217,7 +213,29 @@ function aggiungiComune(e) {
 	else
 		document.getElementById ( "capoluogo" ).selectedIndex = 2
 	document.getElementById ( "submitBtn" ).textContent = "Salva modifiche"
+	document.getElementById("form-title").textContent = "Modifica Ente";
 //	document.getElementById("riga"+index).style.display = 'none' 
   }
-  
+function resetFormEnte() {
+    const form = document.getElementById('enteForm');
+    form.reset(); // reset campi base
+
+    // stato ADD
+    document.getElementById('ente_id').value = '';
+    document.getElementById('submitBtn').textContent = 'Aggiungi ente';
+    document.getElementById('form-title').textContent = 'Aggiungi Ente';
+
+    // reset select
+    document.getElementById('abitanti').selectedIndex = 0;
+    document.getElementById('capoluogo').selectedIndex = 0;
+
+    // reset immagine
+    const img = document.getElementById('anteprimaStemma');
+    if (img) {
+        img.src = '';
+        img.style.display = 'none';
+    }
+}
+
+
 </script>
