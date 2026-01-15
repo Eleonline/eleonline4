@@ -92,6 +92,9 @@ if($permessi>32)
 		case 'salvaPermesso':
 			include("modules/salva_permesso.php");
 			break;
+		case 'importaCircoscrizioni':
+			include("modules/importa_circoscrizioni.php");
+			break;
 		case 'salvaCircoscrizione':
 			include("modules/salva_circoscrizione.php");
 			break;
