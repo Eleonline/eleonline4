@@ -5,7 +5,14 @@ define('APP_RUNNING', true);
 require_once '../access.php';
 # Inserimento accesso al db
 global $id_comune, $id_cons_gen, $patch, $id_cons, $tipo_cons;
+$patch = 0; // default di sicurezza
 
+if (file_exists("../config/versione.php")) {
+    include "../config/versione.php"; // deve definire $versione
+
+    preg_match('/rev\s*(\d+)/i', $versione, $match);
+    $patch = (int)($match[1] ?? 0);
+}
 
 if (file_exists("../config/config.php")){ 
 	$install="0"; @require_once("../config/config.php"); 
