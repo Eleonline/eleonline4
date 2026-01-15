@@ -22,49 +22,68 @@ $maxNumero++;
       <div class="card-header bg-primary text-white">
         <h3 class="card-title" id="titoloLista">Aggiungi <?= htmlspecialchars(ucfirst(_LISTA)) ?></h3>
       </div>
-      <div class="card-body">
-        <form id="listaForm" method="post" enctype="multipart/form-data" onsubmit="aggiungiLista(event)">
-          <input type="hidden" id="id_lista" name="id_lista">
-          <input type="hidden" name="tipo_candidato" value="<?= $tipo_cons ?>">
+    <div class="card-body">
+  <form id="listaForm" method="post" enctype="multipart/form-data" onsubmit="aggiungiLista(event)">
+    <input type="hidden" id="id_lista" name="id_lista">
+    <input type="hidden" name="tipo_candidato" value="<?= $tipo_cons ?>">
 
-          <div class="form-row" style="align-items:center; gap:0.5rem;">
-            <div class="form-group" style="flex: 0 0 80px; margin-bottom:0;">
-              <label for="numero" style="font-weight:600; font-size:0.9rem;">Posizione*</label>
-              <input type="number" class="form-control" id="numero" min="1" value="<?= $maxNumero; ?>" required>
-            </div>
-			<?php $row = elenco_gruppi(); if(count($row)) $visualizza=''; else $visualizza='style="display:none;"';?>
+    <!-- PRIMA RIGA: NUMERO, GRUPPO, DENOMINAZIONE -->
+    <div class="form-row" style="align-items:center; gap:0.5rem;">
+      <div class="form-group" style="flex: 0 0 80px; margin-bottom:0;">
+        <label for="numero" style="font-weight:600; font-size:0.9rem;">Posizione*</label>
+        <input type="number" class="form-control" id="numero" min="1" value="<?= $maxNumero; ?>" required>
+      </div>
 
-            <div class="col-md-4" <?= $visualizza ?>>
-              <label>Gruppo</label>
-              <select id="idGruppo" class="form-control">
-				<option value="0"></option>
-				<?php foreach($row as $key=>$val) { ?>
-                <option value="<?= $val['id_gruppo'] ?>"><?= $val['descrizione'] ?></option>
-				<?php } ?>
-              </select>
-			<?php foreach($row as $key=>$val) { ?>
-			  <div id="ng<?= $val['id_gruppo'] ?>"  style="display:none;"><?= $val['num_gruppo'] ?></div>
-			<?php } ?>
-            </div>
-            <div class="form-group flex-grow-1" style="margin-bottom:0;">
-              <label for="denominazione" style="font-weight:600; font-size:0.9rem;">Descrizione*</label>
-              <input type="text" id="denominazione" name="denominazione" class="form-control" required style="font-size:0.95rem; padding: 0.375rem 0.75rem;">
-            </div>
-		  </div>	
-          <div class="form-row mt-2" style="display:flex; gap:0.5rem;">
-            <div class="form-group flex-fill" style="margin-bottom:0;">
-              <img id="anteprimaStemma" src="" alt="Anteprima stemma" style="max-height: 80px; margin-top: 5px;" onerror="this.style.visibility='hidden'">
-              <label for="simbolo" style="font-weight:600; font-size:0.85rem;">Simbolo<br><small>(max 300x300)</small></label>
-              <input type="file" id="simbolo" name="simbolo" class="form-control-file" accept="image/*" style="font-size:0.85rem;">
-            </div>
+      <?php $row = elenco_gruppi(); if(count($row)) $visualizza=''; else $visualizza='style="display:none;"'; ?>
+      <div class="col-md-4" <?= $visualizza ?>>
+        <label>Gruppo</label>
+        <select id="idGruppo" class="form-control">
+          <option value="0"></option>
+          <?php foreach($row as $key=>$val) { ?>
+            <option value="<?= $val['id_gruppo'] ?>"><?= $val['descrizione'] ?></option>
+          <?php } ?>
+        </select>
+        <?php foreach($row as $key=>$val) { ?>
+          <div id="ng<?= $val['id_gruppo'] ?>" style="display:none;"><?= $val['num_gruppo'] ?></div>
+        <?php } ?>
+      </div>
 
-          <div class="form-group mt-2">
-            <button type="submit" id="btnAggiungi" class="btn btn-success">Salva</button>
-			<button type="button" class="btn btn-secondary d-none" id="btnAnnulla" onclick="annullaModifica()">Annulla</button>
-          </div>
-        </form>
+      <div class="form-group flex-grow-1" style="margin-bottom:0;">
+        <label for="denominazione" style="font-weight:600; font-size:0.9rem;">Descrizione*</label>
+        <input type="text" id="denominazione" name="denominazione" class="form-control" required
+               style="font-size:0.95rem; padding: 0.375rem 0.75rem;">
       </div>
     </div>
+
+    <!-- SECONDA RIGA: STEMMA + SFOLIA -->
+    <div class="form-row mt-2" style="display:flex; gap:0.5rem; align-items:flex-start;">
+      <div class="form-group flex-fill" style="margin-bottom:0;">
+        <label for="simbolo" style="font-weight:600; font-size:0.85rem;">
+          Simbolo<br><small>(max 300x300)</small>
+        </label>
+        <div style="display:flex; align-items:center; gap:10px; margin-top:5px;">
+          <!-- Anteprima stemma -->
+          <img id="anteprimaStemma" src="" alt="Anteprima stemma"
+               style="width:80px; height:80px; visibility:hidden; border:1px solid #ccc; padding:2px; object-fit:contain;">
+          <!-- Bottone Sfoglia -->
+          <input type="file" id="simbolo" name="simbolo" class="form-control-file" accept="image/*"
+                 style="font-size:0.85rem; flex-grow:1;">
+        </div>
+      </div>
+    </div>
+
+   <!-- TERZA RIGA: PULSANTI SALVA E ANNULLA a sinistra -->
+<div class="form-row mt-3">
+  <div class="form-group d-flex gap-2">
+    <button type="submit" id="btnAggiungi" class="btn btn-success">Salva</button>
+    <button type="button" class="btn btn-secondary" id="btnAnnulla" onclick="annullaModifica()">Annulla</button>
+  </div>
+</div>
+
+
+  </form>
+</div>
+
 
     <div class="card">
       <div class="card-header bg-secondary text-white">
@@ -142,23 +161,63 @@ $maxNumero++;
   </div>
 </div>
 <script>
+// ===========================
+// GESTIONE ANTEPRIMA STEMMA
+// ===========================
 
+// Anteprima immediata quando l'utente seleziona un file
+document.getElementById('simbolo').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const preview = document.getElementById('anteprimaStemma');
+
+    if (file) {
+        const img = new Image();
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            img.src = e.target.result;
+
+            img.onload = function() {
+                // Controllo dimensioni massime 300x300
+                if (img.width > 300 || img.height > 300) {
+                    alert("Attenzione: l'immagine supera le dimensioni massime 300x300 px.");
+                    preview.src = '';
+                    preview.style.visibility = 'hidden';
+                    event.target.value = ''; // reset file input
+                    return;
+                }
+                // Mostra anteprima
+                preview.src = img.src;
+                preview.style.visibility = 'visible';
+            }
+        }
+
+        reader.readAsDataURL(file);
+    } else {
+        // Se l'input viene svuotato, nasconde anteprima
+        preview.src = '';
+        preview.style.visibility = 'hidden';
+    }
+});
+
+// ===========================
+// FUNZIONE AGGIUNGI LISTA
+// ===========================
 function aggiungiLista(e) {
     e.preventDefault();
 
-    var fileInput = document.getElementById('simbolo');
-    var simbolo = fileInput.files[0];
+    const fileInput = document.getElementById('simbolo');
+    const simbolo = fileInput.files[0];
     const id_lista = document.getElementById("id_lista").value;
-	if (document.getElementById("idGruppo").value == 0) {
-		id_gruppo=0;
-		num_gruppo=0;
-	}else{
-		id_gruppo = document.getElementById("idGruppo").value;
-		num_gruppo = document.getElementById("ng"+id_gruppo).innerText		
-	}
+
+    let id_gruppo = 0, num_gruppo = 0;
+    if (document.getElementById("idGruppo").value != 0) {
+        id_gruppo = document.getElementById("idGruppo").value;
+        num_gruppo = document.getElementById("ng"+id_gruppo).innerText;
+    }
+
     const numero = document.getElementById("numero").value;
     const denominazione = document.getElementById("denominazione").value.trim();
-    const btn = document.getElementById("btnAggiungi");
 
     const formData = new FormData();
     formData.append('funzione', 'salvaLista');
@@ -167,60 +226,9 @@ function aggiungiLista(e) {
     formData.append('id_lista', id_lista);
     formData.append('id_gruppo', id_gruppo);
     formData.append('num_gruppo', num_gruppo);
-	if (simbolo) {
-		formData.append('simbolo', simbolo);
-	}
+
+    if (simbolo) formData.append('simbolo', simbolo);
     formData.append('op', 'salva');
-
-    fetch('../principale.php', {
-        method: 'POST',
-        body: formData 
-    })
-    .then(response => response.text()) // O .json() se il server risponde con JSON
-    .then(data => {
-			document.getElementById('risultato').innerHTML = data;
-            resetFormLista();
-            aggiornaNumero();
-			document.getElementById("titoloLista").textContent = "Aggiungi <?= htmlspecialchars(ucfirst(_LISTA)) ?>";
-	})
-
-}
-
-
-
-function deleteLista(index) {
-    denominazione = document.getElementById("denominazione"+index).innerText;
-    numero = document.getElementById("numero"+index).innerText;
-    deleteIdLista = document.getElementById("id_lista"+index).innerText;
-
-    document.getElementById("deleteLista").textContent = numero + " - " + denominazione;
-
-    $('#confirmDeleteModal').modal('show'); // apri il modal
-}
-
-// Conferma cancellazione (totale o parziale)
-document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
-    if (!deleteIdLista) return;
-
-    const delSimbolo   = document.getElementById('flag_simbolo')?.checked;
-
-    const eliminazioneParziale = delSimbolo;
-
-    const formData = new FormData();
-    formData.append('funzione', 'salvaLista');
-    formData.append('id_lista', deleteIdLista);
-    formData.append('descrizione', denominazione);
-    formData.append('numero', numero);
-
-    if (eliminazioneParziale) {
-        // 🟡 eliminazione parziale
-        formData.append('op', 'cancella_parziale');
-
-        if (delSimbolo)   formData.append('flag_simbolo', 1);
-    } else {
-        // 🔴 eliminazione totale
-        formData.append('op', 'cancella');
-    }
 
     fetch('../principale.php', {
         method: 'POST',
@@ -229,75 +237,138 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
     .then(response => response.text())
     .then(data => {
         document.getElementById('risultato').innerHTML = data;
-        $('#confirmDeleteModal').modal('hide');
-        deleteIdLista = null;
         resetFormLista();
         aggiornaNumero();
-		document.getElementById("titoloLista").textContent = "Aggiungi <?= htmlspecialchars(ucfirst(_LISTA)) ?>";
+        document.getElementById("titoloLista").textContent = "Aggiungi <?= htmlspecialchars(ucfirst(_LISTA)) ?>";
     });
-});
-
-
-
-  
-function annullaModifica() {
-    // Reset del form
-    const myForm = document.getElementById('listaForm');
-    myForm.reset();
-
-    // Ripulisci l'id nascosto
-    document.getElementById('id_lista').value = '';
-
-    // Ripristina il testo del bottone principale
-    document.getElementById('btnAggiungi').textContent = "Aggiungi";
-	
-	document.getElementById("titoloLista").textContent = "Aggiungi <?= htmlspecialchars(ucfirst(_LISTA)) ?>";
-
-    // Nascondi il bottone Annulla
-    document.getElementById('btnAnnulla').classList.add('d-none');
 }
 
-// Aggiornamento funzione editCircoscrizione
-function editLista(index) { 
-    document.getElementById("denominazione").value = document.getElementById("denominazione"+index).innerText;
-    document.getElementById("numero").value = document.getElementById("numero"+index).innerText;
-	const url = "../../client/documenti/<?= $id_comune."/".$id_cons ?>/img/"+document.getElementById("simbolo"+index).innerText;
+// ===========================
+// DELETE LISTA
+// ===========================
+function deleteLista(index) {
+    const denominazione = document.getElementById("denominazione"+index).innerText;
+    const numero = document.getElementById("numero"+index).innerText;
+    const deleteIdLista = document.getElementById("id_lista"+index).innerText;
 
-		document.getElementById("anteprimaStemma").src = url;
+    document.getElementById("deleteLista").textContent = numero + " - " + denominazione;
+    $('#confirmDeleteModal').modal('show');
 
-    document.getElementById("id_lista").value = document.getElementById("id_lista"+index).innerText;
-	if (document.getElementById("num_gruppo"+index).innerText !== null )
-		document.getElementById("idGruppo").selectedIndex = document.getElementById("num_gruppo"+index).innerText;
-    document.getElementById("btnAggiungi").textContent = "Salva modifiche";
-	document.getElementById("titoloLista").textContent = "Modifica <?= htmlspecialchars(ucfirst(_LISTA)) ?>";
-    // Mostra il bottone Annulla
-    document.getElementById("btnAnnulla").classList.remove('d-none');
-	
-	scrollToGestioneLista();
-}
+    document.getElementById('confirmDeleteBtn').onclick = function() {
+        const delSimbolo = document.getElementById('flag_simbolo')?.checked;
+        const formData = new FormData();
+        formData.append('funzione', 'salvaLista');
+        formData.append('id_lista', deleteIdLista);
+        formData.append('descrizione', denominazione);
+        formData.append('numero', numero);
 
-function scrollToGestioneLista() {
-    const target = document.getElementById('titoloLista');
-    if (target) {
-        target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
+        if (delSimbolo) {
+            formData.append('op', 'cancella_parziale');
+            formData.append('flag_simbolo', 1);
+        } else {
+            formData.append('op', 'cancella');
+        }
+
+        fetch('../principale.php', { method: 'POST', body: formData })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('risultato').innerHTML = data;
+            $('#confirmDeleteModal').modal('hide');
+            resetFormLista();
+            aggiornaNumero();
+            document.getElementById("titoloLista").textContent = "Aggiungi <?= htmlspecialchars(ucfirst(_LISTA)) ?>";
         });
     }
 }
 
+// ===========================
+// ANNULLA / RESET FORM
+// ===========================
+function annullaModifica() {
+    const form = document.getElementById('listaForm');
+    form.reset();
+    document.getElementById('id_lista').value = '';
+    document.getElementById('btnAggiungi').textContent = "Aggiungi";
+    document.getElementById("titoloLista").textContent = "Aggiungi <?= htmlspecialchars(ucfirst(_LISTA)) ?>";
 
+    const preview = document.getElementById('anteprimaStemma');
+    preview.src = '';
+    preview.style.visibility = 'hidden';
+
+    // Bottone Annulla sempre visibile
+    document.getElementById('btnAnnulla').classList.remove('d-none');
+}
+
+// ===========================
+// EDIT LISTA
+// ===========================
+function editLista(index) {
+    const preview = document.getElementById("anteprimaStemma");
+    const simboloNome = document.getElementById("simbolo"+index).innerText;
+
+    if (simboloNome) {
+        const url = "../../client/documenti/<?= $id_comune."/".$id_cons ?>/img/" + simboloNome;
+        preview.src = url;
+        preview.style.visibility = 'visible';
+		preview.style.backgroundColor = '#fff'; 
+    } else {
+        preview.src = '';
+        preview.style.visibility = 'hidden';
+    }
+
+    document.getElementById("denominazione").value = document.getElementById("denominazione"+index).innerText;
+    document.getElementById("numero").value = document.getElementById("numero"+index).innerText;
+    document.getElementById("id_lista").value = document.getElementById("id_lista"+index).innerText;
+
+    if (document.getElementById("num_gruppo"+index)?.innerText !== null)
+        document.getElementById("idGruppo").selectedIndex = document.getElementById("num_gruppo"+index).innerText;
+
+    // SVUOTA IL FILE INPUT (così puoi scegliere un nuovo file)
+    const fileInput = document.getElementById('simbolo');
+    fileInput.value = '';
+	
+	document.getElementById("btnAggiungi").textContent = "Salva modifiche";
+    document.getElementById("titoloLista").textContent = "Modifica <?= htmlspecialchars(ucfirst(_LISTA)) ?>";
+
+    // Bottone Annulla sempre visibile
+    document.getElementById('btnAnnulla').classList.remove('d-none');
+
+    scrollToGestioneLista();
+}
+
+// ===========================
+// SCROLL FORM
+// ===========================
+function scrollToGestioneLista() {
+    const target = document.getElementById('titoloLista');
+    if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+// ===========================
+// RESET FORM COMPLETO
+// ===========================
 function resetFormLista() {
     const form = document.getElementById('listaForm');
     form.reset();
     document.getElementById('id_lista').value = '';
     document.getElementById('btnAggiungi').textContent = "Aggiungi";
-	document.getElementById("titoloLista").textContent = "Aggiungi <?= htmlspecialchars(ucfirst(_LISTA)) ?>";
+    document.getElementById("titoloLista").textContent = "Aggiungi <?= htmlspecialchars(ucfirst(_LISTA)) ?>";
+
+    const preview = document.getElementById('anteprimaStemma');
+    preview.src = '';
+    preview.style.visibility = 'hidden';
+
+    // Bottone Annulla sempre visibile
+    document.getElementById('btnAnnulla').classList.remove('d-none');
 }
 
+// ===========================
+// AGGIORNA NUMERO LISTA
+// ===========================
 function aggiornaNumero() {
-
-	maxNum = document.getElementById("maxNumero").innerText;
+    const maxNum = document.getElementById("maxNumero").innerText;
     document.getElementById('numero').value = maxNum;
 }
 
