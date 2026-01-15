@@ -41,7 +41,7 @@ function is_login_blocked($user) {
         $blocked = is_login_blocked($val['aid']);
     ?>
     <tr id="riga<?= $key ?>">
-        <td id="ruolo<?= $key ?>">
+        <td id="idruolo<?= $key ?>">
             <?php if ($val['adminsuper']): ?>
                 Superuser
             <?php elseif ($val['admincomune']): ?>

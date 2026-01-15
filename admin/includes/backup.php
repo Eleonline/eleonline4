@@ -83,7 +83,7 @@ function scarica_array($sql,$tab){
 	$fr= "[$tab]\n";
 	while ($lista = $res_comune->fetch(PDO::FETCH_NUM)) {
 		$x=0;
-		foreach ($lista as $key=>$val) {$riga[$key]=base64_encode($val);
+		foreach ($lista as $key=>$val) {$riga[$key]=base64_encode($val ?? '');
 			if ($x++) $fr.= ":";
 			
 			$fr.= "'".$riga[$key]."'";

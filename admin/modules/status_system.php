@@ -1,4 +1,5 @@
 <?php require_once '../includes/check_access.php'; ?>
+<?php require_once '../includes/versione.php'; ?>
 
 <?php
 // Funzioni e variabili come da te scritte (rimangono uguali)
@@ -190,7 +191,7 @@ $cpuLoad = getCpuLoad();
           <dd class="col-sm-8">3.2</dd>
 
           <dt class="col-sm-4"><i class="fas fa-info-circle me-1"></i> Versione Eleonline</dt>
-          <dd class="col-sm-8"><?= defined('ELEONLINE_VERSION') ? ELEONLINE_VERSION : 'Non definita' ?></dd>
+          <dd class="col-sm-8"><?= $version ?? 'Non definita' ?></dd>
         </dl>
       </div>
     </div>

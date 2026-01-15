@@ -1,6 +1,11 @@
 <?php
 require_once '../includes/check_access.php';
-
+function toUtf8($string) {
+    if ($string === null) return null;
+    return mb_detect_encoding($string, 'UTF-8', true)
+        ? $string
+        : mb_convert_encoding($string, 'UTF-8', 'ISO-8859-1');
+}
 
 function insgruppo()
 {
@@ -24,14 +29,14 @@ function insgruppo()
 			elseif($key==3) {
 				$descrizione=stripslashes($campo);
 				$descrizione=strtoupper(preg_replace(array("/\'/",'/\s/'),"_",$descrizione));
-				$valori.=",'".utf8_encode($campo)."'";
+				$valori.=",'".toUtf8($campo)."'";
 				$descrizione="img_gruppo".$numg."_".$descrizione.".jpg";
 			}
 			elseif($key==4) $valori.=",'$descrizione'";
 			elseif ($key==5) {$valori.= ",null"; $stemma=stripslashes($campo);}
 			elseif ($key==6) $valori.= ",0";
 			elseif($key==7) {if($numcampi==9) $valori.=",0"; $valori.= ",'".$campo."'";}
-			elseif($key==8)  {$valori.=",'".utf8_encode($campo)."'";$isnew=1;}
+			elseif($key==8)  {$valori.=",'".toUtf8($campo)."'";$isnew=1;}
 			elseif ($key==9) $valori.= ",null";
 			else $valori.= ",'".$campo."'";
 			if ($key==2) $numgruppo= $campo;
@@ -112,7 +117,7 @@ global $ar_lista,$idcns,$pathdoc,$pathbak;
 			elseif ($key==7) {
 				$descrizione=stripslashes($campo);
 				$descrizione=strtoupper(preg_replace(array("/\'/",'/\s/'),"_",$descrizione));
-				$valori.="'".utf8_encode($campo)."',";
+				$valori.="'".toUtf8($campo)."',";
 				$descrizione="img_lista".$numlista."_".str_replace(" ","_",$descrizione).".jpg";
 			}
 			elseif ($key==8) $valori.= "'$descrizione',"; 
@@ -176,7 +181,7 @@ function inscandi()
 			if ($key==0) $valori= "null,";
 			elseif ($key==1) $valori.="'$idcns',";
 			elseif ($key==2) {$valori.= "'$newidl'"; if ($campo!=$oldidl) $okc=1;}
-			else $valori.= ",'".utf8_encode($campo)."'";
+			else $valori.= ",'".toUtf8($campo)."'";
 		}
 		if(isset($valori) and $valori!=''){
 			for($x=count($rigacandi);$x<$campiloc;$x++) 
