@@ -328,10 +328,11 @@ function elenco_candidati_liste($i)
 
 }
 
-function elenco_circoscrizioni()
+function elenco_circoscrizioni($id=0)
 {
 	global $id_cons,$prefix,$dbi;
-	$sql="select t1.*,sum(t3.validi),sum(t3.nulli),sum(t3.bianchi),sum(t3.contestati) from ".$prefix."_ele_circoscrizione as t1 left join ".$prefix."_ele_sede as t2 on t1.id_circ=t2.id_circ left join ".$prefix."_ele_sezione as t3 on t2.id_sede=t3.id_sede where t1.id_cons='$id_cons' group by t1.id_cons,t1.id_circ,t1.num_circ,t1.descrizione";
+	if(!$id) $id=$id_cons;
+	$sql="select t1.*,sum(t3.validi),sum(t3.nulli),sum(t3.bianchi),sum(t3.contestati) from ".$prefix."_ele_circoscrizione as t1 left join ".$prefix."_ele_sede as t2 on t1.id_circ=t2.id_circ left join ".$prefix."_ele_sezione as t3 on t2.id_sede=t3.id_sede where t1.id_cons='$id' group by t1.id_cons,t1.id_circ,t1.num_circ,t1.descrizione";
 	$res = $dbi->prepare("$sql");
 	$res->execute();
 	$row = $res->fetchAll(PDO::FETCH_ASSOC);

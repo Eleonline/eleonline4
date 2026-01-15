@@ -133,7 +133,7 @@ $maxNumero++;
 
         <div class="alert alert-warning">
           <strong>ATTENZIONE</strong><br>
-          L'importazione può sovrascrivere le circoscrizioni, sedi e sezioni già presenti.
+          L'importazione sovrascrive i dati già inseriti per circoscrizioni, sedi e sezioni.
         </div>
 
         <form id="formImportCirc">
@@ -142,21 +142,23 @@ $maxNumero++;
               <label>Consultazione di origine</label>
               <select class="form-control" id="consultazioneOrigineCirc" required>
                 <option value="">-- Seleziona consultazione --</option>
-                <option value="1">Europee 2024</option>
-                <option value="2">Regionali 2023</option>
+			  <?php $row=elenco_cons();
+			  foreach($row as $key=>$val) { if($val['id_cons_gen']==$id_cons_gen) continue;?>
+                <option value="<?= $val['id_cons_gen'] ?>"><?= $val['descrizione'] ?></option>
+			  <?php } ?>
               </select>
             </div>
           </div>
 
           <hr>
 
-          <!-- CHECKBOX SOVRASCRIVI -->
+          <!-- CHECKBOX SOVRASCRIVI -- >
           <div class="form-check mb-2">
             <input class="form-check-input" type="checkbox" id="sovrascriviCirc">
             <label class="form-check-label" for="sovrascriviCirc">
               Sovrascrivi circoscrizioni esistenti
             </label>
-          </div>
+          </div -->
 
           <!-- DOPPIA CONFERMA -->
           <div class="form-check">
@@ -197,9 +199,9 @@ document.getElementById('confermaImportCirc').addEventListener('change', functio
 function importaCircoscrizioni() {
 
   const consultazioneOrigine = document.getElementById('consultazioneOrigineCirc').value;
-  const sovrascrivi = document.getElementById('sovrascriviCirc').checked ? 1 : 0;
+//  const sovrascrivi = document.getElementById('sovrascriviCirc').checked ? 1 : 0;
   const conferma = document.getElementById('confermaImportCirc').checked;
-  const consultazioneAttiva = 3; // o recupera dinamicamente
+  const consultazioneAttiva = <?= $id_cons_gen ?>; 
 
   if (!consultazioneOrigine) {
     alert('Seleziona una consultazione di origine');
@@ -220,7 +222,7 @@ function importaCircoscrizioni() {
   formData.append('funzione', 'importaCircoscrizioni');
   formData.append('id_consultazione_origine', consultazioneOrigine);
   formData.append('id_consultazione_dest', consultazioneAttiva);
-  formData.append('sovrascrivi', sovrascrivi);
+//  formData.append('sovrascrivi', sovrascrivi);
 
   document.getElementById('importResultCirc').innerHTML =
     '<div class="alert alert-info">Importazione in corso...</div>';
