@@ -37,3 +37,4 @@
 2026-01-12 14:14:31 | test | LOGIN_OK | comune:83009 | IP:127.0.0.1 | UA:Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
 2026-01-12 14:14:43 | test | PASSWORD_ERRATA | comune:83009 | IP:127.0.0.1 | UA:Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
 2026-01-12 22:19:49 | suser | LOGIN_OK | comune:83009 | IP:127.0.0.1 | UA:Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+2026-01-15 21:43:13 | suser | LOGIN_OK | comune:83009 | IP:127.0.0.1 | UA:Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0

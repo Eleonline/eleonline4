@@ -43,9 +43,10 @@ $simbolo     = htmlspecialchars($val['simbolo']     ?? '', ENT_QUOTES, 'UTF-8');
 	<?php } ?>
 		id="gruppo<?= $key ?>"><?= $grp[$val['num_gruppo']] ?></td>
     <td id="denominazione<?= $key ?>" style="word-break: break-word; max-width:250px; white-space:normal;"><?= $val['descrizione'] ?></td>
-<td id="simbolo<?= $key ?>" style="word-break: break-word; max-width:150px; white-space:normal;"><?= $simbolo ?></td>
+<td style="word-break: break-word; max-width:150px; white-space:normal;"><img id="anteprimaStemma" src="../../client/documenti/<?= $id_comune."/".$id_cons ?>/img/<?= $simbolo ?>" alt="Anteprima stemma"
+               style="width:80px; height:80px; border:1px solid #ccc; padding:2px; object-fit:contain;"></td>
 
-    <td> <div id="id_lista<?= $key ?>" style="display:none;"><?= $id_lista ?></div><div id="id_cons<?= $key ?>" style="display:none;"><?= $id_cons ?></div><div id="id_gruppo<?= $key ?>" style="display:none;"><?= $id_gruppo ?></div><div id="num_gruppo<?= $key ?>" style="display:none;"><?= $num_gruppo ?></div>
+    <td> <div id="simbolo<?= $key ?>" style="display:none;"><?= $simbolo ?></div><div id="id_lista<?= $key ?>" style="display:none;"><?= $id_lista ?></div><div id="id_cons<?= $key ?>" style="display:none;"><?= $id_cons ?></div><div id="id_gruppo<?= $key ?>" style="display:none;"><?= $id_gruppo ?></div><div id="num_gruppo<?= $key ?>" style="display:none;"><?= $num_gruppo ?></div>
         <button class="btn btn-sm btn-warning me-1" onclick="editLista(<?= $key ?>); scrollToGestioneLista();">Modifica</button>
         <button type="button" class="btn btn-sm btn-danger" onclick="deleteLista(<?= $key ?>)">Elimina</button>
     </td>

@@ -33,14 +33,15 @@ $cg          = htmlspecialchars($val['cg']          ?? '', ENT_QUOTES, 'UTF-8');
 <tr id="riga<?= $key ?>">
     <td id="numero<?= $key ?>"><?= $numero ?></td>
     <td id="denominazione<?= $key ?>"><?= $descrizione ?></td>
-	<td id="simbolo<?= $key ?>"><?= $simbolo ?></td>
+	<td style="word-break: break-word; max-width:150px; white-space:normal;"><img id="anteprimaStemma" src="../../client/documenti/<?= $id_comune."/".$id_cons ?>/img/<?= $simbolo ?>" alt="Anteprima stemma"
+               style="width:80px; height:80px; border:1px solid #ccc; padding:2px; object-fit:contain;"></td>
 	<td id="prognome<?= $key ?>"><?= $prognome ?></td>
 	<?php if ($tipo_cons === 3): ?>
 	<td id="cv<?= $key ?>"><?= $cv ?></td>
 	<td id="cg<?= $key ?>"><?= $cg ?></td>
 	<?php endif; ?>
     <td> 
-	<div id="id_cons<?= $key ?>" style="display:none;"><?= $id_cons ?></div>
+	<div id="simbolo<?= $key ?>" style="display:none;"><?= $simbolo ?></div><div id="id_cons<?= $key ?>" style="display:none;"><?= $id_cons ?></div>
 	<div id="id_gruppo<?= $key ?>" style="display:none;"><?= $id_gruppo ?></div>
         <button class="btn btn-sm btn-warning me-1" onclick="editGruppo(<?= $key ?>); scrollToFormTitle();">Modifica</button>
         <button type="button" class="btn btn-sm btn-danger" onclick="deleteGruppo(<?= $key ?>)">Elimina</button>

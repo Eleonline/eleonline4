@@ -439,6 +439,18 @@ if(!controllo($prefix.'_ele_sezioni','colore',++$num))
 	$ret=aggiorna($sql,$dbi,'',$num);
 }	$strlog= "<br>";
 
+if(!controllo($prefix.'_ele_sede','id_ubicazione',++$num))
+{
+	$sql="ALTER TABLE `soraldo_ele_sede` ADD `id_ubicazione` INT(10) NULL DEFAULT NULL;";
+	$ret=aggiorna($sql,$dbi,'',$num);
+}
+
+if(!controllo($prefix.'_ele_sede','id_ubicazione',++$num))
+{
+	$sql="ALTER TABLE `soraldo_ele_sede` ADD `ospedaliera` INT(2) NULL DEFAULT NULL;";
+	$ret=aggiorna($sql,$dbi,'',$num);
+}
+ 
 $strlog= "<br>Aggiornamento per nuovo sistema dei controlli di congruità";
 flush(); ob_flush();
 
@@ -694,6 +706,8 @@ catch(PDOException $e)
 {
 	die( $sql . "<br>" . $e->getMessage() . "<br>" . $strlog);
 } 
+
+
 	$sql="update `".$prefix."_config` set versione='4', patch='1'";
 	$ret=aggiorna($sql,$dbi,'',$num);
 

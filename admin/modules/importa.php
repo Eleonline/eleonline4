@@ -72,13 +72,17 @@ function insgruppo()
 			$nameimg="$descrizione"; #img_gruppo".$numgruppo."_".str_replace(" ","_",$descrizione).".jpg";
 			$nameprg="prg_gruppo".$numgruppo."_".str_replace(" ","_",$descrizione).".pdf";
 			if(isset($stemma) and mb_strlen($stemma)) {
-				if(file_exists($pathdoc."img/".$nameimg))
-					rename($pathdoc."img/".$nameimg,$pathbak."img/".$nameimg);
+				if(file_exists($pathdoc."img/".$nameimg)) {
+					if(copy($pathdoc."img/".$nameimg,$pathbak."img/".$nameimg))
+						unlink($pathdoc."img/".$nameimg);
+				}
 				file_put_contents($pathdoc."img/".$nameimg, $stemma);
 			}
 			if(mb_strlen($programma)) {
-				if(file_exists($pathdoc."programmi/".$nameimg))
-					rename($pathdoc."programmi/".$nameimg,$pathbak."programmi/".$nameimg);
+				if(file_exists($pathdoc."programmi/".$nameimg)) {
+					if(copy($pathdoc."programmi/".$nameimg,$pathbak."programmi/".$nameimg))
+						unlink($pathdoc."programmi/".$nameimg);
+				}
 				file_put_contents($pathdoc."programmi/".$nameimg, $programma);
 			}
 		}
@@ -155,8 +159,10 @@ global $ar_lista,$idcns,$pathdoc,$pathbak;
 		}
 		$nameimg="$descrizione";
 		if(mb_strlen($stemma)) {
-			if(file_exists($pathdoc."img/".$nameimg))
-				rename($pathdoc."img/".$nameimg,$pathbak."img/".$nameimg);
+			if(file_exists($pathdoc."img/".$nameimg)){
+				if(copy($pathdoc."img/".$nameimg,$pathbak."img/".$nameimg))
+					unlink($pathdoc."img/".$nameimg);
+			}
 			file_put_contents($pathdoc."img/".$nameimg, $stemma);
 		}
 		
@@ -220,10 +226,6 @@ delTree("../../client/documenti/backup/$id_comune/$id_cons/img");
 delTree("../../client/documenti/backup/$id_comune/$id_cons/cg");
 delTree("../../client/documenti/backup/$id_comune/$id_cons/cv");
 delTree("../../client/documenti/backup/$id_comune/$id_cons/programmi");
-rename($pathdoc."/img",$pathbak."/img");
-rename($pathdoc."/cg",$pathbak."/cg");
-rename($pathdoc."/cv",$pathbak."/cv");
-rename($pathdoc."/programmi",$pathbak."/programmi");
 if (!is_dir($pathdoc."/img")) mkdir($pathdoc."/img", 0777, true);
 if (!is_dir($pathdoc."/cv")) mkdir($pathdoc."/cv", 0777, true);
 if (!is_dir($pathdoc."/cg")) mkdir($pathdoc."/cg", 0777, true);
@@ -232,6 +234,10 @@ if (!is_dir($pathbak."/img")) mkdir($pathbak."/img", 0777, true);
 if (!is_dir($pathbak."/cv")) mkdir($pathbak."/cv", 0777, true);
 if (!is_dir($pathbak."/cg")) mkdir($pathbak."/cg", 0777, true);
 if (!is_dir($pathbak."/programmi")) mkdir($pathbak."/programmi", 0777, true);
+move_files($pathdoc."/img",$pathbak."/img");
+move_files($pathdoc."/cg",$pathbak."/cg");
+move_files($pathdoc."/cv",$pathbak."/cv");
+move_files($pathdoc."/programmi",$pathbak."/programmi");
 $pathdoc.="/";
 $pathbak.="/";
 
@@ -381,4 +387,12 @@ function delTree($dir) {
 	
     return rmdir($dir);
   }
+  
+function move_files($dir,$dest) {
+	$files = array_diff(scandir($dir), array('.','..'));
+    foreach ($files as $file){ 
+		if(copy("$dir/$file","$dest/$file"))
+			unlink("$dir/$file");
+	}
+}  
 ?>

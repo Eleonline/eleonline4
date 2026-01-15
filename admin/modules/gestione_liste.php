@@ -55,7 +55,7 @@ $maxNumero++;
       </div>
     </div>
 
-    <!-- SECONDA RIGA: STEMMA + SFOLIA -->
+    <!-- SECONDA RIGA: STEMMA + SFOGLIA -->
     <div class="form-row mt-2" style="display:flex; gap:0.5rem; align-items:flex-start;">
       <div class="form-group flex-fill" style="margin-bottom:0;">
         <label for="simbolo" style="font-weight:600; font-size:0.85rem;">
@@ -109,7 +109,7 @@ $maxNumero++;
     </div>
   </div>
 </section>
-<!-- Modal conferma eliminazione circoscrizione -->
+<!-- Modal conferma eliminazione -->
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">

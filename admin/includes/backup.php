@@ -68,7 +68,7 @@ $filename = "../documenti/backup/file_bak_$id_cons.txt";
 $file=fopen($filename, 'w');
 fwrite($file, "$filebk");
 fclose($file);
-if(is_file($filename)) echo "TEST: creato"; else echo "Niente file";
+#if(is_file($filename)) echo "TEST: creato"; else echo "Niente file";
 function scarica_array($sql,$tab){
 	global $dbi;
 		

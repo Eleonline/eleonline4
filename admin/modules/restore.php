@@ -92,10 +92,48 @@ if ($scarto==0){
 
 		}
 	} else $errore=1;
-
+ripristina_immagini($idcns);
 echo "<center><h2>Ripristino dei dati terminato regolarmente ".date('d/m/Y H:i')." </h2></center>";
 
 if (isset($errore) and $errore) echo _MEX_RESTORE_FAILED;
 
+function ripristina_immagini($idcns) {
+	global $id_comune, $id_cons;
+	$pathdoc="../../client/documenti/$id_comune/$id_cons";
+	$pathbak="../../client/documenti/backup/$id_comune/$id_cons";
+#sposto i file su dir temporanee
+	mkdir("../tmp/img".$id_cons, 0755, true);
+	mkdir("../tmp/cv".$id_cons, 0755, true);
+	mkdir("../tmp/cg".$id_cons, 0755, true);
+	mkdir("../tmp/programmi".$id_cons, 0755, true);
+	
+	move_files($pathdoc."/cv/","../tmp/cv$id_cons/");
+	move_files($pathdoc."/cg/","../tmp/cg$id_cons/");
+	move_files($pathdoc."/programmi/","../tmp/programmi$id_cons/");
+	move_files($pathdoc."/img/","../tmp/img$id_cons/");
 
+	move_files($pathbak."/cv/",$pathdoc."/cv/");
+	move_files($pathbak."/cg/",$pathdoc."/cg/");
+	move_files($pathbak."/programmi/",$pathdoc."/programmi/");
+	move_files($pathbak."/img/",$pathdoc."/img/");
+	
+	move_files("../tmp/cv$id_cons/",$pathbak."/cv/");
+	move_files("../tmp/cg$id_cons/",$pathbak."/cg/");
+	move_files("../tmp/programmi$id_cons/",$pathbak."/programmi/");
+	move_files("../tmp/img$id_cons/",$pathbak."/img/");
+
+	rmdir("../tmp/img".$id_cons);
+	rmdir("../tmp/cv".$id_cons);
+	rmdir("../tmp/cg".$id_cons);
+	rmdir("../tmp/programmi".$id_cons);
+	
+}
+
+function move_files($dir,$dest) {
+	$files = array_diff(scandir($dir), array('.','..'));
+    foreach ($files as $file) 
+		if(copy("$dir/$file","$dest/$file"))
+			unlink("$dir/$file");
+	
+}
 ?>

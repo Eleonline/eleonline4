@@ -138,9 +138,9 @@ if(simboloInput){
                 img.src = e.target.result;
 
                 img.onload = function() {
-                    // Controllo dimensioni massime 300x300
-                    if (img.width > 300 || img.height > 300) {
-                        alert("Attenzione: l'immagine supera le dimensioni massime 300x300 px.");
+                    // Controllo dimensioni massime 1000x1000
+                    if (img.width > 1000 || img.height > 1000) {
+                        alert("Attenzione: l'immagine supera le dimensioni massime 1000x1000 px.");
                         preview.src = '';
                         preview.style.visibility = 'hidden';
                         simboloInput.value = ''; // reset file input
@@ -197,20 +197,20 @@ function aggiungiGruppo(e) {
         document.getElementById('form-title').textContent = "Aggiungi <?= htmlspecialchars(ucfirst(_GRUPPO)) ?>";
 
         // Ricarica lista aggiornata
-        ricaricaListaGruppi();
+//        ricaricaListaGruppi();
     });
 }
 
 // ===========================
-// RICARICA LISTA
+// RICARICA LISTA -> inutile, non si può richiamare direttamente il file e l'aggiornamento viene già fatto alla fine del salvataggio
 // ===========================
-function ricaricaListaGruppi() {
-    fetch('elenco_gruppi.php')
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById('risultato').innerHTML = html;
-        });
-}
+// function ricaricaListaGruppi() {
+//    fetch('elenco_gruppi.php')
+//        .then(response => response.text())
+//        .then(html => {
+//            document.getElementById('risultato').innerHTML = html;
+//        });
+//}
 
 // ===========================
 // CANCELLA GRUPPO
