@@ -27,7 +27,8 @@ $stemmanome=''; $stemmablob='';
 $cond2=''; 
 $cond3='';
 if(isset($_FILES['stemma'])) {
-$pathdoc="../client/documenti/img/";
+	$pathdoc="../client/documenti/img/";
+	if(!is_dir($pathdoc)) mkdir($pathdoc, 0755, true);
 	$STEMM=$_FILES['stemma'];
 	$filestemma=$STEMM['tmp_name'];
 	$nomestemma="logo.jpg";
@@ -42,9 +43,9 @@ $pathdoc="../client/documenti/img/";
 	} else {
 	#		if ( $delsimb=='false') $cond2=", simbolo='', stemma=''"; # aggiungere controllo per eliminazione stemma
 	#		else 
-				$cond2='';
-				$cond3='';
-				$cond4='';
+		$cond2='';
+		$cond3='';
+		$cond4='';
 	}
 }
 
