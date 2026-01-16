@@ -1,0 +1,102 @@
+Admin:
+
+Dashboard:
+- creare le card.
+- ordinamento delle card e Mostra / Nascondi schede sul database associato all'utente.
+- correggere il bottone in alto a destra (posizione).
+
+Sistema:
+- Stato Sistema: ok
+- Log attività : ok
+- Sblocco ip: fare pagina ip consentire\negato. possibilmente salvare sul db.
+
+Impostazione e dati generali:
+- configurazione sito: ok
+- tema colore: ok
+- Anagrafica enti/comuni: quando salvo uno stemma mi da questo errore 
+"Warning: file_put_contents(../client/documenti/img/logo.jpg): Failed to open stream: No such file or directory in C:\xampp\htdocs\sviluppo\eleonline4\admin\modules\salva_comune.php on line 37"
+sistemare graficamente.
+- Aggiornamento REV : da verificare.
+- Aggiornamento Data base : creare pagina nuova. 
+
+Utenti e permessi:
+- Gestione utenti: mettere il menù a tendina per Operatore e Operatore esterno (prsidenti o addetto raccolta dati esterni).
+- Permessi: carica anche per superuser (non deve visualizzare).
+
+Setup Configurazione:
+- Configura consultazione: non fa lo scroll(verificare il perchè). La procedura elimina solo dati o tutto. Quando aggiungo una nuova consultazione non si aggiorna il menù a tendina nel top (consultazione).
+- Configura Affluenza: ok.
+- Configura Circoscrizione: non lo utilizzo io quindi non sò cosa và qui.
+- Configura Sede Elttorale: verificare long e lat se corrispondono il resto e mappe. Caricamento e Modifica ok
+- Configura Sezione: ok per il caricamento per la modifica da errore: La somma tra iscritti maschi e femmine non corrisponde al totale(fare il controllo data). problmea ncon modifica non riporta descrizione e totali pernde i maschi. 
+
+Importa Dati:
+- Webservice : da fare.
+- importa da dait: da verificare.
+- Scarica liste : da verificare.
+- Ripristina dati: da verifica e quando non esiste il file mettere un messaggio "non ci sono backup da ripristinare".
+
+Gestion liste e candidati:
+- Camera:
+	- Candidato uninomile: cambiare intestazione.
+	- Lista collegata: erorre: Fatal error: Uncaught Error: Undefined constant "_LISTA" in C:\xampp\htdocs\sviluppo\eleonline4\admin\modules\gestione_liste.php:19 Stack trace: #0 C:\xampp\htdocs\sviluppo\eleonline4\admin\modules\contenuto.php(76): include() #1 C:\xampp\htdocs\sviluppo\eleonline4\admin\modules\modules.php(78): include('C:\\xampp\\htdocs...') #2 {main} thrown in C:\xampp\htdocs\sviluppo\eleonline4\admin\modules\gestione_liste.php on line 19
+	- Listino Bloccato: cambiare intestazione
+	
+Warning: Undefined array key 0 in C:\xampp\htdocs\sviluppo\eleonline4\admin\modules\gestione_candidati.php on line 8
+
+Warning: Trying to access array offset on value of type null in C:\xampp\htdocs\sviluppo\eleonline4\admin\modules\gestione_candidati.php on line 8
+
+Senato:
+	- Candidato uninomile: stesso problema della camera
+	- Lista collegata: stesso problema della camera
+	- Listino Bloccato: stesso problema della camera
+ 
+Comunali:
+- Candidato Sindaco: verificare anteprima immagini. Non aggiorna lista. Non trova la posizione libera.Non controlla se la posizione è occupata. il pulsante elimina non funziona.
+- Lista: verificare anteprima immagini. non trova la posizione libera. non controlla se la posizione è occupata.
+- Candidati: verificare anteprima immagini e pdf e sballa se elimino candidato e non trova la posizione libera. non controlla se la posizione è occupata. 
+
+Ballottaggio: e tutto da fare
+- Candidato Sindaco: da fare
+- Lista: da fare
+- Candidati: da eliminare
+
+Circoscrizione: non lo utilizzo io quindi non sò cosa và qui.
+
+Regionali:
+- Candidato Presidente: stessi problemi dei comunali.
+- Lista: stessi problemi dei comunali.
+- Candidati: stessi problemi dei comunali.
+
+Referndum:
+- Quesito Referendario: manca la procedura di caricamento e modifica e elimina.
+
+Carica informazioni:
+- Come si vota: ok.
+- Numeri Utili: ok.
+- Servizi: ok.
+- Link utili: ok.
+
+Rilevazione di voto: tutto da fare
+
+Risultati e stampe: tutto da fare.
+
+Doumentazione e supporto:
+- Manuale Utente : ok.
+- Forum: ok.
+- Contatti: mettere mailto:indirizzo@email.com.
+
+Esci : ok
+
+Login: ok
+Logout: ok
+
+siderbar.php(Menù laterale):
+- mettere non attivo e attivare dopo i caricamenti.
+
+menù.php (menù top):
+- sitemare le notifiche.
+
+Client: 
+- adatttare con db nuovo.
+- eliminare tutti gli altri temi e lasciare solo bootstrap.
