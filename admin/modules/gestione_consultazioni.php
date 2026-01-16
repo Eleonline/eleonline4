@@ -301,6 +301,7 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
             document.getElementById("risultato").innerHTML = data;
             $('#confirmDeleteModal').modal('hide');
             deleteId = null;
+			aggiornaSelect();
         });
     }
 });
@@ -393,7 +394,7 @@ function selezionaInput() {
 			document.getElementById("divlegge").style.display = 'block';
 			document.getElementById("id_conf").required = true;
 			document.getElementById("id_fascia").required = true;
-			idConf.required = true;
+//			idConf.required = true;
 			break;
 	}
 
@@ -447,4 +448,25 @@ function resetFormConsultazione() {
     document.getElementById('divlegge').style.display = 'block';
     document.getElementById('divproiezione').style.display = 'block';
 }
+
+function aggiornaSelect() {
+        const selectCons = new FormData();
+    selectCons.append('funzione', 'menuConsultazione');
+//    formData.append('id_cons_gen', id_cons_gen);
+    fetch('../principale.php', {
+        method: 'POST',
+        body: selectCons
+    })
+    .then(response => response.text())
+    .then(data => {
+                var elementExists = document.getElementById("consultazione-mobile");
+                if(elementExists!== null)
+					document.getElementById ("consultazione-mobile").innerHTML = data;
+                var elementExists = document.getElementById("consultazione-desktop");
+                if(elementExists!== null)
+					document.getElementById ("consultazione-desktop").innerHTML = data;
+    })
+
+}
+
 </script>
