@@ -115,15 +115,3 @@ if(!$cambia) {
 
     </tr>
 <?php endforeach; ?>
-
-<script>
-function scrollToFormTitle() {
-    const target = document.getElementById('form-title');
-    if (target) {
-        target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-    }
-}
-</script>

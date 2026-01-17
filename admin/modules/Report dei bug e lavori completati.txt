@@ -22,7 +22,7 @@ Utenti e permessi:
 - Permessi: carica anche per superuser (non deve visualizzare).
 
 Setup Configurazione:
-- Configura consultazione: non fa lo scroll(verificare il perchè). La procedura elimina solo dati o tutto. Quando aggiungo una nuova consultazione non si aggiorna il menù a tendina nel top (consultazione).
+- Configura consultazione: Fare la procedura elimina solo dati.
 - Configura Affluenza: ok.
 - Configura Circoscrizione: non lo utilizzo io quindi non sò cosa và qui.
 - Configura Sede Elttorale: verificare long e lat se corrispondono il resto e mappe. Caricamento e Modifica ok

@@ -164,29 +164,63 @@ $tipi=elenco_tipi();
     </div>
   </div>
 </section>
-<!-- Modal conferma eliminazione consultazione -->
-<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+<!-- =======================
+     MODAL ELIMINA CONSULTAZIONE
+     ======================= -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
-      
+
+      <!-- HEADER -->
       <div class="modal-header bg-danger text-white">
         <h5 class="modal-title" id="confirmDeleteLabel">
-          <i class="fas fa-exclamation-triangle me-2"></i>Conferma eliminazione
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          Conferma eliminazione consultazione
         </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Chiudi">
-          <span aria-hidden="true">&times;</span>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
         </button>
       </div>
 
+      <!-- BODY -->
       <div class="modal-body">
-        Sei sicuro di voler eliminare la consultazione: <strong id="deleteDenominazione"></strong>? Questa azione non può essere annullata.
+
+        <div class="alert alert-danger">
+          <strong>ATTENZIONE</strong><br>
+          Questa azione non può essere annullata!
+        </div>
+
+        <p>Sei sicuro di voler eliminare la consultazione: <strong id="deleteDenominazione"></strong>?</p>
+
+        <form id="formDeleteConsultazione">
+          <!-- CHECKBOX ELIMINA SOLO DATI -->
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="deleteOnlyData">
+            <label class="form-check-label" for="deleteOnlyData">
+              Elimina solo i dati associati (lascia la consultazione)
+            </label>
+          </div>
+
+          <!-- CHECKBOX CONFERMA -->
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="confirmDeleteCheck">
+            <label class="form-check-label text-danger" for="confirmDeleteCheck">
+              Confermo di voler procedere con l'eliminazione
+            </label>
+          </div>
+        </form>
+
+        <div id="deleteResult" class="mt-3"></div>
+
       </div>
 
+      <!-- FOOTER -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          <i class="fas fa-times me-1"></i>Annulla
-        </button>
-        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+        <button type="button"
+                class="btn btn-danger"
+                id="confirmDeleteBtn"
+                disabled>
           <i class="fas fa-trash me-1"></i>Elimina
         </button>
       </div>
@@ -194,6 +228,7 @@ $tipi=elenco_tipi();
     </div>
   </div>
 </div>
+
 
 <script>
 const dataInizioInput = document.getElementById("data_inizio");
@@ -212,10 +247,7 @@ dataFineInput.addEventListener("change", () => {
         }
     }
 });
-</script>
 
-
-<script>
 function aggiungiConsultazione(e) {
     e.preventDefault();
 
@@ -275,22 +307,36 @@ function aggiungiConsultazione(e) {
 };
 
 
+const deleteOnlyDataCheckbox = document.getElementById('deleteOnlyData');
+const confirmDeleteCheckbox = document.getElementById('confirmDeleteCheck');
+const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
 let deleteId = null;
 
 function deleteConsultazione(index) {
     deleteId = document.getElementById("id_cons_gen"+index).innerText;
     const denominazione = document.getElementById("descrizione"+index).innerText;
     document.getElementById("deleteDenominazione").textContent = denominazione;
-    $('#confirmDeleteModal').modal('show'); // apri il modal
+
+    // reset checkbox
+    deleteOnlyDataCheckbox.checked = false;
+    confirmDeleteCheckbox.checked = false;
+    confirmDeleteBtn.disabled = true;
+
+    $('#confirmDeleteModal').modal('show');
 }
 
-// Conferma cancellazione
-document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
-    if(deleteId) {
+// abilita il pulsante solo se la conferma è spuntata
+confirmDeleteCheckbox.addEventListener('change', () => {
+    confirmDeleteBtn.disabled = !confirmDeleteCheckbox.checked;
+});
+
+confirmDeleteBtn.addEventListener('click', function() {
+    if(deleteId && confirmDeleteCheckbox.checked) {
         const formData = new FormData();
         formData.append('funzione', 'salvaConsultazione');
         formData.append('id_cons_gen', deleteId);
-        formData.append('op', 'cancella');
+        formData.append('op', deleteOnlyDataCheckbox.checked ? 'cancellaDati' : 'cancella');
 
         fetch('../principale.php', {
             method: 'POST',
@@ -301,7 +347,7 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
             document.getElementById("risultato").innerHTML = data;
             $('#confirmDeleteModal').modal('hide');
             deleteId = null;
-			aggiornaSelect();
+            aggiornaSelect();
         });
     }
 });
@@ -469,4 +515,13 @@ function aggiornaSelect() {
 
 }
 
+function scrollToFormTitle() {
+    const target = document.getElementById('form-title');
+    if (target) {
+        target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+}
 </script>
