@@ -53,15 +53,29 @@ function clear_login_fail($user) {
     if (file_exists($file)) unlink($file);
 }
 
-/* ===== ANTI-BRUTEFORCE IP ===== */
+/* ===== ANTI-BRUTEFORCE IP CON WHITELIST ===== */
 define('MAX_IP_ATTEMPTS', 10);
 define('IP_BLOCK_TIME', 86400); // 24 ore
 
+$ipAllowedFile = __DIR__ . '/includer/ip_allowed.json';
+
+// Controlla se l'IP è nella whitelist
+function is_ip_allowed($ip) {
+    global $ipAllowedFile;
+    if (!file_exists($ipAllowedFile)) return false;
+    $data = json_decode(file_get_contents($ipAllowedFile), true);
+    return in_array($ip, $data);
+}
+
+// Restituisce il path del file di blocco dell'IP
 function ip_block_file($ip) {
     return __DIR__ . '/logs/ip_block_' . md5($ip) . '.json';
 }
 
+// Controlla se l'IP è bloccato (bypass whitelist)
 function is_ip_blocked($ip) {
+    if (is_ip_allowed($ip)) return false; // whitelist bypass
+
     $file = ip_block_file($ip);
     if (!file_exists($file)) return false;
 
@@ -71,15 +85,18 @@ function is_ip_blocked($ip) {
     if (($data['attempts'] ?? 0) >= MAX_IP_ATTEMPTS) {
         $elapsed = time() - ($data['last_attempt'] ?? 0);
         if ($elapsed < IP_BLOCK_TIME) {
-            return IP_BLOCK_TIME - $elapsed;
+            return IP_BLOCK_TIME - $elapsed; // secondi rimanenti
         } else {
-            unlink($file);
+            unlink($file); // sblocco automatico
         }
     }
     return false;
 }
 
+// Registra un tentativo fallito (bypass whitelist)
 function register_ip_fail($ip) {
+    if (is_ip_allowed($ip)) return; // whitelist bypass
+
     $file = ip_block_file($ip);
     $data = ['attempts' => 0, 'last_attempt' => time()];
     if (file_exists($file)) {
@@ -90,6 +107,7 @@ function register_ip_fail($ip) {
     file_put_contents($file, json_encode($data));
 }
 
+// Sblocca manualmente l'IP
 function clear_ip_fail($ip) {
     $file = ip_block_file($ip);
     if (file_exists($file)) unlink($file);

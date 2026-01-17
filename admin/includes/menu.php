@@ -148,8 +148,10 @@ if (in_array($tipo_cons, [1, 12, 13])) {
     $tipo_consultazione = 'provinciali';
 } elseif (in_array($tipo_cons, [2])) {
     $tipo_consultazione = 'referendum';
-} elseif (in_array($tipo_cons, [3, 5])) {
+} elseif (in_array($tipo_cons, [3])) {
 $tipo_consultazione = 'comunali';
+} elseif (in_array($tipo_cons, [5])) {
+$tipo_consultazione = 'ballottaggio comunali';
 } elseif (in_array($tipo_cons, [4])) {
     $tipo_consultazione = 'circoscrizionali';
 } elseif (in_array($tipo_cons, [6, 11, 15, 18])) {

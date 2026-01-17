@@ -43,7 +43,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 	<li class="nav-item">
   <a href="modules.php?op=5" class="nav-link <?php echo ($op == 5) ? 'active' : ''; ?>">
     <i class="nav-icon fas fa-user-lock text-danger"></i>
-    <p>Sblocco IP</p>
+    <p>Gestione IP</p>
   </a>
 </li>
   </ul>
@@ -52,8 +52,8 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 
 <?php if (in_array($_SESSION['ruolo'], ['superuser', 'admin'])): ?>
         <!-- CONFIGURAZIONE SISTEMA -->
-        <li class="nav-item has-treeview <?php echo in_array($op, [3, 4, 5, 6, 7]) ? 'menu-open' : ''; ?>">
-          <a href="#" class="nav-link <?php echo in_array($op, [3, 4, 5, 6, 7]) ? 'active' : ''; ?>">
+        <li class="nav-item has-treeview <?php echo in_array($op, [3, 4, 5, 6, 7, 41]) ? 'menu-open' : ''; ?>">
+          <a href="#" class="nav-link <?php echo in_array($op, [3, 4, 5, 6, 7, 41]) ? 'active' : ''; ?>">
             <i class="nav-icon fas fa-tools text-danger"></i>
             <p>
               Impostazione e dati generali
@@ -65,7 +65,8 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
             <li class="nav-item"><a href="modules.php?op=4" class="nav-link <?php echo ($op == 4) ? 'active' : ''; ?>"><i class="nav-icon fas fa-palette text-warning"></i><p>Tema colore</p></a></li>
             <!-- <li class="nav-item"><a href="modules.php?op=200" class="nav-link <?php echo ($op == 5) ? 'active' : ''; ?>"><i class="nav-icon fas fa-chart-pie text-primary"></i><p>Config. D'Hondt</p></a></li>-->
             <li class="nav-item"><a href="modules.php?op=6" class="nav-link <?php echo ($op == 6) ? 'active' : ''; ?>"><i class="nav-icon fas fa-city text-secondary"></i><p>Anagrafica Enti/Comuni</p></a></li>
-			<li class="nav-item"><a href="modules.php?op=7" class="nav-link <?php echo ($op == 7) ? 'active' : ''; ?>"><i class="nav-icon fas fa-sync-alt text-warning"></i><p>Aggiornamento Rev</p></a></li>         
+			<li class="nav-item"><a href="modules.php?op=7" class="nav-link <?php echo ($op == 7) ? 'active' : ''; ?>"><i class="nav-icon fas fa-sync-alt text-warning"></i><p>Aggiornamento Rev</p></a></li>
+			<li class="nav-item"><a href="modules.php?op=41" class="nav-link <?php echo ($op == 41) ? 'active' : ''; ?>"><i class="nav-icon fas fa-database text-warning"></i><p>Aggiornamento Data base</p></a></li>     
 		 </ul>
         </li>
 <?php endif; ?>
@@ -194,13 +195,13 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 			<?php if ($tipo_consultazione == 'regionali') { ?>
 			<li class="nav-item"><a href="modules.php?op=23" class="nav-link <?php echo ($op == 23) ? 'active' : ''; ?>"><i class="nav-icon fas fa-user-tie text-warning"></i><p>Candidato Presidenti</p></a></li>
 			<?php } ?>
-			<?php if ($tipo_consultazione == 'comunali') { ?>
+			<?php if ($tipo_consultazione == 'comunali' or $tipo_consultazione == 'ballottaggio comunali') { ?>
 			<li class="nav-item"><a href="modules.php?op=24" class="nav-link <?php echo ($op == 24) ? 'active' : ''; ?>"><i class="nav-icon fas fa-user-tie text-warning"></i><p>Candidato Sindaco</p></a></li>
 			<?php } ?>
 			<?php if ($tipo_consultazione == 'camera' or $tipo_consultazione == 'senato' ) { ?>
 			<li class="nav-item"><a href="modules.php?op=27" class="nav-link <?php echo ($op == 27) ? 'active' : ''; ?>"><i class="nav-icon fas fa-user-tag text-success"></i><p>Candidato Uninominale</p></a></li>
 			<?php } ?>
-			<?php if ($tipo_consultazione == 'europee' or $tipo_consultazione == 'comunali' or $tipo_consultazione == 'regionali') { ?>
+			<?php if ($tipo_consultazione == 'europee' or $tipo_consultazione == 'comunali' or $tipo_consultazione == 'ballottaggio comunali' or $tipo_consultazione == 'regionali') { ?>
 			<li class="nav-item"><a href="modules.php?op=25" class="nav-link <?php echo ($op == 25) ? 'active' : ''; ?>"><i class="nav-icon fas fa-list-alt text-info"></i><p>Lista</p></a></li>
 			<?php } ?>
 			<?php if ($tipo_consultazione == 'camera' or $tipo_consultazione == 'senato' or $tipo_consultazione == 'senato' ) { ?>
@@ -212,7 +213,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 			<?php if ($tipo_consultazione == 'referendum') { ?>
 			<li class="nav-item"><a href="modules.php?op=30" class="nav-link <?php echo ($op == 30) ? 'active' : ''; ?>"><i class="nav-icon fas fa-question-circle text-warning"></i><p>Quesito Referendario</p></a></li>
 			<?php } ?>
-			<?php if ($tipo_consultazione != 'referendum' && $tipo_consultazione != 'camera' && $tipo_consultazione != 'senato') { ?>
+			<?php if ($tipo_consultazione != 'referendum' && $tipo_consultazione != 'ballottaggio comunali' && $tipo_consultazione != 'camera' && $tipo_consultazione != 'senato') { ?>
 			<li class="nav-item"><a href="modules.php?op=26" class="nav-link <?php echo ($op == 26) ? 'active' : ''; ?>"><i class="nav-icon fas fa-user-check text-success"></i><p>Candidati</p></a></li>
 			<?php } ?>
 		 </ul>

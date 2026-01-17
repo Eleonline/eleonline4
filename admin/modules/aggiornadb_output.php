@@ -1,30 +1,71 @@
 <?php
-// Disabilita buffering di output PHP
+// =======================================
+// Bridge streaming per aggiornamento DB
+// Compatibile Eleonline4 legacy
+// Non modifica aggiornadbTo4.php
+// =======================================
+
+// Disabilita buffering PHP
 while (ob_get_level() > 0) {
     ob_end_flush();
 }
 ob_implicit_flush(true);
 
-// Forza il browser o il terminale a ricevere subito qualcosa
+// =======================================
+// Include config SENZA session_start (evita warning)
+// =======================================
+
+define('NO_SESSION', true);  // segnala a config.php di non avviare sessione
+require_once __DIR__ . '/../config/config.php';
+
+// =======================================
+// Alias legacy richiesti da aggiornadbTo4.php
+// =======================================
+global $pdo, $prefix, $dbname;
+$dbi = $pdo;
+
+// Verifica connessione
+if (!$dbi) {
+    echo "ERRORE: Connessione DB NON inizializzata\n";
+    exit;
+}
+
+// =======================================
+// Inizio streaming log
+// =======================================
+header('Content-Type: text/plain; charset=utf-8');
+header('Cache-Control: no-cache');
+
+// Kick iniziale per flush immediato browser
 echo str_repeat(' ', 2048);
 flush();
 
-// Funzione per stampare immediatamente
-function send_output($msg, $type = 'info') {
+// Funzione comoda per log live
+function send_output($msg) {
     echo $msg . "\n";
     flush();
     if (ob_get_length()) ob_flush();
 }
 
-// Percorso allo script di aggiornamento
-$aggiornaDbFile = __DIR__ . '/aggiornadb.php';
+// =======================================
+// Percorso script legacy
+// =======================================
+$aggiornaDbFile = __DIR__ . '/../includes/aggiornadbTo4.php';
+
+send_output("=== AVVIO AGGIORNAMENTO DATABASE ===");
 
 if (file_exists($aggiornaDbFile)) {
-    send_output("Trovato script di aggiornamento database: aggiornadb.php. Esecuzione in corso...");
-    include $aggiornaDbFile;
-    send_output("Esecuzione aggiornadb.php completata.");
-    send_output("Aggiornamento DB completato con successo.");
+
+    send_output("Script trovato: aggiornadbTo4.php");
+    send_output("Esecuzione in corso...\n");
+
+    require_once $aggiornaDbFile;
+
+    send_output("\n=== AGGIORNAMENTO DATABASE COMPLETATO ===");
+
 } else {
-    send_output("Nessuno script di aggiornamento database trovato in admin/modules/aggiornadb.php. Saltando aggiornamento database...");
+
+    send_output("ERRORE: aggiornadbTo4.php NON trovato");
+    send_output($aggiornaDbFile);
+
 }
-?>

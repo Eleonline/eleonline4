@@ -8,16 +8,14 @@ Dashboard:
 Sistema:
 - Stato Sistema: ok
 - Log attività : ok
-- Sblocco ip: fare pagina ip consentire\negato. possibilmente salvare sul db.
+- Gestione ip: ok
 
 Impostazione e dati generali:
 - configurazione sito: ok
 - tema colore: ok
-- Anagrafica enti/comuni: quando salvo uno stemma mi da questo errore 
-"Warning: file_put_contents(../client/documenti/img/logo.jpg): Failed to open stream: No such file or directory in C:\xampp\htdocs\sviluppo\eleonline4\admin\modules\salva_comune.php on line 37"
-sistemare graficamente.
+- Anagrafica enti/comuni: sistemare graficamente.
 - Aggiornamento REV : da verificare.
-- Aggiornamento Data base : creare pagina nuova. 
+- Aggiornamento Data base : creata la pagina verificare. 
 
 Utenti e permessi:
 - Gestione utenti: mettere il menù a tendina per Operatore e Operatore esterno (prsidenti o addetto raccolta dati esterni).
