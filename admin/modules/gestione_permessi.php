@@ -32,6 +32,9 @@ let deleteUtente = null;
 // Gestione visibilità dei div in base al livello
 function scegliTipo() {
     const val = document.getElementById("livello").value;
+	if(val!==0) 
+		document.getElementById('permessi').value=0;
+    document.getElementById('divpermessi').style.display = val == '0' ? 'block' : 'none';
     document.getElementById('divelencosedi').style.display = val == '1' ? 'block' : 'none';
     document.getElementById('divelencosezioni').style.display = val == '2' ? 'block' : 'none';
 }
@@ -74,12 +77,31 @@ function editUser(id) {
 
     // Aggiorna titolo form
     formTitle.innerText = "Modifica permesso utente";
+	
+	if(document.getElementById("id_sede"+id).innerText>0){
+		document.getElementById("livello").selectedIndex=1;
+		document.getElementById("divelencosedi").style.display='block';
+		document.getElementById("divpermessi").style.display='none';
+		document.getElementById("sedi").value=document.getElementById("id_sede"+id).innerText;
+		
+	}
+	if(document.getElementById("id_sez"+id).innerText>0){
+		document.getElementById("livello").selectedIndex=2;
+		document.getElementById("divelencosezioni").style.display='block';
+		document.getElementById("divpermessi").style.display='none';
+		document.getElementById("sezioni").value=document.getElementById("id_sez"+id).innerText;
+	
+	}
+	
+	if(document.getElementById("permessi"+id).innerText==64)
+		document.getElementById("permessi").selectedIndex=1;
 }
 
 // Aggiungi o salva utente
 function aggiungiUser(e) {
     e.preventDefault();
     const livello = document.getElementById("livello").value;
+    const permessi = document.getElementById("permessi").value;
     const utente = document.getElementById("utente").value;
     let sedi = 0, sezioni = 0;
 
@@ -88,6 +110,7 @@ function aggiungiUser(e) {
 
     const formData = new FormData();
     formData.append('funzione', 'salvaPermesso');
+    formData.append('permessi', permessi);
     formData.append('utente', utente);
     formData.append('sedi', sedi);
     formData.append('sezioni', sezioni);

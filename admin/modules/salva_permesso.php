@@ -12,6 +12,7 @@ else
 
 $param=strtolower($_SERVER['REQUEST_METHOD']) == 'get' ? $_GET : $_POST;
 if (isset($param['utente'])) $utente=$param['utente']; else $utente='';
+if (isset($param['permessi'])) $permessi=$param['permessi']; else $permessi='0';
 if (isset($param['sedi'])) $sedi=$param['sedi']; else $sedi='0';
 if (isset($param['sezioni'])) $sezioni=$param['sezioni']; else $sezioni='0';
 if (isset($param['op'])) $op=addslashes($param['op']); else $op='';
@@ -22,9 +23,15 @@ if(!$sedi) $sedi=0;
 if(!$sezioni) $sezioni=0;
 $salvato=0;
 $err=0;
+if($permessi==1) $responsabile=1; else $responsabile=0;
 if($sezioni) $permessi=16;
 elseif($sedi) $permessi=32;
-else $permessi=64;
+else {
+	if($responsabile)
+		$permessi=64;
+	else
+		$permessi=32;
+}
 $query="select * from ".$prefix."_ele_operatore where aid=:utente and id_cons=:id_cons";
 $res = $dbi->prepare("$query");
 $res->execute([

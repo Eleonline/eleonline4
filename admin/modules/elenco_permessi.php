@@ -64,6 +64,13 @@ if (!count($non_autorizzati)) {
                             <option value="2">Singola sezione</option>
                         </select>
                     </div>
+                    <div class="form-group col-md-4" id="divpermessi">
+                        <label for="permessi">Ruolo</label>
+                        <select class="form-control" id="permessi" name="permessi" >
+                            <option value="0">Operatore</option>
+                            <option value="1">Responsabile</option>
+                        </select>
+                    </div>
 
                     <!-- SEDI -->
                     <div class="form-group col-md-2" id="divelencosedi" style="display:none;">
@@ -116,6 +123,7 @@ if (!count($non_autorizzati)) {
       <thead>
         <tr>
           <th>Username</th>
+          <th>Ruolo</th>
           <th>Sede</th>
           <th>Sezione</th>
           <th>Azioni</th>
@@ -125,12 +133,14 @@ if (!count($non_autorizzati)) {
       <tbody>
       <?php
       $row = elenco_permessi();
+	  $ruolo=['16'=>'Operatore','32'=>'Operatore','64'=>'Responsabile'];
       $i = 0;
       foreach ($row as $val):
           $i++;
       ?>
         <tr id="riga<?= $i ?>">
           <td id="utente<?= $i ?>"><?= $val['aid'] ?></td>
+          <td><?= $ruolo[$val['permessi']] ?></td>
           <td id="sedi<?= $i ?>"><?= $val['indirizzo'] ?></td>
           <td id="sezioni<?php echo $i; ?>">
 <?php
@@ -142,6 +152,7 @@ if (empty($val['indirizzo']) && empty($val['num_sez'])) {
 ?>
 </td>
           <td>
+		  <div id="permessi<?= $i ?>" style="display:none;"><?= $val['permessi'] ?></div>
 		  <div id="id_sede<?= $i ?>" style="display:none;"><?= $val['id_sede'] ?></div>
 		  <div id="id_sez<?= $i ?>" style="display:none;"><?= $val['id_sez'] ?></div>
             <button class="btn btn-sm btn-warning me-1" onclick="editUser(<?= $i ?>)">
