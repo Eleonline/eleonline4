@@ -13,7 +13,7 @@ $filedati="../documenti/backup/file_bak_".$id_cons.".txt";
 // Controllo se il file esiste
 if(!file_exists($filedati)){
     $errore = 1;
-    $log[] = "File di backup non trovato: $filedati";
+    $backupMancante = true; // Flag per mostrare messaggio
 } 
 // Se il file esiste e il pulsante è stato premuto, esegui il ripristino
 else if(isset($_POST['startRestore'])) {
@@ -130,6 +130,13 @@ else if(isset($_POST['startRestore'])) {
 
     <h2><i class="fas fa-database"></i> Ripristino Backup Eleonline</h2>
 
+    <?php if(!empty($backupMancante)): ?>
+		<div class="alert alert-danger">
+			<i class="fas fa-exclamation-triangle me-2"></i>
+			<strong>Impossibile eseguire il ripristino:</strong> nessun backup disponibile.
+		</div>
+	<?php else: ?>
+
     <div class="card card-primary shadow-sm mb-3">
       <div class="card-header">
         <h3 class="card-title">Ripristina Backup</h3>
@@ -173,6 +180,8 @@ else if(isset($_POST['startRestore'])) {
         ?>
       </div>
     </div>
+
+    <?php endif; ?>
 
   </div>
 </section>

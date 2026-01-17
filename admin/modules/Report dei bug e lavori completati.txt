@@ -32,7 +32,7 @@ Importa Dati:
 - Webservice : da fare.
 - importa da dait: da verificare.
 - Scarica liste : da verificare.
-- Ripristina dati: da verifica e quando non esiste il file mettere un messaggio "non ci sono backup da ripristinare".
+- Ripristina dati: ok
 
 Gestion liste e candidati:
 - Camera:
