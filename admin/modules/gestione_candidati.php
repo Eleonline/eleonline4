@@ -23,11 +23,11 @@ $candidato = htmlspecialchars(ucfirst(_CANDIDATO));
 
 <section class="content">
   <div class="container-fluid mt-3">
-    <h2><i class="fas fa-user-tie mr-2"></i>Gestione <?= $candidato ?> <?= ($candidato !== 'Listino bloccato') ? ' di Lista' : '' ?></h2>
+    <h2><i class="fas fa-user-tie mr-2"></i>Gestione <?= $candidato ?> </h2>
 
     <div class="card mb-4" id="formCandidatoCard">
       <div class="card-header bg-primary text-white">
-        <h3 class="card-title" id="titoloCandidato">Aggiungi <?= $candidato ?> <?= ($candidato !== 'Listino bloccato') ? ' di Lista' : '' ?></h3>
+        <h3 class="card-title" id="titoloCandidato">Aggiungi <?= $candidato ?></h3>
       </div>
       <div class="card-body">
         <form id="candidatoForm" method="post" enctype="multipart/form-data" onsubmit="aggiungiCandidato(event)">

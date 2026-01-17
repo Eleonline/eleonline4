@@ -22,7 +22,7 @@ Utenti e permessi:
 - Permessi: carica anche per superuser (non deve visualizzare).
 
 Setup Configurazione:
-- Configura consultazione: Fare la procedura elimina solo dati.
+- Configura consultazione: Fare la procedura elimina solo dati. Mettere ordine da ultima legge in vigore a quella vecchia.
 - Configura Affluenza: ok.
 - Configura Circoscrizione: non lo utilizzo io quindi non sò cosa và qui.
 - Configura Sede Elttorale: verificare long e lat se corrispondono il resto e mappe. Caricamento e Modifica ok
@@ -36,18 +36,14 @@ Importa Dati:
 
 Gestion liste e candidati:
 - Camera:
-	- Candidato uninomile: cambiare intestazione.
-	- Lista collegata: erorre: Fatal error: Uncaught Error: Undefined constant "_LISTA" in C:\xampp\htdocs\sviluppo\eleonline4\admin\modules\gestione_liste.php:19 Stack trace: #0 C:\xampp\htdocs\sviluppo\eleonline4\admin\modules\contenuto.php(76): include() #1 C:\xampp\htdocs\sviluppo\eleonline4\admin\modules\modules.php(78): include('C:\\xampp\\htdocs...') #2 {main} thrown in C:\xampp\htdocs\sviluppo\eleonline4\admin\modules\gestione_liste.php on line 19
-	- Listino Bloccato: cambiare intestazione
-	
-Warning: Undefined array key 0 in C:\xampp\htdocs\sviluppo\eleonline4\admin\modules\gestione_candidati.php on line 8
-
-Warning: Trying to access array offset on value of type null in C:\xampp\htdocs\sviluppo\eleonline4\admin\modules\gestione_candidati.php on line 8
+	- Candidato uninomile: ok.
+	- Lista collegata: ok 
+	- Listino Bloccato: ok
 
 Senato:
-	- Candidato uninomile: stesso problema della camera
-	- Lista collegata: stesso problema della camera
-	- Listino Bloccato: stesso problema della camera
+	- Candidato uninomile: ok
+	- Lista collegata: ok
+	- Listino Bloccato: ok
  
 Comunali:
 - Candidato Sindaco: verificare anteprima immagini. Non aggiorna lista. Non trova la posizione libera.Non controlla se la posizione è occupata. il pulsante elimina non funziona.
@@ -57,7 +53,6 @@ Comunali:
 Ballottaggio: e tutto da fare
 - Candidato Sindaco: da fare
 - Lista: da fare
-- Candidati: da eliminare
 
 Circoscrizione: non lo utilizzo io quindi non sò cosa và qui.
 
