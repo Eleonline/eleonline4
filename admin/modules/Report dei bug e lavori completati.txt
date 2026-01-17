@@ -13,7 +13,7 @@ Sistema:
 Impostazione e dati generali:
 - configurazione sito: ok
 - tema colore: ok
-- Anagrafica enti/comuni: sistemare graficamente.
+- Anagrafica enti/comuni: ok
 - Aggiornamento REV : da verificare.
 - Aggiornamento Data base : creata la pagina verificare. 
 

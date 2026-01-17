@@ -94,35 +94,64 @@ $row=dati_comune($predefinito);
           <button type="submit" class="btn btn-success" id="submitBtn">Aggiorna dati</button>
           <button type="reset" class="btn btn-secondary" id="cancelEdit">Annulla</button>
         </form>
-		<div class="d-flex justify-content-end" id="risultato"></div>
+		
       </div>
     </div>
 
   </div>
 </section>
+<!-- Toast container in basso a destra -->
+<div id="toast-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 1060;"></div>
 
 <script>
+function mostraToast(messaggio, tipo='success') {
+    const container = document.getElementById('toast-container');
+
+    // Crea il toast
+    const toast = document.createElement('div');
+    toast.className = `toast bg-${tipo} text-white border-0 show`;
+    toast.setAttribute('role','alert');
+    toast.setAttribute('aria-live','assertive');
+    toast.setAttribute('aria-atomic','true');
+    toast.style.minWidth = '250px';
+    toast.style.maxWidth = '90vw'; // responsive per smartphone
+    toast.style.marginBottom = '10px';
+    toast.style.padding = '10px';
+    toast.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
+
+    // Contenuto con pulsante chiudi
+    toast.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">
+                ${messaggio}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Chiudi"></button>
+        </div>
+    `;
+
+    container.appendChild(toast);
+
+    // Rimuovi automaticamente dopo 4 secondi
+    setTimeout(() => { toast.remove(); }, 4000);
+}
 
 function aggiungiComune(e) {
-    e.preventDefault();
+    e.preventDefault(); // blocca il submit normale
 
     const fileInput = document.getElementById('stemma');
     const file = fileInput.files[0];
-	const denominazione = document.getElementById ( "denominazione" ).value
-	const indirizzo = document.getElementById ( "indirizzo" ).value
-	const cap = document.getElementById ( "cap" ).value
-	const email = document.getElementById ( "email" ).value
-	const centralino = document.getElementById ( "centralino" ).value
-	const fax = document.getElementById ( "fax" ).value
-	const abitanti = document.getElementById ( "abitanti" ).value
-	const codiceIstat = document.getElementById ( "codice_istat" ).value
-	const capoluogo = document.getElementById ( "capoluogo" ).value
+    const denominazione = document.getElementById("denominazione").value;
+    const indirizzo = document.getElementById("indirizzo").value;
+    const cap = document.getElementById("cap").value;
+    const email = document.getElementById("email").value;
+    const centralino = document.getElementById("centralino").value;
+    const fax = document.getElementById("fax").value;
+    const abitanti = document.getElementById("abitanti").value;
+    const codiceIstat = document.getElementById("codice_istat").value;
+    const capoluogo = document.getElementById("capoluogo").value;
 
-    // Crea un oggetto FormData e aggiungi il file
     const formData = new FormData();
-	if (file) {
-		formData.append('stemma', file);
-	}
+    if(file) formData.append('stemma', file);
     formData.append('funzione', 'salvaComune');
     formData.append('descrizione', denominazione);
     formData.append('indirizzo', indirizzo);
@@ -135,21 +164,21 @@ function aggiungiComune(e) {
     formData.append('capoluogo', capoluogo);
     formData.append('op', 'salva');
 
-    // Invia la richiesta AJAX usando Fetch
     fetch('../principale.php', {
         method: 'POST',
-        body: formData // FormData viene gestito automaticamente da Fetch per l'upload
+        body: formData
     })
-    .then(response => response.text()) // O .json() se il server risponde con JSON
+    .then(response => {
+        if(!response.ok) throw new Error('Server risponde con status ' + response.status);
+        return response.text();
+    })
     .then(data => {
-        risultato.innerHTML = data; // Mostra la risposta del server
-		document.getElementById("bottoneStato").focus();
+        mostraToast('Dati salvati correttamente!', 'success');
+        console.log('Risposta server:', data);
     })
     .catch(error => {
-        console.error('Errore durante l\'upload:', error);
-        risultato.innerHTML = 'Si è verificato un errore durante l\'upload.';
+        console.error('Errore fetch:', error);
+        mostraToast('Si è verificato un errore durante l\'upload.', 'danger');
     });
-};
-
-
+}
 </script>
