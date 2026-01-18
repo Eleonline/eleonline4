@@ -12,21 +12,21 @@ else
 
 $param=strtolower($_SERVER['REQUEST_METHOD']) == 'get' ? $_GET : $_POST;
 if (isset($param['descrizione'])) $descrizione=$param['descrizione']; else $descrizione='';
-if (isset($param['op'])) $op=$param['op']; else $op='';
+if (isset($param['op'])) $op=intval($param['op']); else $op='0';
 if (isset($param['data_inizio'])) $data_inizio=$param['data_inizio']; else $data_inizio='';
 if (isset($param['data_fine'])) $data_fine=$param['data_fine']; else $data_fine='';
 if (isset($param['link_dait'])) $link_dait=$param['link_dait']; else $link_dait='';
-if (isset($param['tipo'])) $tipo_cons=$param['tipo']; else $tipo_cons='';
-if (isset($param['id_cons_gen'])) $id_cons_gen=$param['id_cons_gen']; else $id_cons_gen='';
-if (isset($param['chiusa'])) $chiusa=$param['chiusa']; else $chiusa='';
-if (isset($param['id_conf'])) $id_conf=$param['id_conf']; else $id_conf='';
-if (isset($param['preferita'])) $preferita=$param['preferita']; else $preferita='0';
-if (isset($param['preferenze'])) $preferenze=$param['preferenze']; else $preferenze='';
-if (isset($param['id_fascia'])) $id_fascia=$param['id_fascia']; else $id_fascia='';
-if (isset($param['vismf'])) $vismf=$param['vismf']; else $vismf='';
-if (isset($param['solo_gruppo'])) $solo_gruppo=$param['solo_gruppo']; else $solo_gruppo='';
-if (isset($param['disgiunto'])) $disgiunto=$param['disgiunto']; else $disgiunto='';
-if (isset($param['proiezione'])) $proiezione=$param['proiezione']; else $proiezione='';
+if (isset($param['tipo'])) $tipo_cons=intval($param['tipo']); else $tipo_cons='0';
+if (isset($param['id_cons_gen'])) $id_cons_gen=intval($param['id_cons_gen']); else $id_cons_gen='0';
+if (isset($param['chiusa'])) $chiusa=intval($param['chiusa']); else $chiusa='0';
+if (isset($param['id_conf'])) $id_conf=intval($param['id_conf']); else $id_conf='0';
+if (isset($param['preferita'])) $preferita=intval($param['preferita']); else $preferita='0';
+if (isset($param['preferenze'])) $preferenze=intval($param['preferenze']); else $preferenze='0';
+if (isset($param['id_fascia'])) $id_fascia=intval($param['id_fascia']); else $id_fascia='0';
+if (isset($param['vismf'])) $vismf=intval($param['vismf']); else $vismf='0';
+if (isset($param['solo_gruppo'])) $solo_gruppo=intval($param['solo_gruppo']); else $solo_gruppo='0';
+if (isset($param['disgiunto'])) $disgiunto=intval($param['disgiunto']); else $disgiunto='0';
+if (isset($param['proiezione'])) $proiezione=intval($param['proiezione']); else $proiezione='0';
 if($preferita == 'true') {
 	$preferita=1; 
 	$sql="update ".$prefix."_ele_cons_comune set preferita='0' where preferita='1'";

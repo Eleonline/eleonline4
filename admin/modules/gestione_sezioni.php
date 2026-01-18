@@ -5,8 +5,9 @@ $inizioNoGenere = strtotime('2025/06/30');
 $row = dati_consultazione(0);
 $dataInizio = strtotime($row[0]['data_inizio']);
 $sezioni = elenco_sezioni();
+$numeroSezioni=count($sezioni);
 $row = elenco_sedi();
-$maxNumero = count($sezioni) ? end($sezioni)['num_sez'] : 0;
+$maxNumero = $numeroSezioni ? end($sezioni)['num_sez'] : 0;
 $maxNumero++;
 ?>
 <input type="hidden" id="consultazioneAttiva" value="1">
@@ -68,7 +69,15 @@ $maxNumero++;
     <!-- LISTA SEZIONI -->
     <div class="card mb-4">
       <div class="card-header bg-secondary text-white">
-        <h3 class="card-title">Lista Sezioni</h3>
+        <h3 class="card-title"><div id="avvisoSezioni">
+		<?php if($maxNumero==($numeroSezioni+1)) { ?>
+			Lista Sezioni
+		<?php }elseif($maxNumero==($numeroSezioni+2)) { ?>
+			Attenzione è stata saltata una sezione
+		<?php }else{ ?>
+			Attenzione sono state saltate delle sezioni
+		<?php } ?>
+		</div></h3>
       </div>
       <div class="card-body table-responsive">
         <table class="table table-bordered table-hover" id="sezioniTable">
@@ -154,10 +163,24 @@ function aggiungiSezione(e) {
             resetFormSezione();
             aggiornaNumero();
 			document.getElementById('form-title').textContent = "Aggiungi Sezione";
+			controlloSaltoSezioni();
         });
 }
 
 let deleteIndexSezione = null;
+
+function controlloSaltoSezioni() { debugger
+	const numero = document.getElementById('saltate').innerText;
+    if(Number(numero)==0) {
+		document.getElementById('avvisoSezioni').innerText = 'Lista Sezioni';
+	}
+    if(Number(numero)==1) {
+		document.getElementById('avvisoSezioni').innerText = 'Attenzione è stata saltata una sezione';
+	}
+	if(Number(numero)>1) {
+		document.getElementById('avvisoSezioni').innerText = 'Attenzione sono state saltate '+numero+' sezioni';
+	}
+}
 
 function confermaEliminaSezione(index) {
     deleteIndexSezione = index;
@@ -193,6 +216,7 @@ document.getElementById('confirmDeleteSezioneBtn').addEventListener('click', () 
 		document.getElementById ( "btnSalvaSezione" ).textContent = "Aggiungi";
 		document.getElementById('form-title').textContent = "Aggiungi Sezione";
 		aggiornaNumero();
+		controlloSaltoSezioni();
     })
 
 

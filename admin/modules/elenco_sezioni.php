@@ -20,6 +20,8 @@ if (count($row)) {
 } else {
     $maxNumero = 0;
 }
+$arsez=array();
+for($i=1;$i<$maxNumero;$i++) $arsez[$i]=$i;
 $maxNumero++;
 ?>
 
@@ -29,7 +31,7 @@ $maxNumero++;
 </tr>
 
 <!-- Ciclo sezioni -->
-<?php foreach ($row as $key => $val): ?>
+<?php foreach ($row as $key => $val): $arsez[$key]=0;?>
 <tr id="riga<?= $key ?>">
 
     <td id="idSede<?= $key ?>" style="display:none;"><?= $val['id_sede'] ?></td>
@@ -48,5 +50,8 @@ $maxNumero++;
     </td>
 
 </tr>
-<?php endforeach; ?>
-
+<?php endforeach;
+$nonpres=0; 
+foreach($arsez as $key=>$val) if($val!=0) $nonpres++;
+?>
+<tr><td colspan="8" style="display:none;" id="saltate"><?= $nonpres ?></td></tr>

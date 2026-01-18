@@ -79,7 +79,7 @@ $indirizzoweb  = isset($param['indirizzoweb']) ? addslashes($param['indirizzoweb
 
         <!-- FASE 1 – CONSULTAZIONE -->
         <?php if ($fase == 1) {
-            $urlrem = "$indirizzoweb/file.php?fase=1";
+            $urlrem = "$indirizzoweb/file.php?fase=1&tipo_cons=$tipo_cons";
         ?>
           <input type="hidden" name="op" value="20">
           <input type="hidden" name="fase" value="2">
