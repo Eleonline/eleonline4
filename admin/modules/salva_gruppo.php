@@ -84,7 +84,6 @@ if(isset($_FILES['cg']['name']) and $_FILES['cg']['name']) {
 	$campi.= ", cg ";
 }
 #####
-
 $salvato=0;
 if($op=='cancella_parziale') {
 	$cond='';
@@ -123,6 +122,19 @@ if($op=='cancella_parziale') {
 	}
 }else{
 	if($op=='cancella') {
+		$query="select * from ".$prefix."_ele_lista where id_gruppo=:id_gruppo";
+		$res = $dbi->prepare("$query");
+		$res->execute([
+			':id_gruppo' => $id_gruppo
+		]);
+		if($res->rowCount()) { echo "2"; return;}
+		$query="select * from ".$prefix."_ele_voti_gruppo where id_gruppo=:id_gruppo";
+		$res = $dbi->prepare("$query");
+		$res->execute([
+			':id_gruppo' => $id_gruppo
+		]);
+		if($res->rowCount()) { echo "3"; return;}
+			
 		if (is_file($pathdoc."img/".$nameimg))
 			rename($pathdoc."img/".$nameimg,$pathbak."img/".$nameimg);
 		if (is_file($pathdoc."cv".$namecv))
@@ -148,7 +160,15 @@ if($op=='cancella_parziale') {
 			':id_gruppo' => $id_gruppo
 		]);
 		if($res->rowCount()) { //update
-
+			$query="select * from ".$prefix."_ele_gruppo where id_cons=:id_cons and num_gruppo=:num_gruppo and id_gruppo!=:id_gruppo";
+			$res = $dbi->prepare("$query");
+			$res->execute([
+				':id_cons' => $id_cons,
+				':num_gruppo' => $numero,
+				':id_gruppo' => $id_gruppo
+			]);
+			$row=$res->fetch(PDO::FETCH_BOTH);
+			if($res->rowCount()) { echo "1"; return;}
 			$sql="update ".$prefix."_ele_gruppo set descrizione=:descrizione,num_gruppo=:numero $nomestemma $nomeprg $nomecv $nomecg where  id_gruppo=:id_gruppo";
 			try {
 				$compl = $dbi->prepare("$sql");

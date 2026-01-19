@@ -20,7 +20,7 @@ $maxNumero++;
 
     <div class="card mb-4" id="formCandidatoCard">
       <div class="card-header bg-primary text-white">
-        <h3 class="card-title" id="form-title">Aggiungi <?= htmlspecialchars(ucfirst(_GRUPPO)) ?></h3>
+        <h3 class="card-title"><div id="form-title">Aggiungi <?= htmlspecialchars(ucfirst(_GRUPPO)) ?></div></h3>
       </div>
       <div class="card-body">
         <form id="gruppoForm" method="post" enctype="multipart/form-data" onsubmit="aggiungiGruppo(event)">
@@ -45,7 +45,7 @@ $maxNumero++;
             
             <!-- Simbolo -->
             <div class="form-group flex-fill" style="margin-bottom:0;">
-              <label for="simbolo" style="font-weight:600; font-size:0.85rem;">Simbolo<br><small>(max 300x300)</small></label>
+              <label for="simbolo" style="font-weight:600; font-size:0.85rem;">Simbolo<br><small>(max 1000x1000)</small></label>
               <div class="d-flex align-items-center gap-2 mt-1">
                 <img id="anteprimaStemma" src="" alt="Anteprima stemma"
                      style="width:80px; height:80px; border:1px solid #ccc; padding:2px; object-fit:contain; visibility:hidden;">
@@ -115,7 +115,75 @@ $maxNumero++;
     </div>
   </div>
 </section>
+<!-- Modal conferma eliminazione -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="confirmDeleteLabel">
+          <i class="fas fa-exclamation-triangle me-2"></i>Conferma eliminazione
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Chiudi">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
 
+      <div class="modal-body">
+
+  <p>
+    Sei sicuro di voler eliminare il gruppo
+    <strong id="deleteGruppo"></strong>?
+  </p>
+
+  <hr>
+
+  <p class="mb-2"><strong>Eliminazione selettiva (opzionale):</strong></p>
+
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="flag_simbolo">
+    <label class="form-check-label" for="flag_simbolo">
+      Simbolo
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="flag_programma">
+    <label class="form-check-label" for="flag_programma">
+      Programma
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="flag_cv">
+    <label class="form-check-label" for="flag_cv">
+      Curriculum Vitae
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="flag_cg">
+    <label class="form-check-label" for="flag__cg">
+      Casellario Giudiziale
+    </label>
+  </div>
+
+  <small class="text-muted d-block mt-2">
+    Se non selezioni nulla verrà eliminato l’intero gruppo.
+  </small>
+
+</div>
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <i class="fas fa-times me-1"></i>Annulla
+        </button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+          <i class="fas fa-trash me-1"></i>Elimina
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 
 <script>
@@ -127,6 +195,7 @@ $maxNumero++;
 const simboloInput = document.getElementById('simbolo');
 if(simboloInput){
     simboloInput.addEventListener('change', function(event) {
+		if(event.target.files[0]==null) return;
         const file = event.target.files[0];
         const preview = document.getElementById('anteprimaStemma');
 
@@ -188,14 +257,17 @@ function aggiungiGruppo(e) {
     })
     .then(response => response.text())
     .then(data => {
-        // Mostra eventuali messaggi dal server
-        console.log(data);
+		if(data=='1') alert('Questo numero di posizione è già assegnato ad altro gruppo');
+		else {	document.getElementById('risultato').innerHTML  = data;
 
-        // Reset form
-        resetFormGruppo();
-        aggiornaNumero();
-        document.getElementById('form-title').textContent = "Aggiungi <?= htmlspecialchars(ucfirst(_GRUPPO)) ?>";
+			// Mostra eventuali messaggi dal server
+			console.log(data);
 
+			// Reset form
+			resetFormGruppo();
+			aggiornaNumero();
+			document.getElementById('form-title').textContent = "Aggiungi <?= htmlspecialchars(ucfirst(_GRUPPO)) ?>";
+		}
         // Ricarica lista aggiornata
 //        ricaricaListaGruppi();
     });
@@ -223,7 +295,7 @@ function deleteGruppo(index) {
     document.getElementById("deleteGruppo").textContent = numero + " - " + denominazione;
 
     $('#confirmDeleteModal').modal('show');
-}
+
 
 document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
     if (!deleteIdGruppo) return;
@@ -244,7 +316,7 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
             eliminazioneParziale = true;
         }
     });
-
+debugger
     formData.append('op', eliminazioneParziale ? 'cancella_parziale' : 'cancella');
 
     fetch('../principale.php', {
@@ -253,15 +325,19 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
     })
     .then(response => response.text())
     .then(data => {
+		if(data=='2') alert('Non è possibile cancellare il gruppo perché ci sono liste collegate');
+		else if(data=='3') alert('Non è possibile cancellare il gruppo perché ci sono dei voti assegnati');
+		else { document.getElementById('risultato').innerHTML  = data;
+        document.getElementById('risultato').innerHTML = data;
         console.log(data);
         $('#confirmDeleteModal').modal('hide');
         deleteIdGruppo = null;
         resetFormGruppo();
         aggiornaNumero();
-        ricaricaListaGruppi();
+		}
     });
 });
-
+}
 // ===========================
 // ANNULLA MODIFICA
 // ===========================

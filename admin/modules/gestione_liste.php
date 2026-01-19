@@ -59,7 +59,7 @@ $maxNumero++;
     <div class="form-row mt-2" style="display:flex; gap:0.5rem; align-items:flex-start;">
       <div class="form-group flex-fill" style="margin-bottom:0;">
         <label for="simbolo" style="font-weight:600; font-size:0.85rem;">
-          Simbolo<br><small>(max 300x300)</small>
+          Simbolo<br><small>(max 1000x1000)</small>
         </label>
         <div style="display:flex; align-items:center; gap:10px; margin-top:5px;">
           <!-- Anteprima stemma -->
@@ -178,9 +178,9 @@ document.getElementById('simbolo').addEventListener('change', function(event) {
             img.src = e.target.result;
 
             img.onload = function() {
-                // Controllo dimensioni massime 300x300
-                if (img.width > 300 || img.height > 300) {
-                    alert("Attenzione: l'immagine supera le dimensioni massime 300x300 px.");
+                // Controllo dimensioni massime 1000x1000
+                if (img.width > 1000 || img.height > 1000) {
+                    alert("Attenzione: l'immagine supera le dimensioni massime 1000x1000 px.");
                     preview.src = '';
                     preview.style.visibility = 'hidden';
                     event.target.value = ''; // reset file input

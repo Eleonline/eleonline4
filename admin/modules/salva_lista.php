@@ -138,7 +138,7 @@ if(!$salvato){
 #		echo "Nuovo orario di rilevazione inserito";
 }else{
 	echo "<tr><td colspan=\"8\">Errore, impossibile salvare i dati - $sql</td></tr>";
-}
+ }
 include('modules/elenco_liste.php');
 
 function imgresize($file) {
