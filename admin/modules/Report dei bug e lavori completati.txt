@@ -8,7 +8,7 @@ Dashboard:
 Sistema:
 - Stato Sistema: ok
 - Log attività : ok
-- Gestione ip: ok
+- Gestione ip: risolvere il problema check_access.php.
 
 Impostazione e dati generali:
 - configurazione sito: ok
