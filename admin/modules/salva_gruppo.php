@@ -189,6 +189,15 @@ if($op=='cancella_parziale') {
 				$salvato=1;
 			}
 		}else{
+			$query="select * from ".$prefix."_ele_gruppo where id_cons=:id_cons and num_gruppo=:num_gruppo and id_gruppo!=:id_gruppo";
+			$res = $dbi->prepare("$query");
+			$res->execute([
+				':id_cons' => $id_cons,
+				':num_gruppo' => $numero,
+				':id_gruppo' => $id_gruppo
+			]);
+			$row=$res->fetch(PDO::FETCH_BOTH);
+			if($res->rowCount()) { echo "1"; return;}
 			#insert
 			$sql="insert into ".$prefix."_ele_gruppo (id_cons, num_gruppo, descrizione, id_circ, num_circ $campi) values( :id_cons, :numero, :descrizione, :id_circ, :num_circ $preimg )";
 			try {
