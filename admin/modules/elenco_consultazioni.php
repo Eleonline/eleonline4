@@ -36,9 +36,7 @@ if(!$cambia) {
             <?= $val['link_trasparenza'] ?>
 		</div>
  
-        <div id="id_cons_gen<?= $key ?>">
-            <?= $val['id_cons_gen'] ?>
-        </div>
+        <div id="id_cons_gen<?= $key ?>"><?= $val['id_cons_gen'] ?></div>
 
         <div id="tipo_cons<?= $key ?>">
             <?= $val['tipo_cons'] ?> 

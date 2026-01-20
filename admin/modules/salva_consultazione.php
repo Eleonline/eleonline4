@@ -12,7 +12,7 @@ else
 
 $param=strtolower($_SERVER['REQUEST_METHOD']) == 'get' ? $_GET : $_POST;
 if (isset($param['descrizione'])) $descrizione=$param['descrizione']; else $descrizione='';
-if (isset($param['op'])) $op=intval($param['op']); else $op='0';
+if (isset($param['op'])) $op=$param['op']; else $op='0';
 if (isset($param['data_inizio'])) $data_inizio=$param['data_inizio']; else $data_inizio='';
 if (isset($param['data_fine'])) $data_fine=$param['data_fine']; else $data_fine='';
 if (isset($param['link_dait'])) $link_dait=$param['link_dait']; else $link_dait='';
@@ -27,6 +27,7 @@ if (isset($param['vismf'])) $vismf=intval($param['vismf']); else $vismf='0';
 if (isset($param['solo_gruppo'])) $solo_gruppo=intval($param['solo_gruppo']); else $solo_gruppo='0';
 if (isset($param['disgiunto'])) $disgiunto=intval($param['disgiunto']); else $disgiunto='0';
 if (isset($param['proiezione'])) $proiezione=intval($param['proiezione']); else $proiezione='0';
+
 if($preferita == 'true') {
 	$preferita=1; 
 	$sql="update ".$prefix."_ele_cons_comune set preferita='0' where preferita='1'";
@@ -85,7 +86,7 @@ if($res->rowCount()) {
 				$salvato=1;
 			}		
 		}
-	}elseif($op=='cancella'){	
+	}elseif($op=='cancella' || $op=='cancellaDati'){	
 		#delete
 		$sql="select * from ".$prefix."_ele_cons_comune where id_cons_gen=:id_cons_gen";
 		$compl = $dbi->prepare("$sql");
@@ -169,18 +170,18 @@ if($res->rowCount()) {
 		$compl->execute([
 			':id_cons' => $id_cons
 			]);
-		
-		$sql="delete from ".$prefix."_ele_consultazione where  id_cons_gen=:id_cons_gen";
-		$compl = $dbi->prepare("$sql");
-		$compl->execute([
-			':id_cons_gen' => $id_cons_gen
-			]);
-		$sql="delete from ".$prefix."_ele_cons_comune where  id_cons_gen=:id_cons_gen";
-		$compl = $dbi->prepare("$sql");
-		$compl->execute([
-			':id_cons_gen' => $id_cons_gen
-			]);
-		if(!$compl->rowCount()) $salvato=1;
+		if($op=='cancella'){
+			$sql="delete from ".$prefix."_ele_consultazione where  id_cons_gen=:id_cons_gen";
+			$compl = $dbi->prepare("$sql");
+			$compl->execute([
+				':id_cons_gen' => $id_cons_gen
+				]);
+			$sql="delete from ".$prefix."_ele_cons_comune where  id_cons_gen=:id_cons_gen";
+			$compl = $dbi->prepare("$sql");
+			$compl->execute([
+				':id_cons_gen' => $id_cons_gen
+				]);
+		}
 	}
 }else{
 	#insert

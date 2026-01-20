@@ -331,8 +331,9 @@ confirmDeleteCheckbox.addEventListener('change', () => {
     confirmDeleteBtn.disabled = !confirmDeleteCheckbox.checked;
 });
 
+
 confirmDeleteBtn.addEventListener('click', function() {
-    if(deleteId && confirmDeleteCheckbox.checked) {
+    if(deleteId && confirmDeleteCheckbox.checked) { debugger
         const formData = new FormData();
         formData.append('funzione', 'salvaConsultazione');
         formData.append('id_cons_gen', deleteId);
