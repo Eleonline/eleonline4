@@ -58,6 +58,7 @@ define('MAX_IP_ATTEMPTS', 10);
 define('IP_BLOCK_TIME', 86400); // 24 ore
 
 $ipAllowedFile = __DIR__ . '/includer/ip_allowed.json';
+$ipManualBlockFile = __DIR__ . '/includer/ip_block_MANUAL.json';
 
 // Controlla se l'IP è nella whitelist
 function is_ip_allowed($ip) {
@@ -113,6 +114,22 @@ function clear_ip_fail($ip) {
     if (file_exists($file)) unlink($file);
 }
 
+function is_ip_manual_blocked($ip) {
+    global $ipManualBlockFile;
+
+    if (!file_exists($ipManualBlockFile)) return false;
+
+    $data = json_decode(file_get_contents($ipManualBlockFile), true);
+    if (!is_array($data)) return false;
+
+    foreach ($data as $row) {
+        if (isset($row['ip']) && $row['ip'] === $ip) {
+            return true;
+        }
+    }
+    return false;
+}
+
 /* ===== CONFIG E DB ===== */
 global $id_comune;
 if (file_exists("config/config.php")) {
@@ -166,6 +183,13 @@ if (isset($_POST['username'], $_POST['password'])) {
     $aid = trim($_POST['username']);
     $pwd = $_POST['password'];
     $ip = $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN';
+
+	// BLOCCO BLACKLIST MANUALE
+	if (is_ip_manual_blocked($ip)) {
+		$_SESSION['msglogout'] = 6;
+		header("Location: login.php");
+		exit;
+	}
 
     // BLOCCO IP
     $ip_block = is_ip_blocked($ip);

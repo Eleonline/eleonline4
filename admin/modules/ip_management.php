@@ -29,7 +29,7 @@ foreach (glob($includerDir . 'ip_block_*.json') as $file) {
 
     $ipsBlocked[] = [
         'file' => basename($file),
-        'ip' => $data['ip'] ?? basename($file),
+        'ip' => str_replace(['ip_block_','.json'],'',basename($file)),
         'attempts' => (int)$data['attempts'],
         'last_attempt' => $data['last_attempt'] ?? 0
     ];
