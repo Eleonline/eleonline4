@@ -235,6 +235,14 @@ if(simboloInput){
 // ===========================
 function aggiungiGruppo(e) {
     e.preventDefault();
+const numero = document.getElementById("numero").value;
+
+// CONTROLLO POSIZIONE GIÀ USATA
+if (posizioneUsata(numero)) {
+    alert("Questo numero di posizione è già assegnato");
+    document.getElementById("numero").focus();
+    return; // BLOCCA IL SALVATAGGIO
+}
 
     const formData = new FormData();
     formData.append('funzione', 'salvaGruppo');
@@ -272,17 +280,6 @@ function aggiungiGruppo(e) {
 //        ricaricaListaGruppi();
     });
 }
-
-// ===========================
-// RICARICA LISTA -> inutile, non si può richiamare direttamente il file e l'aggiornamento viene già fatto alla fine del salvataggio
-// ===========================
-// function ricaricaListaGruppi() {
-//    fetch('elenco_gruppi.php')
-//        .then(response => response.text())
-//        .then(html => {
-//            document.getElementById('risultato').innerHTML = html;
-//        });
-//}
 
 // ===========================
 // CANCELLA GRUPPO
@@ -412,6 +409,26 @@ function resetFormGruppo() {
 function aggiornaNumero() {
     const maxNum = document.getElementById("maxNumero").innerText;
     document.getElementById('numero').value = maxNum;
+}
+
+function posizioneUsata(num, idEditing = '') {
+
+    let trovata = false;
+
+    document.querySelectorAll('[id^="numero"]').forEach(el => {
+
+        const n = el.innerText.trim();
+        const idRow = el.id.replace('numero','');
+
+        // se sto modificando salto la riga corrente
+        if(idEditing && idRow === idEditing) return;
+
+        if(n == num) {
+            trovata = true;
+        }
+    });
+
+    return trovata;
 }
 
 function scrollToFormTitle() {
