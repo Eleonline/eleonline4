@@ -1,6 +1,47 @@
 <?php
 session_start();
 define('APP_RUNNING', true);
+$ip = $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN';
+$ipManualBlockFile = __DIR__ . '/includes/ip_block_MANUAL.json';
+$ip_block_file_path = __DIR__ . '/logs/ip_block_' . md5($ip) . '.json';
+if (!defined('MAX_IP_ATTEMPTS')) {
+    define('MAX_IP_ATTEMPTS', 10);
+}
+
+if (!defined('IP_BLOCK_TIME')) {
+    define('IP_BLOCK_TIME', 86400); // 24 ore
+}
+
+
+// Controlla blacklist manuale
+if (file_exists($ipManualBlockFile)) {
+    $data = json_decode(file_get_contents($ipManualBlockFile), true);
+    if (is_array($data)) {
+        foreach ($data as $row) {
+            if (isset($row['ip']) && $row['ip'] === $ip) {
+                header("Location: blocked.php");
+                exit;
+            }
+        }
+    }
+}
+
+// Controlla superamento tentativi IP
+if (file_exists($ip_block_file_path)) {
+    $data = json_decode(file_get_contents($ip_block_file_path), true);
+    if (isset($data['attempts']) && $data['attempts'] >= MAX_IP_ATTEMPTS) {
+        $elapsed = time() - ($data['last_attempt'] ?? 0);
+        if ($elapsed < IP_BLOCK_TIME) {
+            // IP superato => blocco immediato
+            header("Location: blocked.php");
+            exit;
+        } else {
+            // tempo scaduto => reset
+            unlink($ip_block_file_path);
+        }
+    }
+}
+
 
 /* ===== LOG LOGIN ===== */
 function login_log($user, $esito, $id_comune) {
@@ -54,8 +95,6 @@ function clear_login_fail($user) {
 }
 
 /* ===== ANTI-BRUTEFORCE IP CON WHITELIST ===== */
-define('MAX_IP_ATTEMPTS', 10);
-define('IP_BLOCK_TIME', 86400); // 24 ore
 
 $ipAllowedFile = __DIR__ . '/includes/ip_allowed.json';
 $ipManualBlockFile = __DIR__ . '/includes/ip_block_MANUAL.json';
