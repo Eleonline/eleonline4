@@ -82,6 +82,13 @@ foreach($row as $val){
 		$query="select id_sede from ".$prefix."_ele_sede where id_cons=:id_cons and indirizzo=:indirizzo";
 		$res = $dbi->prepare("$query");
 		$res->execute([
+			':id_cons' => $id_cons,
+			':indirizzo' => $valsede['indirizzo']
+		]);
+		list($idsedenew)=$res->fetch(PDO::FETCH_NUM);
+		$query="select id_sede from ".$prefix."_ele_sede where id_cons=:id_cons and indirizzo=:indirizzo";
+		$res = $dbi->prepare("$query");
+		$res->execute([
 			':id_cons' => $idcpred,
 			':indirizzo' => $valsede['indirizzo']
 		]);
@@ -98,7 +105,7 @@ foreach($row as $val){
 			try {
 				$compl->execute([
 				':id_cons' => $id_cons,
-				':id_sede' => $idsedetmp, 
+				':id_sede' => $idsedenew, 
 				':num_sez' => $valsezione['num_sez'], 
 				':maschi' => $valsezione['maschi'], 
 				':femmine' => $valsezione['femmine'], 
