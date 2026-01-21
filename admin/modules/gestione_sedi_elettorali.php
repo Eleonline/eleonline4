@@ -310,9 +310,14 @@ document.querySelector('.btnApriMappaForm').addEventListener('click', () => {
             })
             .catch(() => alert('Errore durante la ricerca dell\'indirizzo con Google Maps.'));
     } else {
-        // APRI OSM IN NUOVA FINESTRA senza fetch → niente CORS
-        const url = `https://www.openstreetmap.org/search?query=${encodeURIComponent(fullQuery)}`;
-        window.open(url, '_blank');
+        // Nominatim OSM
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(fullQuery)}`)
+        .then(res => res.json())
+        .then(results => {
+            if (results.length === 0) return alert('Nessun risultato trovato per "' + fullQuery + '".');
+            apriMappa(results[0]);
+        })
+        .catch(() => alert('Errore durante la ricerca dell\'indirizzo con OSM.'));
     }
 });
 
