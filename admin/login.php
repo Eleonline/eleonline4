@@ -57,8 +57,8 @@ function clear_login_fail($user) {
 define('MAX_IP_ATTEMPTS', 10);
 define('IP_BLOCK_TIME', 86400); // 24 ore
 
-$ipAllowedFile = __DIR__ . '/includer/ip_allowed.json';
-$ipManualBlockFile = __DIR__ . '/includer/ip_block_MANUAL.json';
+$ipAllowedFile = __DIR__ . '/includes/ip_allowed.json';
+$ipManualBlockFile = __DIR__ . '/includes/ip_block_MANUAL.json';
 
 // Controlla se l'IP è nella whitelist
 function is_ip_allowed($ip) {
