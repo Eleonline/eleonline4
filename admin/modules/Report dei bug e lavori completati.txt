@@ -25,8 +25,8 @@ Setup Configurazione:
 - Configura consultazione: ok
 - Configura Affluenza: ok.
 - Configura Circoscrizione: non lo utilizzo io quindi non sò cosa và qui.
-- Configura Sede Elettorale: verificare long e lat se corrispondono il resto e mappe. Caricamento e Modifica ok
-- Configura Sezione: ok per il caricamento per la modifica da errore: La somma tra iscritti maschi e femmine non corrisponde al totale(fare il controllo data). problmea ncon modifica non riporta descrizione e totali pernde i maschi. 
+- Configura Sede Elettorale: Caricamento e Modifica ok. nella pagina gestione_sedi_elettorali.php mettere la variabile di scelta del provider.
+- Configura Sezione: ok caricamento. Problema con modifica non riporta descrizione(sede).
 
 Importa Dati:
 - Webservice : da fare.
