@@ -23,7 +23,7 @@ scarica_array($sql,$prefix."_ele_numero");
 $sql="select * from ".$prefix."_ele_servizio where id_cons='$id_cons'" ;
 scarica_array($sql,$prefix."_ele_servizio");
 
-$sql="select * from ".$prefix."_ele_rilaff where id_cons='$id_cons_gen'" ;
+$sql="select * from ".$prefix."_ele_rilaff where id_cons_gen='$id_cons_gen'" ;
 scarica_array($sql,$prefix."_ele_rilaff");
 
 $sql="select * from ".$prefix."_ele_voti_parziale where id_cons='$id_cons'" ;

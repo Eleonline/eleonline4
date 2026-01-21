@@ -1,16 +1,13 @@
 <?php
 require_once '../includes/check_access.php';
-function toUtf8($string) {
-    if ($string === null) return null;
-    return mb_detect_encoding($string, 'UTF-8', true)
-        ? $string
-        : mb_convert_encoding($string, 'UTF-8', 'ISO-8859-1');
-}
+global $indirizzoweb;
+$indirizzoweb=$_GET['indirizzoweb'];
+$idcomunerem=$_GET['id_comune2'];
 
 function insgruppo()
 {
 	global $prefix, $dbi;
-	global $ar_gruppo,$ar_lista,$ar_candi,$idcns,$dbname,$pathdoc,$pathbak;
+	global $ar_gruppo,$ar_lista,$ar_candi,$idcns,$dbname,$pathdoc,$pathbak,$indirizzoweb,$idcomunerem;
 
 	foreach ($ar_gruppo as $rigagruppo){
 		$newidg=0;
@@ -22,39 +19,50 @@ function insgruppo()
 		$resnew->execute();	
 		list ($campiloc) = $resnew->fetch(PDO::FETCH_NUM);		
 		foreach($rigagruppo as $key=>$campo){
-			if ($key==0) $valori="'$idcns',";
-			elseif ($key==1) {$valori.= "null"; $oldidg=$campo;}
-			elseif ($key==2) {$valori.= ",$campo"; $numg=$campo;}
-			elseif ($campo==null) $valori.= ",null";
-			elseif($key==3) {
-				$descrizione=stripslashes($campo);
-				$descrizione=strtoupper(preg_replace(array("/\'/",'/\s/'),"_",$descrizione));
-				$valori.=",'".toUtf8($campo)."'";
-				$descrizione="img_gruppo".$numg."_".$descrizione.".jpg";
-			}
-			elseif($key==4) $valori.=",'$descrizione'";
-			elseif ($key==5) {$valori.= ",null"; $stemma=stripslashes($campo);}
-			elseif ($key==6) $valori.= ",0";
-			elseif($key==7) {if($numcampi==9) $valori.=",0"; $valori.= ",'".$campo."'";}
-			elseif($key==8)  {$valori.=",'".toUtf8($campo)."'";$isnew=1;}
-			elseif ($key==9) $valori.= ",null";
-			else $valori.= ",'".$campo."'";
+			if ($key==0) {$valori0=$idcns; $idconsrem=$campo;}
+			elseif ($key==1) {$valori1= "null"; $oldidg=$campo;}
+			elseif ($key==2) $valori2= $campo;
+			elseif ($key==3) $valori3= $campo;
+			elseif($key==4) $valori4=utf8_encode($campo);
+			elseif ($key==5) $valori5= stripslashes($campo);
+			elseif ($key==6) $valori6= $campo;
+			elseif($key==7) $valori7=$campo; #$valori8= "'".$campo."'";}
+			elseif($key==8)  {$valori8=utf8_encode($campo);$isnew=1;}
+			elseif ($key==9) $valori9= $campo;
+			elseif ($key==10) $valori10= $campo;
+			elseif ($key==11) $valori11= $campo;
+			elseif ($key==12) $valori12= $campo;
+			elseif ($key==13) $valori13= intval($campo);
+#			else $valori.= ",'".$campo."'";
 			if ($key==2) $numgruppo= $campo;
-			elseif($key==9) $programma=stripslashes($campo);
 		}		
 		$i=$numcampi;
 		if($numcampi<$campiloc) 
 			while($i<$campiloc) 
 			{
-				if($i==13) $valori.=",'0'";
-				else $valori.=",null";
+				if($i==13) ${'valori'.$i}="0";
+				else ${'valori'.$i}="null";
 				$i++;
 			}
-		if(isset($valori)){ 
-			$sql="insert into ".$prefix."_ele_gruppo values($valori)";
+		if(isset($valori0)){ 
+			$sql="insert into ".$prefix."_ele_gruppo (id_cons,num_gruppo,descrizione,simbolo,stemma,id_circ,num_circ,prognome,programma,cv,cg,eletto,id_colore) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			try {
 				$res_gruppo = $dbi->prepare("$sql");
-				$res_gruppo->execute();	
+				$res_gruppo->bindParam(1, $valori0, PDO::PARAM_INT); 
+				$res_gruppo->bindParam(2, $valori2, PDO::PARAM_INT);
+				$res_gruppo->bindParam(3,  $valori3);
+				$res_gruppo->bindParam(4,   $valori4);
+				$res_gruppo->bindParam(5, $valori5); 
+				$res_gruppo->bindParam(6, $valori6, PDO::PARAM_INT); 
+				$res_gruppo->bindParam(7, $valori7);
+				$res_gruppo->bindParam(8,  $valori8);
+				$res_gruppo->bindParam(9,  $valori9);
+				$res_gruppo->bindParam(10,  $valori10, PDO::PARAM_STR); 
+				$res_gruppo->bindParam(11, $valori11); 
+				$res_gruppo->bindParam(12, $valori12, PDO::PARAM_INT); 
+				$res_gruppo->bindParam(13, $valori13); 
+
+				$res_gruppo->execute();
 			}
 			catch(PDOException $e)
 			{
@@ -69,21 +77,47 @@ function insgruppo()
 				$_SESSION['gruppi']['idg_'.$oldidg]=$newidg;
 				$_SESSION['gruppi']['numg_'.$numgruppo]=$numgruppo;						
 			}
-			$nameimg="$descrizione"; #img_gruppo".$numgruppo."_".str_replace(" ","_",$descrizione).".jpg";
-			$nameprg="prg_gruppo".$numgruppo."_".str_replace(" ","_",$descrizione).".pdf";
-			if(isset($stemma) and mb_strlen($stemma)) {
+			$descrizione=str_replace(" ","_",$valori3);
+			$descrizione=substr($descrizione,0,60);
+			$nameimg="img_gruppo".$numgruppo."_".$descrizione.".jpg";
+			$nameprg="prg_gruppo".$numgruppo."_".$descrizione.".pdf";
+			$namecv="cv_gruppo".$numgruppo."_".$descrizione.".pdf";
+			$namecg="cg_gruppo".$numgruppo."_".$descrizione.".pdf";
+			if(isset($valori4) and mb_strlen($valori4)) {
 				if(file_exists($pathdoc."img/".$nameimg)) {
 					if(copy($pathdoc."img/".$nameimg,$pathbak."img/".$nameimg))
 						unlink($pathdoc."img/".$nameimg);
 				}
-				file_put_contents($pathdoc."img/".$nameimg, $stemma);
+			$fileappo=file_get_contents($indirizzoweb."/documenti/$idcomunerem/$idconsrem/img/$nameimg");
+			if(strlen($fileappo))	
+				file_put_contents($pathdoc."img/".$nameimg, $fileappo);
 			}
-			if(mb_strlen($programma)) {
-				if(file_exists($pathdoc."programmi/".$nameimg)) {
-					if(copy($pathdoc."programmi/".$nameimg,$pathbak."programmi/".$nameimg))
-						unlink($pathdoc."programmi/".$nameimg);
+			if(mb_strlen($valori8)) {
+				if(file_exists($pathdoc."programmi/".$nameprg)) {
+					if(copy($pathdoc."programmi/".$nameprg,$pathbak."programmi/".$nameprg))
+						unlink($pathdoc."programmi/".$nameprg);
 				}
-				file_put_contents($pathdoc."programmi/".$nameimg, $programma);
+			$fileappo=file_get_contents($indirizzoweb."/documenti/$idcomunerem/$idconsrem/programmi/$nameprg");
+			if(strlen($fileappo))	
+				file_put_contents($pathdoc."programmi/".$nameprg, $fileappo);
+			}
+			if(mb_strlen($valori10)) {
+				if(file_exists($pathdoc."cv/".$namecv)) {
+					if(copy($pathdoc."cv/".$namecv,$pathbak."cv/".$namecv))
+						unlink($pathdoc."cv/".$namecv);
+				}
+			$fileappo=file_get_contents($indirizzoweb."/documenti/$idcomunerem/$idconsrem/cv/$namecv");
+			if(strlen($fileappo))	
+				file_put_contents($pathdoc."cv/".$namecv, $fileappo);
+			}
+			if(mb_strlen($valori11)) {
+				if(file_exists($pathdoc."cg/".$namecg)) {
+					if(copy($pathdoc."cg/".$namecg,$pathbak."cg/".$namecg))
+						unlink($pathdoc."cg/".$namecg);
+				}
+			$fileappo=file_get_contents($indirizzoweb."/documenti/$idcomunerem/$idconsrem/cg/$namecg");
+			if(strlen($fileappo))	
+				file_put_contents($pathdoc."cg/".$namecg, $fileappo);
 			}
 		}
 	}
@@ -121,7 +155,7 @@ global $ar_lista,$idcns,$pathdoc,$pathbak;
 			elseif ($key==7) {
 				$descrizione=stripslashes($campo);
 				$descrizione=strtoupper(preg_replace(array("/\'/",'/\s/'),"_",$descrizione));
-				$valori.="'".toUtf8($campo)."',";
+				$valori.="'".$campo."',";
 				$descrizione="img_lista".$numlista."_".str_replace(" ","_",$descrizione).".jpg";
 			}
 			elseif ($key==8) $valori.= "'$descrizione',"; 
@@ -176,7 +210,7 @@ function inscandi()
 	$sql="SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$dbname' AND TABLE_NAME = '".$prefix."_ele_lista'";
 	$resnew = $dbi->prepare("$sql");
 	$resnew->execute();	
-	list ($campiloc) = $resnew->fetch(PDO::FETCH_NUM);		
+	list ($campiloc) = $resnew->fetch(PDO::FETCH_NUM);
 	foreach ($ar_candi as $rigacandi){
 		if(!isset($rigacandi[2])) continue;
 		$okc=0;
@@ -187,7 +221,7 @@ function inscandi()
 			if ($key==0) $valori= "null,";
 			elseif ($key==1) $valori.="'$idcns',";
 			elseif ($key==2) {$valori.= "'$newidl'"; if ($campo!=$oldidl) $okc=1;}
-			else $valori.= ",'".toUtf8($campo)."'";
+			else $valori.= ",'".$campo."'";
 		}
 		if(isset($valori) and $valori!=''){
 			for($x=count($rigacandi);$x<$campiloc;$x++) 
@@ -290,8 +324,7 @@ if(!$cons)
 // Set counters
     $currentLine = 0;
     $cntFile = count($arrFile);
-	$tabs=array($prefix."_ele_gruppo",$prefix."_ele_lista",$prefix."_ele_candidato",$prefix."_ele_circoscrizione");
-	$x=0;$k=0;
+	$tabs=array($prefix."_ele_gruppo",$prefix."_ele_lista",$prefix."_ele_candidato",$prefix."_ele_circoscrizione",$prefix."_ele_voti_candidato");
 	$scarto=0;
 	$primog=0;
 	$primol=0;
@@ -312,11 +345,12 @@ if(!$cons)
 		if(isset($arrFile[$currentLine])){ 
 			$appo=substr($arrFile[$currentLine],1,-1); 
 			if($appo==$prefix."_ele_candidati") $appo=$prefix."_ele_candidato";
-		}else $appo='';
-		if (isset($tabs[($x+1)]) and $appo==$tabs[($x+1)]){ $x++;$conf=$tabs[$x];$currentLine++; continue;}
+		}#else $appo='';
+		if (isset($tabs[($x+2)]) and ($appo==$tabs[($x+2)])) $x++;
+		if (isset($tabs[($x+1)]) and ($appo==$tabs[($x+1)])){ $x++;$conf=$tabs[$x];$currentLine++; continue;}
 		$test=explode(':',$appo);
 		if(!is_array($test)) {die("errore di import<br>");}
-		foreach($test as $key=>$val) { 
+		foreach($test as $key=>$val) {
 			if ($conf==$prefix."_ele_gruppo"){ 
 				$ar_gruppo[$z][$key]=addslashes(base64_decode($val));
 			}
@@ -331,7 +365,7 @@ if(!$cons)
 				$ar_lista[$z][$key]=addslashes(base64_decode($val));
 			}
 			elseif ($conf==$prefix."_ele_candidato" or $conf==$prefix."_ele_candidati"){ 
-				if($primog==0){
+				if($primog==0){	
 					$gruppofil= array_filter($ar_gruppo);
 					$numgruppo=count($gruppofil);
 					insgruppo();
@@ -347,7 +381,7 @@ if(!$cons)
 				}
 				$ar_candi[$z][$key]=addslashes(base64_decode($val));
 			}
-			elseif ($conf==$prefix."_ele_circoscrizione"){
+			elseif ($conf==$prefix."_ele_circoscrizione" || $conf==$prefix."_ele_voti_candidato"){
 				if($primog==0){
 					$gruppofil= array_filter($ar_gruppo);
 					$numgruppo=count($gruppofil);
@@ -367,7 +401,8 @@ if(!$cons)
 					$fine=1;
 					break;
 				}
-	}}
+			}
+		}
 			$currentLine++;
 			$z++;
 	}

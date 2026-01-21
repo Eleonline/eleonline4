@@ -79,13 +79,18 @@ foreach($row as $val){
 			echo $e->getMessage();
 			$salvato=1;
 		}
-		$query="select id_sede from ".$prefix."_ele_sede where id_cons='$idcpred' and indirizzo='".$valsede['indirizzo']."'";
+		$query="select id_sede from ".$prefix."_ele_sede where id_cons=:id_cons and indirizzo=:indirizzo";
 		$res = $dbi->prepare("$query");
-		$res->execute();
+		$res->execute([
+			':id_cons' => $idcpred,
+			':indirizzo' => $valsede['indirizzo']
+		]);
 		list($idsedetmp)=$res->fetch(PDO::FETCH_NUM);
-		$sql="select * from ".$prefix."_ele_sezione where id_sede='".$valsede['id_sede']."'"; 
+		$sql="select * from ".$prefix."_ele_sezione where id_sede=:id_sede"; 
 		$sth = $dbi->prepare("$sql");
-		$sth->execute();
+		$sth->execute([
+			':id_sede' => $idsedetmp
+		]);
 		$rowsezioni = $sth->fetchAll(PDO::FETCH_BOTH);
 		foreach($rowsezioni as $valsezione) {
 			$sql="insert into ".$prefix."_ele_sezione (id_cons, id_sede, num_sez, maschi, femmine, validi, nulli, bianchi, contestati, solo_gruppo, autorizzati_m, autorizzati_f, voti_nulli, validi_lista, contestati_lista, voti_nulli_lista, solo_lista, colore) values( :id_cons, :id_sede, :num_sez, :maschi, :femmine, :validi, :nulli, :bianchi, :contestati, :solo_gruppo, :autorizzati_m, :autorizzati_f, :voti_nulli, :validi_lista, :contestati_lista, :voti_nulli_lista, :solo_lista, :colore )"; 

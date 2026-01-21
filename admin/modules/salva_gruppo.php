@@ -22,13 +22,13 @@ if (isset($param['flag_programma'])) $flag_programma=$param['flag_programma']; e
 if (isset($param['flag_cv'])) $flag_cv=$param['flag_cv']; else $flag_cv=0;
 if (isset($param['flag_cg'])) $flag_cg=$param['flag_cg']; else $flag_cg=0;
 global $id_comune,$id_cons_gen,$id_cons,$prefix,$aid,$dbi;
-
+$descrcorta=substr($descrizione,0,60);
 $pathdoc="../client/documenti/$id_comune/$id_cons/";
 $pathbak="../client/documenti/backup/$id_comune/$id_cons/";
-$nameimg="img_gruppo".$numero."_".str_replace(" ","_",$descrizione).".jpg";
-$namecv="cv_gruppo".$numero."_".str_replace(" ","_",$descrizione).".pdf";
-$namecg="cg_gruppo".$numero."_".str_replace(" ","_",$descrizione).".pdf";
-$nameprg="prg_gruppo".$numero."_".str_replace(" ","_",$descrizione).".pdf";
+$nameimg="img_gruppo".$numero."_".str_replace(" ","_",$descrcorta).".jpg";
+$namecv="cv_gruppo".$numero."_".str_replace(" ","_",$descrcorta).".pdf";
+$namecg="cg_gruppo".$numero."_".str_replace(" ","_",$descrcorta).".pdf";
+$nameprg="prg_gruppo".$numero."_".str_replace(" ","_",$descrcorta).".pdf";
 
 if (!is_dir($pathdoc."img")) mkdir($pathdoc."img", 0777, true);
 if (!is_dir($pathdoc."cv")) mkdir($pathdoc."cv", 0777, true);

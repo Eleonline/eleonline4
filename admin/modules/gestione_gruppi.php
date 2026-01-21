@@ -316,7 +316,7 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
             eliminazioneParziale = true;
         }
     });
-debugger
+
     formData.append('op', eliminazioneParziale ? 'cancella_parziale' : 'cancella');
 
     fetch('../principale.php', {

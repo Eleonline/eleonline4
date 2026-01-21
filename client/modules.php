@@ -175,7 +175,7 @@ if (isset($param['op']) and $param['op']=='backup')
 {
 $id_cons_bak=intval($param['id_cons_gen']);
 if (isset($param['id_comune'])) $id_combak=intval($param['id_comune']); else $id_combak=$_SESSION['id_comune'];
-$sql = $dbi->prepare("SELECT id_cons,id_conf FROM ".$prefix."_ele_cons_comuni where id_cons_gen='$id_cons_bak' and id_comune='$id_combak'");
+$sql = $dbi->prepare("SELECT id_cons,id_conf FROM ".$prefix."_ele_cons_comune where id_cons_gen='$id_cons_bak' and id_comune='$id_combak'");
 $sql->execute();
 list($id_cons,$hondt) = $sql->fetch(PDO::FETCH_NUM);
 
