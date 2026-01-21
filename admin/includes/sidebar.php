@@ -149,12 +149,19 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
     </p>
   </a>
   <ul class="nav nav-treeview">
-    <li class="nav-item">
-      <a href="modules.php?op=150&funzione=recuperaEventiElettorali" class="nav-link <?php echo ($op == 150) ? 'active' : ''; ?>">
-        <i class="nav-icon fas fa-cloud text-info"></i>
-        <p>Webservices</p>
-      </a>
-    </li>
+	<?php
+	// Variabile di controllo: 1 = attivo, 0 = disattivo
+	$webservices_attivo = 0; 
+	?>
+
+	<li class="nav-item">
+	  <a href="<?php echo $webservices_attivo ? 'modules.php?op=150&funzione=recuperaEventiElettorali' : '#'; ?>" 
+		 class="nav-link <?php echo ($op == 150) ? 'active' : ''; ?> <?php echo !$webservices_attivo ? 'disabled' : ''; ?>">
+		<i class="nav-icon fas fa-cloud <?php echo $webservices_attivo ? 'text-info' : 'text-secondary'; ?>"></i>
+		<p class="<?php echo $webservices_attivo ? '' : 'text-secondary'; ?>">Webservices</p>
+	  </a>
+	</li>
+
     <li class="nav-item">
       <a href="modules.php?op=19" class="nav-link <?php echo ($op == 19 or $op == 79 or $op == 80 or $op == 81) ? 'active' : ''; ?>">
         <i class="nav-icon fas fa-download text-success"></i>
