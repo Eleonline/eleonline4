@@ -1,6 +1,4 @@
 <?php
-$maps_provider = 'openstreetmap'; // usare 'openstreetmap' oppure 'google'
-
 if ($maps_provider === 'google') {
     $google_maps_api_key = "LA_TUA_API_KEY_DAL_DB_O_CONFIG";
 } else {
@@ -168,14 +166,21 @@ function aggiornaIndirizzo(lat, lon) {
     return fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`)
       .then(res => res.json())
       .then(data => {
-        const nome = data.name || "";
-        const via = data.address?.road || data.address?.pedestrian || data.address?.footway || "";
-        const num = data.address?.house_number || "";
+        let nome = data.name || "";
+        let via = data.address?.road || data.address?.pedestrian || data.address?.footway || "";
+        let num = data.address?.house_number || "";
+
+        // Evita doppioni tra nome e via
+        if (nome && via && nome === via) {
+            nome = ""; // rimuovo il nome se è uguale alla via
+        }
+
         const indirizzoCompleto = [nome, via, num].filter(Boolean).join(" - ");
         return { address: indirizzoCompleto, lat, lon };
       })
       .catch(() => ({ address: null, lat, lon }));
 }
+
 
 // Usa posizione selezionata dal form
 closeMapBtn.addEventListener('click', () => {

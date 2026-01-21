@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/check_access.php';
 $circos=elenco_circoscrizioni();
+$maps_provider = 'openstreetmap'; // usare 'openstreetmap' oppure 'google'
 ?>
 <input type="hidden" id="consultazioneAttiva" value="3">
 <section class="content">
@@ -286,43 +287,35 @@ function aggiungiSede(e) {
 
 // --- Gestione pulsante apri mappa nel form  ---
 document.querySelector('.btnApriMappaForm').addEventListener('click', () => {
-  const container = document.querySelector('.rigaMappa');
-  const indir = container.querySelector('.indir');
-  const lat = container.querySelector('.lat');
-  const lng = container.querySelector('.lng');
-  const comuneInput = container.querySelector('.nome_comune');
+    const container = document.querySelector('.rigaMappa');
+    const indir = container.querySelector('.indir');
+    const comuneInput = container.querySelector('.nome_comune');
 
-  const comune = comuneInput ? comuneInput.value.trim() : "";
-  if (!indir) return alert('Input indirizzo non trovato.');
-  const query = indir.value.trim();
-  if (!query) return alert("Inserisci un indirizzo o nome da cercare.");
+    const comune = comuneInput ? comuneInput.value.trim() : "";
+    if (!indir) return alert('Input indirizzo non trovato.');
+    const query = indir.value.trim();
+    if (!query) return alert("Inserisci un indirizzo o nome da cercare.");
 
-  const fullQuery = comune ? `${query}, ${comune}` : query;
-  currentInputs = { indir, lat, lng };
+    const fullQuery = comune ? `${query}, ${comune}` : query;
 
-  if (maps_provider === 'google') {
-    // Google Maps Geocoding API
-    const apiKey = "LA_TUA_API_KEY_DAL_DB_O_CONFIG"; // già impostata in PHP
-    fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(fullQuery)}&key=${apiKey}`)
-        .then(res => res.json())
-        .then(results => {
-            if (!results.results || results.results.length === 0) return alert('Nessun risultato trovato per "' + fullQuery + '".');
-            const location = results.results[0].geometry.location;
-            apriMappa({ lat: location.lat, lon: location.lng });
-        })
-        .catch(() => alert('Errore durante la ricerca dell\'indirizzo con Google Maps.'));
-} else {
-    // Nominatim OSM
-    fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(fullQuery)}`)
-        .then(res => res.json())
-        .then(results => {
-            if (results.length === 0) return alert('Nessun risultato trovato per "' + fullQuery + '".');
-            apriMappa(results[0]);
-        })
-        .catch(() => alert('Errore durante la ricerca dell\'indirizzo con OSM.'));
-}
-
+    if (maps_provider === 'google') {
+        const apiKey = "LA_TUA_API_KEY_DAL_DB_O_CONFIG"; 
+        fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(fullQuery)}&key=${apiKey}`)
+            .then(res => res.json())
+            .then(results => {
+                if (!results.results || results.results.length === 0)
+                    return alert('Nessun risultato trovato per "' + fullQuery + '".');
+                const location = results.results[0].geometry.location;
+                apriMappa({ lat: location.lat, lon: location.lng });
+            })
+            .catch(() => alert('Errore durante la ricerca dell\'indirizzo con Google Maps.'));
+    } else {
+        // APRI OSM IN NUOVA FINESTRA senza fetch → niente CORS
+        const url = `https://www.openstreetmap.org/search?query=${encodeURIComponent(fullQuery)}`;
+        window.open(url, '_blank');
+    }
 });
+
 
 function apriMappaSoloVisualizza(lat, lon, indirizzo) {
     const mapPopup = document.getElementById('mapPopup');

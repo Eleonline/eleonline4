@@ -22,10 +22,10 @@ Utenti e permessi:
 - Permessi: carica anche per superuser (non deve visualizzare).
 
 Setup Configurazione:
-- Configura consultazione: Fare la procedura elimina solo dati. Mettere ordine da ultima legge in vigore a quella vecchia.
+- Configura consultazione: ok
 - Configura Affluenza: ok.
 - Configura Circoscrizione: non lo utilizzo io quindi non sò cosa và qui.
-- Configura Sede Elttorale: verificare long e lat se corrispondono il resto e mappe. Caricamento e Modifica ok
+- Configura Sede Elettorale: verificare long e lat se corrispondono il resto e mappe. Caricamento e Modifica ok
 - Configura Sezione: ok per il caricamento per la modifica da errore: La somma tra iscritti maschi e femmine non corrisponde al totale(fare il controllo data). problmea ncon modifica non riporta descrizione e totali pernde i maschi. 
 
 Importa Dati:
@@ -85,7 +85,7 @@ Login: ok
 Logout: ok
 
 siderbar.php(Menù laterale):
-- mettere non attivo e attivare dopo i caricamenti.
+- messo disattiva o attiva nel menu webservice come da esempio cosi da poter gestire sia nella parte setup consultazione e gestione liste e candidati
 
 menù.php (menù top):
 - sitemare le notifiche.
