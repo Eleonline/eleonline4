@@ -26,7 +26,7 @@ Setup Configurazione:
 - Configura Affluenza: ok.
 - Configura Circoscrizione: non lo utilizzo io quindi non sò cosa và qui.
 - Configura Sede Elettorale: Caricamento e Modifica ok. nella pagina gestione_sedi_elettorali.php mettere la variabile di scelta del provider.
-- Configura Sezione: caricamento non funziona. Problema con modifica non riporta descrizione(sede).
+- Configura Sezione: Problema con modifica non riporta descrizione(sede).
 
 Importa Dati:
 - Webservice : da fare.

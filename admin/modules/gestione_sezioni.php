@@ -4,7 +4,6 @@ require_once '../includes/check_access.php';
 $inizioNoGenere = strtotime('2025/06/30');
 $row = dati_consultazione(0);
 $dataInizio = strtotime($row[0]['data_inizio']);
-$soloTotale = ($dataInizio >= $inizioNoGenere);
 $sezioni = elenco_sezioni();
 $numeroSezioni=count($sezioni);
 $row = elenco_sedi();
@@ -39,21 +38,21 @@ $maxNumero++;
                 <?php } ?>
               </select>
             </div>
-            <?php if(!$soloTotale) { ?>
-				<div class="form-group col-md-2">
-				  <label>Maschi</label>
-				  <input type="number" id="maschi" class="form-control" min="0">
-				</div>
-				<div class="form-group col-md-2">
-				  <label>Femmine</label>
-				  <input type="number" id="femmine" class="form-control" min="0">
-				</div>
-			<?php } ?>
-			<div class="form-group col-md-2">
-			  <label>Totale iscritti</label>
-			  <input type="number" id="totale" class="form-control" min="0" required>
-			</div>
-			</div>
+            <?php $nascondi = ($inizioNoGenere > $dataInizio) ? '' : 'style="display:none;"'; ?>
+            <div class="form-group col-md-2">
+              <label><?= ($inizioNoGenere > $dataInizio) ? "Maschi" : "Iscritti"; ?></label>
+              <input type="number" id="maschi" class="form-control" min="0">
+            </div>
+            <div class="form-group col-md-2" <?= $nascondi ?>>
+              <label>Femmine</label>
+              <input type="number" id="femmine" class="form-control" min="0">
+            </div>
+            <div class="form-group col-md-2" <?= $nascondi ?>>
+              <label>Totale iscritti</label>
+              <input type="number" id="totale" class="form-control" min="0">
+            </div>
+          </div>
+
           <!-- BOTTONI -->
           <div class="row mt-2">
             <div class="col-md-2">
@@ -134,7 +133,6 @@ $maxNumero++;
   </div>
 </div>
 <script>
-const soloTotale = <?= $soloTotale ? 'true' : 'false' ?>;
 
 function aggiungiSezione(e) {
     e.preventDefault();
@@ -224,30 +222,17 @@ document.getElementById('confirmDeleteSezioneBtn').addEventListener('click', () 
 
   }
 function editSezione(index) {
-    const row = document.getElementById("riga"+index);
-
-    // ID sezione e sede dai dataset
-    document.getElementById("idSezione").value = row.dataset.idsezione;
-    document.getElementById("idSede").value = row.dataset.idsede;
-
-    // Numero sezione
-    document.getElementById("numero").value = row.querySelector("#numero"+index).innerText.trim();
-
-    // Totale iscritti sempre
-    document.getElementById("totale").value = row.querySelector("#totale"+index).innerText.trim();
-
-    // Maschi e femmine solo se vecchio sistema
-    if(!soloTotale) {
-        document.getElementById("maschi").value = row.querySelector("#maschi"+index).innerText.trim();
-        document.getElementById("femmine").value = row.querySelector("#femmine"+index).innerText.trim();
-    }
-
+    document.getElementById("idSezione").value = document.getElementById("idSezione"+index).innerText;
+    document.getElementById("idSede").value = document.getElementById("idSede"+index).innerText;
+    document.getElementById("maschi").value = document.getElementById("maschi"+index).innerText;
+    document.getElementById("femmine").value = document.getElementById("femmine"+index).innerText;
+    document.getElementById("totale").value = document.getElementById("totale"+index).innerText;
+    document.getElementById("numero").value = document.getElementById("numero"+index).innerText;
     document.getElementById("btnSalvaSezione").textContent = "Salva modifiche";
-    document.getElementById("form-title").textContent = "Modifica Sezione";
+	 document.getElementById("form-title").textContent = "Modifica Sezione";
+	document.getElementById("numero").focus();
+	
 }
-
-
-
 
 function resetFormSezione() {
     const form = document.getElementById('sezioneForm');
@@ -265,10 +250,14 @@ function aggiornaNumero() {
 }
 
 function controlloSomma() {
+
 	let maschi = Number(document.getElementById("maschi").value);
 	let femmine = Number(document.getElementById("femmine").value);
 	let totale = Number(document.getElementById("totale").value);
 	let somma = maschi + femmine;
+	 const dataSuperiore = <?= ($inizioNoGenere > $dataInizio) ? 'false' : 'true'; ?>;
+    if (dataSuperiore) 
+        return 0; 
 	if ( somma=== totale || totale===0)
 		return 0;
 	else

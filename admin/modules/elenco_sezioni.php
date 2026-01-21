@@ -1,4 +1,5 @@
 <?php
+
 if (is_file('includes/check_access.php'))
     require_once 'includes/check_access.php';
 else
@@ -40,8 +41,11 @@ $maxNumero++;
     <td id="indirizzo<?= $key ?>"><?= $val['indirizzo'] ?></td>
     <td id="maschi<?= $key ?>" style="text-align:right; <?= $nascondi ?>"><?= $val['maschi'] ?></td>
     <td id="femmine<?= $key ?>" style="text-align:right; <?= $nascondi ?>"><?= $val['femmine'] ?></td>
-    <td id="totale<?= $key ?>" style="text-align:right;"><?= $val['maschi'] + $val['femmine'] ?></td>
-    <td>
+    <td id="totale<?= $key ?>" style="text-align:right;">
+    <?= ($inizioNoGenere > $dataInizio) ? ($val['maschi'] + $val['femmine']) : $val['maschi'] ?>
+</td>
+
+	<td>
         <button class="btn btn-sm btn-warning me-1" onclick="editSezione(<?= $key ?>);">Modifica</button>
         <button type="button" class="btn btn-sm btn-danger" onclick="confermaEliminaSezione(<?= $key ?>)">
     Elimina
