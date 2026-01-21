@@ -122,7 +122,14 @@ else if(isset($_POST['startRestore'])) {
         $errore = 1;
         $log[] = "Struttura backup non valida!";
     }
+	// Se il ripristino è andato a buon fine, elimina il file di backup
+if ($errore == 0 && file_exists($filedati)) {
+    if (!unlink($filedati)) {
+        $erroreFileBackup = "Errore: impossibile eliminare il file di backup.";
+    }
 }
+
+
 ?>
 
 <section class="content">
@@ -172,11 +179,14 @@ else if(isset($_POST['startRestore'])) {
 
       <div class="card-footer">
         <?php 
-        if($errore){
-            echo '<span class="text-danger">Ripristino fallito!</span>';
-        } else if(!empty($log)){
-            echo '<span class="text-success">Ripristino completato '.date('d/m/Y H:i').'</span>';
-        }
+		if($errore){
+			echo '<span class="text-danger">Ripristino fallito!</span>';
+		} else if(!empty($log)){
+			echo '<span class="text-success">Ripristino completato '.date('d/m/Y H:i').'</span>';
+			if($erroreFileBackup){
+				echo ' <span class="text-danger">'.$erroreFileBackup.'</span>';
+			}
+		}
         ?>
       </div>
     </div>
