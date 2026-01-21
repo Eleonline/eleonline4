@@ -255,7 +255,7 @@ function controlloSomma() {
 	let femmine = Number(document.getElementById("femmine").value);
 	let totale = Number(document.getElementById("totale").value);
 	let somma = maschi + femmine;
-	 const dataSuperiore = <?= ($inizioNoGenere > $dataInizio) ? 'false' : 'true'; ?>;
+	const dataSuperiore = <?= ($inizioNoGenere > $dataInizio) ? 'false' : 'true'; ?>;
     if (dataSuperiore) 
         return 0; 
 	if ( somma=== totale || totale===0)
