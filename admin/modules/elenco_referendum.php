@@ -48,16 +48,32 @@ $prognome    = htmlspecialchars($q['prognome']    ?? '', ENT_QUOTES, 'UTF-8');
                 <td id="denominazione<?= $i ?>"><?= $denominazione ?></td>
                 <td style="background-color: <?= isset($q['id_colore']) && $q['id_colore'] ? $coloriQuesiti[$q['id_colore']]['colore'] : 'transparent' ?>">
                   <strong><?= isset($q['id_colore']) && $q['id_colore'] ? htmlspecialchars($coloriQuesiti[$q['id_colore']]['nome']) : '' ?></strong><br>
-                </td>
-                <td class="align-middle">
+				<img src="<?= $schedapath.$tabella_schede[$q['id_colore']]  ?>" style="max-height:60px;" alt="Immagine scheda">	
+				</td>
+                <td class="align-top">
                   <?php if (!empty($q['prognome']) and is_file($pdfpath.$q['prognome'])): ?>
-                    <a href="<?= $pdfpath.$q['prognome'] ?>" target="_blank" class="btn btn-sm btn-primary">Visualizza PDF</a>
-                  <?php elseif(isset($tabella_schede[$q['id_colore']])): ?><img src="<?= $schedapath.$tabella_schede[$q['id_colore']]  ?>" style="max-height:60px;" alt="Immagine scheda">
-                   
-                  <?php endif; ?>
+    
+   <a href="<?= $pdfpath.$q['prognome'] ?>" 
+   target="_blank" 
+   class="btn btn-lg btn-danger">
+    <i class="fas fa-file-pdf fa-2x text-danger"></i>
+
+</a>
+
+
+
+<?php else: ?>
+
+  <span class="position-relative d-inline-block" style="font-size:28px;">
+    <i class="fas fa-file-pdf fa-2x text-muted"></i>
+</span>
+
+
+
+<?php endif; ?>
                 </td>
                 <td><div id="id_gruppo<?= $i ?>"  style="display:none;"><?= $q['id_gruppo'] ?></div><div id="id_colore<?= $i ?>"  style="display:none;"><?= $q['id_colore'] ?></div><div id="prognome<?= $i ?>"  style="display:none;"><?= $q['prognome'] ?></div>
-				<button class="btn btn-sm btn-warning me-1" onclick="modificaQuesito(<?= $i ?>)" title="Modifica"><i class="fas fa-edit"></i></button>
+				<button class="btn btn-sm btn-warning me-1" onclick="modificaQuesito(<?= $i ?>); scrollToFormTitle();" title="Modifica">Modifica</button>
 				<button type="button" class="btn btn-sm btn-danger" onclick="deleteReferendum(<?= $i ?>)">Elimina</button>
 
                 </td>

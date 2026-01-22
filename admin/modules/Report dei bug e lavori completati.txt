@@ -22,7 +22,7 @@ Utenti e permessi:
 - Permessi: carica anche per superuser (non deve visualizzare).
 
 Setup Configurazione:
-- Configura consultazione: ok la data nella lista e americana convertire.
+- Configura consultazione: ok la data nella lista è americana convertire.
 - Configura Affluenza: ok.
 - Configura Circoscrizione: non lo utilizzo io quindi non sò cosa và qui.
 - Configura Sede Elettorale: Caricamento e Modifica ok. nella pagina gestione_sedi_elettorali.php mettere la variabile di scelta del provider.
@@ -62,7 +62,7 @@ Regionali:
 - Candidati: stessi problemi dei comunali.
 
 Referndum:
-- Quesito Referendario: manca la procedura di caricamento e modifica e elimina.
+- Quesito Referendario: da verificare. non si vede la scheda nel verde scruso solo nella lista ma nel select si.
 
 Carica informazioni:
 - Come si vota: ok.
