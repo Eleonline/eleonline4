@@ -111,30 +111,46 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 		<p>Autorizza Comune</p>
 	  </a>
 	</li-->
-    <li class="nav-item">
-      <a href="modules.php?op=10" class="nav-link  <?php echo ($op == 10) ? 'active' : ''; ?>">
-        <i class="nav-icon fas fa-users text-warning"></i>
-        <p>Configura Affluenza</p>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="modules.php?op=11" class="nav-link <?php echo ($op == 11) ? 'active' : ''; ?>">
-        <i class="nav-icon fas fa-map text-success"></i>
-        <p>Configura Circoscrizioni</p>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="modules.php?op=12" class="nav-link <?php echo ($op == 12) ? 'active' : ''; ?>">
-        <i class="nav-icon fas fa-building text-primary"></i>
-        <p>Configura Sede Elettorale</p>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="modules.php?op=13" class="nav-link <?php echo ($op == 13) ? 'active' : ''; ?>">
-        <i class="nav-icon fas fa-door-closed text-danger"></i>
-        <p>Configura Sezione</p>
-      </a>
-    </li>
+    <?php
+		// Variabili di controllo: 1 = attivo, 0 = disattivo
+		$affluenza_attivo = 1;       // Configura Affluenza
+		$circoscrizioni_attivo = 1;  // Configura Circoscrizioni
+		$sede_attivo = 1;             // Configura Sede Elettorale
+		$sezione_attivo = 1;          // Configura Sezione
+		?>
+
+		<li class="nav-item">
+		  <a href="<?php echo $affluenza_attivo ? 'modules.php?op=10' : '#'; ?>" 
+			 class="nav-link <?php echo ($op == 10) ? 'active' : ''; ?> <?php echo !$affluenza_attivo ? 'disabled' : ''; ?>">
+			<i class="nav-icon fas fa-users <?php echo $affluenza_attivo ? 'text-warning' : 'text-secondary'; ?>"></i>
+			<p class="<?php echo $affluenza_attivo ? '' : 'text-secondary'; ?>">Configura Affluenza</p>
+		  </a>
+		</li>
+
+		<li class="nav-item">
+		  <a href="<?php echo $circoscrizioni_attivo ? 'modules.php?op=11' : '#'; ?>" 
+			 class="nav-link <?php echo ($op == 11) ? 'active' : ''; ?> <?php echo !$circoscrizioni_attivo ? 'disabled' : ''; ?>">
+			<i class="nav-icon fas fa-map <?php echo $circoscrizioni_attivo ? 'text-success' : 'text-secondary'; ?>"></i>
+			<p class="<?php echo $circoscrizioni_attivo ? '' : 'text-secondary'; ?>">Configura Circoscrizioni</p>
+		  </a>
+		</li>
+
+		<li class="nav-item">
+		  <a href="<?php echo $sede_attivo ? 'modules.php?op=12' : '#'; ?>" 
+			 class="nav-link <?php echo ($op == 12) ? 'active' : ''; ?> <?php echo !$sede_attivo ? 'disabled' : ''; ?>">
+			<i class="nav-icon fas fa-building <?php echo $sede_attivo ? 'text-primary' : 'text-secondary'; ?>"></i>
+			<p class="<?php echo $sede_attivo ? '' : 'text-secondary'; ?>">Configura Sede Elettorale</p>
+		  </a>
+		</li>
+
+		<li class="nav-item">
+		  <a href="<?php echo $sezione_attivo ? 'modules.php?op=13' : '#'; ?>" 
+			 class="nav-link <?php echo ($op == 13) ? 'active' : ''; ?> <?php echo !$sezione_attivo ? 'disabled' : ''; ?>">
+			<i class="nav-icon fas fa-door-closed <?php echo $sezione_attivo ? 'text-danger' : 'text-secondary'; ?>"></i>
+			<p class="<?php echo $sezione_attivo ? '' : 'text-secondary'; ?>">Configura Sezione</p>
+		  </a>
+		</li>
+
   </ul>
 </li>
 <?php endif; ?>
@@ -198,30 +214,96 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
             </p>
           </a>
           <ul class="nav nav-treeview">
-			<?php if ($tipo_consultazione == 'regionali') { ?>
-			<li class="nav-item"><a href="modules.php?op=23" class="nav-link <?php echo ($op == 23) ? 'active' : ''; ?>"><i class="nav-icon fas fa-user-tie text-warning"></i><p>Candidato Presidenti</p></a></li>
-			<?php } ?>
-			<?php if ($tipo_consultazione == 'comunali' or $tipo_consultazione == 'ballottaggio comunali') { ?>
-			<li class="nav-item"><a href="modules.php?op=24" class="nav-link <?php echo ($op == 24) ? 'active' : ''; ?>"><i class="nav-icon fas fa-user-tie text-warning"></i><p>Candidato Sindaco</p></a></li>
-			<?php } ?>
-			<?php if ($tipo_consultazione == 'camera' or $tipo_consultazione == 'senato' ) { ?>
-			<li class="nav-item"><a href="modules.php?op=27" class="nav-link <?php echo ($op == 27) ? 'active' : ''; ?>"><i class="nav-icon fas fa-user-tag text-success"></i><p>Candidato Uninominale</p></a></li>
-			<?php } ?>
-			<?php if ($tipo_consultazione == 'europee' or $tipo_consultazione == 'comunali' or $tipo_consultazione == 'ballottaggio comunali' or $tipo_consultazione == 'regionali') { ?>
-			<li class="nav-item"><a href="modules.php?op=25" class="nav-link <?php echo ($op == 25) ? 'active' : ''; ?>"><i class="nav-icon fas fa-list-alt text-info"></i><p>Lista</p></a></li>
-			<?php } ?>
-			<?php if ($tipo_consultazione == 'camera' or $tipo_consultazione == 'senato' or $tipo_consultazione == 'senato' ) { ?>
-			<li class="nav-item"><a href="modules.php?op=28" class="nav-link <?php echo ($op == 28) ? 'active' : ''; ?>"><i class="nav-icon fas fa-link text-primary"></i><p>Lista collegata</p></a></li>
-			<?php } ?>
-			<?php if ($tipo_consultazione == 'camera' or $tipo_consultazione == 'senato' ) { ?>
-			<li class="nav-item"><a href="modules.php?op=29" class="nav-link <?php echo ($op == 29) ? 'active' : ''; ?>"><i class="nav-icon fas fa-lock text-danger"></i><p>Listino bloccato</p></a></li>
-			<?php } ?>
-			<?php if ($tipo_consultazione == 'referendum') { ?>
-			<li class="nav-item"><a href="modules.php?op=30" class="nav-link <?php echo ($op == 30) ? 'active' : ''; ?>"><i class="nav-icon fas fa-question-circle text-warning"></i><p>Quesito Referendario</p></a></li>
-			<?php } ?>
-			<?php if ($tipo_consultazione != 'referendum' && $tipo_consultazione != 'ballottaggio comunali' && $tipo_consultazione != 'camera' && $tipo_consultazione != 'senato') { ?>
-			<li class="nav-item"><a href="modules.php?op=26" class="nav-link <?php echo ($op == 26) ? 'active' : ''; ?>"><i class="nav-icon fas fa-user-check text-success"></i><p>Candidati</p></a></li>
-			<?php } ?>
+		<?php
+		// Variabili di controllo: 1 = attivo, 0 = disattivo
+		$candidato_presidenti_attivo = 1;
+		$candidato_sindaco_attivo = 1;
+		$candidato_uninominale_attivo = 1;
+		$lista_attivo = 1;
+		$lista_collegata_attivo = 1;
+		$listino_bloccato_attivo = 1;
+		$candidati_attivo = 1;
+		$quesito_referendario_attivo = 1;
+		?>
+
+		<?php if ($tipo_consultazione == 'regionali') { ?>
+		<li class="nav-item">
+		  <a href="<?php echo $candidato_presidenti_attivo ? 'modules.php?op=23' : '#'; ?>" 
+			 class="nav-link <?php echo ($op == 23) ? 'active' : ''; ?> <?php echo !$candidato_presidenti_attivo ? 'disabled' : ''; ?>">
+			<i class="nav-icon fas fa-user-tie <?php echo $candidato_presidenti_attivo ? 'text-warning' : 'text-secondary'; ?>"></i>
+			<p><?php echo $candidato_presidenti_attivo ? 'Candidato Presidenti' : 'Candidato Presidenti'; ?></p>
+		  </a>
+		</li>
+		<?php } ?>
+
+		<?php if ($tipo_consultazione == 'comunali' || $tipo_consultazione == 'ballottaggio comunali') { ?>
+		<li class="nav-item">
+		  <a href="<?php echo $candidato_sindaco_attivo ? 'modules.php?op=24' : '#'; ?>" 
+			 class="nav-link <?php echo ($op == 24) ? 'active' : ''; ?> <?php echo !$candidato_sindaco_attivo ? 'disabled' : ''; ?>">
+			<i class="nav-icon fas fa-user-tie <?php echo $candidato_sindaco_attivo ? 'text-warning' : 'text-secondary'; ?>"></i>
+			<p><?php echo $candidato_sindaco_attivo ? 'Candidato Sindaco' : 'Candidato Sindaco'; ?></p>
+		  </a>
+		</li>
+		<?php } ?>
+
+		<?php if ($tipo_consultazione == 'camera' || $tipo_consultazione == 'senato') { ?>
+		<li class="nav-item">
+		  <a href="<?php echo $candidato_uninominale_attivo ? 'modules.php?op=27' : '#'; ?>" 
+			 class="nav-link <?php echo ($op == 27) ? 'active' : ''; ?> <?php echo !$candidato_uninominale_attivo ? 'disabled' : ''; ?>">
+			<i class="nav-icon fas fa-user-tag <?php echo $candidato_uninominale_attivo ? 'text-success' : 'text-secondary'; ?>"></i>
+			<p><?php echo $candidato_uninominale_attivo ? 'Candidato Uninominale' : 'Candidato Uninominale'; ?></p>
+		  </a>
+		</li>
+		<?php } ?>
+
+		<?php if (in_array($tipo_consultazione, ['europee','comunali','ballottaggio comunali','regionali'])) { ?>
+		<li class="nav-item">
+		  <a href="<?php echo $lista_attivo ? 'modules.php?op=25' : '#'; ?>" 
+			 class="nav-link <?php echo ($op == 25) ? 'active' : ''; ?> <?php echo !$lista_attivo ? 'disabled' : ''; ?>">
+			<i class="nav-icon fas fa-list-alt <?php echo $lista_attivo ? 'text-info' : 'text-secondary'; ?>"></i>
+			<p><?php echo $lista_attivo ? 'Lista' : 'Lista'; ?></p>
+		  </a>
+		</li>
+		<?php } ?>
+
+		<?php if (in_array($tipo_consultazione, ['camera','senato'])) { ?>
+		<li class="nav-item">
+		  <a href="<?php echo $lista_collegata_attivo ? 'modules.php?op=28' : '#'; ?>" 
+			 class="nav-link <?php echo ($op == 28) ? 'active' : ''; ?> <?php echo !$lista_collegata_attivo ? 'disabled' : ''; ?>">
+			<i class="nav-icon fas fa-link <?php echo $lista_collegata_attivo ? 'text-primary' : 'text-secondary'; ?>"></i>
+			<p><?php echo $lista_collegata_attivo ? 'Lista collegata' : 'Lista collegata'; ?></p>
+		  </a>
+		</li>
+
+		<li class="nav-item">
+		  <a href="<?php echo $listino_bloccato_attivo ? 'modules.php?op=29' : '#'; ?>" 
+			 class="nav-link <?php echo ($op == 29) ? 'active' : ''; ?> <?php echo !$listino_bloccato_attivo ? 'disabled' : ''; ?>">
+			<i class="nav-icon fas fa-lock <?php echo $listino_bloccato_attivo ? 'text-danger' : 'text-secondary'; ?>"></i>
+			<p><?php echo $listino_bloccato_attivo ? 'Listino bloccato' : 'Listino bloccato'; ?></p>
+		  </a>
+		</li>
+		<?php } ?>
+
+		<?php if ($tipo_consultazione == 'referendum') { ?>
+		<li class="nav-item">
+		  <a href="<?php echo $quesito_referendario_attivo ? 'modules.php?op=30' : '#'; ?>" 
+			 class="nav-link <?php echo ($op == 30) ? 'active' : ''; ?> <?php echo !$quesito_referendario_attivo ? 'disabled' : ''; ?>">
+			<i class="nav-icon fas fa-question-circle <?php echo $quesito_referendario_attivo ? 'text-warning' : 'text-secondary'; ?>"></i>
+			<p><?php echo $quesito_referendario_attivo ? 'Quesito Referendario' : 'Quesito Referendario'; ?></p>
+		  </a>
+		</li>
+		<?php } ?>
+
+		<?php if (!in_array($tipo_consultazione, ['referendum','ballottaggio comunali','camera','senato'])) { ?>
+		<li class="nav-item">
+		  <a href="<?php echo $candidati_attivo ? 'modules.php?op=26' : '#'; ?>" 
+			 class="nav-link <?php echo ($op == 26) ? 'active' : ''; ?> <?php echo !$candidati_attivo ? 'disabled' : ''; ?>">
+			<i class="nav-icon fas fa-user-check <?php echo $candidati_attivo ? 'text-success' : 'text-secondary'; ?>"></i>
+			<p><?php echo $candidati_attivo ? 'Candidati' : 'Candidati'; ?></p>
+		  </a>
+		</li>
+		<?php } ?>
+
 		 </ul>
         </li>
 <?php endif; ?>
@@ -274,35 +356,125 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
             </p>
           </a>
           <ul class="nav nav-treeview">
-            <li class="nav-item"><a href="modules.php?op=31" class="nav-link <?php echo ($op == 31) ? 'active' : ''; ?>"><i class="nav-icon fas fa-users text-info"></i><p>Affluenza</p></a></li>
+            <?php
+			// Variabili di controllo: 1 = attivo, 0 = disattivo
+			$affluenza_attivo = 1;
+			$referendum_attivo = 1;
+			$candidato_sindaco_attivo = 1;
+			$candidato_uninominale_attivo = 1;
+			$candidato_presidenti_attivo = 1;
+			$lista_attivo = 1;
+			$lista_collegata_attivo = 1;
+			$listino_bloccato_attivo = 1;
+			$preferenze_attivo = 1;
+			$risultati_attivo = 1;
+			$assegna_seggi_attivo = 1;
+			?>
+
+			<li class="nav-item">
+			  <a href="<?php echo $affluenza_attivo ? 'modules.php?op=31' : '#'; ?>" 
+				 class="nav-link <?php echo ($op == 31) ? 'active' : ''; ?> <?php echo !$affluenza_attivo ? 'disabled' : ''; ?>">
+				<i class="nav-icon fas fa-users <?php echo $affluenza_attivo ? 'text-info' : 'text-secondary'; ?>"></i>
+				<p><?php echo $affluenza_attivo ? 'Affluenza' : 'Affluenza'; ?></p>
+			  </a>
+			</li>
+
 			<?php if ($tipo_consultazione == 'referendum') { ?>
-			<li class="nav-item"><a href="modules.php?op=40" class="nav-link <?php echo ($op == 40) ? 'active' : ''; ?>"><i class="nav-icon fas fa-balance-scale text-danger"></i><p>Referendum</p></a></li>
+			<li class="nav-item">
+			  <a href="<?php echo $referendum_attivo ? 'modules.php?op=40' : '#'; ?>" 
+				 class="nav-link <?php echo ($op == 40) ? 'active' : ''; ?> <?php echo !$referendum_attivo ? 'disabled' : ''; ?>">
+				<i class="nav-icon fas fa-balance-scale <?php echo $referendum_attivo ? 'text-danger' : 'text-secondary'; ?>"></i>
+				<p><?php echo $referendum_attivo ? 'Referendum' : 'Referendum'; ?></p>
+			  </a>
+			</li>
 			<?php } ?>
+
 			<?php if ($tipo_consultazione == 'comunali') { ?>
-			<li class="nav-item"><a href="modules.php?op=39" class="nav-link <?php echo ($op == 39) ? 'active' : ''; ?>"><i class="nav-icon fas fa-user-tie text-primary"></i><p>Candidato Sindaco</p></a></li>
+			<li class="nav-item">
+			  <a href="<?php echo $candidato_sindaco_attivo ? 'modules.php?op=39' : '#'; ?>" 
+				 class="nav-link <?php echo ($op == 39) ? 'active' : ''; ?> <?php echo !$candidato_sindaco_attivo ? 'disabled' : ''; ?>">
+				<i class="nav-icon fas fa-user-tie <?php echo $candidato_sindaco_attivo ? 'text-primary' : 'text-secondary'; ?>"></i>
+				<p><?php echo $candidato_sindaco_attivo ? 'Candidato Sindaco' : 'Candidato Sindaco'; ?></p>
+			  </a>
+			</li>
 			<?php } ?>
-			<?php if ($tipo_consultazione == 'camera' or $tipo_consultazione == 'senato' ) { ?>
-			<li class="nav-item"><a href="modules.php?op=39" class="nav-link <?php echo ($op == 39) ? 'active' : ''; ?>"><i class="nav-icon fas fa-user-tag text-success"></i><p>Candidato Uninominale</p></a></li>
+
+			<?php if (in_array($tipo_consultazione, ['camera','senato'])) { ?>
+			<li class="nav-item">
+			  <a href="<?php echo $candidato_uninominale_attivo ? 'modules.php?op=39' : '#'; ?>" 
+				 class="nav-link <?php echo ($op == 39) ? 'active' : ''; ?> <?php echo !$candidato_uninominale_attivo ? 'disabled' : ''; ?>">
+				<i class="nav-icon fas fa-user-tag <?php echo $candidato_uninominale_attivo ? 'text-success' : 'text-secondary'; ?>"></i>
+				<p><?php echo $candidato_uninominale_attivo ? 'Candidato Uninominale' : 'Candidato Uninominale'; ?></p>
+			  </a>
+			</li>
 			<?php } ?>
+
 			<?php if ($tipo_consultazione == 'regionali') { ?>
-			<li class="nav-item"><a href="modules.php?op=39" class="nav-link <?php echo ($op == 39) ? 'active' : ''; ?>"><i class="nav-icon fas fa-user-tie text-primary"></i><p>Candidato Presidenti</p></a></li>
+			<li class="nav-item">
+			  <a href="<?php echo $candidato_presidenti_attivo ? 'modules.php?op=39' : '#'; ?>" 
+				 class="nav-link <?php echo ($op == 39) ? 'active' : ''; ?> <?php echo !$candidato_presidenti_attivo ? 'disabled' : ''; ?>">
+				<i class="nav-icon fas fa-user-tie <?php echo $candidato_presidenti_attivo ? 'text-primary' : 'text-secondary'; ?>"></i>
+				<p><?php echo $candidato_presidenti_attivo ? 'Candidato Presidenti' : 'Candidato Presidenti'; ?></p>
+			  </a>
+			</li>
 			<?php } ?>
-			<?php if ($tipo_consultazione == 'europee' or $tipo_consultazione == 'comunali' or $tipo_consultazione == 'regionali') { ?>
-			<li class="nav-item"><a href="modules.php?op=32" class="nav-link <?php echo ($op == 32) ? 'active' : ''; ?>"><i class="nav-icon fas fa-list-ul text-warning"></i><p>Lista</p></a></li>
-            <?php } ?>
-			<?php if ($tipo_consultazione == 'camera' or $tipo_consultazione == 'senato' or $tipo_consultazione == 'senato' ) { ?>
-			<li class="nav-item"><a href="modules.php?op=32" class="nav-link <?php echo ($op == 32) ? 'active' : ''; ?>"><i class="nav-icon fas fa-link text-primary"></i><p>Lista collegata</p></a></li>
-            <?php } ?>
-			<?php if ($tipo_consultazione == 'camera' or $tipo_consultazione == 'senato' ) { ?>
-			<li class="nav-item"><a href="modules.php?op=32" class="nav-link <?php echo ($op == 32) ? 'active' : ''; ?>"><i class="nav-icon fas fa-lock text-danger"></i><p>Listino bloccato</p></a></li>
-            <?php } ?>
-			<?php if ($tipo_consultazione != 'referendum' && $tipo_consultazione != 'camera' && $tipo_consultazione != 'senato') { ?>
-			<li class="nav-item"><a href="modules.php?op=33" class="nav-link <?php echo ($op == 33) ? 'active' : ''; ?>"><i class="nav-icon fas fa-star text-success"></i><p>Preferenze</p></a></li>
-            <?php } ?>
-			<li class="nav-item"><a href="modules.php?op=34" class="nav-link <?php echo ($op == 34) ? 'active' : ''; ?>"><i class="nav-icon fas fa-chart-pie text-info"></i><p>Visualizza Risultati</p></a></li>
+
+			<?php if (in_array($tipo_consultazione, ['europee','comunali','regionali'])) { ?>
+			<li class="nav-item">
+			  <a href="<?php echo $lista_attivo ? 'modules.php?op=32' : '#'; ?>" 
+				 class="nav-link <?php echo ($op == 32) ? 'active' : ''; ?> <?php echo !$lista_attivo ? 'disabled' : ''; ?>">
+				<i class="nav-icon fas fa-list-ul <?php echo $lista_attivo ? 'text-warning' : 'text-secondary'; ?>"></i>
+				<p><?php echo $lista_attivo ? 'Lista' : 'Lista'; ?></p>
+			  </a>
+			</li>
+			<?php } ?>
+
+			<?php if (in_array($tipo_consultazione, ['camera','senato'])) { ?>
+			<li class="nav-item">
+			  <a href="<?php echo $lista_collegata_attivo ? 'modules.php?op=32' : '#'; ?>" 
+				 class="nav-link <?php echo ($op == 32) ? 'active' : ''; ?> <?php echo !$lista_collegata_attivo ? 'disabled' : ''; ?>">
+				<i class="nav-icon fas fa-link <?php echo $lista_collegata_attivo ? 'text-primary' : 'text-secondary'; ?>"></i>
+				<p><?php echo $lista_collegata_attivo ? 'Lista collegata' : 'Lista collegata'; ?></p>
+			  </a>
+			</li>
+
+			<li class="nav-item">
+			  <a href="<?php echo $listino_bloccato_attivo ? 'modules.php?op=32' : '#'; ?>" 
+				 class="nav-link <?php echo ($op == 32) ? 'active' : ''; ?> <?php echo !$listino_bloccato_attivo ? 'disabled' : ''; ?>">
+				<i class="nav-icon fas fa-lock <?php echo $listino_bloccato_attivo ? 'text-danger' : 'text-secondary'; ?>"></i>
+				<p><?php echo $listino_bloccato_attivo ? 'Listino bloccato' : 'Listino bloccato'; ?></p>
+			  </a>
+			</li>
+			<?php } ?>
+
+			<?php if (!in_array($tipo_consultazione, ['referendum','camera','senato'])) { ?>
+			<li class="nav-item">
+			  <a href="<?php echo $preferenze_attivo ? 'modules.php?op=33' : '#'; ?>" 
+				 class="nav-link <?php echo ($op == 33) ? 'active' : ''; ?> <?php echo !$preferenze_attivo ? 'disabled' : ''; ?>">
+				<i class="nav-icon fas fa-star <?php echo $preferenze_attivo ? 'text-success' : 'text-secondary'; ?>"></i>
+				<p><?php echo $preferenze_attivo ? 'Preferenze' : 'Preferenze'; ?></p>
+			  </a>
+			</li>
+			<?php } ?>
+
+			<li class="nav-item">
+			  <a href="<?php echo $risultati_attivo ? 'modules.php?op=34' : '#'; ?>" 
+				 class="nav-link <?php echo ($op == 34) ? 'active' : ''; ?> <?php echo !$risultati_attivo ? 'disabled' : ''; ?>">
+				<i class="nav-icon fas fa-chart-pie <?php echo $risultati_attivo ? 'text-info' : 'text-secondary'; ?>"></i>
+				<p><?php echo $risultati_attivo ? 'Visualizza Risultati' : 'Visualizza Risultati'; ?></p>
+			  </a>
+			</li>
+
 			<?php if ($tipo_consultazione == 'comunali') { ?>
-			<li class="nav-item"><a href="modules.php?op=35" class="nav-link <?php echo ($op == 35) ? 'active' : ''; ?>"><i class="nav-icon fas fa-tasks text-secondary"></i><p>Assegna Seggi</p></a></li>
+			<li class="nav-item">
+			  <a href="<?php echo $assegna_seggi_attivo ? 'modules.php?op=35' : '#'; ?>" 
+				 class="nav-link <?php echo ($op == 35) ? 'active' : ''; ?> <?php echo !$assegna_seggi_attivo ? 'disabled' : ''; ?>">
+				<i class="nav-icon fas fa-tasks <?php echo $assegna_seggi_attivo ? 'text-secondary' : 'text-secondary'; ?>"></i>
+				<p><?php echo $assegna_seggi_attivo ? 'Assegna Seggi' : 'Assegna Seggi'; ?></p>
+			  </a>
+			</li>
 			<?php } ?>
+
 		  </ul>
         </li>
 <?php endif; ?>
