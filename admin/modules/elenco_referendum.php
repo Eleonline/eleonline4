@@ -10,7 +10,7 @@ else
 	$coloripath='../client/temi/bootstrap/pagine/';
 require_once $coloripath.'config_colori_quesiti.php';
 
-$schedapath='../../client/temi/bootstrap/pagine/imgscheda/';
+//$schedapath='../../client/temi/bootstrap/pagine/imgscheda/';
 $pdfpath="../../client/documenti/$id_comune/$id_cons/programmi/";
 $tipo_cons=$_SESSION['tipo_cons'];
 $row = elenco_gruppi();
@@ -21,13 +21,6 @@ if (count($row)) {
     $maxNumero = 0;
 }
 $maxNumero++;
-$tabella_schede=[
-1 => 'scheda_verde.jpg',
-2 => 'scheda_arancione.jpg',
-3 => 'scheda_grigio.jpg',
-4 => 'scheda_viola.jpg',
-5 => 'scheda_giallo.jpg'
-];
 ?>
 <!-- Riga nascosta per JSstyle="display:none;" -->
 <tr id="riga<?= $maxNumero ?>">
@@ -46,10 +39,23 @@ $prognome    = htmlspecialchars($q['prognome']    ?? '', ENT_QUOTES, 'UTF-8');
               <tr id="riga<?= $i ?>">
                 <td id="numero<?= $i ?>"><?= (int)$numero ?></td>
                 <td id="denominazione<?= $i ?>"><?= $denominazione ?></td>
-                <td style="background-color: <?= isset($q['id_colore']) && $q['id_colore'] ? $coloriQuesiti[$q['id_colore']]['colore'] : 'transparent' ?>">
-                  <strong><?= isset($q['id_colore']) && $q['id_colore'] ? htmlspecialchars($coloriQuesiti[$q['id_colore']]['nome']) : '' ?></strong><br>
-				<img src="<?= $schedapath.$tabella_schede[$q['id_colore']]  ?>" style="max-height:60px;" alt="Immagine scheda">	
+                <td style="background-color: <?= isset($q['id_colore']) && $q['id_colore'] 
+                                    ? $coloriQuesiti[$q['id_colore']]['colore'] 
+                                    : 'transparent' ?>">
+					<strong>
+						<?= isset($q['id_colore']) && $q['id_colore'] 
+							? htmlspecialchars($coloriQuesiti[$q['id_colore']]['nome']) 
+							: '' ?>
+					</strong><br>
+					<img src="<?= $coloripath . (isset($q['id_colore']) && $q['id_colore'] 
+												  ? $coloriQuesiti[$q['id_colore']]['immagine'] 
+												  : 'imgscheda/default.jpg') ?>" 
+						 style="max-height:60px;" 
+						 alt="<?= isset($q['id_colore']) && $q['id_colore'] 
+								  ? htmlspecialchars($coloriQuesiti[$q['id_colore']]['nome']) 
+								  : 'Scheda' ?>">
 				</td>
+
                 <td class="align-top">
                   <?php if (!empty($q['prognome']) and is_file($pdfpath.$q['prognome'])): ?>
     
