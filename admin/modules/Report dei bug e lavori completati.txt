@@ -85,7 +85,7 @@ Login: ok
 Logout: ok
 
 siderbar.php(Menù laterale):
-- messo disattiva o attiva nel menu webservice come da esempio cosi da poter gestire sia nella parte setup consultazione e gestione liste e candidati
+- messo disattiva o attiva nel menu 
 
 menù.php (menù top):
 - sitemare le notifiche.
@@ -93,3 +93,4 @@ menù.php (menù top):
 Client: 
 - adatttare con db nuovo.
 - eliminare tutti gli altri temi e lasciare solo bootstrap.
+- per il refendum utilizzare la configurazione "/pagine/config_colori_quesiti.php"
