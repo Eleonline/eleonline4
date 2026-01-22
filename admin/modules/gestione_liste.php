@@ -205,19 +205,26 @@ document.getElementById('simbolo').addEventListener('change', function(event) {
 // ===========================
 function aggiungiLista(e) {
     e.preventDefault();
+// Lettura valori una sola volta
+    const id_lista = document.getElementById("id_lista").value.trim();
+    const numero = document.getElementById("numero").value.trim();
+    const denominazione = document.getElementById("denominazione").value.trim();
 
+    // BLOCCO DUPLICATI
+    if (posizioneDuplicata(numero, id_lista)) {
+        alert("ATTENZIONE: la posizione " + numero + " è già assegnato!");
+        document.getElementById("numero").focus();
+        return false;
+    }
     const fileInput = document.getElementById('simbolo');
     const simbolo = fileInput.files[0];
-    const id_lista = document.getElementById("id_lista").value;
+    
 
     let id_gruppo = 0, num_gruppo = 0;
     if (document.getElementById("idGruppo").value != 0) {
         id_gruppo = document.getElementById("idGruppo").value;
         num_gruppo = document.getElementById("ng"+id_gruppo).innerText;
     }
-
-    const numero = document.getElementById("numero").value;
-    const denominazione = document.getElementById("denominazione").value.trim();
 
     const formData = new FormData();
     formData.append('funzione', 'salvaLista');
@@ -370,6 +377,31 @@ function resetFormLista() {
 function aggiornaNumero() {
     const maxNum = document.getElementById("maxNumero").innerText;
     document.getElementById('numero').value = maxNum;
+}
+function posizioneDuplicata(numeroInserito, idListaEditing) {
+
+    const righe = document.querySelectorAll('#risultato tr');
+
+    for (let riga of righe) {
+
+        const tdNumero = riga.querySelector('td[id^="numero"]');
+        const idListaDiv = riga.querySelector('div[id^="id_lista"]');
+
+        // riga finta (maxNumero) → SALTA
+        if (!tdNumero || !idListaDiv) continue;
+
+        const numeroTabella = tdNumero.textContent.trim();
+        const idListaTabella = idListaDiv.textContent.trim();
+
+        // se sto modificando la stessa → ok
+        if (idListaEditing && idListaEditing === idListaTabella) continue;
+
+        if (numeroTabella === numeroInserito) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 </script>

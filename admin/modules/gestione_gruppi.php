@@ -239,7 +239,7 @@ const numero = document.getElementById("numero").value;
 
 // CONTROLLO POSIZIONE GIÀ USATA
 if (posizioneUsata(numero)) {
-    alert("Questo numero di posizione è già assegnato");
+    alert("ATTENZIONE: la posizione " + numero + " è già assegnato!");
     document.getElementById("numero").focus();
     return; // BLOCCA IL SALVATAGGIO
 }
