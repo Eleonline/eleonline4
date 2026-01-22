@@ -29,7 +29,7 @@ $circos=elenco_circoscrizioni();
             <div class="col-md-8 rigaMappa">
               <label>Indirizzo</label>
               <div class="input-group">
-                <input type="text" id="indirizzo" name="indirizzo" class="form-control indir" value="<?= $maps_provider; ?>" required>
+                <input type="text" id="indirizzo" name="indirizzo" class="form-control indir" required>
                 <button type="button" class="btn btn-outline-secondary btnApriMappa btnApriMappaForm">
                   <i class="fas fa-map-pin me-2"></i>Apri mappa
                 </button>
