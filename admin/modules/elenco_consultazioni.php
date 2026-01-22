@@ -89,12 +89,11 @@ if(!$cambia) {
         </td>
 
         <td id="data_inizio<?= $key ?>">
-			<?= (new DateTime($val['data_inizio']))->format('d/m/Y') ?>
+			<?= $val['data_inizio']?>
 		</td>
 
-
         <td id="data_fine<?= $key ?>">
-			<?= (new DateTime($val['data_fine']))->format('d/m/Y') ?>
+				<?= $val['data_fine']?>
         </td>
 
         <!-- AZIONI -->

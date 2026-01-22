@@ -141,9 +141,15 @@ function aggiungiSezione(e) {
 		alert("La somma tra iscritti maschi e femmine non corrisponde al totale");
 		return
 	}
-    const id_sede = document.getElementById('idSede').value;
+	const numero = document.getElementById('numero').value.trim();
     const id_sez = document.getElementById('idSezione').value;
-    const numero = document.getElementById('numero').value;
+
+    if (numeroSezioneDuplicato(numero, id_sez)) {
+        alert("ATTENZIONE: il numero di sezione " + numero + " è già assegnato!");
+        document.getElementById('numero').focus();
+        return;
+    }
+    const id_sede = document.getElementById('idSede').value;
     const maschi = document.getElementById('maschi').value;
     const femmine = document.getElementById('femmine').value;
 
@@ -263,4 +269,28 @@ function controlloSomma() {
 	else
 		return 1;
 }
+function numeroSezioneDuplicato(numeroInserito, idSezEditing) {
+    const righe = document.querySelectorAll('#risultato tr');
+
+    for (let riga of righe) {
+        const tdNumero = riga.querySelector('td[id^="numero"]');
+        const tdIdSez = riga.querySelector('td[id^="idSezione"]');
+
+        // se manca il numero → SALTA
+        if (!tdNumero || !tdIdSez) continue;
+
+        const numeroTabella = tdNumero.textContent.trim();
+        const idSezTabella = tdIdSez.textContent.trim();
+
+        // se sto modificando la stessa → ok
+        if (idSezEditing && idSezEditing === idSezTabella) continue;
+
+        if (numeroTabella === numeroInserito) {
+            return true; // duplicato trovato
+        }
+    }
+
+    return false; // numero libero
+}
+
 </script>

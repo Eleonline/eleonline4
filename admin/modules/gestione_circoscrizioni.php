@@ -251,7 +251,14 @@ function aggiungiCircoscrizione(e) {
     const numero = document.getElementById("numero").value;
     const denominazione = document.getElementById("denominazione").value.trim();
     const btn = document.getElementById("btnAggiungi");
-
+    
+	// ✅ Controllo duplicati
+    if (numeroCircoscrizioneDuplicato(numero, id_circ)) {
+		alert("ATTENZIONE: il numero di circoscrizione " + numero + " è già assegnato!");
+        document.getElementById("numero").focus();
+        return;
+    }
+	
     const formData = new FormData();
     formData.append('funzione', 'salvaCircoscrizione');
     formData.append('descrizione', denominazione);
@@ -357,11 +364,45 @@ function resetFormCircoscrizione() {
     document.getElementById('btnAggiungi').textContent = "Aggiungi";
 }
 
-function aggiornaNumero() {
+// function aggiornaNumero() {
 
-	const maxNum = document.getElementById("maxNumero").innerText;
-    document.getElementById('numero').value = maxNum;
+	// const maxNum = document.getElementById("maxNumero").innerText;
+    // document.getElementById('numero').value = maxNum;
+// }
+function aggiornaNumero() {
+    const numeri = Array.from(document.querySelectorAll('#risultato tr td[id^="numero"]'))
+        .map(td => parseInt(td.textContent))
+        .filter(n => !isNaN(n));
+
+    let numero = 1;
+    while (numeri.includes(numero)) numero++;
+    document.getElementById('numero').value = numero;
 }
+
+function numeroCircoscrizioneDuplicato(numeroInserito, idCircEditing) {
+    const righe = document.querySelectorAll('#risultato tr');
+
+    for (let riga of righe) {
+        const tdNumero = riga.querySelector('td[id^="numero"]');
+        const tdIdCirc = riga.querySelector('div[id^="id_circ"]');
+
+        // se manca il numero → SALTA
+        if (!tdNumero || !tdIdCirc) continue;
+
+        const numeroTabella = tdNumero.textContent.trim();
+        const idCircTabella = tdIdCirc.textContent.trim();
+
+        // se sto modificando la stessa → ok
+        if (idCircEditing && idCircEditing === idCircTabella) continue;
+
+        if (numeroTabella === numeroInserito) {
+            return true; // duplicato trovato
+        }
+    }
+
+    return false; // numero libero
+}
+
 </script>
 <?php
 // if ($_POST['funzione'] === 'importaCircoscrizioni') {

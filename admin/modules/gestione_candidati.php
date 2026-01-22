@@ -177,106 +177,96 @@ $candidato = htmlspecialchars(ucfirst(_CANDIDATO));
   </div>
 </div>
 <script>
-
+// ===========================
+// FUNZIONE AGGIUNGI / MODIFICA CANDIDATO
+// ===========================
 function aggiungiCandidato(e) {
     e.preventDefault();
-	if(document.getElementById('cv')!==null) {
-		var fileInput = document.getElementById('cv');
-		var cv = fileInput.files[0];
-	}
-	if(document.getElementById('cg')!==null) {
-		var fileInput = document.getElementById('cg');
-		var cg = fileInput.files[0];
-	}
+
     const id_candidato = document.getElementById("id_candidato").value;
-	if (document.getElementById("idLista").value == 0) {
-		id_lista=0;
-		num_lista=0;
-	}else{
-		id_lista = document.getElementById("idLista").value;
-		num_lista = document.getElementById("ng"+id_lista).innerText		
-	}
-    const numero = document.getElementById("numero").value;
+    const idListaSelect = document.getElementById("idLista");
+    const id_lista = idListaSelect.value;
+    const num_lista = id_lista != 0 ? document.getElementById("ng"+id_lista).innerText : 0;
+
+    const numero = document.getElementById("numero").value.trim();
     const cognome = document.getElementById("cognome").value.trim();
     const nome = document.getElementById("nome").value.trim();
-    const btn = document.getElementById("btnAggiungi");
+
+    const cvFile = document.getElementById('cv')?.files[0];
+    const cgFile = document.getElementById('cg')?.files[0];
+
+    // Controllo duplicati solo nella stessa lista
+    if (posizioneDuplicataCandidato(numero, id_lista, id_candidato)) {
+        alert("ATTENZIONE: la posizione " + numero + " è già presente in questa lista!");
+        document.getElementById("numero").focus();
+        return false;
+    }
 
     const formData = new FormData();
     formData.append('funzione', 'salvaCandidato');
-    formData.append('cognome', cognome);
-    formData.append('nome', nome);
-    formData.append('numero', numero);
     formData.append('id_candidato', id_candidato);
     formData.append('id_lista', id_lista);
     formData.append('num_lista', num_lista);
-	if (cv) {
-		formData.append('cv', cv);
-	}
-	if (cg) {
-		formData.append('cg', cg);
-	}
+    formData.append('numero', numero);
+    formData.append('cognome', cognome);
+    formData.append('nome', nome);
+    if (cvFile) formData.append('cv', cvFile);
+    if (cgFile) formData.append('cg', cgFile);
     formData.append('op', 'salva');
 
-    fetch('../principale.php', {
-        method: 'POST',
-        body: formData 
-    })
-    .then(response => response.text()) // O .json() se il server risponde con JSON
+    fetch('../principale.php', { method: 'POST', body: formData })
+    .then(res => res.text())
     .then(data => {
-    document.getElementById('risultato').innerHTML = data;
-    resetFormCandidato();
-    aggiornaNumero();
-
-    document.getElementById('titoloCandidato').textContent =
-        "Aggiungi <?= $candidato ?> <?= ($candidato !== 'Listino bloccato') ? ' di Lista' : '' ?>";
-	})
+        document.getElementById('risultato').innerHTML = data;
+        resetFormCandidato();
+        aggiornaNumero();
+        document.getElementById('titoloCandidato').textContent =
+            "Aggiungi <?= $candidato ?> <?= ($candidato !== 'Listino bloccato') ? ' di Lista' : '' ?>";
+    });
 }
 
-
+// ===========================
+// DELETE CANDIDATO
+// ===========================
+let deleteIdCandidato = null;
+let deleteCognome = '';
+let deleteNome = '';
+let deleteNumero = '';
 
 function deleteCandidato(index) {
-    cognome = document.getElementById("cognome"+index).innerText;
-    nome = document.getElementById("nome"+index).innerText;
-    numero = document.getElementById("numero"+index).innerText;
+    deleteCognome = document.getElementById("cognome"+index).innerText;
+    deleteNome = document.getElementById("nome"+index).innerText;
+    deleteNumero = document.getElementById("numero"+index).innerText;
     deleteIdCandidato = document.getElementById("id_candidato"+index).innerText;
 
-    document.getElementById("deleteCandidato").textContent = numero + " - " + cognome;
-
-    $('#confirmDeleteModal').modal('show'); // apri il modal
+    document.getElementById("deleteCandidato").textContent = deleteNumero + " - " + deleteCognome;
+    $('#confirmDeleteModal').modal('show');
 }
 
-// Conferma cancellazione (totale o parziale)
 document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
     if (!deleteIdCandidato) return;
 
-    const delCv        = document.getElementById('flag_cv')?.checked;
-    const delCg        = document.getElementById('flag_cg')?.checked;
-
-    const eliminazioneParziale = delCv || delCg;
+    const delCv = document.getElementById('flag_cv')?.checked;
+    const delCg = document.getElementById('flag_cg')?.checked;
 
     const formData = new FormData();
     formData.append('funzione', 'salvaCandidato');
     formData.append('id_candidato', deleteIdCandidato);
-    formData.append('cognome', cognome);
-    formData.append('nome', nome);
-    formData.append('numero', numero);
+    formData.append('cognome', deleteCognome);
+    formData.append('nome', deleteNome);
+    formData.append('numero', deleteNumero);
+	formData.append('id_lista', document.getElementById("idLista").value); // <-- questa riga
 
-    if (eliminazioneParziale) {
-        // 🟡 eliminazione parziale
+    if (delCv || delCg) {
         formData.append('op', 'cancella_parziale');
-
-        if (delCv)        formData.append('flag_cv', 1);
-        if (delCg)        formData.append('flag_cg', 1);
+        if (delCv) formData.append('flag_cv', 1);
+        if (delCg) formData.append('flag_cg', 1);
     } else {
-        // 🔴 eliminazione totale
         formData.append('op', 'cancella');
     }
 
-    fetch('../principale.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.text())
+    fetch('../principale.php', { method: 'POST', body: formData })
+    .then(res => res.text())
     .then(data => {
         document.getElementById('risultato').innerHTML = data;
         $('#confirmDeleteModal').modal('hide');
@@ -286,89 +276,103 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
     });
 });
 
-function aggiornaLista() {
-    // Aggiorna l'elenco secondo la lista scelta
-	id_lista = document.getElementById("idLista").value;
-    const formData = new FormData();
-    formData.append('funzione', 'salvaCandidato');
-    formData.append('id_lista', id_lista);
-	formData.append('tipo_cons', <?= $tipo_cons ?>); 
-    formData.append('op', 'aggiorna');
-
-    fetch('../principale.php', {
-        method: 'POST',
-        body: formData 
-    })
-    .then(response => response.text()) // O .json() se il server risponde con JSON
-    .then(data => {
-			document.getElementById('risultato').innerHTML = data;
-            resetFormCandidato();
-            aggiornaNumero();
-	})
- }
-
-function annullaModifica() {
-    const myForm = document.getElementById('candidatoForm');
-    myForm.reset();
-
-    document.getElementById('id_candidato').value = '';
-    document.getElementById('btnAggiungi').textContent = "Aggiungi";
-    document.getElementById('titoloCandidato').textContent =
-        "Aggiungi <?= $candidato ?> <?= ($candidato !== 'Listino bloccato') ? ' di Lista' : '' ?>";
-
-    document.getElementById('btnAnnulla').classList.add('d-none');
-}
-
-// Aggiornamento funzione editCircoscrizione
-function editCandidato(index) { 
+// ===========================
+// EDIT CANDIDATO
+// ===========================
+function editCandidato(index) {
     document.getElementById("cognome").value = document.getElementById("cognome"+index).innerText;
     document.getElementById("nome").value = document.getElementById("nome"+index).innerText;
     document.getElementById("numero").value = document.getElementById("numero"+index).innerText;
     document.getElementById("id_candidato").value = document.getElementById("id_candidato"+index).innerText;
 
-    if (document.getElementById("num_lista"+index) !== null)
-        document.getElementById("idLista").selectedIndex =
-            document.getElementById("num_lista"+index).innerText;
+    const num_listaDiv = document.getElementById("num_lista"+index);
+    if (num_listaDiv) document.getElementById("idLista").selectedIndex = num_listaDiv.innerText;
 
     document.getElementById("btnAggiungi").textContent = "Salva modifiche";
     document.getElementById("titoloCandidato").textContent =
         "Modifica <?= $candidato ?> <?= ($candidato !== 'Listino bloccato') ? ' di Lista' : '' ?>";
 
     document.getElementById("btnAnnulla").classList.remove('d-none');
-
     scrollToGestioneCandidato();
 }
 
-
-function scrollToGestioneCandidato() {
-    const target = document.getElementById('titoloCandidato');
-    if (target) {
-        target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-    }
+// ===========================
+// RESET / ANNULLA FORM
+// ===========================
+function annullaModifica() {
+    resetFormCandidato();
 }
-
 
 function resetFormCandidato() {
     const form = document.getElementById('candidatoForm');
-    const lista = document.getElementById('idLista').selectedIndex;
-
-    form.reset();  
-    document.getElementById('idLista').selectedIndex = lista;
+    const listaIndex = document.getElementById('idLista').selectedIndex;
+    form.reset();
+    document.getElementById('idLista').selectedIndex = listaIndex;
     document.getElementById('id_candidato').value = '';
-    document.getElementById('btnAggiungi').textContent = "Aggiungi";
+    document.getElementById("btnAggiungi").textContent = "Aggiungi";
     document.getElementById('titoloCandidato').textContent =
         "Aggiungi <?= $candidato ?> <?= ($candidato !== 'Listino bloccato') ? ' di Lista' : '' ?>";
-
     document.getElementById('btnAnnulla').classList.add('d-none');
 }
 
-
-function aggiornaNumero() {
-
-	maxNum = document.getElementById("maxNumero").innerText;
-    document.getElementById('numero').value = maxNum;
+// ===========================
+// SCROLL FORM
+// ===========================
+function scrollToGestioneCandidato() {
+    document.getElementById('titoloCandidato')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+// ===========================
+// AGGIORNA ELENCO LISTA
+// ===========================
+function aggiornaLista() {
+    const id_lista = document.getElementById("idLista").value;
+    const formData = new FormData();
+    formData.append('funzione', 'salvaCandidato');
+    formData.append('id_lista', id_lista);
+    formData.append('tipo_cons', <?= $tipo_cons ?>);
+    formData.append('op', 'aggiorna');
+
+    fetch('../principale.php', { method: 'POST', body: formData })
+    .then(res => res.text())
+    .then(data => {
+        document.getElementById('risultato').innerHTML = data;
+        resetFormCandidato();
+        aggiornaNumero();
+    });
+}
+
+// ===========================
+// NUMERO SUCCESSIVO PER LISTA
+// ===========================
+function aggiornaNumero() {
+    const maxNumElem = document.getElementById("maxNumero");
+    if (maxNumElem) document.getElementById('numero').value = maxNumElem.textContent;
+}
+
+// ===========================
+// CONTROLLO DUPLICATI PER LISTA
+// ===========================
+function posizioneDuplicataCandidato(numeroInserito, idListaEditing, idCandidatoEditing) {
+    const righe = document.querySelectorAll('#risultato tr');
+    for (let riga of righe) {
+        const tdNumero = riga.querySelector('td[id^="numero"]');
+        const idListaDiv = riga.querySelector('div[id^="id_lista"]'); // <-- qui prendiamo l'id_lista reale
+        const idCandidatoDiv = riga.querySelector('div[id^="id_candidato"]');
+
+        if (!tdNumero || !idListaDiv || !idCandidatoDiv) continue;
+
+        const numeroTabella = tdNumero.textContent.trim();
+        const idListaTabella = idListaDiv.textContent.trim();
+        const idCandidatoTabella = idCandidatoDiv.textContent.trim();
+
+        if (idCandidatoEditing && idCandidatoEditing === idCandidatoTabella) continue;
+
+        if (numeroTabella === numeroInserito && idListaTabella === idListaEditing) {
+            return true; // duplicato trovato nella stessa lista
+        }
+    }
+    return false;
+}
+
 </script>

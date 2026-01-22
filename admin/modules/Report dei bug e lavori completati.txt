@@ -22,7 +22,7 @@ Utenti e permessi:
 - Permessi: carica anche per superuser (non deve visualizzare).
 
 Setup Configurazione:
-- Configura consultazione: ok
+- Configura consultazione: ok la data nella lista e americana convertire.
 - Configura Affluenza: ok.
 - Configura Circoscrizione: non lo utilizzo io quindi non sò cosa và qui.
 - Configura Sede Elettorale: Caricamento e Modifica ok. nella pagina gestione_sedi_elettorali.php mettere la variabile di scelta del provider.
@@ -46,9 +46,9 @@ Senato:
 	- Listino Bloccato: ok
  
 Comunali:
-- Candidato Sindaco: verificare anteprima immagini. Non aggiorna lista. Non trova la posizione libera.Non controlla se la posizione è occupata. il pulsante elimina non funziona.
-- Lista: verificare anteprima immagini. non trova la posizione libera. non controlla se la posizione è occupata.
-- Candidati: verificare anteprima immagini e pdf e sballa se elimino candidato e non trova la posizione libera. non controlla se la posizione è occupata. 
+- Candidato Sindaco: verificare anteprima immagini. Non trova la posizione libera.
+- Lista: verificare anteprima immagini. Non trova la posizione libera.
+- Candidati: verificare anteprima immagini e pdf non trova la posizione libera.
 
 Ballottaggio: e tutto da fare
 - Candidato Sindaco: da fare
