@@ -122,6 +122,9 @@ if($permessi>32)
 		case 'scaricaDati': 
 			include("modules/scarica.php");
 			break;
+		case 'salvaReferendum': 
+			include("modules/salva_referendum.php");
+			break;
 	}
 	
 switch ($funzione) {

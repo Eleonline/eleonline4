@@ -1,7 +1,7 @@
 <?php require_once '../includes/check_access.php'; ?>
 <?php 
 require_once '../../client/temi/bootstrap/pagine/config_colori_quesiti.php';
-
+/*
 if (!isset($_SESSION['quesiti'])) $_SESSION['quesiti'] = [];
 $quesiti =& $_SESSION['quesiti'];
 
@@ -133,15 +133,17 @@ if (isset($_POST['indice']) && isset($_GET['ajax_elimina'])) {
 }
 
 // Variabile per passare i quesiti a JS per caricamento in form
-$quesitiJSON = json_encode($quesiti);
+$quesitiJSON = json_encode($quesiti); */
 // Calcolo numero automatico: massimo numero + 1
-$maxNumero = 0;
-foreach ($quesiti as $q) {
-    if (isset($q['numero']) && $q['numero'] > $maxNumero) {
-        $maxNumero = (int)$q['numero'];
-    }
+$quesiti=elenco_gruppi();
+if (count($quesiti)) {
+    $ultimo = end($quesiti);
+    $maxNumero = $ultimo['num_gruppo'];
+} else {
+    $maxNumero = 0;
 }
-$numeroAutomatico = $maxNumero + 1;
+$maxNumero++;
+$numeroAutomatico = $maxNumero;
 
 ?>
 
@@ -153,14 +155,14 @@ $numeroAutomatico = $maxNumero + 1;
       </div>
       <div class="card-body">
 
-        <?php if ($messaggio): ?>
+        <?php if (isset($messaggio) and $messaggio): ?>
           <div class="alert <?= $messaggioClass ?>" role="alert"><?= htmlspecialchars($messaggio) ?></div>
         <?php endif; ?>
 
         <!-- FORM INSERIMENTO / MODIFICA -->
-        <form id="formQuesito" method="POST" enctype="multipart/form-data" class="mb-4">
+        <form id="formQuesito" method="POST" enctype="multipart/form-data" class="mb-4"  onsubmit="aggiungiReferendum(event)">
           <input type="hidden" name="azione" id="azione" value="aggiungi">
-          <input type="hidden" name="indice" id="indice" value="">
+          <input type="hidden" name="id_gruppo" id="id_gruppo" value="">
           <div class="row g-2 align-items-start">
             <div class="col-md-1">
               <label>Numero</label>
@@ -173,7 +175,7 @@ $numeroAutomatico = $maxNumero + 1;
 </div>
             <div class="col-md-3">
               <label>Colore Scheda</label>
-              <select name="colore" id="colore" class="form-control" onchange="mostraAnteprima(this.value)" required>
+              <select name="id_colore" id="id_colore" class="form-control" onchange="mostraAnteprima(this.value)" required>
                 <option value="">Seleziona...</option>
                 <?php foreach ($coloriQuesiti as $id => $col): ?>
                   <option value="<?= $id ?>"><?= htmlspecialchars($col['nome']) ?></option>
@@ -208,32 +210,8 @@ $numeroAutomatico = $maxNumero + 1;
               <th style="width:15%;">Azioni</th>
             </tr>
           </thead>
-          <tbody>
-            <?php foreach ($quesiti as $i => $q): ?>
-              <tr>
-                <td><?= (int)$q['numero'] ?></td>
-                <td><?= htmlspecialchars($q['denominazione']) ?></td>
-                <td style="background-color: <?= isset($q['colore_id']) && isset($coloriQuesiti[$q['colore_id']]) ? $coloriQuesiti[$q['colore_id']]['colore'] : 'transparent' ?>">
-                  <strong><?= isset($q['colore_id']) && isset($coloriQuesiti[$q['colore_id']]) ? htmlspecialchars($coloriQuesiti[$q['colore_id']]['nome']) : '' ?></strong><br>
-                  <img src="../../client/temi/bootstrap/pagine/<?= isset($q['colore_id']) && isset($coloriQuesiti[$q['colore_id']]) ? $coloriQuesiti[$q['colore_id']]['immagine'] : 'default.png' ?>" style="max-height:60px;" alt="Immagine scheda">
-                </td>
-                <td class="align-middle">
-                  <?php if (!empty($q['pdf']) && file_exists(__DIR__ . '/' . $q['pdf'])): ?>
-                    <a href="<?= htmlspecialchars($q['pdf']) ?>" target="_blank" class="btn btn-sm btn-primary">Visualizza PDF</a>
-                  <?php else: ?>
-                    <span class="text-muted">Nessun PDF</span>
-                  <?php endif; ?>
-                </td>
-                <td>
-                  <button class="btn btn-sm btn-warning me-1" onclick="modificaQuesito(<?= $i ?>)" title="Modifica"><i class="fas fa-edit"></i></button>
-<button class="btn btn-sm btn-danger btn-elimina" data-indice="<?= $i ?>" title="Elimina"><i class="fas fa-trash"></i></button>
-
-                </td>
-              </tr>
-            <?php endforeach; ?>
-            <?php if (empty($quesiti)): ?>
-              <tr><td colspan="5" class="text-muted">Nessun quesito presente.</td></tr>
-            <?php endif; ?>
+          <tbody id="risultato">
+		  <?php include('elenco_referendum.php'); ?>
           </tbody>
         </table>
 </div>
@@ -241,10 +219,151 @@ $numeroAutomatico = $maxNumero + 1;
     </div>
   </div>
 </section>
+<!-- Modal conferma eliminazione -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="confirmDeleteLabel">
+          <i class="fas fa-exclamation-triangle me-2"></i>Conferma eliminazione
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Chiudi">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
 
+      <div class="modal-body">
+
+  <p>
+    Sei sicuro di voler eliminare il referendum
+    <strong id="deleteReferendum"></strong>?
+  </p>
+
+  <hr>
+
+  <p class="mb-2"><strong>Eliminazione selettiva (opzionale):</strong></p>
+
+
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="flag_fac-simile">
+    <label class="form-check-label" for="flag_programma">
+      Fac-Simile
+    </label>
+  </div>
+
+
+  <small class="text-muted d-block mt-2">
+    Se non selezioni nulla verrà eliminato l’intero referendum.
+  </small>
+
+</div>
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <i class="fas fa-times me-1"></i>Annulla
+        </button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+          <i class="fas fa-trash me-1"></i>Elimina
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
 <script>
+// ===========================
+// FUNZIONE AGGIUNGI REFERENDUM
+// ===========================
+function aggiungiReferendum(e) {
+    e.preventDefault();
+
+    const fileInput = document.getElementById('pdf_file');
+    const filepdf = fileInput.files[0];
+    const id_gruppo = document.getElementById("id_gruppo").value;
+    const id_colore = document.getElementById("id_colore").value; 
+	const numero = document.getElementById("numero").value;
+    
+
+    const denominazione = document.getElementById("denominazione").value.trim();
+
+    const formData = new FormData();
+    formData.append('funzione', 'salvaReferendum');
+    formData.append('descrizione', denominazione);
+    formData.append('id_gruppo', id_gruppo);
+    formData.append('id_colore', id_colore);
+    formData.append('numero', numero);
+
+    if (filepdf) formData.append('filepdf', filepdf);
+    formData.append('op', 'salva');
+
+    fetch('../principale.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('risultato').innerHTML = data;
+        annullaModifica();
+        aggiornaNumero();
+    });
+}
+
+// ===========================
+// CANCELLA REFERENDUM
+// ===========================
+function deleteReferendum(index) {
+    denominazione = document.getElementById("denominazione"+index).innerText;
+    numero = document.getElementById("numero"+index).innerText;
+    deleteIdReferendum = document.getElementById("id_gruppo"+index).innerText;
+
+    document.getElementById("deleteReferendum").textContent = numero + " - " + denominazione;
+
+    $('#confirmDeleteModal').modal('show');
+
+
+document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+    if (!deleteIdReferendum) return;
+
+    const flags = ['fac-simile'];
+    let eliminazioneParziale = false;
+
+    const formData = new FormData();
+    formData.append('funzione','salvaReferendum');
+    formData.append('id_gruppo', deleteIdReferendum);
+    formData.append('descrizione', denominazione);
+    formData.append('numero', numero);
+
+    flags.forEach(f => {
+        const checkbox = document.getElementById('flag_'+f);
+        if(checkbox?.checked){
+            formData.append('flag_'+f, 1);
+            eliminazioneParziale = true;
+        }
+    });
+
+    formData.append('op', eliminazioneParziale ? 'cancella_parziale' : 'cancella');
+
+    fetch('../principale.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('risultato').innerHTML = data;
+        console.log(data);
+        $('#confirmDeleteModal').modal('hide');
+        deleteIdReferendum = null;
+        annullaModifica();
+        aggiornaNumero();
+		
+    });
+});
+}
+
   // Dati quesiti dal PHP in JS
-  const quesiti = <?= $quesitiJSON ?>;
+//  const quesiti = < ?= $quesitiJSON ?>;
   const coloriQuesiti = <?= json_encode($coloriQuesiti) ?>;
 
 function mostraAnteprima(idColore) {
@@ -252,7 +371,7 @@ function mostraAnteprima(idColore) {
   const anteprima = document.getElementById('anteprima');
   if (idColore && coloriQuesiti[idColore]) {
     imgScheda.src = '../../client/temi/bootstrap/pagine/' + coloriQuesiti[idColore].immagine;
-    anteprima.style.backgroundColor = coloriQuesiti[idColore].colore || 'transparent';
+    anteprima.style.backgroundColor = coloriQuesiti[idColore].id_colore || 'transparent';
   } else {
     imgScheda.src = '';
     anteprima.style.backgroundColor = 'transparent';
@@ -261,14 +380,14 @@ function mostraAnteprima(idColore) {
 
 
 function modificaQuesito(indice) {
-  const q = quesiti[indice];
-  if (!q) return alert("Quesito non trovato.");
+//  const q = quesiti[indice];
+//  if (!q) return alert("Quesito non trovato.");
 
-  document.getElementById('numero').value = q.numero;
-  document.getElementById('denominazione').value = q.denominazione;
-  document.getElementById('colore').value = q.colore_id;
-  mostraAnteprima(q.colore_id);
-  document.getElementById('indice').value = indice;
+  document.getElementById('numero').value = document.getElementById('numero'+indice).innerText;
+  document.getElementById('denominazione').value = document.getElementById('denominazione'+indice).innerText;
+  document.getElementById('id_colore').value = document.getElementById('id_colore'+indice).innerText;
+  mostraAnteprima(document.getElementById('id_colore'+indice).innerText);
+  document.getElementById('id_gruppo').value = document.getElementById('id_gruppo'+indice).innerText;
   document.getElementById('azione').value = 'modifica';
   document.getElementById('btnSubmit').textContent = 'Modifica';
   document.getElementById('btnAnnulla').style.display = 'block';
@@ -277,9 +396,9 @@ function modificaQuesito(indice) {
 function annullaModifica() {
   document.getElementById('numero').value = <?= $numeroAutomatico ?>;
   document.getElementById('denominazione').value = '';
-  document.getElementById('colore').value = '';
+  document.getElementById('id_colore').value = '';
   mostraAnteprima('');
-  document.getElementById('indice').value = '';
+  document.getElementById('id_gruppo').value = '';
   document.getElementById('azione').value = 'aggiungi';
   document.getElementById('btnSubmit').textContent = 'Aggiungi';
   document.getElementById('btnAnnulla').style.display = 'none';
@@ -321,6 +440,12 @@ document.getElementById('pdf_file').addEventListener('change', function() {
   }
 });
 
-
+// ===========================
+// AGGIORNA NUMERO REFERENDUM
+// ===========================
+function aggiornaNumero() {
+    const maxNum = document.getElementById("maxNumero").innerText;
+    document.getElementById('numero').value = maxNum;
+}
 </script>
 
