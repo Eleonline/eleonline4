@@ -22,7 +22,7 @@ Utenti e permessi:
 - Permessi: carica anche per superuser (non deve visualizzare).
 
 Setup Configurazione:
-- Configura consultazione: ok
+- Configura consultazione: ok la data nella lista e americana convertire.
 - Configura Affluenza: ok.
 - Configura Circoscrizione: non lo utilizzo io quindi non sò cosa và qui.
 - Configura Sede Elettorale: Caricamento e Modifica ok. nella pagina gestione_sedi_elettorali.php mettere la variabile di scelta del provider.
