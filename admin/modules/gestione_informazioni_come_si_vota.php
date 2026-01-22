@@ -95,7 +95,7 @@ function aggiungiInfo(e) {
     const tipo = document.getElementById('tipo').value;
     const mid = document.getElementById('mid').value;
     const title = document.getElementById('title').value;
-    const preamble = document.getElementById('preamble').value;
+    const preamble = preambleEditor.getData();
 	const content = editor.getData();
 
     const formData = new FormData();
@@ -156,22 +156,17 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
 
 
 function editInfo(index) {
-    document.getElementById("mid").value =
-        document.getElementById("mid"+index).innerText;
-
-    document.getElementById("title").value =
-        document.getElementById("title"+index).innerText;
-
-    document.getElementById("preamble").value =
-        document.getElementById("preamble"+index).innerText;
-
+    document.getElementById("mid").value =document.getElementById("mid"+index).innerText;
+    document.getElementById("title").value =document.getElementById("title"+index).innerText;
+	preambleEditor.setData(
+        document.getElementById("preamble"+index).innerHTML
+    );
     editor.setData(
         document.getElementById("content"+index).innerHTML
     );
 
     document.getElementById("btnSalvaInfo").textContent = "Salva modifiche";
     document.getElementById("form-title").textContent = "Modifica Come si vota";
-
     document.getElementById("mid").focus();
 }
 
@@ -180,6 +175,7 @@ function resetFormInfo() {
     const form = document.getElementById('infoForm');
     form.reset();
     document.getElementById('mid').value = '';
+	preambleEditor.setData('');
 	editor.setData('');
     document.getElementById('btnSalvaInfo').textContent = "Aggiungi";
 	document.getElementById("form-title").textContent = "Aggiungi Come si vota";

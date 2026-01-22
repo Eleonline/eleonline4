@@ -53,8 +53,7 @@ $row = elenco_sedi(); // elenco sedi
         <div id="idCirc<?= $key ?>" style="display:none;"><?= $val['id_circ'] ?></div>
         <div id="lat<?= $key ?>" style="display:none;"><?= $val['latitudine'] ?></div>
         <div id="lng<?= $key ?>" style="display:none;"><?= $val['longitudine'] ?></div>
-            <td>
-        <button type="button"
+            <td style="white-space:nowrap"><button type="button"
             class="btn btn-sm btn-warning me-1"
             onclick="editSede(<?= $key ?>); scrollToGestioneSedi();">
         Modifica

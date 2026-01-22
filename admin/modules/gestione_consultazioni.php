@@ -354,11 +354,11 @@ confirmDeleteBtn.addEventListener('click', function() {
 });
 
   
-   function editConsultazione(index) { 
+   function editConsultazione(index) {
 	document.getElementById ( "id_cons_gen" ).value = document.getElementById ( "id_cons_gen"+index ).innerText
 	document.getElementById ( "denominazione" ).value = document.getElementById ( "descrizione"+index ).innerText
-	document.getElementById ( "data_inizio" ).value = document.getElementById ( "data_inizio"+index ).innerText
-	document.getElementById ( "data_fine" ).value = document.getElementById ( "data_fine"+index ).innerText
+	document.getElementById ( "data_inizio" ).value = document.getElementById ( "data_inizio"+index ).value
+	document.getElementById ( "data_fine" ).value = document.getElementById ( "data_fine"+index ).value
 	document.getElementById ( "tipo" ).selectedIndex = document.getElementById ( "tipo_cons"+index ).innerText
 	document.getElementById ( "link" ).value = document.getElementById ( "link_trasparenza"+index ).innerText
 	document.getElementById ( "chiusa" ).selectedIndex = document.getElementById ( "chiusa"+index ).innerText

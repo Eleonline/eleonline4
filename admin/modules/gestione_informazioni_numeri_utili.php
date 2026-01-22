@@ -95,16 +95,14 @@ $_SESSION['tipo_info']='numero';
 <!-- <script src="https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-build-classic@39.0.0/build/ckeditor.js"></script> -->
 <script src="../js/ckeditor.js"></script>
 <script>
-let deleteMid = null;
-
 // Funzione Aggiungi / Salva
 function aggiungiInfo(e) { 
     e.preventDefault(); 
     const tipo = document.getElementById('tipo').value;
     const mid = document.getElementById('mid').value;
     const title = document.getElementById('title').value;
-    const preamble = document.getElementById('preamble').value;
-    const content = contentEditor ? contentEditor.getData() : document.getElementById('content').value;
+    const preamble = preambleEditor.getData(); //document.getElementById('preamble').value;
+	const content = editor.getData();
 
     const formData = new FormData();
     formData.append('funzione', 'salvaInfo');
@@ -125,18 +123,19 @@ function aggiungiInfo(e) {
         });
 }
 
+let deleteMid = null; // variabile globale per salvare l'ID da eliminare
+
 // Funzione Modifica
 function editInfo(index) {
     document.getElementById("mid").value = document.getElementById("mid"+index).innerText;
     document.getElementById("title").value = document.getElementById("title"+index).innerText;
-    document.getElementById("preamble").value = document.getElementById("preamble"+index).innerText;
-  if(contentEditor) {
-    contentEditor.setData(document.getElementById("content"+index).innerHTML);
-} else {
-    document.getElementById("content").value = document.getElementById("content"+index).innerText;
-}
-
-
+//    document.getElementById("preamble").value = document.getElementById("preamble"+index).innerText;
+    preambleEditor.setData(
+        document.getElementById("preamble"+index).innerHTML
+    );
+    editor.setData(
+        document.getElementById("content"+index).innerHTML
+    );
 
     document.getElementById("btnSalvaInfo").textContent = "Salva modifiche";
 	document.getElementById("form-title").textContent = "Modifica Numeri Utili";
@@ -172,10 +171,13 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
 });
 
 // Reset Form
-function resetFormInfo() {
+function resetFormInfo() { debugger
     document.getElementById('infoForm').reset();
     document.getElementById('mid').value = '';
-    if(contentEditor) contentEditor.setData(''); // reset CKEditor
+    document.getElementById('title').value='';
+    preambleEditor.setData('');   
+	editor.setData('');
+
     document.getElementById('btnSalvaInfo').textContent = "Aggiungi";
 	document.getElementById("form-title").textContent = "Aggiungi Numeri Utili";
 }
@@ -190,30 +192,41 @@ function aggiornaNumero() {
 let contentEditor = null;
 
 // inizializzazione CKEditor
+
+ClassicEditor
+    .create(document.querySelector('#preamble'))
+    .then(newEditor => {
+        preambleEditor = newEditor; 
+       
+        // Imposta altezza iniziale
+        preambleEditor.ui.view.editable.element.style.height = '100px';
+        preambleEditor.ui.view.editable.element.style.minHeight = '100px';
+
+        // Mantieni altezza anche quando si clicca dentro
+        preambleEditor.editing.view.change(writer => {
+            writer.setStyle('height', '100px', preambleEditor.editing.view.document.getRoot());
+        });
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+
 ClassicEditor
     .create(document.querySelector('#content'))
     .then(newEditor => {
-        contentEditor = newEditor;
+        editor = newEditor;
 
-        // altezza fissa a 150px
-        contentEditor.ui.view.editable.element.style.height = '150px';
-        contentEditor.ui.view.editable.element.style.minHeight = '150px';
+        // Imposta altezza iniziale
+        editor.ui.view.editable.element.style.height = '400px';
+        editor.ui.view.editable.element.style.minHeight = '400px';
 
-        // mantieni altezza anche quando si clicca dentro
-        contentEditor.editing.view.change(writer => {
-            writer.setStyle('height', '150px', contentEditor.editing.view.document.getRoot());
+        // Mantieni altezza anche quando si clicca dentro
+        editor.editing.view.change(writer => {
+            writer.setStyle('height', '400px', editor.editing.view.document.getRoot());
         });
     })
-    .catch(error => console.error(error));
-
-// quando leggi il contenuto nella funzione aggiungiInfo
-const content = contentEditor ? contentEditor.getData() : document.getElementById('content').value;
-
-// quando modifichi un record
-if(contentEditor) {
-    contentEditor.setData(document.getElementById("content"+index).innerText);
-} else {
-    document.getElementById("content").value = document.getElementById("content"+index).innerText;
-}
-
+    .catch(error => {
+        console.error(error);
+    });
 </script>

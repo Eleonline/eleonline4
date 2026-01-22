@@ -88,16 +88,16 @@ if(!$cambia) {
             <?= $val['descrizione'] ?>
         </td>
 
-        <td id="data_inizio<?= $key ?>">
-			<?= $val['data_inizio']?>
+        <td><input type="date"  id="data_inizio<?= $key ?>" disabled
+			value="<?= $val['data_inizio']?>">
 		</td>
 
-        <td id="data_fine<?= $key ?>">
-				<?= $val['data_fine']?>
+        <td><input type="date"  id="data_fine<?= $key ?>" disabled
+			value="<?= $val['data_fine']?>">
         </td>
 
         <!-- AZIONI -->
-        <td>
+        <td style="white-space:nowrap">
             <button type="button"
                     class="btn btn-sm btn-warning me-1"
                     onclick="editConsultazione(<?= $key ?>); scrollToFormTitle();">

@@ -1,7 +1,9 @@
 <?php
 require_once '../includes/check_access.php';
+$row=configurazione();
+$maps_provider = $row[0]['googlemaps']=='0' ? 'openstreetmap' : 'google'; // usare 'openstreetmap' oppure 'google'
 $circos=elenco_circoscrizioni();
-$maps_provider = 'openstreetmap'; // usare 'openstreetmap' oppure 'google'
+
 ?>
 <input type="hidden" id="consultazioneAttiva" value="3">
 <section class="content">
@@ -27,7 +29,7 @@ $maps_provider = 'openstreetmap'; // usare 'openstreetmap' oppure 'google'
             <div class="col-md-8 rigaMappa">
               <label>Indirizzo</label>
               <div class="input-group">
-                <input type="text" id="indirizzo" name="indirizzo" class="form-control indir" required>
+                <input type="text" id="indirizzo" name="indirizzo" class="form-control indir" value="<?= $maps_provider; ?>" required>
                 <button type="button" class="btn btn-outline-secondary btnApriMappa btnApriMappaForm">
                   <i class="fas fa-map-pin me-2"></i>Apri mappa
                 </button>
