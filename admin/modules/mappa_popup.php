@@ -60,51 +60,94 @@ let map, marker, popupMarker;
 let gmap, gmarker, ginfoWindow;
 let currentInputs = null;
 let currentLatLng = null;
-let soloVisualizza = false; // Nuova variabile per modalità sola visualizzazione
+let soloVisualizza = false; // Modalità sola visualizzazione
 
-// Funzione principale: apre la mappa
+// --- FUNZIONE PER APRIRE LA MAPPA DAL FORM ---
+document.querySelector('.btnApriMappaForm').addEventListener('click', () => {
+    const container = document.querySelector('.rigaMappa');
+    const indirInput = container.querySelector('.indir');
+    const latInput = container.querySelector('#lat');
+    const lngInput = container.querySelector('#lng');
+    const comuneInput = container.querySelector('.nome_comune');
+
+    currentInputs = {
+        indir: indirInput,
+        lat: latInput,
+        lng: lngInput
+    };
+
+    const comune = comuneInput ? comuneInput.value.trim() : "";
+    const query = indirInput.value.trim();
+    if (!query) return alert("Inserisci un indirizzo o nome da cercare.");
+    const fullQuery = comune ? `${query}, ${comune}` : query;
+
+    soloVisualizza = false; // Sempre selezione nel form
+
+    if (maps_provider === 'google') {
+        const apiKey = "LA_TUA_API_KEY_DAL_DB_O_CONFIG"; 
+        fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(fullQuery)}&key=${apiKey}`)
+            .then(res => res.json())
+            .then(results => {
+                if (!results.results || results.results.length === 0)
+                    return alert('Nessun risultato trovato per "' + fullQuery + '".');
+                const location = results.results[0].geometry.location;
+                apriMappa({ lat: location.lat, lon: location.lng, solaVisualizzazione: false });
+            })
+            .catch(() => alert('Errore durante la ricerca dell\'indirizzo con Google Maps.'));
+    } else {
+        // OSM
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(fullQuery)}`)
+            .then(res => res.json())
+            .then(results => {
+                if (results.length === 0) return alert('Nessun risultato trovato per "' + fullQuery + '".');
+                apriMappa({ lat: parseFloat(results[0].lat), lon: parseFloat(results[0].lon), solaVisualizzazione: false });
+            })
+            .catch(() => alert('Errore durante la ricerca dell\'indirizzo con OSM.'));
+    }
+});
+
+// --- FUNZIONE PER APRIRE LA MAPPA (FORM O SOLO VISUALIZZA) ---
 function apriMappa(result) {
     const lat = parseFloat(result.lat);
     const lon = parseFloat(result.lon);
     currentLatLng = { lat, lon };
     mapPopup.style.display = 'block';
 
-    // Nascondi pulsante Usa posizione se in sola visualizzazione
-    closeMapBtn.style.display = result.solaVisualizzazione ? 'none' : 'inline-block';
-    soloVisualizza = !!result.solaVisualizzazione;
+    soloVisualizza = result.solaVisualizzazione === true;
+
+    // Nascondi o mostra bottone "Usa questa posizione"
+    closeMapBtn.style.display = soloVisualizza ? 'none' : 'inline-block';
 
     if (maps_provider === 'google') {
         if (!gmap) {
-            gmap = new google.maps.Map(mapDiv, {
-                center: { lat, lng: lon },
-                zoom: 16
-            });
-            gmarker = new google.maps.Marker({
-                position: { lat, lng: lon },
-                map: gmap,
-                draggable: !soloVisualizza
-            });
+            gmap = new google.maps.Map(mapDiv, { center: { lat, lng: lon }, zoom: 16 });
             ginfoWindow = new google.maps.InfoWindow();
-
-            if (!soloVisualizza) {
-                gmarker.addListener('drag', () => {
-                    const pos = gmarker.getPosition();
-                    currentLatLng = { lat: pos.lat(), lon: pos.lng() };
-                });
-
-                gmarker.addListener('dragend', () => {
-                    const pos = gmarker.getPosition();
-                    currentLatLng = { lat: pos.lat(), lon: pos.lng() };
-                    aggiornaIndirizzo(pos.lat(), pos.lng()).then(info => {
-                        ginfoWindow.setContent(`<strong>${info.address}</strong><br>Lat: ${info.lat.toFixed(6)}, Lon: ${info.lon.toFixed(6)}`);
-                        ginfoWindow.open(gmap, gmarker);
-                    });
-                });
-            }
-
         } else {
             gmap.setCenter({ lat, lng: lon });
-            gmarker.setPosition({ lat, lng: lon });
+        }
+
+        // Rimuovi marker vecchio se esiste
+        if (gmarker) gmarker.setMap(null);
+
+        gmarker = new google.maps.Marker({
+            position: { lat, lng: lon },
+            map: gmap,
+            draggable: !soloVisualizza
+        });
+
+        if (!soloVisualizza) {
+            gmarker.addListener('drag', () => {
+                const pos = gmarker.getPosition();
+                currentLatLng = { lat: pos.lat(), lon: pos.lng() };
+            });
+            gmarker.addListener('dragend', () => {
+                const pos = gmarker.getPosition();
+                currentLatLng = { lat: pos.lat(), lon: pos.lng() };
+                aggiornaIndirizzo(pos.lat(), pos.lng()).then(info => {
+                    ginfoWindow.setContent(`<strong>${info.address}</strong><br>Lat: ${info.lat.toFixed(6)}, Lon: ${info.lon.toFixed(6)}`);
+                    ginfoWindow.open(gmap, gmarker);
+                });
+            });
         }
 
         aggiornaIndirizzo(lat, lon).then(info => {
@@ -113,7 +156,7 @@ function apriMappa(result) {
         });
 
     } else {
-        // OpenStreetMap + Leaflet
+        // Leaflet
         if (!map) {
             map = L.map('map').setView([lat, lon], 16);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -123,28 +166,26 @@ function apriMappa(result) {
             map.setView([lat, lon], 16);
         }
 
-        if (marker) {
-            marker.setLatLng([lat, lon]);
-        } else {
-            marker = L.marker([lat, lon], { draggable: !soloVisualizza }).addTo(map);
-            if (!soloVisualizza) {
-                marker.on('drag', e => {
-                    const pos = e.target.getLatLng();
-                    currentLatLng = { lat: pos.lat, lon: pos.lng };
+        // Rimuovo marker precedente
+        if (marker) map.removeLayer(marker);
+
+        marker = L.marker([lat, lon], { draggable: !soloVisualizza }).addTo(map);
+
+        if (!soloVisualizza) {
+            marker.on('drag', e => {
+                const pos = e.target.getLatLng();
+                currentLatLng = { lat: pos.lat, lon: pos.lng };
+            });
+            marker.on('dragend', e => {
+                const pos = e.target.getLatLng();
+                currentLatLng = { lat: pos.lat, lon: pos.lng };
+                aggiornaIndirizzo(pos.lat, pos.lng).then(info => {
+                    mostraPopup(info.address, info.lat, info.lon);
                 });
-                marker.on('dragend', e => {
-                    const pos = e.target.getLatLng();
-                    currentLatLng = { lat: pos.lat, lon: pos.lng };
-                    aggiornaIndirizzo(pos.lat, pos.lng).then(info => {
-                        mostraPopup(info.address, info.lat, info.lon);
-                    });
-                });
-            }
+            });
         }
 
-        if (!popupMarker) {
-            popupMarker = L.popup({ closeButton: false, offset: [0, -30] });
-        }
+        if (!popupMarker) popupMarker = L.popup({ closeButton: false, offset: [0, -30] });
 
         aggiornaIndirizzo(lat, lon).then(info => {
             mostraPopup(info.address, info.lat, info.lon);
@@ -152,54 +193,46 @@ function apriMappa(result) {
     }
 }
 
+// --- MOSTRA POPUP IN OSM ---
 function mostraPopup(address, lat, lon) {
-    const content = address
-      ? `<strong>${address}</strong><br>Lat: ${lat.toFixed(6)}, Lon: ${lon.toFixed(6)}`
-      : `Lat: ${lat.toFixed(6)}, Lon: ${lon.toFixed(6)}`;
+    const content = address ? `<strong>${address}</strong><br>Lat: ${lat.toFixed(6)}, Lon: ${lon.toFixed(6)}` : `Lat: ${lat.toFixed(6)}, Lon: ${lon.toFixed(6)}`;
     if (maps_provider === 'openstreetmap') {
-      popupMarker.setLatLng([lat, lon]).setContent(content).openOn(map);
+        popupMarker.setLatLng([lat, lon]).setContent(content).openOn(map);
     }
 }
 
-// Reverse geocoding
+// --- REVERSE GEOCODING ---
 function aggiornaIndirizzo(lat, lon) {
     return fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`)
-      .then(res => res.json())
-      .then(data => {
-        let nome = data.name || "";
-        let via = data.address?.road || data.address?.pedestrian || data.address?.footway || "";
-        let num = data.address?.house_number || "";
-
-        // Evita doppioni tra nome e via
-        if (nome && via && nome === via) {
-            nome = ""; // rimuovo il nome se è uguale alla via
-        }
-
-        const indirizzoCompleto = [nome, via, num].filter(Boolean).join(" - ");
-        return { address: indirizzoCompleto, lat, lon };
-      })
-      .catch(() => ({ address: null, lat, lon }));
+        .then(res => res.json())
+        .then(data => {
+            let nome = data.name || "";
+            let via = data.address?.road || data.address?.pedestrian || "";
+            let num = data.address?.house_number || "";
+            if (nome && via && nome === via) nome = "";
+            const indirizzoCompleto = [nome, via, num].filter(Boolean).join(" - ");
+            return { address: indirizzoCompleto, lat, lon };
+        })
+        .catch(() => ({ address: null, lat, lon }));
 }
 
-
-// Usa posizione selezionata dal form
+// --- USO POSIZIONE SELEZIONATA ---
 closeMapBtn.addEventListener('click', () => {
-    if (soloVisualizza) return; // Non fare nulla se solo visualizza
+    if (soloVisualizza) return;
 
     if (currentInputs && currentLatLng) {
         currentInputs.lat.value = currentLatLng.lat.toFixed(6);
         currentInputs.lng.value = currentLatLng.lon.toFixed(6);
-        aggiornaIndirizzo(currentLatLng.lat, currentLatLng.lon).then(info => {
-            if (currentInputs.indir && info.address) {
-                const cleanedAddress = info.address.replace(/"/g, '').trim();
-                currentInputs.indir.value = cleanedAddress;
-            }
-        });
+        if (currentInputs.indir) {
+            aggiornaIndirizzo(currentLatLng.lat, currentLatLng.lon).then(info => {
+                currentInputs.indir.value = info.address.replace(/"/g, '').trim();
+            });
+        }
     }
     mapPopup.style.display = 'none';
 });
 
-// Chiudi popup senza salvare
+// --- CHIUDI POPUP ---
 closeMapX.addEventListener('click', () => {
     mapPopup.style.display = 'none';
 });

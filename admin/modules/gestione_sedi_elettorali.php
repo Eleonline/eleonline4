@@ -288,16 +288,19 @@ function aggiungiSede(e) {
   }
 
 // --- Gestione pulsante apri mappa nel form  ---
+// Apri mappa dal form
 document.querySelector('.btnApriMappaForm').addEventListener('click', () => {
     const container = document.querySelector('.rigaMappa');
-    const indir = container.querySelector('.indir');
+    const indirInput = container.querySelector('.indir');
+    const latInput = container.querySelector('.lat');
+    const lngInput = container.querySelector('.lng');
     const comuneInput = container.querySelector('.nome_comune');
 
-    const comune = comuneInput ? comuneInput.value.trim() : "";
-    if (!indir) return alert('Input indirizzo non trovato.');
-    const query = indir.value.trim();
-    if (!query) return alert("Inserisci un indirizzo o nome da cercare.");
+    currentInputs = { indir: indirInput, lat: latInput, lng: lngInput };
 
+    const comune = comuneInput ? comuneInput.value.trim() : "";
+    const query = indirInput.value.trim();
+    if (!query) return alert("Inserisci un indirizzo o nome da cercare.");
     const fullQuery = comune ? `${query}, ${comune}` : query;
 
     if (maps_provider === 'google') {
@@ -308,74 +311,22 @@ document.querySelector('.btnApriMappaForm').addEventListener('click', () => {
                 if (!results.results || results.results.length === 0)
                     return alert('Nessun risultato trovato per "' + fullQuery + '".');
                 const location = results.results[0].geometry.location;
-                apriMappa({ lat: location.lat, lon: location.lng });
+
+                // ⚡ Qui forziamo modalità SELEZIONE per la form
+                apriMappa({ lat: location.lat, lon: location.lng, solaVisualizzazione: false });
             })
             .catch(() => alert('Errore durante la ricerca dell\'indirizzo con Google Maps.'));
     } else {
-        // Nominatim OSM
-    fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(fullQuery)}`)
-        .then(res => res.json())
-        .then(results => {
-            if (results.length === 0) return alert('Nessun risultato trovato per "' + fullQuery + '".');
-            apriMappa(results[0]);
-        })
-        .catch(() => alert('Errore durante la ricerca dell\'indirizzo con OSM.'));
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(fullQuery)}`)
+            .then(res => res.json())
+            .then(results => {
+                if (results.length === 0) return alert('Nessun risultato trovato per "' + fullQuery + '".');
+                // ⚡ Forziamo modalità SELEZIONE
+                results[0].solaVisualizzazione = false;
+                apriMappa(results[0]);
+            })
+            .catch(() => alert('Errore durante la ricerca dell\'indirizzo con OSM.'));
     }
 });
-
-
-function apriMappaSoloVisualizza(lat, lon, indirizzo) {
-    const mapPopup = document.getElementById('mapPopup');
-    const mapDiv = document.getElementById('map');
-
-    mapPopup.style.display = 'block';
-
-    if (maps_provider === 'google') {
-        if (!gmap) {
-            gmap = new google.maps.Map(mapDiv, {
-                center: { lat: lat, lng: lon },
-                zoom: 16
-            });
-            gmarker = new google.maps.Marker({
-                position: { lat: lat, lng: lon },
-                map: gmap,
-                draggable: false
-            });
-        } else {
-            gmap.setCenter({ lat: lat, lng: lon });
-            gmarker.setPosition({ lat: lat, lng: lon });
-        }
-
-        ginfoWindow.setContent(`<strong>${indirizzo}</strong><br>Lat: ${lat.toFixed(6)}, Lon: ${lon.toFixed(6)}`);
-        ginfoWindow.open(gmap, gmarker);
-
-    } else {
-        // OpenStreetMap + Leaflet
-        if (!map) {
-            map = L.map('map').setView([lat, lon], 16);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
-            }).addTo(map);
-        } else {
-            map.setView([lat, lon], 16);
-        }
-
-        if (marker) {
-            marker.setLatLng([lat, lon]);
-        } else {
-            marker = L.marker([lat, lon], { draggable: false }).addTo(map);
-        }
-
-        if (!popupMarker) {
-            popupMarker = L.popup({ closeButton: false, offset: [0, -30] });
-        }
-
-        popupMarker.setLatLng([lat, lon])
-                   .setContent(`<strong>${indirizzo}</strong><br>Lat: ${lat.toFixed(6)}, Lon: ${lon.toFixed(6)}`)
-                   .openOn(map);
-    }
-}
-
-
 
 </script>

@@ -23,7 +23,12 @@ $row = elenco_sedi(); // elenco sedi
 			<?php if (!empty($val['latitudine']) && !empty($val['longitudine'])): ?>
 				<button type="button"
 						class="btn btn-sm btn-info me-1"
-						onclick="apriMappaSoloVisualizza(<?= $val['latitudine'] ?>, <?= $val['longitudine'] ?>, '<?= addslashes($val['indirizzo']) ?>')"
+						onclick="apriMappa({
+    lat: <?= $val['latitudine'] ?>,
+    lon: <?= $val['longitudine'] ?>,
+    solaVisualizzazione: true
+})"
+
 						title="Visualizza mappa">
 					<i class="fas fa-map-marked-alt"></i>
 				</button>
