@@ -120,14 +120,6 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 		?>
 
 		<li class="nav-item">
-		  <a href="<?php echo $affluenza_attivo ? 'modules.php?op=10' : '#'; ?>" 
-			 class="nav-link <?php echo ($op == 10) ? 'active' : ''; ?> <?php echo !$affluenza_attivo ? 'disabled' : ''; ?>">
-			<i class="nav-icon fas fa-users <?php echo $affluenza_attivo ? 'text-warning' : 'text-secondary'; ?>"></i>
-			<p class="<?php echo $affluenza_attivo ? '' : 'text-secondary'; ?>">Configura Affluenza</p>
-		  </a>
-		</li>
-
-		<li class="nav-item">
 		  <a href="<?php echo $circoscrizioni_attivo ? 'modules.php?op=11' : '#'; ?>" 
 			 class="nav-link <?php echo ($op == 11) ? 'active' : ''; ?> <?php echo !$circoscrizioni_attivo ? 'disabled' : ''; ?>">
 			<i class="nav-icon fas fa-map <?php echo $circoscrizioni_attivo ? 'text-success' : 'text-secondary'; ?>"></i>
@@ -148,6 +140,14 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 			 class="nav-link <?php echo ($op == 13) ? 'active' : ''; ?> <?php echo !$sezione_attivo ? 'disabled' : ''; ?>">
 			<i class="nav-icon fas fa-door-closed <?php echo $sezione_attivo ? 'text-danger' : 'text-secondary'; ?>"></i>
 			<p class="<?php echo $sezione_attivo ? '' : 'text-secondary'; ?>">Configura Sezione</p>
+		  </a>
+		</li>
+
+		<li class="nav-item">
+		  <a href="<?php echo $affluenza_attivo ? 'modules.php?op=10' : '#'; ?>" 
+			 class="nav-link <?php echo ($op == 10) ? 'active' : ''; ?> <?php echo !$affluenza_attivo ? 'disabled' : ''; ?>">
+			<i class="nav-icon fas fa-users <?php echo $affluenza_attivo ? 'text-warning' : 'text-secondary'; ?>"></i>
+			<p class="<?php echo $affluenza_attivo ? '' : 'text-secondary'; ?>">Configura Affluenza</p>
 		  </a>
 		</li>
 

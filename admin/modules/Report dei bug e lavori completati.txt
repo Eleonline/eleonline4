@@ -22,11 +22,11 @@ Utenti e permessi:
 - Permessi: carica anche per superuser (non deve visualizzare).
 
 Setup Configurazione:
-- Configura consultazione: ok la data nella lista è americana convertire.
+- Configura consultazione: ok.
 - Configura Affluenza: ok.
 - Configura Circoscrizione: non lo utilizzo io quindi non sò cosa và qui.
-- Configura Sede Elettorale: Caricamento e Modifica ok. nella pagina gestione_sedi_elettorali.php mettere la variabile di scelta del provider.
-- Configura Sezione: Problema con modifica non riporta descrizione(sede).
+- Configura Sede Elettorale: ok.
+- Configura Sezione: ok.
 
 Importa Dati:
 - Webservice : da fare.
@@ -46,9 +46,11 @@ Senato:
 	- Listino Bloccato: ok
  
 Comunali:
-- Candidato Sindaco: verificare anteprima immagini. Non trova la posizione libera.
-- Lista: verificare anteprima immagini. Non trova la posizione libera.
-- Candidati: verificare anteprima immagini e pdf non trova la posizione libera.
+- Candidato Sindaco: verificare anteprima immagini. Non trova la posizione libera. manca nel form link trasparenza
+- Lista: verificare anteprima immagini. Non trova la posizione libera. manca nel form link trasparenza.
+Fare il controllo se è stato messo il link trasparenza al candidato sindaco e oscurare nel form link trasparenza
+- Candidati: verificare anteprima immagini e pdf. non trova la posizione libera. 
+Fare il controllo se è stato messo il link trasparenza delle liste o  al candidato al sindaco e oscrurare nel form curriculum e Certificato Penale.
 
 Ballottaggio: e tutto da fare
 - Candidato Sindaco: da fare
@@ -62,7 +64,7 @@ Regionali:
 - Candidati: stessi problemi dei comunali.
 
 Referndum:
-- Quesito Referendario: da verificare. non si vede la scheda nel verde scruso solo nella lista ma nel select si.
+- Quesito Referendario: ok.
 
 Carica informazioni:
 - Come si vota: ok.
@@ -85,7 +87,7 @@ Login: ok
 Logout: ok
 
 siderbar.php(Menù laterale):
-- messo disattiva o attiva nel menu 
+- messo disattiva o attiva nel menu. 
 
 menù.php (menù top):
 - sitemare le notifiche.
