@@ -22,8 +22,10 @@ function send_output($msg, $status = 'progress') {
 
 // Leggi parametri POST con fallback a 0
 $data_rev = isset($_POST['data_rev']) ? $_POST['data_rev'] : '';
-$rev_locale = isset($_POST['rev_locale']) ? (int)$_POST['rev_locale'] : 0; # caricare da db
-if ($stream = fopen('http://mail.eleonline.it/version/risposta.php', 'r')) {
+$row=configurazione();
+$rev_locale=$row[0]['patch'];
+//$rev_locale = isset($_POST['rev_locale']) ? (int)$_POST['rev_locale'] : 0; # caricare da db
+if ($stream = fopen('http://mail.eleonline.it/version4/risposta.php', 'r')) {
 	$rev= stream_get_contents($stream, 7);
 	fclose($stream);							
 	$rev_online=substr($rev,0,7);

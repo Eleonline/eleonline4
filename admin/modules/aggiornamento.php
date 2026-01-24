@@ -1,49 +1,33 @@
-<?php require_once '../includes/check_access.php'; ?>
-<?php
-#require_once '../includes/versione.php';
-global $patch;
-// Estrai build corrente
-#preg_match('/rev\s*(\d+)/i', $versione, $match);
-$build_corrente = $patch; #isset($match[1]) ? (int)$match[1] : 0;
-// Variabili già pronte dalle notifiche dinamiche
-$build_nuovo = $notifiche[0]['testo'] ?? '';
-preg_match('/rev\s*(\d+)/i', $build_nuovo, $m);
-$rev_nuovo = isset($m[1]) ? (int)$m[1] : $build_corrente;
+<?php require_once '../includes/check_access.php'; 
 
-// Costruisci URL changelog e nome file
-$rev_online = $rev_nuovo;
-$rev_locale = $build_corrente;
-$rev_successivo = $rev_locale + 1;
 
-$log_url = "https://trac.eleonline.it/eleonline4/log/trunk?format=changelog&limit=100&mode=stop_on_copy&rev={$rev_online}&stop_rev={$rev_successivo}&verbose=on";
-
+if(!isset($_GET['errmex'])) {
+$row=configurazione();
+$rev_locale=$row[0]['patch'];
+if ($stream = fopen('http://mail.eleonline.it/version4/risposta.php', 'r')) {
+	$rev_online= stream_get_contents($stream, 7);
+	fclose($stream);							
+	$rev_online=substr($rev_online,0,7);
+	$_SESSION['remoterev']=$rev_online;         
+}else{
+	$errmex=2;
+	Header("Location: modules/modules.php?op=aggiorna&id_cons_gen=$id_cons_gen&errmex=$errmex"); exit;
+}
+$host="https://trac.eleonline.it";
+$log_url = "$host/eleonline4/log/trunk?format=changelog&limit=100&mode=stop_on_copy&rev={$rev_online}&verbose=on";
+if($rev_locale!=$rev_online) {
 // Crea cartella tmp se non esiste
 $log_dir = realpath(__DIR__ . '/../tmp');
 if (!$log_dir) {
     $log_dir = __DIR__ . '/../tmp';
     if (!is_dir($log_dir)) {
-        mkdir($log_dir, 0775, true);
+        mkdir($log_dir, 0755, true);
     }
 }
+#scarica il logfile
 
-$log_file = "$log_dir/changelog_rev{$rev_locale}_{$rev_online}.log";
-
-// Scarica il changelog solo se non esiste o è vecchio
-if (!file_exists($log_file) || time() - filemtime($log_file) > 300) {
-    $log_raw = @file_get_contents($log_url);
-    if ($log_raw !== false) {
-        file_put_contents($log_file, $log_raw);
-    } else {
-        $log_raw = "Errore durante il download del changelog.";
-    }
-} else {
-    $log_raw = file_get_contents($log_file);
-
-    // Dopo aver letto e usato il file, lo cancelliamo per non accumulare
-    if (file_exists($log_file)) {
-        unlink($log_file);
-    }
-}
+$log_file = "$log_dir/changelog_rev_{$rev_locale}_{$rev_online}.log";
+$log_raw = simplexml_load_file("$host/eleonline4/log?format=rss&mode=stop_on_copy&rev=$rev_online&stop_rev=$rev_locale&format=rss&max=100&verbose=on#");
 
 // Funzione per convertire data inglese completa in italiano
 function dataInItaliano($riga_data) {
@@ -63,6 +47,19 @@ $log_contents = '';
 $data_di_aggiornamento = '';  // inizializzo a stringa vuota
 
 if (strpos($log_raw, 'Errore') === false) {
+############# usa xrs
+        $log_contents = '<h2>'. $log_raw->channel->title . '</h2>';    
+		foreach ($log_raw->channel->item as $item) 
+		{
+			$log_contents .= '<p class="title"><a href="'. $item->link .'">' . $item->title . "</a></p>";
+			$str=preg_replace('/\s\--/','<br>--',$item->description);
+			$log_contents .= "<p class='desc'>" . $str . "</p>";
+        } 
+#################	
+$data_di_aggiornamento === '';
+ /* ESCLUDO IL PRECEDENTE CODICE DI LETTURA DEL LOG
+
+	
     $lines = explode("\n", $log_raw);
     $blocco = [];
     $in_blocco = false;
@@ -112,12 +109,14 @@ if (strpos($log_raw, 'Errore') === false) {
     if (!empty($blocco)) {
         $log_contents .= "<pre style='white-space: pre-wrap; font-family: monospace; margin-bottom: 1rem;'>" . htmlspecialchars(implode("\n", $blocco)) . "</pre>\n";
     }
-
+*/
     if ($log_contents === '') {
         $log_contents = "Nessuna voce di changelog disponibile.";
     }
 } else {
     $log_contents = htmlspecialchars($log_raw);
+} 
+}
 }
 ?>
 
@@ -130,7 +129,7 @@ if (strpos($log_raw, 'Errore') === false) {
         <h3 class="card-title"><i class="fas fa-cogs me-2"></i>Aggiornamento Sistema</h3>
       </div>
       <div class="card-body">
-        <?php if ($rev_online > $rev_locale): ?>
+        <?php if ($rev_online != $rev_locale): ?>
           <div class="alert alert-warning">
             <i class="fas fa-exclamation-triangle me-2"></i>
             È disponibile un aggiornamento alla revisione <strong><?= $rev_online ?></strong>.
