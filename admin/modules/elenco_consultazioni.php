@@ -88,12 +88,16 @@ if(!$cambia) {
             <?= $val['descrizione'] ?>
         </td>
 
-        <td><input type="date"  id="data_inizio<?= $key ?>" disabled
-			value="<?= $val['data_inizio']?>">
-		</td>
+        <td>
+  <input type="date" id="data_inizio<?= $key ?>" disabled
+         value="<?= $val['data_inizio'] ?>"
+         style="border:none; background:none; pointer-events:none;">
+</td>
+
 
         <td><input type="date"  id="data_fine<?= $key ?>" disabled
-			value="<?= $val['data_fine']?>">
+			value="<?= $val['data_fine']?>"
+			style="border:none; background:none; pointer-events:none;">
         </td>
 
         <!-- AZIONI -->
