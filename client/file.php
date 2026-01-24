@@ -37,25 +37,39 @@ while(list($id_cons_gen2,$descr) = $res->fetch(PDO::FETCH_NUM)) {
 echo "</b>\")";
 
 }elseif ($fase=='2'){
-	$id_cons_gen2=intval($_GET['id_cons_gen2']);
-	$sql="SELECT descrizione from ".$prefix."_ele_consultazione where id_cons_gen='$id_cons_gen2'";
-	$rescons = $dbi->prepare("$sql");
-	$rescons->execute();
 
-	list($descr_cons) = $rescons->fetch(PDO::FETCH_NUM);
-	$sql="SELECT t2.id_comune,t2.descrizione from ".$prefix."_ele_cons_comune as t1 left join ".$prefix."_ele_comune as t2 on t1.id_comune=t2.id_comune where t1.id_cons_gen=$id_cons_gen2 order by t2.descrizione ";
-	$res = $dbi->prepare("$sql");
-	$res->execute();
+    $id_cons_gen2=intval($_GET['id_cons_gen2']);
 
-Header("content-type: application/x-javascript; charset=utf-8");
-echo "document.write(\"<b><input type=\'hidden\' name=\'id_cons_gen2\' value=\'$id_cons_gen2\'><select name=\'id_comune2\'>";
+    $sql="SELECT t2.id_comune,t2.descrizione 
+          from ".$prefix."_ele_cons_comune as t1 
+          left join ".$prefix."_ele_comune as t2 
+          on t1.id_comune=t2.id_comune 
+          where t1.id_cons_gen=$id_cons_gen2 
+          order by t2.descrizione";
 
-while(list($id_comune2,$descr) = $res->fetch(PDO::FETCH_NUM)) {
-			echo "<option value=\'$id_comune2\'>".htmlentities($descr)."</option>";
-		}
-		echo "</select>";
-echo "</b>\")";
+    $res = $dbi->prepare($sql);
+    $res->execute();
+
+    Header("content-type: application/x-javascript; charset=utf-8");
+
+    echo "document.write(\"<b>
+          <input type=\'hidden\' name=\'id_cons_gen2\' value=\'$id_cons_gen2\'>
+          <select name=\'id_comune2\'>";
+
+    while(list($id_comune2,$descr) = $res->fetch(PDO::FETCH_NUM)) {
+        echo "<option value=\'$id_comune2\'>".htmlentities($descr)."</option>";
+    }
+
+    echo "</select>";
+
+    // 🔥 AGGIUNTA CHIAVE
+    $res = $dbi->prepare($sql);
+    $res->execute();
+
+    while(list($id_comune2,$descr) = $res->fetch(PDO::FETCH_NUM)) {
+        echo "<input type=\'hidden\' name=\'$id_comune2\' value=\'$descr\'>";
+    }
+
+    echo "</b>\")";
 }
-
-
 ?>

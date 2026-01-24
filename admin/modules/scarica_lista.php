@@ -58,6 +58,7 @@ $indirizzoweb  = isset($param['indirizzoweb']) ? addslashes($param['indirizzoweb
       <div class="card-body">
 
         <!-- FASE 0 – SERVER -->
+		
         <?php if ($fase == 0) { ?>
           <input type="hidden" name="op" value="20">
           <input type="hidden" name="fase" value="1">
@@ -113,9 +114,11 @@ $indirizzoweb  = isset($param['indirizzoweb']) ? addslashes($param['indirizzoweb
               <script src="<?= htmlspecialchars($urlcomune) ?>"></script>
             </div>
           </div>
+		  <input type="hidden" name="descr_comune2" id="descr_comune2">
         <?php } ?>
 
        <!-- FASE 3 – CONFERMA -->
+
 <?php if ($fase == 3) { ?>
     <input type="hidden" name="op" value="20">
     <input type="hidden" name="fase" value="4">
@@ -139,9 +142,11 @@ $indirizzoweb  = isset($param['indirizzoweb']) ? addslashes($param['indirizzoweb
                 <strong> Consultazione:</strong> <?= $_GET['descr_cons'] ?>
             </li>
             <li class="mt-2">
-                <i class="fas fa-city text-info"></i>
-                <strong> Comune:</strong> ID <?= intval($id_comune2) ?> 
-            </li>
+				<i class="fas fa-city text-info"></i>
+				<strong> Comune:</strong>
+				<?= htmlspecialchars($_GET['descr_comune2'] ?? '') ?>
+			</li>
+
         </ul>
 
         <p class="text-danger mt-2 mb-0">
@@ -177,9 +182,9 @@ $indirizzoweb  = isset($param['indirizzoweb']) ? addslashes($param['indirizzoweb
         <div class="col-6">
             <?php if ($fase > 0) { ?>
                 <a class="btn btn-secondary btn-block btn-lg mb-2"
-                   href="modules.php?op=20&fase=<?= $fase_prec ?>&indirizzoweb=<?= urlencode($indirizzoweb) ?>&id_cons_gen2=<?= $id_cons_gen2 ?>&id_comune2=<?= $id_comune2 ?>">
-                    <i class="fas fa-arrow-left"></i> Indietro
-                </a>
+				   href="modules.php?op=20">
+					<i class="fas fa-times"></i> Annulla
+				</a>
             <?php } ?>
         </div>
 
@@ -215,6 +220,21 @@ document.querySelectorAll('.remote-load').forEach(box => {
     const selects = box.querySelectorAll('select');
     selects.forEach(s => s.classList.add('form-control'));
 });
+</script>
+<script>
+const selectComune = document.querySelector('select[name="id_comune2"]');
+const descrComuneInput = document.getElementById('descr_comune2');
+
+if (selectComune && descrComuneInput) {
+    // Imposta subito il valore nascosto al caricamento della pagina
+    descrComuneInput.value = selectComune.options[selectComune.selectedIndex].text;
+
+    // Aggiorna se l'utente cambia selezione
+    selectComune.addEventListener('change', function() {
+        descrComuneInput.value = this.options[this.selectedIndex].text;
+        console.log('COMUNE COPIATO:', descrComuneInput.value);
+    });
+}
 </script>
 
 </section>
