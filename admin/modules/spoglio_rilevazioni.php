@@ -1,3 +1,9 @@
+<?php
+if(is_file('includes/check_access.php'))
+	require_once 'includes/check_access.php';
+else
+	require_once '../includes/check_access.php';
+?>
 <style>
 /* Rimuove freccette nei campi number (Chrome, Safari) */
 input[type="number"]::-webkit-outer-spin-button,
@@ -85,31 +91,36 @@ $tot_voti_lista+=$val['voti'];} */
 <section class="content" id="sezioneContent">
 <div id="divBarraSezioni"> <?php include_once("barra_sezioni.php"); ?> </div>
 </section>
-<div id="divPaginaListe"> <?php include('pagina_voti_lista.php'); ?> </div>
+<div id="divRilevazioni"> <?php include('pagina_rilevazioni.php'); ?> </div>
 <div id="divVotiFinale"> <?php include('pagina_voti_finali.php'); ?> </div>
 
 
 
 <script>
 
-function salva_voti(e) {
+function salva_affluenza(e) {
     e.preventDefault(); // blocca il submit normale
 
+	const id = parseInt(document.getElementById("id").value);
 	const str = parseInt(document.getElementById("id_sezione").value);
-	const validi = parseInt(document.getElementById("votiValidi").value);
-	const nulle = parseInt(document.getElementById("schedeNulle").value);
-	const bianche = parseInt(document.getElementById("schedeBianche").value);
-	const vnulli = parseInt(document.getElementById("votiNulli").value);
-	const vcontestati = parseInt(document.getElementById("votiContestati").value);
-
+	const data = document.getElementById("data"+id).value;
+	const orario = document.getElementById("orario"+id).value;
+	const uomini='0';
+	const donne='0';
+	if (document.getElementById("uomini"+id) !== null) {
+		uomini = parseInt(document.getElementById("uomini"+id).value);
+		donne = parseInt(document.getElementById("donne"+id).value);
+	}
+	const totale = parseInt(document.getElementById("totale"+id).value);
+debugger
     const formData = new FormData(); 
-	formData.append('funzione', 'salvaVotiFinale');
-    formData.append('validi', validi);
-    formData.append('nulle', nulle);
-    formData.append('bianche', bianche);
-    formData.append('vnulli', vnulli);
-    formData.append('vcontestati', vcontestati);
+	formData.append('funzione', 'salvaRilevazione');
     formData.append('id_sez', str);
+    formData.append('data', data);
+    formData.append('orario', orario);
+    formData.append('uomini', uomini);
+    formData.append('donne', donne);
+    formData.append('totale', totale);
     formData.append('op', 'salva');
 
     fetch('../principale.php', {
@@ -121,8 +132,8 @@ function salva_voti(e) {
         return response.text();
     })
     .then(data => {
-		document.getElementById('divVotiFinale').innerHTML = data;
-		aggiorna_sezione(str);
+		document.getElementById('divRilevazioni').innerHTML = data;
+//		aggiorna_sezione(str);
     })
     .catch(error => {
         console.error('Errore fetch:', error);

@@ -263,10 +263,11 @@ global $dbi,$prefix,$id_comune,$id_cons_gen,$id_cons;
 	return ($row);	
 }
 
-function elenco_affluenze()
+function elenco_affluenze($id = 0)
 {
 	global $id_cons,$prefix,$dbi;
-	$sql="select voti_complessivi,voti_uomini,voti_donne, data, orario, id_gruppo, id_sez from ".$prefix."_ele_voti_parziale where id_cons=$id_cons order by data,orario asc";
+	if($id) $sez="and id_sez='$id'"; else $sez='';
+	$sql="select voti_complessivi,voti_uomini,voti_donne, data, orario, id_gruppo, id_sez from ".$prefix."_ele_voti_parziale where id_cons=$id_cons $sez order by data,orario asc";
 	$sth = $dbi->prepare("$sql");
 	$sth->execute();
 	$row = $sth->fetchAll(); 

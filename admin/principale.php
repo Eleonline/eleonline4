@@ -67,7 +67,7 @@ $id_cons=$_SESSION['id_cons'];
 $permessi=ChiSei($id_cons_gen);
 if($permessi<16) return("Errore: non hai i permessi");
 $param=strtolower($_SERVER['REQUEST_METHOD']) == 'get' ? $_GET : $_POST;
-if (isset($param['funzione'])) {$funzione=$param['funzione'];} else die("Errore: funzione non definita");
+if (isset($param['funzione'])) {$funzione=$param['funzione'];} else return("Errore: funzione non definita");
 require_once 'includes/query.php';
 if($permessi>32)
 	switch ($funzione) {
@@ -124,6 +124,15 @@ if($permessi>32)
 			break;
 		case 'salvaReferendum': 
 			include("modules/salva_referendum.php");
+			break;
+		case 'salvaVotiListe':
+			include("modules/salva_voti_lista.php");
+			break;
+		case 'salvaVotiFinale':
+			include("modules/salva_voti.php");
+			break;
+		case 'salvaRilevazione':
+			include("modules/salva_rilevazione.php");
 			break;
 	}
 	

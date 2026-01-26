@@ -408,7 +408,7 @@ function controllo_votil($id_cons,$id_sez,$id_lista){
 			}
 			if (!$totsg) $totsg=$solovg;
 			if (($totlis!=$validil or $validil+$contestatil+$nullil+$totsg!=$votiv) and ($validil+$contestatil+$nullil+$solol>0 or $tvl>0)) {$err=13;$tipo='lista';}
-			if(($solovg && !$disg && ($tnl!=$nullil && $disg)) || $totsl!=$solol || ($totsg!=$solovg)) {$err=14;$tipo='lista';}
+			if(($solovg && !$disg && ($tnl!=$nullil && $disg)) || $totsl!=$solol || ($totsg!=$solovg)) {$err=14;$tipo='lista'; }
 		}		          
 	}
 	if(!$err){

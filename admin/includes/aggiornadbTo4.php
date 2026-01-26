@@ -214,9 +214,9 @@ if(!controllo($prefix.'_config','versione',++$num))
 	$sql="alter table `".$prefix."_config` change column `Versione` `versione` int(3)";
 	$ret=aggiorna($sql,$dbi,'',$num);
 }	else $strlog= "<br><span style=\"color: green;\">- La tabella ".$prefix."_config non richiede questo aggiornamento</span><br>";
-if(!controllo($prefix.'_config','versione',++$num))
+if(controllo($prefix.'_config','patch',++$num))
 {
-	$sql="alter table `".$prefix."_config` change column `Versione` `versione` int(3)";
+	$sql="ALTER TABLE `soraldo_config` CHANGE `patch` `patch` VARCHAR(60) NULL;";
 	$ret=aggiorna($sql,$dbi,'',$num);
 }	else $strlog= "<br><span style=\"color: green;\">- La tabella ".$prefix."_config non richiede questo aggiornamento</span><br>";	
 if(controllo($prefix.'_config','secret',++$num))
