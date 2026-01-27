@@ -15,6 +15,7 @@ $num_sez=$sezione_attiva;
 	<form id="votiForm"  onsubmit="salva_voti(event)">
 	<input type="hidden" name="op" value="32">
 	<input type="hidden" name="id_sezione" id="id_sezione" value="<?= $id_sez ?>">
+   <div class="table-responsive">
    <table class="table table-bordered text-center">
       <thead class="bg-primary text-white">
         <tr>
@@ -42,6 +43,7 @@ $num_sez=$sezione_attiva;
         </tr>
       </tbody>
     </table>
+	</div>
 	</form>
   </div>
 
