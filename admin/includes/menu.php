@@ -3,8 +3,27 @@ require_once '../includes/check_access.php';
 #require_once '../includes/versione.php';
 require_once '../includes/query.php';
 // NOTIFICHE DINAMICHE
-
 function getUltimaRevisioneOnline() {
+    $url = 'http://mail.eleonline.it/version4/risposta.php';
+    $opts = [
+        "http" => [
+            "method" => "GET",
+            "timeout" => 2 // massimo 2 secondi
+        ]
+    ];
+    $context = stream_context_create($opts);
+    $data = @file_get_contents($url, false, $context);
+
+    if ($data !== false) {
+        $rev = trim($data);          // prendo tutta la stringa
+        $tempo = 'Adesso';
+    } else {
+        $rev = '';                    // fallback se il server non risponde
+        $tempo = '';
+    }
+
+    return ['rev' => $rev, 'tempo' => $tempo ?: 'Adesso'];
+
 /*    $url = 'https://trac.eleonline.it/ele3/log/trunk';
 
     $ch = curl_init();
@@ -65,17 +84,6 @@ function getUltimaRevisioneOnline() {
         }
     }
 */
-	$newrev=0;
-	$headers = @get_headers('http://mail.eleonline.it/version4/risposta.php');
-	if($headers)
-		if ($stream = fopen('http://mail.eleonline.it/version4/risposta.php', 'r')) { 
-			$newrev= stream_get_contents($stream, 4);
-			fclose($stream);
-		}
-	$rev=(int) filter_var($newrev, FILTER_SANITIZE_NUMBER_INT);
-	$tempo='';
-
-    return ['rev' => $rev, 'tempo' => $tempo ?: 'Adesso'];
 }
 global $patch,$id_cons_gen,$id_cons,$id_comune;
 if(!isset($_SESSION['tipo_cons'])) $_SESSION['tipo_cons']='';
@@ -102,8 +110,8 @@ if ($build_nuovo > $build_corrente) {
 }
 
 // --- Esempio di altre notifiche statiche ---
-$notifiche[] = ['icona' => 'fas fa-envelope', 'testo' => '1 nuovo messaggio', 'tempo' => '3 min'];
-$notifiche[] = ['icona' => 'fas fa-users', 'testo' => '2 nuove richieste', 'tempo' => '12 ore', 'link' => 'modules.php?op=7'];
+//$notifiche[] = ['icona' => 'fas fa-envelope', 'testo' => '1 nuovo messaggio', 'tempo' => '3 min'];
+//$notifiche[] = ['icona' => 'fas fa-users', 'testo' => '2 nuove richieste', 'tempo' => '12 ore', 'link' => 'modules.php?op=7'];
 
 ?>
 <!-- Navbar -->
@@ -269,12 +277,13 @@ function aggiornaSelect() {
         <div class="dropdown-divider"></div>
         <?php foreach ($notifiche as $notifica): ?>
           <a href="<?= isset($notifica['link']) ? $notifica['link'] : '#' ?>" class="dropdown-item">
-            <i class="<?= $notifica['icona'] ?> mr-2"></i> <?= $notifica['testo'] ?>
-            <span class="float-right text-muted text-sm"><?= $notifica['tempo'] ?></span>
-          </a>
+    <i class="<?= $notifica['icona'] ?>"></i>
+    <?= $notifica['testo'] ?>
+    <span class="text-muted text-sm"><?= $notifica['tempo'] ?></span>
+</a>
           <div class="dropdown-divider"></div>
         <?php endforeach; ?>
-        <a href="modules.php?op=7" class="dropdown-item dropdown-footer">Vedi tutte le notifiche</a>
+        <!-- <a href="modules.php?op=7" class="dropdown-item dropdown-footer">Vedi tutte le notifiche</a> -->
       </div>
     </li>
 <!-- Gestione profilo (dropdown utente) -->

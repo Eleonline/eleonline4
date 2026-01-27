@@ -89,3 +89,26 @@ html, body {
   display: flex !important;
   flex-direction: column !important;
 }
+
+/* Notifiche Navbar */
+.navbar .nav-item.dropdown .dropdown-menu {
+    min-width: 250px; /* larghezza minima dropdown notifiche */
+}
+
+/* Testo + tempo sulla stessa riga */
+.navbar .dropdown-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    white-space: nowrap;  /* impedisce il wrap */
+    padding: 0.5rem 1rem;
+}
+
+.navbar .dropdown-item i {
+    margin-right: 0.5rem; /* spazio tra icona e testo */
+}
+
+.navbar .dropdown-item span.text-sm {
+    min-width: 50px;    /* spazio sufficiente per 'Adesso' o rev alfanumerico */
+    text-align: right;
+}
