@@ -66,6 +66,7 @@ $cards = [
   'scheda-demo'            => ['file'=>'cards/scheda_demo.php','col'=>'col-md-6','roles'=>['superuser','admin'], 'defaultVisible'=>false],
   'box-grafico'            => ['file'=>'cards/box_grafico.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>false],
   'box-affluenze-orario'   => ['file'=>'cards/box_affluenze_orario.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
+  'box-Elenco_Sezioni'   => ['file'=>'cards/box_situazione_sezioni.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
 ];
 ?>
 
