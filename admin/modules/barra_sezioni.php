@@ -40,18 +40,43 @@ if(count($row))
 <h3 id="titoloSezione">Voti di Lista - Sezione n. <?php echo $sezione_attiva; ?></h3>
 <!-- Navigazione Sezioni -->
 <div class="mb-3">
-   <div class="btn-group" id="sezioniBtn">
-<?php
-
-for ($i = 1; $i <= $totale_sezioni; $i++) {
-    $classe = ($i == $sezione_attiva) ? 'btn-primary' : 'btn-outline-primary';
-    echo '<button style="border: 3px solid '.$colore[$i].' !important; box-shadow: 0 0 5px '.$colore[$i].';" class="btn ' . $classe . '" data-sezione="' . $i . '" onclick="selezionaSezione('.$i.')">' . $i . '</button>';
-}
- 
-
-?>
-	</div>
+   <div class="d-flex flex-wrap" id="sezioniBtn">
+   <?php
+   for ($i = 1; $i <= $totale_sezioni; $i++) {
+       $classe = ($i == $sezione_attiva) ? 'btn-primary' : 'btn-outline-primary';
+       echo '<button class="btn ' . $classe . ' sezione-btn" data-sezione="' . $i . '" onclick="selezionaSezione('.$i.')" 
+             style="border: 3px solid '.$colore[$i].'; box-shadow: 0 0 5px '.$colore[$i].'; margin:2px;">' 
+             . $i . '</button>';
+   }
+   ?>
+   </div>
 </div>
+
+<style>
+.sezione-btn {
+    width: 30px;              /* larghezza fissa */
+    height: 30px;             /* altezza fissa */
+    display: flex;             /* attiva flexbox */
+    justify-content: center;   /* centra orizzontalmente */
+    align-items: center;       /* centra verticalmente */
+    padding: 0;                /* rimuove padding extra */
+    font-size: 0.9rem;         /* dimensione testo */
+    text-align: center;        /* sicurezza */
+}
+
+/* adattamento responsive */
+@media (max-width: 768px) {
+    .sezione-btn {
+        width: 25px;
+        height: 25px;
+        font-size: 0.75rem;
+    }
+}
+</style>
+
+
+
+
 
   <div class="container-fluid">
     <!-- Statistiche Ultima Ora -->
