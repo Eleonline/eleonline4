@@ -38,19 +38,33 @@ if(count($row))
 ?>
 <!-- Titolo principale -->
 <h3 id="titoloSezione">Voti di Lista - Sezione n. <?php echo $sezione_attiva; ?></h3>
+<div class="mb-2 d-flex flex-wrap gap-1">
+  <button class="btn" style="font-size: 0.65rem; padding: 0.1rem 0.25rem; color: #007bff; border: 1.5px solid #007bff; background-color: #fff;">Tutto Da Completare</button>
+  <button class="btn" style="font-size: 0.65rem; padding: 0.1rem 0.25rem; color: #007bff; border: 1.5px solid #dc3545; background-color: #fff;">Errore</button>
+  <button class="btn" style="font-size: 0.65rem; padding: 0.1rem 0.25rem; color: #007bff; border: 1.5px solid #ffc107; background-color: #fff;">In Corso</button>
+  <button class="btn" style="font-size: 0.65rem; padding: 0.1rem 0.25rem; color: #007bff; border: 1.5px solid #fd7e14; background-color: #fff;">Da Verificare</button>
+  <button class="btn" style="font-size: 0.65rem; padding: 0.1rem 0.25rem; color: #007bff; border: 1.5px solid #6f42c1; background-color: #fff;">Opzionale</button>
+  <button class="btn" style="font-size: 0.65rem; padding: 0.1rem 0.25rem; color: #007bff; border: 1.5px solid #28a745; background-color: #fff;">Tutto Completato</button>
+</div>
+
 <!-- Navigazione Sezioni -->
 <div class="mb-3">
    <div class="d-flex flex-wrap" id="sezioniBtn">
    <?php
    for ($i = 1; $i <= $totale_sezioni; $i++) {
        $classe = ($i == $sezione_attiva) ? 'btn-primary' : 'btn-outline-primary';
+       
+       // Se il colore non è definito o è vuoto/null, usare il blu originale
+       $col = (!isset($colore[$i]) || empty($colore[$i])) ? '#007bff' : $colore[$i];
+
        echo '<button class="btn ' . $classe . ' sezione-btn" data-sezione="' . $i . '" onclick="selezionaSezione('.$i.')" 
-             style="border: 3px solid '.$colore[$i].'; box-shadow: 0 0 5px '.$colore[$i].'; margin:2px;">' 
+             style="border: 3px solid '.$col.'; box-shadow: 0 0 5px '.$col.'; margin:2px;">' 
              . $i . '</button>';
    }
    ?>
    </div>
 </div>
+
 
 <style>
 .sezione-btn {

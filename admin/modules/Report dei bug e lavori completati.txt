@@ -46,7 +46,7 @@ Senato:
 	- Listino Bloccato: ok
  
 Comunali:
-- Candidato Sindaco: verificare anteprima immagini. Non trova la posizione libera. manca nel form link trasparenza
+- Candidato Sindaco: verificare anteprima immagini. Non trova la posizione libera. manca nel form link trasparenza.
 - Lista: verificare anteprima immagini. Non trova la posizione libera. manca nel form link trasparenza.
 Fare il controllo se è stato messo il link trasparenza al candidato sindaco e oscurare nel form link trasparenza
 - Candidati: verificare anteprima immagini e pdf. non trova la posizione libera. 
@@ -72,7 +72,39 @@ Carica informazioni:
 - Servizi: ok.
 - Link utili: ok.
 
-Rilevazione di voto: tutto da fare
+Rilevazione di voto: 
+
+Comunali:
+- Affluenza: 
+	errori:
+	nel titolo mettere il tipo di spoglio : affluenze, voti di lista, ecc..
+	quando cambio sezione non carica le affluenze della sezione.
+	nella pagina affluenza nascondere Votanti Ultima Ora e totali.
+- Candidato Sindaco: da fare
+- Lista: da verificare
+- Preferenze: da fare
+
+Camera e Senato:
+- Affluenza: da verificare 
+- Candidato Uninominale: da fare
+- Lista collegata: da verificare
+- Listino bloccato: da verificare
+
+Europei:
+- Affluenza: da verificare
+- Lista: da verificare
+- Preferenze: da fare
+
+Regionali:
+- Affluenza: da verificare
+- Candidato Presidente: da fare
+- Lista: da verificare
+- Preferenze: da fare
+
+Referendum:
+- Affluenza: da verificare
+- Referendum: da fare
+
 
 Risultati e stampe: tutto da fare.
 
