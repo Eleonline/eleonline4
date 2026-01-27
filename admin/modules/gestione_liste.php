@@ -73,12 +73,20 @@ $maxNumero++;
     </div>
 
    <!-- TERZA RIGA: PULSANTI SALVA E ANNULLA a sinistra -->
-<div class="form-row mt-3">
-  <div class="form-group d-flex gap-2">
-    <button type="submit" id="btnAggiungi" class="btn btn-success">Salva</button>
-    <button type="button" class="btn btn-secondary" id="btnAnnulla" onclick="annullaModifica()">Annulla</button>
+<div class="row mt-2">
+  <div class="col-md-2">
+    <button type="submit" id="btnAggiungi" class="btn btn-success w-100">
+      Salva
+    </button>
+  </div>
+
+  <div class="col-md-2">
+    <button type="button" class="btn btn-secondary w-100" id="btnAnnulla" onclick="annullaModifica()">
+      Annulla
+    </button>
   </div>
 </div>
+
 
 
   </form>

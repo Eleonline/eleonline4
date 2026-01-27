@@ -76,12 +76,20 @@ $maxNumero++;
           </div>
 
           <!-- Terza riga: pulsanti -->
-          <div class="form-row mt-3">
-            <div class="form-group d-flex ">
-              <button type="submit" id="btnAggiungi" class="btn btn-success me-2">Salva</button>
-              <button type="button" class="btn btn-secondary" id="btnAnnulla" onclick="annullaModifica()">Annulla</button>
-            </div>
-          </div>
+          <div class="row mt-2">
+  <div class="col-md-2">
+    <button type="submit" id="btnAggiungi" class="btn btn-success w-100">
+      Salva
+    </button>
+  </div>
+
+  <div class="col-md-2">
+    <button type="button" class="btn btn-secondary w-100" id="btnAnnulla" onclick="annullaModifica()">
+      Annulla
+    </button>
+  </div>
+</div>
+
 
         </form>
       </div>

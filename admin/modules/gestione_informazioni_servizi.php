@@ -31,7 +31,7 @@
             <label>Testo</label>
             <textarea name="content" id="content" class="form-control" rows="10"></textarea>
           </div>
-          <button type="submit" class="btn btn-primary mt-2" id="btnSalvaInfo">Salva</button>
+          <button type="submit" class="btn btn-success mt-2" id="btnSalvaInfo">Salva</button>
           <button type="reset" class="btn btn-secondary mt-2" onclick="resetFormInfo()">Annulla</button>
         </form>
         <hr>

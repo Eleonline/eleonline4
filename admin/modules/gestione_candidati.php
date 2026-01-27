@@ -82,7 +82,10 @@ $candidato = htmlspecialchars(ucfirst(_CANDIDATO));
 
           <div class="form-group mt-2">
             <button type="submit" id="btnAggiungi" class="btn btn-success">Salva</button>
-			<button type="button" class="btn btn-secondary d-none" id="btnAnnulla" onclick="annullaModifica()">Annulla</button>
+			<button type="button" class="btn btn-secondary" id="btnAnnulla" onclick="annullaModifica()" style="display:inline-block;">
+			  Annulla
+			</button>
+
           </div>
         </form>
       </div>
@@ -291,8 +294,7 @@ function editCandidato(index) {
     document.getElementById("btnAggiungi").textContent = "Salva modifiche";
     document.getElementById("titoloCandidato").textContent =
         "Modifica <?= $candidato ?> <?= ($candidato !== 'Listino bloccato') ? ' di Lista' : '' ?>";
-
-    document.getElementById("btnAnnulla").classList.remove('d-none');
+		document.getElementById("btnAnnulla").style.display = "inline-block";
     scrollToGestioneCandidato();
 }
 
@@ -312,7 +314,8 @@ function resetFormCandidato() {
     document.getElementById("btnAggiungi").textContent = "Aggiungi";
     document.getElementById('titoloCandidato').textContent =
         "Aggiungi <?= $candidato ?> <?= ($candidato !== 'Listino bloccato') ? ' di Lista' : '' ?>";
-    document.getElementById('btnAnnulla').classList.add('d-none');
+		document.getElementById("btnAnnulla").style.display = "inline-block";
+
 }
 
 // ===========================
