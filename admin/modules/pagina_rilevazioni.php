@@ -1,17 +1,28 @@
 <?php
 if(is_file('includes/check_access.php'))
-	require_once 'includes/check_access.php';
+    require_once 'includes/check_access.php';
 else
-	require_once '../includes/check_access.php';
+    require_once '../includes/check_access.php';
 
 if(isset($_SESSION['sezione_attiva'])) $sezione_attiva=$_SESSION['sezione_attiva'];
 if(isset($_SESSION['id_sez'])) $id_sez=$_SESSION['id_sez'];
+
 $row = dati_consultazione(0);
 $dataInizio = strtotime($row[0]['data_inizio']);
-$num_sez=$sezione_attiva;
+
+// Definizione temporanea per evitare errori
+$inizioNoGenere = time(); // <-- qui definisci la tua data reale
+$nascondi = ($inizioNoGenere > $dataInizio) ? '' : 'style="display:none;"';
+
+$num_sez = $sezione_attiva;
 $orari = elenco_orari();
 $affluenze = elenco_affluenze($id_sez);
-$nascondi = ($inizioNoGenere > $dataInizio) ? '' : 'style="display:none;"';
+//checkbox cancella
+if(isset($_POST['chkDelete'])) {
+    foreach($_POST['chkDelete'] as $key => $val) {
+        // qui cancelli i dati della riga $key
+    }
+}
 ?>
     <!-- Totali Finali
 
@@ -32,22 +43,34 @@ $nascondi = ($inizioNoGenere > $dataInizio) ? '' : 'style="display:none;"';
 		<?php } ?>
 		<th>Voti Totali</th>
           <th></th>
+		  <th></th>
         </tr>
       </thead>
       <tbody>
-	  <?php foreach($orari as $key=>$val) { if(count($affluenze)==$key) $dis= ''; else $dis='disabled';?>
-        <tr>
-          <td><input type="date" class="form-control text-end" id="data<?= $key ?>" value="<?php echo $val['data']; ?>" disabled></td>
-          <td><input type="time" class="form-control text-end" id="orario<?= $key ?>" value="<?php echo $val['orario']; ?>" disabled ></td>
- 		<?php if(count($affluenze)>=$key) { if(!$nascondi) { ?>
-         <td><input type="number" class="form-control text-end" id="uomini<?= $key ?>" value="<?php if(isset($affluenze[$key]['voti_uomini'])) echo $val['voti_uomini']; ?>" ></td>
-          <td><input type="number" class="form-control text-end" id="donne<?= $key ?>" value="<?php if(isset($affluenze[$key]['voti_donne'])) echo $val['voti_donne']; ?>" ></td>
-		<?php } if(isset($affluenze[$key]['voti_complessivi'])) $tot = $affluenze[$key]['voti_complessivi']; else $tot='';?>
-          <td><input type="number" class="form-control text-end" id="totale<?= $key ?>" onclick="attiva_ok(<?= $key ?>)" value="<?= $tot ?>"></td>
-          <td><button id="btnOkFinale<?= $key ?>" class="btn btn-success" onclick="test('<?= $key ?>')" <?= $dis ?>>Ok</button></td>
-		<?php } ?>
-        </tr>
-		<?php } ?>
+	<?php foreach($orari as $key=>$val): 
+    $dis = ($key === count($affluenze) - 1) ? '' : 'disabled';
+	$nasc = ($key === count($affluenze) - 1) ? '' : 'style="display:none;"';
+
+	?>
+	<tr>
+		<td><input type="date" class="form-control text-end" id="data<?= $key ?>" value="<?= $val['data'] ?>" disabled></td>
+		<td><input type="time" class="form-control text-end" id="orario<?= $key ?>" value="<?= $val['orario'] ?>" disabled></td>
+
+		<?php if(!$nascondi): ?>
+			<td><input type="number" class="form-control text-end" id="uomini<?= $key ?>" value="<?= isset($affluenze[$key]['voti_uomini']) ? $affluenze[$key]['voti_uomini'] : '' ?>"></td>
+			<td><input type="number" class="form-control text-end" id="donne<?= $key ?>" value="<?= isset($affluenze[$key]['voti_donne']) ? $affluenze[$key]['voti_donne'] : '' ?>"></td>
+		<?php endif; ?>
+
+		<td><input type="number" class="form-control text-end" id="totale<?= $key ?>" onclick="attiva_ok(<?= $key ?>)" value="<?= isset($affluenze[$key]['voti_complessivi']) ? $affluenze[$key]['voti_complessivi'] : '' ?>"></td>
+		<td>
+  <span <?= $nasc ?>>
+    <input type="checkbox" id="chkDelete<?= $key ?>" name="chkDelete[<?= $key ?>]"> Elimina
+  </span>
+</td>
+
+		<td><button id="btnOkFinale<?= $key ?>" class="btn btn-success" onclick="test('<?= $key ?>')" <?= $dis ?>>Ok</button></td>
+	</tr>
+	<?php endforeach; ?>
       </tbody>
     </table>
 	</form>
