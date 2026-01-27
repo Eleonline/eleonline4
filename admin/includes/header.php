@@ -1,7 +1,7 @@
 <?php
 include_once __DIR__ . '/../access.php';
 include_once __DIR__ . '/../config/config.php';
-// Dati del comune
+// Dati del comune  da eliminare se nella riga 17 si mettere il valore giusto
 $comune = [
     'nome' => 'Comune di esempio',
     'abitanti' => 12000,
