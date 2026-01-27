@@ -216,9 +216,10 @@ $(document).ready(function(){
     }
 
     $.ajax({
-      url: 'aggiorna_rev.php',  // <-- Ecco dove parte l'aggiornamento reale lato server
+      url: '../principale.php',  // <-- Ecco dove parte l'aggiornamento reale lato server
       type: 'POST',
       data: {
+		funzione: 'aggiornaRev',  
         data_rev: <?= json_encode($data_di_aggiornamento ?: '') ?>,
         rev_locale: <?= json_encode($rev_locale) ?>,
         rev_online: <?= json_encode($rev_online) ?>

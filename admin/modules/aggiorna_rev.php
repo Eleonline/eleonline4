@@ -38,8 +38,9 @@ if ($stream = fopen('http://mail.eleonline.it/version4/risposta.php', 'r')) {
 $backup_sql_confermato = isset($_POST['backup_sql']) ? (int)$_POST['backup_sql'] : -1;
 
 $tmpDir = dirname(__DIR__) . '/tmp/aggiornamento';
-$zipFile = $tmpDir . '/file.zip';
-$extractPath = $tmpDir . '/';
+$zipFile = dirname(__DIR__) . '/tmp/file.zip';
+$extractPath = dirname(__DIR__) . '/tmp/aggiornamento/';
+$backupPath = dirname(__DIR__) . '/tmp/backup/';
 
 // Passi aggiornamento (solo per riferimento)
 $steps = [
@@ -74,6 +75,10 @@ if (!is_dir($tmpDir) && !mkdir($tmpDir, 0777, true)) {
     send_output("Errore: impossibile creare cartella temporanea: $tmpDir", 'error');
     exit;
 }
+if (!is_dir($backupPath) && !mkdir($backupPath, 0777, true)) {
+    send_output("Errore: impossibile creare cartella temporanea: $backupPath", 'error');
+    exit;
+}
 
 $url = "https://trac.eleonline.it/eleonline4/changeset?format=zip&new=$rev_online&new_path=%2F&old=$rev_locale&old_path=%2F";
 
@@ -92,7 +97,21 @@ if (!$out) {
     fclose($fp);
     exit;
 }
+#####################
+# controllo presenza aggiornadb
+#$zip->locateName('entry1.txt') se non presente ritorna false
+$aggiornaDb=$zip->locateName('aggiornadb.php');
 
+// ✳️ Nuovo blocco: controllo presenza aggiornadb.php
+if($aggiornaDb)
+	$aggiornaDbFile = 'modules/aggiornadb.php';
+else
+	$aggiornaDbFile='';
+if (file_exists($aggiornaDbFile) && $backup_sql_confermato === -1) {
+    send_output("È stato trovato uno script di aggiornamento del database. Vuoi procedere con il backup prima di eseguirlo? (Rispondere Sì o No)", 'question');
+    exit; // attende risposta POST con backup_sql = 1 o 0
+}
+###################
 while (!feof($fp)) {
     $data = fread($fp, 8192);
     if ($data === false) {
@@ -119,7 +138,7 @@ send_output("Estrazione file...");
 $zip = new ZipArchive;
 $res = $zip->open($zipFile);
 if ($res !== TRUE) {
-    send_output("Errore: impossibile aprire file ZIP (codice errore: $res).", 'error');
+    send_output("Errore: impossibile aprire il file ZIP (codice errore: $res).", 'error');
     exit;
 }
 
@@ -128,12 +147,18 @@ if (!is_dir($extractPath) && !mkdir($extractPath, 0777, true)) {
     $zip->close();
     exit;
 }
+$zipbak = new ZipArchive();
+$filename = $backupPath . "/backup_$rev_locale.zip";
 
+if ($zipbak->open($filename, ZipArchive::CREATE)!==TRUE) {
+    exit("cannot open <$filename>\n");
+}
 for ($i = 0; $i < $zip->numFiles; $i++) {
-    $entryName = $zip->getNameIndex($i);
-
-    if (strpos($entryName, 'trunk/') === 0) {
-        $relativePath = substr($entryName, strlen('trunk/'));
+    $entryName = $zip->getNameIndex($i); 
+//    if (strpos($entryName, 'trunk/') === 0) {
+        $relativePath = $entryName; #substr($entryName, strlen('trunk/'));
+		if(is_file("../$relativePath")) $zipbak->addFile("../$relativePath","admin/$relativePath");
+		if(is_file("../$relativePath")) $zipbak->addFile("../$relativePath","client/$relativePath");
 
         if (substr($relativePath, -1) === '/') {
             @mkdir($extractPath . $relativePath, 0777, true);
@@ -149,47 +174,21 @@ for ($i = 0; $i < $zip->numFiles; $i++) {
                 exit;
             }
             file_put_contents($extractPath . $relativePath, $contents);
-        }
-    }
+ 		if(is_file("../".$entryName))
+			copy("$extractPath$entryName","../$entryName");
+       }
+//    }
 }
 $zip->close();
+$zipbak->close();
 send_output("Estrazione file...", 'ok');
 
-// Step 5: Backup configurazioni
-send_output("Backup configurazioni in corso...");
-
-$origineVariabili = dirname(__DIR__) . '/tmp/aggiornamento/admin/config/variabili.php';
-$backupDir = dirname(__DIR__) . '/backup/admin/config';
-$nomeBackup = 'variabili_' . date('Ymd_His') . '.php';
-$destinazioneVariabili = $backupDir . '/' . $nomeBackup;
-
-if (!file_exists($origineVariabili)) {
-    send_output("ERRORE: File origine non trovato: $origineVariabili", 'error');
-    exit;
-}
-
-if (!is_dir($backupDir) && !mkdir($backupDir, 0777, true)) {
-    send_output("ERRORE: Impossibile creare cartella backup: $backupDir", 'error');
-    exit;
-}
-
-if (!copy($origineVariabili, $destinazioneVariabili)) {
-    send_output("ERRORE: Impossibile copiare backup variabili.", 'error');
-    exit;
-}
-send_output("Backup configurazioni in corso...", 'ok');
-
-// ✳️ Nuovo blocco: controllo presenza aggiornadb.php
-$aggiornaDbFile = $extractPath . 'admin/aggiornadb.php';
-
-if (file_exists($aggiornaDbFile) && $backup_sql_confermato === -1) {
-    send_output("È stato trovato uno script di aggiornamento del database. Vuoi procedere con il backup prima di eseguirlo? (Rispondere Sì o No)", 'question');
-    exit; // attende risposta POST con backup_sql = 1 o 0
-}
+send_output("Backup dei files da aggiornare...", 'ok');
 
 // Step 6: Verifica backup database
 send_output("Verifica backup database...");
-
+if($aggiornaDb)
+	include("modules/backupDb.php");
 // Backup database: logica eventualmente da scommentare
 /*
 if ($backup_sql_confermato != 1) {
