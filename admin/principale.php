@@ -134,6 +134,9 @@ if($permessi>32)
 		case 'salvaRilevazione':
 			include("modules/salva_rilevazione.php");
 			break;
+		case 'aggiornaRev':
+			include("modules/aggiorna_rev.php");
+			break;
 	}
 	
 switch ($funzione) {

@@ -97,21 +97,7 @@ if (!$out) {
     fclose($fp);
     exit;
 }
-#####################
-# controllo presenza aggiornadb
-#$zip->locateName('entry1.txt') se non presente ritorna false
-$aggiornaDb=$zip->locateName('aggiornadb.php');
 
-// ✳️ Nuovo blocco: controllo presenza aggiornadb.php
-if($aggiornaDb)
-	$aggiornaDbFile = 'modules/aggiornadb.php';
-else
-	$aggiornaDbFile='';
-if (file_exists($aggiornaDbFile) && $backup_sql_confermato === -1) {
-    send_output("È stato trovato uno script di aggiornamento del database. Vuoi procedere con il backup prima di eseguirlo? (Rispondere Sì o No)", 'question');
-    exit; // attende risposta POST con backup_sql = 1 o 0
-}
-###################
 while (!feof($fp)) {
     $data = fread($fp, 8192);
     if ($data === false) {
@@ -147,15 +133,34 @@ if (!is_dir($extractPath) && !mkdir($extractPath, 0777, true)) {
     $zip->close();
     exit;
 }
+#####################
+# controllo presenza aggiornadb
+#$zip->locateName('entry1.txt') se non presente ritorna false
+$aggiornaDb=$zip->locateName('modules/aggiornadb.php');
+
+// ✳️ Nuovo blocco: controllo presenza aggiornadb.php
+if($aggiornaDb)
+	$aggiornaDbFile = 'modules/aggiornadb.php';
+else
+	$aggiornaDbFile='';
+if (file_exists($aggiornaDbFile) && $backup_sql_confermato === -1) {
+    send_output("È stato trovato uno script di aggiornamento del database. Vuoi procedere con il backup prima di eseguirlo? (Rispondere Sì o No)", 'question');
+    exit; // attende risposta POST con backup_sql = 1 o 0
+}
+###################
 $zipbak = new ZipArchive();
 $filename = $backupPath . "/backup_$rev_locale.zip";
 
 if ($zipbak->open($filename, ZipArchive::CREATE)!==TRUE) {
     exit("cannot open <$filename>\n");
 }
+
+$index=$zip->locateName('aggiorna_rev.php');
+//die("TEST: $index : $aggiornaDb :");
 for ($i = 0; $i < $zip->numFiles; $i++) {
+	if($i==$index) continue;
     $entryName = $zip->getNameIndex($i); 
-//    if (strpos($entryName, 'trunk/') === 0) {
+send_output("Importo il file $entryName", 'ok');
         $relativePath = $entryName; #substr($entryName, strlen('trunk/'));
 		if(is_file("../$relativePath")) $zipbak->addFile("../$relativePath","admin/$relativePath");
 		if(is_file("../$relativePath")) $zipbak->addFile("../$relativePath","client/$relativePath");
@@ -187,8 +192,8 @@ send_output("Backup dei files da aggiornare...", 'ok');
 
 // Step 6: Verifica backup database
 send_output("Verifica backup database...");
-if($aggiornaDb)
-	include("modules/backupDb.php");
+//if($aggiornaDb)
+	include("includes/backupDb.php");
 // Backup database: logica eventualmente da scommentare
 /*
 if ($backup_sql_confermato != 1) {
