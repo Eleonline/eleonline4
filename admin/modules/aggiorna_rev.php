@@ -160,13 +160,17 @@ $index=$zip->locateName('aggiorna_rev.php');
 for ($i = 0; $i < $zip->numFiles; $i++) {
 	if($i==$index) continue;
     $entryName = $zip->getNameIndex($i); 
-send_output("Importo il file $entryName", 'ok');
         $relativePath = $entryName; #substr($entryName, strlen('trunk/'));
 		if(is_file("../$relativePath")) $zipbak->addFile("../$relativePath","admin/$relativePath");
 		if(is_file("../$relativePath")) $zipbak->addFile("../$relativePath","client/$relativePath");
+				send_output("Elaboro ../$relativePath", 'ok');
 
         if (substr($relativePath, -1) === '/') {
             @mkdir($extractPath . $relativePath, 0777, true);
+			send_output("Creata la dir $relativePath", 'ok');
+			if(is_dir("$relativePath") and !is_dir("../$relativePath")) {
+				mkdir("../$relativePath", 0777, true);
+			}
         } else {
             $dir = dirname($extractPath . $relativePath);
             if (!is_dir($dir)) {
@@ -178,8 +182,16 @@ send_output("Importo il file $entryName", 'ok');
                 $zip->close();
                 exit;
             }
-            file_put_contents($extractPath . $relativePath, $contents);
-			copy("$extractPath$entryName","../$entryName");
+			$artemp = explode( '/', $entryName );
+			array_pop( $artemp );
+			$newdir = implode( '/', $artemp );
+			if( !is_dir( $newdir ) )
+				mkdir( "../".$newdir, 0777, true );
+			
+#            file_put_contents('../'.$extractPath . $relativePath, $contents);
+            file_put_contents("../$entryName", $contents);
+
+//			copy("$extractPath$entryName","../$entryName");
        }
 //    }
 }

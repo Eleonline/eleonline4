@@ -1,5 +1,5 @@
 <?php
-require_once('../plugins/tcpdf/tcpdf.php'); // Libreria TCPDF
+require_once('../plugins/TCPDF/tcpdf.php'); // Libreria TCPDF
 
 // ======================= DATI SIMULATI =======================
 $comune = [
