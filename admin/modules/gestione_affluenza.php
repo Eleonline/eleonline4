@@ -66,7 +66,7 @@ $dataFine=$row[0]['data_fine'];
             </div>
 
             <div class="col-12 col-md-2">
-              <button type="submit" class="btn btn-primary w-100 mt-2 mt-md-0">
+              <button type="submit" class="btn btn-success w-100 mt-2 mt-md-0">
                 Aggiungi
               </button>
             </div>

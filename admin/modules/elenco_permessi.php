@@ -100,13 +100,20 @@ if (!count($non_autorizzati)) {
 
                 <!-- AZIONI -->
                <div class="form-group col-md-12 mt-3" id="divazioni">
-    <button type="submit" class="btn btn-success" id="submitBtn" <?= $nascondi ?>>
-        Aggiungi Utente
-    </button>
-    <button type="button" class="btn btn-secondary" id="cancelBtn" style="display:none;" onclick="annullaModifica()">
-        Annulla
-    </button>
+    <div class="d-flex flex-wrap align-items-center">
+
+        <button type="submit" class="btn btn-success" id="submitBtn" <?= $nascondi ?>>
+            Aggiungi Utente
+        </button>
+
+        <button type="button" class="btn btn-secondary ml-2" id="cancelBtn"
+                onclick="annullaModifica()" style="display:none;">
+            Annulla
+        </button>
+
+    </div>
 </div>
+
             </div>
         </form>
     </div>
