@@ -179,7 +179,6 @@ send_output("Importo il file $entryName", 'ok');
                 exit;
             }
             file_put_contents($extractPath . $relativePath, $contents);
- 		if(is_file("../".$entryName))
 			copy("$extractPath$entryName","../$entryName");
        }
 //    }

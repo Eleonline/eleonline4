@@ -30,7 +30,7 @@ if($chiusa!=1){
 	list($id_parz)=$res->fetch(PDO::FETCH_NUM); 
 	if($righe){ #la riga è presente e viene aggiorata
 		$arr=$res->fetch(PDO::FETCH_BOTH);
-		$sql="update ".$prefix."_ele_voti_parziale set voti_uomini='$voti_u',voti_donne='$voti_d',voti_complessivi='$voti_t' where  id_parz='$id_parz'"; echo "TEST: $sql";
+		$sql="update ".$prefix."_ele_voti_parziale set voti_uomini='$voti_u',voti_donne='$voti_d',voti_complessivi='$voti_t' where  id_parz='$id_parz'";
 		$compl = $dbi->prepare("$sql");
 		$compl->execute(); 
 		if($compl->rowCount()) $salvato=1;
