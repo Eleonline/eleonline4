@@ -18,7 +18,6 @@ foreach($row as $key=>$val) {
 	$colore[$val['num_sez']]=$val['colore'];
 }
 ?>
-
 <!-- Box Card -->
 <div class="card bg-light" id="box-sezioni-card">
   <div class="card-header">
@@ -33,17 +32,17 @@ foreach($row as $key=>$val) {
   <div class="card-body">
     <!-- Navigazione Sezioni -->
     <div class="mb-3">
-       <div class="d-flex flex-wrap" id="sezioniBtn">
-       <?php
-       for ($i = 1; $i <= $totale_sezioni; $i++) {
-           $classe = 'btn-outline-primary';
-           $col = (!isset($colore[$i]) || empty($colore[$i])) ? '#007bff' : $colore[$i];
-           echo '<button class="btn ' . $classe . ' sezione-btn" data-sezione="' . $i . '" 
-                 style="border: 3px solid '.$col.'; box-shadow: 0 0 5px '.$col.'; margin:2px;">' 
+<div class="d-flex flex-wrap" id="sezioniBtn">
+<?php
+for ($i = 1; $i <= $totale_sezioni; $i++) {
+    $col = (!isset($colore[$i]) || empty($colore[$i])) ? '#007bff' : $colore[$i];
+    echo '<button class="btn btn-outline-primary sezione-btn" 
+                 style="border: 3px solid '.$col.'; box-shadow: 0 0 5px '.$col.'; margin:2px; pointer-events: none; cursor: default;">' 
                  . $i . '</button>';
-       }
-       ?>
-       </div>
+}
+?>
+</div>
+
     </div>
   </div>
 </div>
