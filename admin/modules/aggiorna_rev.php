@@ -233,43 +233,21 @@ ob_implicit_flush(true);
 send_output("Aggiornamento database...", 'ok');
 
 // Step 8: Pulizia file temporanei
-send_output("Pulizia file temporanei...");
-sleep(1);
-send_output("Pulizia file temporanei...", 'ok');
+send_output("Archiviazione file temporanei...");
+if(rename($tmpDir,$tmpDir."Da_$rev_locale_a_$rev_online"))
+	send_output("Pulizia file temporanei...", 'ok');
 
 // Step 9: Aggiorna Versione
 send_output("Aggiorna Versione...");  // Step 1: messaggio iniziale
-
-$versionFile = __DIR__ . '/../includes/versione.php';
-//send_output("Path file: $versionFile");  // Step 2: verifica percorso
-
-if (!file_exists($versionFile)) {
-    send_output("ERRORE: File non trovato!", 'error');
-    exit;
-}
-//send_output("File trovato.");  // Step 3: il file esiste
-
-$contenuto = file_get_contents($versionFile);
-//send_output("Contenuto letto.");  // Step 4: lettura riuscita
-
-// Verifica contenuto
-if (strpos($contenuto, '$versione') === false) {
-    send_output("ATTENZIONE: stringa \$versione non trovata nel file!", 'warning');
-}
-if (strpos($contenuto, '$datarel') === false) {
-    send_output("ATTENZIONE: stringa \$datarel non trovata nel file!", 'warning');
-}
-
-
-// Esegui sostituzioni
-$contenuto = preg_replace('/\$versione\s*=\s*".*?";/', '$versione = "3.0 rev ' . $rev_online . '";', $contenuto);
-$contenuto = preg_replace('/\$datarel\s*=\s*".*?";/', '$datarel = "' . $data_rev . '";', $contenuto);
-
-// Scrittura
-if (file_put_contents($versionFile, $contenuto) === false) {
-    send_output("ERRORE: Scrittura fallita!", 'error');
-    exit;
-}
+$sql="update ".$prefix."_config set patch=:patch";
+	$res = $dbi->prepare("$sql");
+	try {
+		$res->bindParam(':patch', $rev_online,  PDO::PARAM_STR);
+		$res->execute();
+	}
+	catch(PDOException $e) {
+		echo $e->getMessage();
+	}
 send_output("Aggiorna Versione...", 'ok');
 send_output("Aggiornamento completato con successo.", 'ok');
 echo "__FINISH__Aggiornamento completato con successo.\n";

@@ -1,5 +1,8 @@
 <?php 
-require_once '../includes/check_access.php'; 
+if(is_file('includes/check_access.php'))
+	require_once 'includes/check_access.php';
+else
+	require_once '../includes/check_access.php';
 
 if(!isset($_GET['errmex'])) {
 
