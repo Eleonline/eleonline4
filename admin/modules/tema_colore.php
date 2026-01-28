@@ -74,8 +74,8 @@ foreach ($files as $file) {
             <?php endforeach; ?>
           </div>
 
-          <div class="d-flex justify-content-end mt-4">
-            <button type="submit" class="btn btn-primary">Salva</button>
+          <div class="d-flex mt-4">
+            <button type="submit" class="btn btn-success">Salva</button>
           </div>
         </form>
       </div>

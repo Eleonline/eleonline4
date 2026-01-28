@@ -58,7 +58,7 @@ $circos=elenco_circoscrizioni();
           </div>
 		  <div class="row mt-2">
 		  <div class="col-md-2">
-			<button type="submit" class="btn btn-primary w-100" id="btnSalvaSede">Aggiungi</button>
+			<button type="submit" class="btn btn-success w-100" id="btnSalvaSede">Aggiungi</button>
 		  </div>
 		  <div class="col-md-2">
 			<button type="reset" class="btn btn-secondary w-100" id="btnResetSede" onclick="resetFormSede()">Annulla</button>

@@ -92,7 +92,7 @@ $row=dati_comune($predefinito);
             </div-->
           </div>
           <button type="submit" class="btn btn-success" id="submitBtn">Aggiorna dati</button>
-          <button type="reset" class="btn btn-secondary" id="cancelEdit">Annulla</button>
+          <!--<button type="reset" class="btn btn-secondary" id="cancelEdit">Annulla</button>-->
         </form>
 		
       </div>

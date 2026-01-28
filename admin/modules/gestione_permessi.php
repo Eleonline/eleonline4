@@ -28,11 +28,14 @@ require_once '../includes/check_access.php';
 
 <script>
 let deleteUtente = null;
+let originalFormState = {};
+let isEditMode = false;
+
 
 // Gestione visibilità dei div in base al livello
 function scegliTipo() {
     const val = document.getElementById("livello").value;
-	if(val!==0) 
+	if(parseInt(val) !== 0)
 		document.getElementById('permessi').value=0;
     document.getElementById('divpermessi').style.display = val == '0' ? 'block' : 'none';
     document.getElementById('divelencosedi').style.display = val == '1' ? 'block' : 'none';
@@ -41,6 +44,18 @@ function scegliTipo() {
 
 // Modifica utente
 function editUser(id) {
+	isEditMode = true;
+
+// Salva stato iniziale form
+originalFormState = {
+    utenteHTML: document.getElementById("utente").innerHTML,
+    livello: document.getElementById("livello").value,
+    permessi: document.getElementById("permessi").value,
+    sedi: document.getElementById("sedi").value,
+    sezioni: document.getElementById("sezioni").value,
+    titolo: document.getElementById("form-title").innerText
+};
+
     const cardBody = document.getElementById("card-body");
     const selectUtente = document.getElementById("utente");
     const submitBtn = document.getElementById("submitBtn");
@@ -95,6 +110,8 @@ function editUser(id) {
 	
 	if(document.getElementById("permessi"+id).innerText==64)
 		document.getElementById("permessi").selectedIndex=1;
+document.getElementById("cancelBtn").style.display = "inline-block";
+
 }
 
 // Aggiungi o salva utente
@@ -125,6 +142,9 @@ function aggiungiUser(e) {
             // Aggiorna elenco utenti
             risultato.innerHTML = data;
             myForm.reset();
+			document.getElementById("cancelBtn").style.display = "none";
+			isEditMode = false;
+
 
             const selectUtente = document.getElementById("utente");
             const submitBtn = document.getElementById("submitBtn");
@@ -185,5 +205,32 @@ document.getElementById('confirmDeletePermessoBtn').addEventListener('click', fu
             }
         });
 });
+
+function annullaModifica() {
+
+    if(!isEditMode) return;
+
+    const form = document.getElementById("userForm");
+
+    form.reset();
+
+    document.getElementById("utente").innerHTML = originalFormState.utenteHTML;
+
+    document.getElementById("livello").value = originalFormState.livello;
+    document.getElementById("permessi").value = originalFormState.permessi;
+    document.getElementById("sedi").value = originalFormState.sedi;
+    document.getElementById("sezioni").value = originalFormState.sezioni;
+
+    // Ripristina correttamente la UI
+    scegliTipo();
+
+    document.getElementById("form-title").innerText = "Aggiungi il permesso per un utente";
+
+    const submitBtn = document.getElementById("submitBtn");
+    submitBtn.textContent = "Aggiungi Utente";
+
+    isEditMode = false;
+    document.getElementById("cancelBtn").style.display = "none";
+}
 </script>
 

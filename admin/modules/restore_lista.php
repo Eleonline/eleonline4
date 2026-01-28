@@ -123,13 +123,12 @@ else if(isset($_POST['startRestore'])) {
         $log[] = "Struttura backup non valida!";
     }
 	// Se il ripristino è andato a buon fine, elimina il file di backup
-if ($errore == 0 && file_exists($filedati)) {
-    if (!unlink($filedati)) {
-        $erroreFileBackup = "Errore: impossibile eliminare il file di backup.";
-    }
+	if ($errore == 0 && file_exists($filedati)) {
+		if (!unlink($filedati)) {
+			$erroreFileBackup = "Errore: impossibile eliminare il file di backup.";
+		}
+	}
 }
-
-
 ?>
 
 <section class="content">

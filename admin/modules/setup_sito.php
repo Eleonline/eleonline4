@@ -134,8 +134,8 @@ foreach($row as $key=>$val){
 </div> 
 */ ?>
 		
-          <div class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-primary">Salva</button>
+          <div class="d-flex">
+            <button type="submit" class="btn btn-success">Salva</button>
           </div>
           <div class="d-flex justify-content-end" id="risultato">
           
