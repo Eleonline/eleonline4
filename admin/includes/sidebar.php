@@ -367,7 +367,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 			$lista_collegata_attivo = 1;
 			$listino_bloccato_attivo = 1;
 			$preferenze_attivo = 1;
-			$risultati_attivo = 1;
+			$scheda_attivo = 1;
 			$assegna_seggi_attivo = 1;
 			?>
 
@@ -458,10 +458,10 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 			<?php } ?>
 
 			<li class="nav-item">
-			  <a href="<?php echo $risultati_attivo ? 'modules.php?op=34' : '#'; ?>" 
-				 class="nav-link <?php echo ($op == 34) ? 'active' : ''; ?> <?php echo !$risultati_attivo ? 'disabled' : ''; ?>">
-				<i class="nav-icon fas fa-chart-pie <?php echo $risultati_attivo ? 'text-info' : 'text-secondary'; ?>"></i>
-				<p><?php echo $risultati_attivo ? 'Visualizza Risultati' : 'Visualizza Risultati'; ?></p>
+			  <a href="<?php echo $scheda_attivo ? 'modules.php?op=34' : '#'; ?>" 
+				 class="nav-link <?php echo ($op == 34) ? 'active' : ''; ?> <?php echo !$scheda_attivo ? 'disabled' : ''; ?>">
+				<i class="nav-icon fas fa-clipboard-list <?php echo $scheda_attivo ? 'text-info' : 'text-secondary'; ?>"></i>
+				<p><?php echo $scheda_attivo ? 'Scheda di Riepilogo' : 'Scheda di Riepilogo'; ?></p>
 			  </a>
 			</li>
 
