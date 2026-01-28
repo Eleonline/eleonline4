@@ -347,8 +347,8 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 
 <?php if (in_array($_SESSION['ruolo'], ['superuser', 'admin', 'operatore'])): ?>
         <!-- RILEVAZIONI DI VOTO -->
-        <li class="nav-item has-treeview <?php echo in_array($op, [31, 32, 33, 34, 39, 40]) ? 'menu-open' : ''; ?>">
-          <a href="#" class="nav-link <?php echo in_array($op, [31, 32, 33, 34, 39, 40]) ? 'active' : ''; ?>">
+        <li class="nav-item has-treeview <?php echo in_array($op, [31, 32, 33, 34, 35, 39, 40]) ? 'menu-open' : ''; ?>">
+          <a href="#" class="nav-link <?php echo in_array($op, [31, 32, 33, 34, 35, 39, 40]) ? 'active' : ''; ?>">
             <i class="nav-icon fas fa-poll text-warning"></i>
             <p>
               Rilevazioni di voto

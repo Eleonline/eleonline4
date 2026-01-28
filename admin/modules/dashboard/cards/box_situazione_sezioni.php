@@ -17,12 +17,21 @@ $row=elenco_sezioni();
 foreach($row as $key=>$val) {
 	$colore[$val['num_sez']]=$val['colore'];
 }
+$sezioni_scrutinate = 0;
+foreach($colore as $c) {
+    if(!empty($c)) $sezioni_scrutinate++;
+}
+
 ?>
 <!-- Box Card -->
 <div class="card bg-light" id="box-sezioni-card">
   <div class="card-header">
-    <h3 class="card-title"><i class="fas fa-list"></i> Stato Sezioni</h3>
+    <h3 class="card-title"><i class="fas fa-list"></i> Stato Sezioni </h3>
     <div class="card-tools">
+	   <span class="badge badge-info">
+            Sezioni <?php echo $sezioni_scrutinate; ?> su <?php echo $totale_sezioni; ?>
+        </span>
+    
       <button class="btn btn-tool toggle-layout-btn" onclick="toggleSezioniLayout()">
         <i class="fas fa-expand"></i>
       </button>
