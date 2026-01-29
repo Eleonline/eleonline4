@@ -11,17 +11,23 @@ if(isset($_SESSION['id_sez'])) $id_sez=$_SESSION['id_sez'];
 $id_cons=$_SESSION['id_cons'];
 $totale_sezioni=totale_sezioni();
 $row=dati_sezione(0,$num_sez);
-$id_sez=$row[0]['id_sez'];
-$_SESSION['id_sez']=$id_sez;
+if(count($row)) {
+	$id_sez=$row[0]['id_sez'];
+	$_SESSION['id_sez']=$id_sez;
+}
 $row=elenco_sezioni();
-foreach($row as $key=>$val) {
-	$colore[$val['num_sez']]=$val['colore'];
+if(count($row)){
+	foreach($row as $key=>$val) {
+		$colore[$val['num_sez']]=$val['colore'];
+	}
+	$sezioni_scrutinate = 0;
+	foreach($colore as $c) {
+		if(!empty($c)) $sezioni_scrutinate++;
+	}
+}else{
+	$sezioni_scrutinate=0;
+	$totale_sezioni=0;
 }
-$sezioni_scrutinate = 0;
-foreach($colore as $c) {
-    if(!empty($c)) $sezioni_scrutinate++;
-}
-
 ?>
 <!-- Box Card -->
 <div class="card bg-light" id="box-sezioni-card">
