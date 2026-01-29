@@ -6,7 +6,7 @@ else
 
 global $prefix,$id_parz,$tempo,$username,$aid,$dbi,$genere;
 
-if (isset($_POST['op'])) $op=intval($_POST['op']); else $op='0';
+if (isset($_POST['op'])) $op=$_POST['op']; else $op='0';
 if (isset($_POST['id_sez'])) $id_sez=intval($_POST['id_sez']); else $id_sez='';
 if (isset($_POST['uomini'])) $voti_u=intval($_POST['uomini']); else $voti_u='0';
 if (isset($_POST['donne'])) $voti_d=intval($_POST['donne']); else $voti_d='0';
