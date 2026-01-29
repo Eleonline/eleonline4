@@ -1,3 +1,9 @@
+<?php
+if(is_file('includes/check_access.php'))
+	require_once 'includes/check_access.php';
+else
+	require_once '../includes/check_access.php';
+?>
 <style>
 /* Rimuove freccette nei campi number (Chrome, Safari) */
 input[type="number"]::-webkit-outer-spin-button,

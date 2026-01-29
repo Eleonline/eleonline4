@@ -13,7 +13,7 @@ $num_sez=$sezione_attiva;
 
     <h3>Totali Finali</h3> -->
 	<form id="votiForm"  onsubmit="salva_voti(event)">
-	<input type="hidden" name="op" value="32">
+	<input type="hidden" name="op" value="31">
 	<input type="hidden" name="id_sezione" id="id_sezione" value="<?= $id_sez ?>">
    <div class="table-responsive">
    <table class="table table-bordered text-center">

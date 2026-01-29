@@ -140,7 +140,45 @@ debugger
     });
   
 }
+
+function salva_voti(e) {
+    e.preventDefault(); // blocca il submit normale
+
+	const str = parseInt(document.getElementById("id_sezione").value);
+	const validi = parseInt(document.getElementById("votiValidi").value);
+	const nulle = parseInt(document.getElementById("schedeNulle").value);
+	const bianche = parseInt(document.getElementById("schedeBianche").value);
+	const vnulli = parseInt(document.getElementById("votiNulli").value);
+	const vcontestati = parseInt(document.getElementById("votiContestati").value);
+
+    const formData = new FormData(); 
+	formData.append('funzione', 'salvaVotiFinale');
+    formData.append('validi', validi);
+    formData.append('nulle', nulle);
+    formData.append('bianche', bianche);
+    formData.append('vnulli', vnulli);
+    formData.append('vcontestati', vcontestati);
+    formData.append('id_sez', str);
+    formData.append('op', 'salva');
+
+    fetch('../principale.php', {
+        method: 'POST',
+        body: formData 
+    })
+    .then(response => {
+        if(!response.ok) throw new Error('Server risponde con status ' + response.status);
+        return response.text();
+    })
+    .then(data => {
+		document.getElementById('divVotiFinale').innerHTML = data;
+		aggiorna_sezione(str);
+    })
+    .catch(error => {
+        console.error('Errore fetch:', error);
+    });
   
+}
+    
 function salva_voti_lista(e) {
 
     e.preventDefault(); // blocca il submit normale
@@ -174,7 +212,7 @@ function salva_voti_lista(e) {
 }
 
 
-function selezionaSezione(str) {
+function selezionaSezione(str) { debugger
 	const numsez=str;
     const formData = new FormData(); 
 	formData.append('funzione', 'leggiBarraSezioni');

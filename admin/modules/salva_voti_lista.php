@@ -1,14 +1,9 @@
 <?php
-/************************************************************************/
-/* Eleonline - Raccolta e diffusione dei dati elettorali                */
-/************************************************************************/
-/* Modulo salva affluenze                                               */
-/* Amministrazione                                                      */
-/************************************************************************/
-if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
-    header("Location: ../index.php");
-    exit;
-}
+if(is_file('includes/check_access.php'))
+	require_once 'includes/check_access.php';
+else
+	require_once '../includes/check_access.php';
+
 global $prefix,$id_parz,$id_sez,$dbi,$id_cons,$id_cons_gen;
 if (isset($_POST['id_sez'])) $id_sez=intval($_POST['id_sez']); else $id_sez='0';
 if (isset($_POST['op']) and $_POST['op']=='aggiornaLista') {include('pagina_voti_lista.php'); return;}
