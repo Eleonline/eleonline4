@@ -9,7 +9,7 @@ Dashboard:
 Sistema:
 - Stato Sistema: ok
 - Log attività : ok
-- Gestione ip: risolvere il problema check_access.php.
+- Gestione ip: ok
 
 Impostazione e dati generali:
 - configurazione sito: ok
@@ -19,7 +19,7 @@ Impostazione e dati generali:
 - Aggiornamento Data base : creata la pagina verificare. 
 
 Utenti e permessi:
-- Gestione utenti: mettere il menù a tendina per Operatore e Operatore esterno (prsidenti o addetto raccolta dati esterni).
+- Gestione utenti: mettere il menù a tendina per Operatore e Operatore esterno (presidenti o addetto raccolta dati esterni).
 - Permessi: carica anche per superuser (non deve visualizzare).
 
 Setup Configurazione:
@@ -106,8 +106,11 @@ Referendum:
 - Affluenza: da verificare
 - Referendum: da fare
 
+Scheda di Riepilogo: Creata la pagina. Caricare i dati reali.
 
-Risultati e stampe: tutto da fare.
+Risultati e stampe:
+- Affluenze: Creata la pagina. Caricare i dati reali.
+- Risultati: Creata la pagina. Caricare i dati reali.
 
 Doumentazione e supporto:
 - Manuale Utente : ok.
@@ -123,9 +126,14 @@ siderbar.php(Menù laterale):
 - messo disattiva o attiva nel menu. 
 
 menù.php (menù top):
-- sitemare le notifiche.
+- Sistemare le notifiche.
 
 Client: 
-- adatttare con db nuovo.
-- eliminare tutti gli altri temi e lasciare solo bootstrap.
-- per il refendum utilizzare la configurazione "/pagine/config_colori_quesiti.php"
+- Adatttare con db nuovo.
+- Eliminare tutti gli altri temi e lasciare solo bootstrap.
+- Per il Referendum utilizzare la configurazione "/pagine/config_colori_quesiti.php"
+
+Si devono fare tutti i controlli:
+- Setup Configurazioni: Se sono presenti dati di spoglio caricati, non è consentita l’eliminazione delle configurazioni.
+Fa eccezione la “Configurazione Consultazione”, che può essere eliminata anche in presenza di dati.
+- Gestione Liste e candidati o referndum : Se sono presenti dati di spoglio caricati, non è consentita l’eliminazione delle gestioni.
