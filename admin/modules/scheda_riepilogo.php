@@ -1,4 +1,8 @@
 <?php 
+if(is_file('includes/check_access.php'))
+	require_once 'includes/check_access.php';
+else
+	require_once '../includes/check_access.php';
 //$tipo_consultazione = "camera"; 
 // possibili: regionali, camera, comunali, europee, referendum
 

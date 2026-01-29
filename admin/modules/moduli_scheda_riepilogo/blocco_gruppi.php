@@ -1,3 +1,9 @@
+<?php
+if(is_file('includes/check_access.php'))
+	require_once 'includes/check_access.php';
+else
+	require_once '../includes/check_access.php';
+?>
 <div class="card card-success">
 <div class="card-header">
 <h3 class="card-title">Candidato Presidente</h3>

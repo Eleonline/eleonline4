@@ -1,3 +1,9 @@
+<?php
+if(is_file('includes/check_access.php'))
+	require_once 'includes/check_access.php';
+else
+	require_once '../includes/check_access.php';
+?>
 <div class="card-header bg-primary text-white">
     <h3 class="card-title text-uppercase mb-0">Dettaglio Candidato Uninominale</h3>
 </div>

@@ -1,4 +1,10 @@
 <?php
+if(is_file('includes/check_access.php'))
+	require_once 'includes/check_access.php';
+else
+	require_once '../includes/check_access.php';
+?>
+<?php
 // blocco_referendum.php
 
 // valori di esempio, puoi sostituirli con quelli reali

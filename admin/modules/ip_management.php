@@ -1,7 +1,14 @@
 <?php
-// da verificare perche da errore
-//require_once '../includes/check_access.php';
+if (!defined('APP_RUNNING')) {
+    define('APP_RUNNING', true);
+}
 
+if(is_file('includes/check_access.php'))
+	require_once 'includes/check_access.php';
+else
+	require_once '../includes/check_access.php';
+?>
+<?php
 $includerDir = realpath(__DIR__ . '/../includes') . '/';
 $ipsAllowed = [];
 $ipsBlocked = [];
