@@ -1,4 +1,3 @@
-<?php include __DIR__.'/_data_simulati.php'; ?>
 <div class="card bg-light">
   <div class="card-header">
     <h3 class="card-title"><i class="fas fa-chart-bar"></i> Grafico Demo</h3>

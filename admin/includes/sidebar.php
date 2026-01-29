@@ -7,7 +7,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 <!-- Sidebar -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <a href="modules.php" class="brand-link">
-    <img src="../logo/logo eleonline rettangolo.png" alt="Logo" class="brand-image elevation-3">
+    <img src="../logo/logoEleonlineRettangolo.png" alt="Logo" class="brand-image elevation-3">
     <span class="brand-text font-weight-light">Eleonline</span>
   </a>
 

@@ -5,7 +5,7 @@ function affluenze_referendum($id,$cons)
 	global $id_cons,$prefix,$dbi;
 	if(!$cons) $cons=$id_cons;
 	if($id) $filtro="and t3.id_gruppo='$id'"; else $filtro='';
-	$sql="select t3.id_gruppo,sum(t3.voti_complessivi),t3.data ,t3.orario from ".$prefix."_ele_voti_parziale as t3 where t3.id_cons=$cons $filtro group by t3.id_gruppo,t3.data ,t3.orario order by t3.data,t3.orario";
+	$sql="select t3.id_gruppo,sum(t3.voti_complessivi) as complessivi,t3.data ,t3.orario from ".$prefix."_ele_voti_parziale as t3 where t3.id_cons=$cons $filtro group by t3.id_gruppo,t3.data ,t3.orario order by t3.data,t3.orario";
 	$sth = $dbi->prepare("$sql");
 	$sth->execute();
 	$row = $sth->fetchAll();
