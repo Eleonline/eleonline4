@@ -16,7 +16,7 @@ $comune = [
 <html lang="it">
 <head>
   <meta charset="UTF-8" >
-  <title>Eleonline - <?= htmlspecialchars($comune['nome']) ?></title>
+  <title>Eleonline - <?= htmlspecialchars($descrizione) ?></title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Font Awesome (locale) -->
 <link rel="stylesheet" href="../assets/css/all.min.css" >

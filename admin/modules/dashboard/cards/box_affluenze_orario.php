@@ -1,37 +1,56 @@
 <?php
+// Inizializzo sempre l'array
+$affluenze = [];
 
-if($tipo_cons==2)
-	$row=affluenze_referendum(1,0); # numero referendum, id_cons
-else
-	$row=affluenze_totali(0); # id_cons o 0 per quella corrente
-foreach($row as $val) 
-	$affluenze[]=['data'=>$val['data'].' '.$val['orario'],'val'=>$val['complessivi']];
+// Recupero dati
+if ($tipo_cons == 2) {
+    $row = affluenze_referendum(1, 0); // numero referendum, id_cons
+} else {
+    $row = affluenze_totali(0); // id_cons o 0 per quella corrente
+}
 
+// Popolo l'array delle affluenze
+if (!empty($row)) {
+    foreach ($row as $val) {
+        $affluenze[] = [
+            'data' => $val['data'] . ' ' . $val['orario'],
+            'val' => $val['complessivi'] ?? 0
+        ];
+    }
+}
+
+// Valore massimo per il grafico
+$maxElettori = isset($comune['elettori']) ? $comune['elettori'] : 1000;
 ?>
 
 <div class="card bg-light">
   <div class="card-header">
     <h3 class="card-title"><i class="fas fa-chart-bar"></i> Affluenze Demo</h3>
   </div>
-  <div class="card-body" style="height:250px;">
-    <canvas id="graficoAffluenzeOrario"></canvas>
+  <div class="card-body" style="height:250px; display:flex; align-items:center; justify-content:center;">
+    <?php if (empty($affluenze)) : ?>
+        <span style="color:#888; font-weight:bold;">Nessun dato disponibile</span>
+    <?php else : ?>
+        <canvas id="graficoAffluenzeOrario"></canvas>
+    <?php endif; ?>
   </div>
 </div>
 
+<?php if (!empty($affluenze)) : ?>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const ctx = document.getElementById('graficoAffluenzeOrario').getContext('2d');
 
   const labels = [
-    <?php foreach($affluenze as $a) echo "'".$a['data']."',"; ?>
+    <?php foreach ($affluenze as $a) echo "'" . addslashes($a['data']) . "',"; ?>
   ];
   const dataValues = [
-    <?php foreach($affluenze as $a) echo $a['val'].","; ?>
+    <?php foreach ($affluenze as $a) echo floatval($a['val']) . ","; ?>
   ];
 
   new Chart(ctx, {
-    type: 'bar', // grafico orizzontale a barre
+    type: 'bar',
     data: {
       labels: labels,
       datasets: [{
@@ -43,13 +62,13 @@ document.addEventListener('DOMContentLoaded', function() {
       }]
     },
     options: {
-      indexAxis: 'y', // rende il grafico orizzontale
+      indexAxis: 'y',
       responsive: true,
       maintainAspectRatio: false,
       scales: {
         x: {
           beginAtZero: true,
-          max: <?= $comune['elettori'] ?>,
+          max: <?= $maxElettori ?>,
           ticks: { stepSize: 500 }
         },
         y: {
@@ -64,3 +83,4 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 </script>
+<?php endif; ?>
