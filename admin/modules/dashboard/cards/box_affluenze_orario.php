@@ -1,18 +1,12 @@
 <?php
-// Dati demo (_data_simulati.php o definiti qui)
-$comune = [
-    'nome'=>'Demo Comune',
-    'elettori'=>7500,
-    'sezioni'=>6,
-];
-$affluenze = [
-    ['data'=>'2025-12-19 08:00', 'val'=>500],
-    ['data'=>'2025-12-19 10:00', 'val'=>1200],
-    ['data'=>'2025-12-19 12:00', 'val'=>2500],
-    ['data'=>'2025-12-19 14:00', 'val'=>4000],
-    ['data'=>'2025-12-19 16:00', 'val'=>5500],
-    ['data'=>'2025-12-19 18:00', 'val'=>6800],
-];
+
+if($tipo_cons==2)
+	$row=affluenze_referendum(1,0); # numero referendum, id_cons
+else
+	$row=affluenze_totali(0); # id_cons o 0 per quella corrente
+foreach($row as $val) 
+	$affluenze[]=['data'=>$val['data'].' '.$val['orario'],'val'=>$val['complessivi']];
+
 ?>
 
 <div class="card bg-light">
