@@ -6,6 +6,9 @@ $candidati = [
     ['nome' => 'Luigi', 'cognome' => 'Bianchi', 'lista' => 'Lista B', 'voti' => 980],
     ['nome' => 'Anna', 'cognome' => 'Verdi', 'lista' => 'Lista C', 'voti' => 760],
 ];
+
+// Calcolo totale voti
+$totaleVoti = array_sum(array_column($candidati, 'voti'));
 ?>
 
 <div class="card bg-light" id="box-candidati">
@@ -20,6 +23,7 @@ $candidati = [
             <th>Candidato</th>
             <th>Lista</th>
             <th>Voti</th>
+            <th>%</th>
           </tr>
         </thead>
         <tbody>
@@ -27,10 +31,23 @@ $candidati = [
           <tr>
             <td><?= htmlspecialchars($c['nome'] . ' ' . $c['cognome']) ?></td>
             <td><?= htmlspecialchars($c['lista']) ?></td>
-            <td><?= number_format($c['voti']) ?></td>
+            <td><?= number_format($c['voti'], 0, ',', '.') ?></td>
+            <td>
+              <?php 
+                $percent = $totaleVoti > 0 ? ($c['voti'] / $totaleVoti) * 100 : 0; 
+                echo number_format($percent, 1, '.', '') . '%'; // <-- qui il punto come separatore decimale
+              ?>
+            </td>
           </tr>
           <?php endforeach; ?>
         </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="2">Totale</th>
+            <th><?= number_format($totaleVoti, 0, ',', '.') ?></th>
+            <th>100%</th>
+          </tr>
+        </tfoot>
       </table>
     </div>
   </div>

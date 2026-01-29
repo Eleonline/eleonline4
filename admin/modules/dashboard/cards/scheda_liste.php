@@ -6,6 +6,9 @@ $listes = [
     ['lista' => 'Lista B', 'voti' => 980],
     ['lista' => 'Lista C', 'voti' => 760],
 ];
+
+// Calcolo totale voti
+$totaleVoti = array_sum(array_column($listes, 'voti'));
 ?>
 
 <div class="card bg-light" id="box-liste">
@@ -19,16 +22,30 @@ $listes = [
           <tr>
             <th>Lista</th>
             <th>Voti</th>
+            <th>%</th>
           </tr>
         </thead>
         <tbody>
           <?php foreach($listes as $l): ?>
           <tr>
             <td><?= htmlspecialchars($l['lista']) ?></td>
-            <td><?= number_format($l['voti']) ?></td>
+            <td><?= number_format($l['voti'], 0, ',', '.') ?></td>
+            <td>
+              <?php 
+                $percent = $totaleVoti > 0 ? ($l['voti'] / $totaleVoti) * 100 : 0;
+                echo number_format($percent, 1, '.', '') . '%'; // punto come separatore decimale
+              ?>
+            </td>
           </tr>
           <?php endforeach; ?>
         </tbody>
+        <tfoot>
+          <tr>
+            <th>Totale</th>
+            <th><?= number_format($totaleVoti, 0, ',', '.') ?></th>
+            <th>100%</th>
+          </tr>
+        </tfoot>
       </table>
     </div>
   </div>
