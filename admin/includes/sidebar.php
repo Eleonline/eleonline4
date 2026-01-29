@@ -372,7 +372,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 			?>
 
 			<li class="nav-item">
-			  <a href="<?php echo $affluenza_attivo ? 'modules.php?op=31' : '#'; ?>" 
+			  <a href="<?php echo $affluenza_attivo ? 'modules.php?op=31&tipo=1' : '#'; ?>" 
 				 class="nav-link <?php echo ($op == 31) ? 'active' : ''; ?> <?php echo !$affluenza_attivo ? 'disabled' : ''; ?>">
 				<i class="nav-icon fas fa-users <?php echo $affluenza_attivo ? 'text-info' : 'text-secondary'; ?>"></i>
 				<p><?php echo $affluenza_attivo ? 'Affluenza' : 'Affluenza'; ?></p>

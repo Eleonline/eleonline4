@@ -3,9 +3,11 @@ if(is_file('includes/check_access.php'))
     require_once 'includes/check_access.php';
 else
     require_once '../includes/check_access.php';
-
+global $id_cons_gen,$id_cons;
 if(isset($_SESSION['sezione_attiva'])) $sezione_attiva=$_SESSION['sezione_attiva'];
 if(isset($_SESSION['id_sez'])) $id_sez=$_SESSION['id_sez'];
+if(isset($_SESSION['id_cons_gen'])) $id_cons_gen=$_SESSION['id_cons_gen'];
+if(isset($_SESSION['id_cons'])) $id_cons=$_SESSION['id_cons'];
 
 $row = dati_consultazione(0);
 $dataInizio = strtotime($row[0]['data_inizio']);

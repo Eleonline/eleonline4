@@ -74,11 +74,11 @@ input[type=number].text-end {
 </style>
 
 <?php
-global $id_cons_gen,$sezione_attiva,$id_sez;
+global $sezione_attiva,$id_sez;
 #echo "<script>const idSez = " . json_encode($id_sez) . ";</script>";	
 
-$row=elenco_liste();
-$numliste=count($row);
+$row=elenco_gruppi();
+$numgruppi=count($row);
 /*
 foreach($row as $key=>$val)
 	$liste[]=['id' => $val['id_lista'],'num' => $val['num_lista'],'nome' => $val['descrizione']];
@@ -91,55 +91,12 @@ $tot_voti_lista+=$val['voti'];} */
 <section class="content" id="sezioneContent">
 <div id="divBarraSezioni"> <?php include_once("barra_sezioni.php"); ?> </div>
 </section>
-<div id="divRilevazioni"> <?php include('pagina_rilevazioni.php'); ?> </div>
+<div id="divPaginaGruppi"> <?php include('pagina_voti_gruppo.php'); ?> </div>
 <div id="divVotiFinale"> <?php include('pagina_voti_finali.php'); ?> </div>
 
 
 
 <script>
-
-function salva_affluenza(e) {
-    e.preventDefault(); // blocca il submit normale
-
-	const id = parseInt(document.getElementById("id").value);
-	const str = parseInt(document.getElementById("id_sezione").value);
-	const data = document.getElementById("data"+id).value;
-	const orario = document.getElementById("orario"+id).value;
-	var uomini='0';
-	var donne='0';
-	if (document.getElementById("uomini"+id) !== null) {
-		uomini = parseInt(document.getElementById("uomini"+id).value);
-		donne = parseInt(document.getElementById("donne"+id).value);
-	}
-	const totale = parseInt(document.getElementById("totale"+id).value);
-
-    const formData = new FormData(); 
-	formData.append('funzione', 'salvaRilevazione');
-    formData.append('id_sez', str);
-    formData.append('data', data);
-    formData.append('orario', orario);
-    formData.append('uomini', uomini);
-    formData.append('donne', donne);
-    formData.append('totale', totale);
-    formData.append('op', 'salva');
-
-    fetch('../principale.php', {
-        method: 'POST',
-        body: formData 
-    })
-    .then(response => {
-        if(!response.ok) throw new Error('Server risponde con status ' + response.status);
-        return response.text();
-    })
-    .then(data => {
-		document.getElementById('divRilevazioni').innerHTML = data;
-//		aggiorna_sezione(str);
-    })
-    .catch(error => {
-        console.error('Errore fetch:', error);
-    });
-  
-}
 
 function salva_voti(e) {
     e.preventDefault(); // blocca il submit normale
@@ -178,14 +135,45 @@ function salva_voti(e) {
     });
   
 }
+  
+function salva_voti_gruppo(e) {
+
+    e.preventDefault(); // blocca il submit normale
+	const str = document.getElementById("numSez").value;
+	const id_sez = document.getElementById("idSez").value;
+	const numGruppi = document.getElementById("numGruppi").value;
+    const formData = new FormData(); 
+    formData.append('funzione', 'salvaVotiGruppo');
+	for(let i=1 ; i<=numGruppi ; i++) {
+		formData.append('gruppo-'+document.getElementById("gruppo"+i).name, document.getElementById("gruppo"+i).value);
+	}
+    formData.append('id_sez', idSez);
+    formData.append('op', 'salva');
+
+    fetch('../principale.php', {
+        method: 'POST',
+        body: formData 
+    })
+    .then(response => {
+        if(!response.ok) throw new Error('Server risponde con status ' + response.status);
+        return response.text();
+    })
+    .then(data => {
+		document.getElementById('divPaginaGruppi').innerHTML = data;
+		aggiorna_sezione(str);
+    })
+    .catch(error => {
+        console.error('Errore fetch:', error);
+    });
+  
+}
+
 
 function selezionaSezione(str) {
-	const idstr = parseInt(document.getElementById("id_sezione").value);
 	const numsez=str;
     const formData = new FormData(); 
 	formData.append('funzione', 'leggiBarraSezioni');
     formData.append('num_sez', str);
-    formData.append('tipo', '1');
 
     fetch('../principale.php', {
         method: 'POST',
@@ -197,20 +185,20 @@ function selezionaSezione(str) {
     })
     .then(data => {
 		document.getElementById('divBarraSezioni').innerHTML = data;
-		aggiorna_affluenze(numsez);
-		aggiorna_voti(idstr);
+		aggiorna_gruppo(numsez);
+		aggiorna_voti(numsez);
     })
     .catch(error => {
         console.error('Errore fetch:', error);
     });
 }
 
-function aggiorna_affluenze(str) {
+function aggiorna_gruppo(str) {
 
     const formData = new FormData(); 
-	formData.append('funzione', 'salvaAffluenze');
+	formData.append('funzione', 'salvaVotiGruppo');
     formData.append('num_sez', str);
-    formData.append('op', 'aggiornaAffluenza');
+    formData.append('op', 'aggiornaGruppo');
 
     fetch('../principale.php', {
         method: 'POST',
@@ -221,7 +209,7 @@ function aggiorna_affluenze(str) {
         return response.text();
     })
     .then(data => {
-		document.getElementById('divRilevazioni').innerHTML = data;
+		document.getElementById('divPaginaGruppi').innerHTML = data;
     })
     .catch(error => {
         console.error('Errore fetch:', error);
@@ -233,8 +221,7 @@ function aggiorna_sezione(str) {
 
     const formData = new FormData(); 
 	formData.append('funzione', 'leggiBarraSezioni');
-    formData.append('id_sez', str);
-    formData.append('tipo', '1');
+    formData.append('num_sez', str);
 
     fetch('../principale.php', {
         method: 'POST',

@@ -1,39 +1,35 @@
 <?php
-/************************************************************************/
-/* Eleonline - Raccolta e diffusione dei dati elettorali                */
-/************************************************************************/
-/* Modulo salva affluenze                                               */
-/* Amministrazione                                                      */
-/************************************************************************/
-if (!defined('ADMIN_FILE')) {
-    die ("You can't access this file directly...");
-}
+if(is_file('includes/check_access.php'))
+	require_once 'includes/check_access.php';
+else
+	require_once '../includes/check_access.php';
 
 
-if (isset($_GET['id_cons_gen'])) $id_cons_gen=intval($_GET['id_cons_gen']); else $id_cons_gen='0';
-if (isset($_GET['op'])) $op=intval($_GET['op']); else $op='0';
-if (isset($_GET['id_circ'])) $id_circ=intval($_GET['id_circ']); else $id_circ='0';
-if (isset($_GET['id_sez'])) $id_sez=intval($_GET['id_sez']); else $id_sez='';
-if (isset($_GET['id_sede'])) $id_sede=intval($_GET['id_sede']); else $id_sede='0';
-if (isset($_GET['voti_u'])) $voti_u=intval($_GET['voti_u']); else $voti_u='0';
-if (isset($_GET['voti_d'])) $voti_d=intval($_GET['voti_d']); else $voti_d='0';
-if (isset($_GET['voti_t'])) $voti_t=intval($_GET['voti_t']); else $voti_t='0';
-if (isset($_GET['orario'])) $orario=addslashes($_GET['orario']); else $orario='';
-if (isset($_GET['data'])) $data=addslashes($_GET['data']); else $data='01-01-1900';
-if (isset($_GET['id_comune'])) $id_comune=intval($_GET['id_comune']); else $id_comune='0';
-if (isset($_GET['id_gruppo'])) $id_gruppo=intval($_GET['id_gruppo']); else $id_gruppo='0';
-if (isset($_GET['genere'])) $genere=intval($_GET['genere']); else $genere='0';
-if (isset($_GET['delete'])) $delete=addslashes($_GET['delete']); else $delete='';
-if (isset($_GET['copia'])) $copia=intval($_GET['copia']); else $copia='0';
+if (isset($_POST['id_cons_gen'])) $id_cons_gen=intval($_POST['id_cons_gen']); else $id_cons_gen='0';
+if (isset($_POST['op'])) $op=intval($_POST['op']); else $op='0';
+if (isset($_POST['id_circ'])) $id_circ=intval($_POST['id_circ']); else $id_circ='0';
+if (isset($_POST['id_sez'])) $id_sez=intval($_POST['id_sez']); else $id_sez='';
+if (isset($_POST['id_sede'])) $id_sede=intval($_POST['id_sede']); else $id_sede='0';
+if (isset($_POST['voti_u'])) $voti_u=intval($_POST['voti_u']); else $voti_u='0';
+if (isset($_POST['voti_d'])) $voti_d=intval($_POST['voti_d']); else $voti_d='0';
+if (isset($_POST['voti_t'])) $voti_t=intval($_POST['voti_t']); else $voti_t='0';
+if (isset($_POST['orario'])) $orario=addslashes($_POST['orario']); else $orario='';
+if (isset($_POST['data'])) $data=addslashes($_POST['data']); else $data='01-01-1900';
+if (isset($_POST['id_comune'])) $id_comune=intval($_POST['id_comune']); else $id_comune='0';
+if (isset($_POST['id_gruppo'])) $id_gruppo=intval($_POST['id_gruppo']); else $id_gruppo='0';
+if (isset($_POST['genere'])) $genere=intval($_POST['genere']); else $genere='0';
+if (isset($_POST['delete'])) $delete=addslashes($_POST['delete']); else $delete='';
+if (isset($_POST['copia'])) $copia=intval($_POST['copia']); else $copia='0';
+if (isset($_POST['data'])) $data=addslashes($_POST['data']); else $data='01-01-1900';
 global $prefix,$id_parz,$tempo,$username,$aid,$dbi,$genere;
-if (!isset($fileout)) $fileout='';
 if(($voti_u+$voti_d) and !$voti_t) $voti_t=$voti_u+$voti_d;
-
+if($op=='aggiornaAffluenza') {include('pagina_rilevazioni.php'); return;}
 $salvato=0;
 $query="select id_cons,chiusa from ".$prefix."_ele_cons_comune where id_cons_gen='$id_cons_gen' and id_comune='$id_comune'";
 $res = $dbi->prepare("$query");
 $res->execute();
 list($id_cons,$chiusa)=$res->fetch(PDO::FETCH_NUM);
+die( "TEST: passa");
 if($chiusa!=1){
 	$query="select id_parz from ".$prefix."_ele_voti_parziale where data='$data' and orario='$orario' and id_sez='$id_sez' and id_gruppo='$id_gruppo'";
 	$res = $dbi->prepare("$query");
@@ -70,11 +66,6 @@ if($chiusa!=1){
 			if($res->rowCount()) $salvato=1;
 		}
 	}
-	if ($fileout) {
-		while (!$fp = fopen($fileout,"a"));
-		fwrite($fp,"$sql;\n"); 
-		fclose($fp);
-	}
 	if($salvato){
 		$datal=date('Y-m-d');
 		$orariol=date(' H:i:s');
@@ -91,9 +82,7 @@ if($chiusa!=1){
 	controllo_aff($id_cons,$id_sez,$id_parz);
 	include("ele_colora_sez.php");
 }
-$BASE=substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['REQUEST_URI'], "/")-16);
-
-Header("Location: admin.php?op=voti&id_cons_gen=$id_cons_gen&id_circ=$id_circ&id_sede=$id_sede&id_sez=$id_sez&ops=1&do=spoglio");
+include('pagina_rilevazioni.php');
 
 
 ?>
