@@ -93,21 +93,23 @@ body.panel-open section.content {
 <?php
 $ruolo = $_SESSION['ruolo'];
 $cards = [
-  'Stato-Sezioni'                 => ['file'=>'cards/box_situazione_sezioni.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
+  'Stato-Sezioni'                 => ['file'=>'cards/box_situazione_sezioni.php','col'=>'col-md-3','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
   'Scheda-Aggionamento'           => ['file'=>'cards/scheda_dato_aggiornato.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin'], 'defaultVisible'=>true],
-  'Scheda-Sezioni_Scrutinate'     => ['file'=>'cards/sezione_scrutinate.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
-  'Scheda-Scrutintate'            => ['file'=>'cards/scheda_scrutinate.php','col'=>'col-lg-3 col-6','roles'=>['superuser'], 'defaultVisible'=>true],
-  'Scheda-Affluenza_rilevata'     => ['file'=>'cards/scheda_affluenza_rilevata.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin'], 'defaultVisible'=>true],
-  'Profilo-Utente'                => ['file'=>'cards/scheda_ruolo.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
-  'Scheda-Informazione-Comune'    => ['file'=>'cards/scheda_comune.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
+  'Scheda-Sezioni-Scrutinate'     => ['file'=>'cards/sezione_scrutinate.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
+  'Scheda-Schede-Scrutintate'     => ['file'=>'cards/scheda_scrutinate.php','col'=>'col-lg-3 col-6','roles'=>['superuser'], 'defaultVisible'=>true],
+  'Scheda-Ultima-Affluenza'       => ['file'=>'cards/scheda_affluenza_rilevata.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin'], 'defaultVisible'=>true],
+  'Profilo-Utente'                => ['file'=>'cards/scheda_ruolo.php','col'=>'col-md-3','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
+  'Scheda-Informazione-Comune'    => ['file'=>'cards/scheda_comune.php','col'=>'col-md-3','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
+  'Scheda-Affluenze'              => ['file'=>'cards/box_affluenze_orario.php','col'=>'col-md-3','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
+  'scheda-Candidati'              => ['file'=>'cards/scheda_gruppi.php','col'=>'col-md-3','roles'=>['superuser','admin'], 'defaultVisible'=>true],
+  'scheda-Liste'                  => ['file'=>'cards/scheda_liste.php','col'=>'col-md-3','roles'=>['superuser','admin'], 'defaultVisible'=>true],
   //'box-abitanti'                  => ['file'=>'cards/box_abitanti.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin'], 'defaultVisible'=>true],
   //'box-elettori'                  => ['file'=>'cards/box_elettori.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin'], 'defaultVisible'=>true],
   //'box-sezioni'                   => ['file'=>'cards/box_sezioni.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
-  'box-superficie'                => ['file'=>'cards/box_superficie.php','col'=>'col-lg-3 col-6','roles'=>['superuser'], 'defaultVisible'=>true],
+  //'box-superficie'                => ['file'=>'cards/box_superficie.php','col'=>'col-lg-3 col-6','roles'=>['superuser'], 'defaultVisible'=>true],
   'box-demo'                      => ['file'=>'cards/box_demo.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin'], 'defaultVisible'=>false],
   'scheda-demo'                   => ['file'=>'cards/scheda_demo.php','col'=>'col-md-6','roles'=>['superuser','admin'], 'defaultVisible'=>false],
   'box-grafico'                   => ['file'=>'cards/box_grafico.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>false],
-  'Scheda-Affluenze'              => ['file'=>'cards/box_affluenze_orario.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
 ];
 ?>
 
@@ -126,7 +128,7 @@ $cards = [
     <?php if (!in_array($ruolo,$card['roles'])) continue; ?>
     <div>
       <input type="checkbox" data-target="<?= $id ?>">
-      <?= ucfirst(str_replace('-', ' ', $id)) ?>
+      <?= ucwords(str_replace(['-','_'], ' ', $id)) ?>
     </div>
   <?php endforeach; ?>
   <hr>

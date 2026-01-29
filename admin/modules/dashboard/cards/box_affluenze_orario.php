@@ -37,7 +37,6 @@ $maxElettori = isset($comune['elettori']) ? $comune['elettori'] : 1000;
 </div>
 
 <?php if (!empty($affluenze)) : ?>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const ctx = document.getElementById('graficoAffluenzeOrario').getContext('2d');
@@ -84,3 +83,59 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <?php endif; ?>
+<script>
+let chartAffluenze;
+
+function aggiornaGraficoAffluenze() {
+  fetch('dashboard/cards/dati_grafico_affluenze.php')
+    .then(res => res.json())
+    .then(data => {
+      const labels = data.map(a => a.data);
+      const values = data.map(a => parseFloat(a.val));
+
+      const maxElettori = <?= isset($comune['elettori']) ? $comune['elettori'] : 1000 ?>;
+      const ctx = document.getElementById('graficoAffluenzeOrario').getContext('2d');
+
+      if(chartAffluenze) {
+        // Aggiorna dati già esistenti
+        chartAffluenze.data.labels = labels;
+        chartAffluenze.data.datasets[0].data = values;
+        chartAffluenze.options.scales.x.max = maxElettori;
+        chartAffluenze.update();
+      } else if(data.length) {
+        // Crea il grafico la prima volta
+        chartAffluenze = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Elettori Presenti',
+              data: values,
+              backgroundColor: 'rgba(54,162,235,0.7)',
+              borderColor: 'rgba(54,162,235,1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: { beginAtZero: true, max: maxElettori, ticks: { stepSize: 500 } },
+              y: { ticks: { autoSkip: false } }
+            },
+            plugins: { legend: { display: true, position: 'top' }, tooltip: { mode: 'index', intersect: false } }
+          }
+        });
+      }
+    })
+    .catch(err => console.error("Errore aggiornamento grafico:", err));
+}
+
+// Primo caricamento
+aggiornaGraficoAffluenze();
+
+// Auto-refresh ogni 60 secondi
+setInterval(aggiornaGraficoAffluenze, 60000);
+</script>
+

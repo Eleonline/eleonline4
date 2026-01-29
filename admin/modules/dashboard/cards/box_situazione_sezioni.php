@@ -61,3 +61,38 @@ for ($i = 1; $i <= $totale_sezioni; $i++) {
     </div>
   </div>
 </div>
+<script>
+function aggiornaSezioni() {
+    fetch('dashboard/cards/dati_sezioni.php')
+        .then(res => res.json())
+        .then(data => {
+            // Aggiorna badge
+            document.querySelector('#box-sezioni-card .badge-info')
+                .textContent = `Sezioni ${data.scrutinate} su ${data.totale}`;
+
+            // Aggiorna bottoni
+            const container = document.getElementById('sezioniBtn');
+            container.innerHTML = '';
+            for(let i = 1; i <= data.totale; i++){
+                const col = data.colori[i] || '#007bff';
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-outline-primary sezione-btn';
+                btn.style.border = `3px solid ${col}`;
+                btn.style.boxShadow = `0 0 5px ${col}`;
+                btn.style.margin = '2px';
+                btn.style.pointerEvents = 'none';
+                btn.style.cursor = 'default';
+                btn.textContent = i;
+                container.appendChild(btn);
+            }
+        })
+        .catch(err => console.error("Errore aggiornamento sezioni:", err));
+}
+
+// Primo caricamento
+aggiornaSezioni();
+
+// Auto-refresh ogni 60 secondi
+setInterval(aggiornaSezioni, 60000);
+</script>
+
