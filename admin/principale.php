@@ -10,7 +10,7 @@
 # ...
 define('APP_RUNNING', true);
 #die("Errore");
-global $dbi,$prefix,$id_comune;
+global $dbi,$prefix,$id_comune,$id_cons_gen;
   // gestione sessione
 if (!isset($_SESSION))
 {
@@ -141,10 +141,13 @@ if($permessi>32)
 	
 switch ($funzione) {
 	case 'salvaAffluenze':
-		include("modules/salva_aff.php");
+		include("modules/salva_rilevazione.php");
 	break;
 	case 'salvaVoti':
 		include("modules/salva_voti.php");
+	break;
+	case 'salvaVotiGruppo':
+		include("modules/salva_voti_gruppo.php");
 	break;
 	case 'salvaVotiLista':
 		include("modules/salva_voti_lista.php");

@@ -17,12 +17,14 @@ if (isset($_POST['gruppo'])) $id_gruppo=addslashes($_POST['gruppo']); else $id_g
 if (isset($_POST['delete'])) $delete=addslashes($_POST['delete']); else $delete='0';
 if (isset($_POST['copia'])) $copia=addslashes($_POST['copia']); else $copia='0';
 
+if($op=='aggiornaAffluenza') {include('pagina_rilevazioni.php'); return;}
+
 $salvato=0;
-$query="select id_cons,chiusa from ".$prefix."_ele_cons_comune where id_cons_gen='$id_cons_gen' and id_comune='$id_comune'";
-$res = $dbi->prepare("$query");
-$res->execute();
-list($id_cons,$chiusa)=$res->fetch(PDO::FETCH_NUM);
-if($chiusa!=1){
+//$query="select id_cons,chiusa from ".$prefix."_ele_cons_comune where id_cons_gen='$id_cons_gen' and id_comune='$id_comune'";
+//$res = $dbi->prepare("$query");
+//$res->execute();
+//list($id_cons,$chiusa)=$res->fetch(PDO::FETCH_NUM); die("TEST: $chiusa");
+//if($chiusa!=1){
 	$query="select id_parz from ".$prefix."_ele_voti_parziale where data='$data' and orario='$orario' and id_sez='$id_sez' and id_gruppo='$id_gruppo'";
 	$res = $dbi->prepare("$query");
 	$res->execute();         
@@ -73,6 +75,6 @@ if($chiusa!=1){
 	include("ele_controlli.php");
 	controllo_aff($id_cons,$id_sez,$id_parz);
 	include("ele_colora_sez.php");
-}
+//}
 include('pagina_rilevazioni.php');
 ?>

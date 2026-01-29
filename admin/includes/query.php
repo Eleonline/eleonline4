@@ -1057,6 +1057,16 @@ function voti_gruppo_circo($tab)
 
 }
 
+function voti_gruppo_sezione($id_sez) 
+{
+	global $id_cons,$prefix,$dbi;
+	$sql="select * from ".$prefix."_ele_voti_gruppo where id_cons='$id_cons' and id_sez='$id_sez' order by num_gruppo";
+	$sth = $dbi->prepare("$sql");
+	$sth->execute();
+	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+	return($row);	
+}
+
 function voti_lista_sezione($id_sez) 
 {
 	global $id_cons,$prefix,$dbi;

@@ -6,11 +6,11 @@ if(is_file('../includes/check_access.php'))
 }else{
 	require_once 'includes/check_access.php';
 //	require_once 'includes/query.php';
-}
-global $id_cons,$id_sez,$num_sez;
+} 
+global $id_cons_gen,$id_cons,$id_sez,$num_sez;
 $param=strtolower($_SERVER['REQUEST_METHOD']) == 'get' ? $_GET : $_POST;
 #if (isset($param['id_gruppo'])) {$id_gruppo=intval($param['id_gruppo']);}
-#if (isset($param['id_cand'])) {$id_cand=intval($param['id_cand']);}
+if (isset($param['tipo'])) {$tipo=intval($param['tipo']);} else $tipo=0;
 if (isset($param['num_sez'])) { $num_sez=intval($param['num_sez']);} 
 #else $num_sez=1;
 elseif(isset($_SESSION['id_sez'])) $id_sez=$_SESSION['id_sez'];
@@ -18,14 +18,14 @@ elseif(isset($_SESSION['id_sez'])) $id_sez=$_SESSION['id_sez'];
 $ultimasez=0;
 $id_cons=$_SESSION['id_cons'];
 $totale_sezioni=totale_sezioni();
-if(isset($num_sez))
+if($num_sez)
 	$row=dati_sezione(0,$num_sez);
 else
 	$row=dati_sezione($id_sez,0);
 	
 $num_sez=$row[0]['num_sez'];
-//$id_sez=$row[0]['id_sez'];
-//$_SESSION['id_sez']=$id_sez;
+$id_sez=$row[0]['id_sez'];
+$_SESSION['id_sez']=$id_sez;
 
 $sezione_attiva = $num_sez;
 $_SESSION['sezione_attiva']=$sezione_attiva;
@@ -43,7 +43,7 @@ if(count($row))
 	$votantiUltimaOra=[ 1 => ['uomini' => $row[0]['voti_uomini'], 'donne' => $row[0]['voti_donne'], 'totali' => $row[0]['voti_complessivi']]];
 ?>
 <!-- Titolo principale -->
-<h3 id="titoloSezione">Voti di Lista - Sezione n. <?php echo $sezione_attiva; ?></h3>
+<h3 id="titoloSezione">Voti di Gruppo - Sezione n. <?php echo $sezione_attiva; ?></h3>
 <div class="mb-2 d-flex flex-wrap gap-1">
   <button class="btn" style="font-size: 0.65rem; padding: 0.1rem 0.25rem; color: #007bff; border: 1.5px solid #007bff; background-color: #fff;">Tutto Da Completare</button>
   <button class="btn" style="font-size: 0.65rem; padding: 0.1rem 0.25rem; color: #007bff; border: 1.5px solid #dc3545; background-color: #fff;">Errore</button>
@@ -100,7 +100,7 @@ if(count($row))
 
   <div class="container-fluid">
     <!-- Statistiche Ultima Ora -->
-	<?php if(count($votantiUltimaOra)) { ?>
+	<?php if(count($votantiUltimaOra) and $tipo!=1) { ?>
     <h5 class="text-center">Votanti Ultima Ora</h5>
     <table class="table table-bordered text-center mx-auto" style="max-width: 400px; background-color: #f8f9fa; border-radius: 0.375rem;">
 	  <tbody id="tabellaVotanti">
@@ -111,6 +111,7 @@ if(count($row))
 		</tr>
 	  </tbody>
 	</table>
+</div>	
 	<?php } ?>
 <!-- Box per messaggio di errore/successo -->
 <div id="boxMessaggio" class="card">
