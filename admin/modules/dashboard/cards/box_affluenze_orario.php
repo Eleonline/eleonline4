@@ -25,7 +25,7 @@ $maxElettori = isset($comune['elettori']) ? $comune['elettori'] : 1000;
 
 <div class="card bg-light">
   <div class="card-header">
-    <h3 class="card-title"><i class="fas fa-chart-bar"></i> Affluenze Demo</h3>
+    <h3 class="card-title"><i class="fas fa-chart-bar"></i> Affluenze</h3>
   </div>
   <div class="card-body" style="height:250px; display:flex; align-items:center; justify-content:center;">
     <?php if (empty($affluenze)) : ?>

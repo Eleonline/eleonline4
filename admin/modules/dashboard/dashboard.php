@@ -93,17 +93,21 @@ body.panel-open section.content {
 <?php
 $ruolo = $_SESSION['ruolo'];
 $cards = [
-  'box-stato-sezioni'   => ['file'=>'cards/box_situazione_sezioni.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
-  'scheda-comune'          => ['file'=>'cards/scheda_comune.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
-  'scheda-ruolo'           => ['file'=>'cards/scheda_ruolo.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
-  'box-abitanti'           => ['file'=>'cards/box_abitanti.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin'], 'defaultVisible'=>true],
-  'box-elettori'           => ['file'=>'cards/box_elettori.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin'], 'defaultVisible'=>true],
-  'box-sezioni'            => ['file'=>'cards/box_sezioni.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
-  'box-superficie'         => ['file'=>'cards/box_superficie.php','col'=>'col-lg-3 col-6','roles'=>['superuser'], 'defaultVisible'=>true],
-  'box-demo'               => ['file'=>'cards/box_demo.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin'], 'defaultVisible'=>false],
-  'scheda-demo'            => ['file'=>'cards/scheda_demo.php','col'=>'col-md-6','roles'=>['superuser','admin'], 'defaultVisible'=>false],
-  'box-grafico'            => ['file'=>'cards/box_grafico.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>false],
-  'box-affluenze-orario'   => ['file'=>'cards/box_affluenze_orario.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
+  'Stato-Sezioni'                 => ['file'=>'cards/box_situazione_sezioni.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
+  'Scheda-Aggionamento'           => ['file'=>'cards/scheda_dato_aggiornato.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin'], 'defaultVisible'=>true],
+  'Scheda-Sezioni_Scrutinate'     => ['file'=>'cards/sezione_scrutinate.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
+  'Scheda-Scrutintate'            => ['file'=>'cards/scheda_scrutinate.php','col'=>'col-lg-3 col-6','roles'=>['superuser'], 'defaultVisible'=>true],
+  'Scheda-Affluenza_rilevata'     => ['file'=>'cards/scheda_affluenza_rilevata.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin'], 'defaultVisible'=>true],
+  'Profilo-Utente'                => ['file'=>'cards/scheda_ruolo.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
+  'Scheda-Informazione-Comune'    => ['file'=>'cards/scheda_comune.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
+  //'box-abitanti'                  => ['file'=>'cards/box_abitanti.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin'], 'defaultVisible'=>true],
+  //'box-elettori'                  => ['file'=>'cards/box_elettori.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin'], 'defaultVisible'=>true],
+  //'box-sezioni'                   => ['file'=>'cards/box_sezioni.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
+  'box-superficie'                => ['file'=>'cards/box_superficie.php','col'=>'col-lg-3 col-6','roles'=>['superuser'], 'defaultVisible'=>true],
+  'box-demo'                      => ['file'=>'cards/box_demo.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin'], 'defaultVisible'=>false],
+  'scheda-demo'                   => ['file'=>'cards/scheda_demo.php','col'=>'col-md-6','roles'=>['superuser','admin'], 'defaultVisible'=>false],
+  'box-grafico'                   => ['file'=>'cards/box_grafico.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>false],
+  'Scheda-Affluenze'              => ['file'=>'cards/box_affluenze_orario.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
 ];
 ?>
 
@@ -138,14 +142,14 @@ const toggleBtn = document.getElementById('side-toggle-btn');
 const originalOrder = Array.from(dashboard.querySelectorAll('.card-wrapper')).map(el => el.dataset.id);
 const cardDefaults = <?= json_encode($cards) ?>;
 
-// Salva stato completo: ordine + visibilità + full box-stato-sezioni
+// Salva stato completo: ordine + visibilità + full Stato-Sezioni
 function saveState() {
   const state = { order: [], visibility: {}, boxSezioniFull: 0 };
 
   dashboard.querySelectorAll('.card-wrapper').forEach(el => {
     state.order.push(el.dataset.id);
     state.visibility[el.dataset.id] = !el.classList.contains('d-none');
-    if(el.dataset.id === 'box-stato-sezioni' && el.classList.contains('force-full')){
+    if(el.dataset.id === 'Stato-Sezioni' && el.classList.contains('force-full')){
       state.boxSezioniFull = 1;
     }
   });
@@ -187,7 +191,7 @@ if (window.innerWidth >= 768) {
 
     onStart: (evt) => {
       const el = evt.item;
-      if (el.dataset.id === 'box-stato-sezioni') {
+      if (el.dataset.id === 'Stato-Sezioni') {
         // togli force-top ma mantieni force-full visivamente tramite ghost
         el.classList.remove('force-top'); 
       }
@@ -196,7 +200,7 @@ if (window.innerWidth >= 768) {
     onEnd: (evt) => {
   saveState(); // salva ordine e visibilità
 
-  const wrapper = dashboard.querySelector('[data-id="box-stato-sezioni"]');
+  const wrapper = dashboard.querySelector('[data-id="Stato-Sezioni"]');
   const saved = JSON.parse(localStorage.getItem('dashboardState') || '{}');
 
   if (wrapper && saved.boxSezioniFull == 1) {
@@ -211,9 +215,9 @@ if (window.innerWidth >= 768) {
 
 
 
-// Toggle full box-stato-sezioni (NON sposta la card)
+// Toggle full Stato-Sezioni (NON sposta la card)
 function toggleSezioniLayout() {
-  const wrapper = dashboard.querySelector('[data-id="box-stato-sezioni"]');
+  const wrapper = dashboard.querySelector('[data-id="Stato-Sezioni"]');
   if(!wrapper) return;
 
   const btnIcon = document.querySelector('#box-sezioni-card .toggle-layout-btn i');
@@ -263,7 +267,7 @@ function loadState() {
 
   // Ripristina full + top solo al caricamento o reset
   // Ripristina full senza spostare
-const wrapper = dashboard.querySelector('[data-id="box-stato-sezioni"]');
+const wrapper = dashboard.querySelector('[data-id="Stato-Sezioni"]');
 const btnIcon = document.querySelector('#box-sezioni-card .toggle-layout-btn i');
 if(wrapper && saved.boxSezioniFull == 1){
     wrapper.classList.add('force-full'); // solo full width, non spostare
@@ -295,14 +299,14 @@ document.getElementById('reset-filters').addEventListener('click', () => {
     const cb = sidePanel.querySelector(`input[data-target="${id}"]`);
     if(cb) cb.checked = visible;
 
-    if(id === 'box-stato-sezioni' && visible){
+    if(id === 'Stato-Sezioni' && visible){
       card.classList.add('force-full','force-top');
       const btnIcon = document.querySelector('#box-sezioni-card .toggle-layout-btn i');
       if(btnIcon){
         btnIcon.classList.remove('fa-expand');
         btnIcon.classList.add('fa-compress');
       }
-    } else if(id === 'box-stato-sezioni'){
+    } else if(id === 'Stato-Sezioni'){
       card.classList.remove('force-full','force-top');
       const btnIcon = document.querySelector('#box-sezioni-card .toggle-layout-btn i');
       if(btnIcon){
