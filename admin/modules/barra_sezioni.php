@@ -11,24 +11,38 @@ global $id_cons_gen,$id_cons,$id_sez,$num_sez;
 $param=strtolower($_SERVER['REQUEST_METHOD']) == 'get' ? $_GET : $_POST;
 #if (isset($param['id_gruppo'])) {$id_gruppo=intval($param['id_gruppo']);}
 if (isset($param['tipo'])) {$tipo=intval($param['tipo']);} else $tipo=0;
-if (isset($param['num_sez'])) { $num_sez=intval($param['num_sez']);} 
-#else $num_sez=1;
-elseif(isset($_SESSION['id_sez'])) $id_sez=$_SESSION['id_sez'];
+if (isset($param['num_sez'])) { echo "TEST barra num sez: $num_sez";
+	$num_sez=intval($param['num_sez']);
+	$row=dati_sezione(0,$num_sez);	
+	$id_sez=$row[0]['id_sez'];
+	} 
+elseif (isset($param['id_sez'])) {
+	$id_sez=intval($param['id_sez']);
+	$row=dati_sezione($id_sez,0);
+	$num_sez=$row[0]['num_sez'];
+	} 
+else {
+	$num_sez=1;
+	$row=dati_sezione(0,$num_sez);	
+	$id_sez=$row[0]['id_sez'];
+	} 
+##elseif(isset($_SESSION['id_sez'])) $id_sez=$_SESSION['id_sez'];
 #$_SESSION['id_cons']=$id_cons;
 $ultimasez=0;
 $id_cons=$_SESSION['id_cons'];
 $totale_sezioni=totale_sezioni();
-if($num_sez)
+/* if($num_sez)
 	$row=dati_sezione(0,$num_sez);
 else
 	$row=dati_sezione($id_sez,0);
 	
 $num_sez=$row[0]['num_sez'];
-$id_sez=$row[0]['id_sez'];
+$id_sez=$row[0]['id_sez']; */
 $_SESSION['id_sez']=$id_sez;
 
 $sezione_attiva = $num_sez;
 $_SESSION['sezione_attiva']=$sezione_attiva;
+$_SESSION['num_sez']=$sezione_attiva;
 $row=elenco_sezioni();
 //for($i=1;$i<=$totale_sezioni;$i++) $colore[$i]='';
 foreach($row as $key=>$val) {

@@ -139,15 +139,15 @@ function salva_voti(e) {
 function salva_voti_gruppo(e) {
 
     e.preventDefault(); // blocca il submit normale
-	const str = document.getElementById("numSez").value;
-	const id_sez = document.getElementById("idSez").value;
+	const str = document.getElementById("numSezGruppo").value;
+	const id_sez = document.getElementById("idSezGruppo").value;
 	const numGruppi = document.getElementById("numGruppi").value;
     const formData = new FormData(); 
     formData.append('funzione', 'salvaVotiGruppo');
 	for(let i=1 ; i<=numGruppi ; i++) {
 		formData.append('gruppo-'+document.getElementById("gruppo"+i).name, document.getElementById("gruppo"+i).value);
 	}
-    formData.append('id_sez', idSez);
+    formData.append('id_sez', id_sez);
     formData.append('op', 'salva');
 
     fetch('../principale.php', {
@@ -160,7 +160,7 @@ function salva_voti_gruppo(e) {
     })
     .then(data => {
 		document.getElementById('divPaginaGruppi').innerHTML = data;
-		aggiorna_sezione(str);
+		aggiorna_sezione(id_sez);
     })
     .catch(error => {
         console.error('Errore fetch:', error);
@@ -221,7 +221,7 @@ function aggiorna_sezione(str) {
 
     const formData = new FormData(); 
 	formData.append('funzione', 'leggiBarraSezioni');
-    formData.append('num_sez', str);
+    formData.append('id_sez', str);
 
     fetch('../principale.php', {
         method: 'POST',

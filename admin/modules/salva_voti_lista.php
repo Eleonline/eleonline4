@@ -12,7 +12,7 @@ include("ele_controlli.php");
 include("ele_colora_sez.php");
 
 foreach($_POST as $key=>$val) 
-	if(substr($key,0,6)=='lista-') { 
+	if(substr($key,0,6)=='lista-') {
 		$id_lista=substr($key,6);
 		if($id_lista) {
 			$sql="select num_lista from ".$prefix."_ele_lista where id_lista='$id_lista'";

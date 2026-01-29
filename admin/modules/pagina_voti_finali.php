@@ -1,6 +1,7 @@
 <?php
 if(isset($_SESSION['sezione_attiva'])) $sezione_attiva=$_SESSION['sezione_attiva'];
 if(isset($_SESSION['id_sez'])) $id_sez=$_SESSION['id_sez'];
+	
 $num_sez=$sezione_attiva;
 	$row=dati_sezione(0,$sezione_attiva);
 	$votitotali = [

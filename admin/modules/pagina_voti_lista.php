@@ -1,3 +1,9 @@
+<?php
+if(is_file('includes/check_access.php'))
+    require_once 'includes/check_access.php';
+else
+    require_once '../includes/check_access.php';
+?>
 <style>
 /* Rimuove freccette nei campi number (Chrome, Safari) */
 input[type="number"]::-webkit-outer-spin-button,
@@ -70,8 +76,11 @@ input[type=number].text-end {
 <?php
 if(isset($_SESSION['sezione_attiva'])) $sezione_attiva=$_SESSION['sezione_attiva'];
 if(isset($_SESSION['id_sez'])) $id_sez=$_SESSION['id_sez'];
+if(isset($_SESSION['id_cons_gen'])) $id_cons_gen=$_SESSION['id_cons_gen'];
+if(isset($_SESSION['id_cons'])) $id_cons=$_SESSION['id_cons'];
 if(isset($sezione_attiva)) $num_sez=$sezione_attiva;
-echo "<script>const idSez = " . json_encode($id_sez) . ";</script>";	
+echo "<script>const idSez = " . json_encode($id_sez) . ";</script>";
+
 $liste=array();
 $row=elenco_liste();
 $numliste=count($row);
@@ -86,8 +95,8 @@ $tot_voti_lista+=$val['voti'];}
     <!-- Tabella Voti di Lista -->
     <div class="table-responsive">
 		<form id="listeForm"  onsubmit="salva_voti_lista(event)">
-		<input type="number" id="numSez" value="<?= $sezione_attiva ?>" style="display:none">
-		<input type="number" id="idSez" value="<?= $id_sez ?>" style="display:none">
+		<input type="number" id="numSezLista" value="<?= $sezione_attiva ?>" style="display:none">
+		<input type="number" id="idSezLista" value="<?= $id_sez ?>" style="display:none">
 		<input type="number" id="numListe" value="<?= $numliste ?>" style="display:none">
 		<input type="hidden" name="op" value="32">
 		<table class="table table-bordered table-striped smartable">

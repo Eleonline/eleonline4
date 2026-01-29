@@ -139,15 +139,15 @@ function salva_voti(e) {
 function salva_voti_lista(e) {
 
     e.preventDefault(); // blocca il submit normale
-	const str = document.getElementById("numSez").value;
-	const id_sez = document.getElementById("idSez").value;
+	const str = document.getElementById("numSezLista").value;
+	const id_sez = document.getElementById("idSezLista").value;
 	const numListe = document.getElementById("numListe").value;
     const formData = new FormData(); 
     formData.append('funzione', 'salvaVotiListe');
 	for(let i=1 ; i<=numListe ; i++) {
 		formData.append('lista-'+document.getElementById("lista"+i).name, document.getElementById("lista"+i).value);
 	}
-    formData.append('id_sez', idSez);
+    formData.append('id_sez', id_sez);
     formData.append('op', 'salva');
 
     fetch('../principale.php', {
@@ -160,7 +160,7 @@ function salva_voti_lista(e) {
     })
     .then(data => {
 		document.getElementById('divPaginaListe').innerHTML = data;
-		aggiorna_sezione(str);
+		aggiorna_sezione(id_sez);
     })
     .catch(error => {
         console.error('Errore fetch:', error);
@@ -221,7 +221,7 @@ function aggiorna_sezione(str) {
 
     const formData = new FormData(); 
 	formData.append('funzione', 'leggiBarraSezioni');
-    formData.append('num_sez', str);
+    formData.append('id_sez', str);
 
     fetch('../principale.php', {
         method: 'POST',

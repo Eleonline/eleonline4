@@ -4,17 +4,17 @@ if(is_file('includes/check_access.php'))
 else
 	require_once '../includes/check_access.php';
 
-global $prefix,$id_parz,$id_sez,$dbi,$id_cons,$id_cons_gen;
+global $prefix,$id_parz,$id_sez,$dbi,$id_cons,$id_cons_gen,$num_sez;
 if (isset($_POST['id_sez'])) $id_sez=intval($_POST['id_sez']); else $id_sez='0';
 if (isset($_POST['op']) and $_POST['op']=='aggiornaGruppo') {include('pagina_voti_gruppo.php'); return;}
 $salvato=0;
 include("ele_controlli.php");
-include("ele_colora_sez.php");
+include("ele_colora_sez.php"); 
 
 foreach($_POST as $key=>$val) 
-	if(substr($key,0,6)=='gruppo-') { 
-		$id_gruppo=substr($key,6);
-		if($id_gruppo) {
+	if(substr($key,0,7)=='gruppo-') {
+		$id_gruppo=substr($key,7);
+		if($id_gruppo) { 
 			$sql="select num_gruppo from ".$prefix."_ele_gruppo where id_gruppo='$id_gruppo'";
 			$res = $dbi->prepare("$sql");
 			$res->execute();

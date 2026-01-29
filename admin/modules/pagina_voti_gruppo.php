@@ -97,8 +97,8 @@ $tot_voti_gruppo+=$val['voti'];}
     <!-- Tabella Voti di Gruppi -->
     <div class="table-responsive">
 		<form id="gruppiForm"  onsubmit="salva_voti_gruppo(event)">
-		<input type="number" id="numSez" value="<?= $sezione_attiva ?>" style="display:none">
-		<input type="number" id="idSez" value="<?= $id_sez ?>" style="display:none">
+		<input type="number" id="numSezGruppo" value="<?= $sezione_attiva ?>" style="display:none">
+		<input type="number" id="idSezGruppo" value="<?= $id_sez ?>" style="display:none">
 		<input type="number" id="numGruppi" value="<?= $numgruppi ?>" style="display:none">
 		<input type="hidden" name="op" value="32">
 		<table class="table table-bordered table-striped smartable">

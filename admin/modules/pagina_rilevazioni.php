@@ -8,7 +8,7 @@ if(isset($_SESSION['sezione_attiva'])) $sezione_attiva=$_SESSION['sezione_attiva
 if(isset($_SESSION['id_sez'])) $id_sez=$_SESSION['id_sez'];
 if(isset($_SESSION['id_cons_gen'])) $id_cons_gen=$_SESSION['id_cons_gen'];
 if(isset($_SESSION['id_cons'])) $id_cons=$_SESSION['id_cons'];
-
+$num_sez=$_SESSION['num_sez'];
 $row = dati_consultazione(0);
 $dataInizio = strtotime($row[0]['data_inizio']);
 
@@ -16,7 +16,7 @@ $dataInizio = strtotime($row[0]['data_inizio']);
 $inizioNoGenere = time(); // <-- qui definisci la tua data reale
 $nascondi = ($inizioNoGenere > $dataInizio) ? '' : 'style="display:none;"';
 
-$num_sez = $sezione_attiva;
+$sezione_attiva=$num_sez;
 $orari = elenco_orari();
 $affluenze = elenco_affluenze($id_sez);
 //checkbox cancella
