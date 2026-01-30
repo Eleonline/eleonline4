@@ -63,12 +63,14 @@ $prefix=$_SESSION['prefix'];
 $id_comune=$_SESSION['id_comune'];
 $id_cons_gen=$_SESSION['id_cons_gen']; #die("TEST QUI");
 $id_cons=$_SESSION['id_cons'];
+$tipo_cons=$_SESSION['tipo_cons'];
 #if (isset($param['id_cons'])) {$id_cons=intval($param['id_cons']);} else die("Errore: consultazione non definita");
 $permessi=ChiSei($id_cons_gen);
 if($permessi<16) return("Errore: non hai i permessi");
 $param=strtolower($_SERVER['REQUEST_METHOD']) == 'get' ? $_GET : $_POST;
 if (isset($param['funzione'])) {$funzione=$param['funzione'];} else return("Errore: funzione non definita");
 require_once 'includes/query.php';
+require_once 'includes/lang-it.php';
 if($permessi>32)
 	switch ($funzione) {
 		case 'salvaColoreTema':
@@ -125,9 +127,6 @@ if($permessi>32)
 		case 'salvaReferendum': 
 			include("modules/salva_referendum.php");
 			break;
-		case 'salvaVotiListe':
-			include("modules/salva_voti_lista.php");
-			break;
 		case 'salvaVotiFinale':
 			include("modules/salva_voti.php");
 			break;
@@ -149,6 +148,9 @@ switch ($funzione) {
 	case 'salvaVotiGruppo':
 		include("modules/salva_voti_gruppo.php");
 	break;
+	case 'salvaVotiCandidati':
+		include("modules/salva_voti_preferenza.php");
+		break;
 	case 'salvaVotiLista':
 		include("modules/salva_voti_lista.php");
 	break;

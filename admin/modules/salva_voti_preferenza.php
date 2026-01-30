@@ -4,31 +4,32 @@ if(is_file('includes/check_access.php'))
 else
 	require_once '../includes/check_access.php';
 
-global $prefix,$id_parz,$id_sez,$dbi,$id_cons,$id_cons_gen;
+global $prefix,$id_parz,$id_sez,$dbi,$id_cons,$id_cons_gen,$id_lista;
 if (isset($_POST['id_sez'])) $id_sez=intval($_POST['id_sez']); else $id_sez='0';
-if (isset($_POST['op']) and $_POST['op']=='aggiornaLista') { include('pagina_voti_lista.php'); return;}
+if (isset($_POST['id_lista'])) $id_lista=intval($_POST['id_lista']);
+if (isset($_POST['op']) and $_POST['op']=='aggiornaCandidato') { $_SESSION['id_lista']=$id_lista; include('pagina_voti_preferenza.php'); return;}
 $salvato=0;
 include("ele_controlli.php");
 include("ele_colora_sez.php");
 
 foreach($_POST as $key=>$val) 
-	if(substr($key,0,6)=='lista-') {
-		$id_lista=substr($key,6);
-		if($id_lista) {
-			$sql="select num_lista from ".$prefix."_ele_lista where id_lista=:id_lista";
+	if(substr($key,0,5)=='cand-') {
+		$id_cand=substr($key,5);
+		if($id_cand) {
+			$sql="select num_cand from ".$prefix."_ele_candidato where id_cand=:id_cand";
 			$res = $dbi->prepare("$sql");
 			try {
-			$res->bindParam(':id_lista', $id_lista, PDO::PARAM_INT);
+			$res->bindParam(':id_cand', $id_cand, PDO::PARAM_INT);
 			$res->execute();
 			} catch(PDOException $e) {
 				echo $e->getMessage();
 				$salvato=1;
 			}
-			list($num_lista)=$res->fetch(PDO::FETCH_NUM);
-			$sql="select count(0) from ".$prefix."_ele_voti_lista where id_lista=:id_lista and id_sez=:id_sez";
+			list($num_cand)=$res->fetch(PDO::FETCH_NUM);
+			$sql="select count(0) from ".$prefix."_ele_voti_candidato where id_cand=:id_cand and id_sez=:id_sez";
 			$res = $dbi->prepare("$sql");
 			try {
-			$res->bindParam(':id_lista', $id_lista, PDO::PARAM_INT);
+			$res->bindParam(':id_cand', $id_cand, PDO::PARAM_INT);
 			$res->bindParam(':id_sez', $id_sez, PDO::PARAM_INT);
 			$res->execute();
 			} catch(PDOException $e) {
@@ -37,10 +38,10 @@ foreach($_POST as $key=>$val)
 			}
 			list($inserita)=$res->fetch(PDO::FETCH_NUM);
 			if($inserita){
-				$sql="update ".$prefix."_ele_voti_lista set voti=:val where id_lista=:id_lista and id_sez=:id_sez";
+				$sql="update ".$prefix."_ele_voti_candidato set voti=:val where id_cand=:id_cand and id_sez=:id_sez";
 				$res = $dbi->prepare("$sql");
 				try {
-				$res->bindParam(':id_lista', $id_lista, PDO::PARAM_INT);
+				$res->bindParam(':id_cand', $id_cand, PDO::PARAM_INT);
 				$res->bindParam(':id_sez', $id_sez, PDO::PARAM_INT);
 				$res->bindParam(':val', $val, PDO::PARAM_INT);
 				$res->execute();
@@ -49,11 +50,11 @@ foreach($_POST as $key=>$val)
 					$salvato=1;
 				}
 			}else{
-				$sql="insert ".$prefix."_ele_voti_lista (id_cons,id_lista,id_sez,num_lista,voti) values (:id_cons,:id_lista,:id_sez,:num_lista,:val)"; 
+				$sql="insert ".$prefix."_ele_voti_candidato (id_cons,id_cand,id_sez,num_lista,voti) values (:id_cons,:id_cand,:id_sez,:num_lista,:val)"; 
 				$res = $dbi->prepare("$sql");
 				try {
 				$res->bindParam(':id_cons', $id_cons, PDO::PARAM_INT);
-				$res->bindParam(':id_lista', $id_lista, PDO::PARAM_INT);
+				$res->bindParam(':id_cand', $id_cand, PDO::PARAM_INT);
 				$res->bindParam(':num_lista', $num_lista, PDO::PARAM_INT);
 				$res->bindParam(':id_sez', $id_sez, PDO::PARAM_INT);
 				$res->bindParam(':val', $val, PDO::PARAM_INT);
@@ -99,6 +100,6 @@ foreach($_POST as $key=>$val)
 	colora_sezione();
 
 
-	include('pagina_voti_lista.php');
+	include('pagina_voti_preferenza.php');
 
 ?>

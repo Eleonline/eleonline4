@@ -5,13 +5,14 @@ if(is_file('../includes/check_access.php'))
 //	require_once '../includes/query.php';
 }else{
 	require_once 'includes/check_access.php';
+//	require_once 'includes/lang-it.php';
 //	require_once 'includes/query.php';
 } 
-global $id_cons_gen,$id_cons,$id_sez,$num_sez;
+global $id_cons_gen,$id_cons,$id_sez,$num_sez,$tipo;
 $param=strtolower($_SERVER['REQUEST_METHOD']) == 'get' ? $_GET : $_POST;
 #if (isset($param['id_gruppo'])) {$id_gruppo=intval($param['id_gruppo']);}
-if (isset($param['tipo'])) {$tipo=intval($param['tipo']);} else $tipo=0;
-if (isset($param['num_sez'])) { echo "TEST barra num sez: $num_sez";
+if (isset($param['tipo'])) {$tipo=intval($param['tipo']);}
+if (isset($param['num_sez'])) {
 	$num_sez=intval($param['num_sez']);
 	$row=dati_sezione(0,$num_sez);	
 	$id_sez=$row[0]['id_sez'];
@@ -57,7 +58,13 @@ if(count($row))
 	$votantiUltimaOra=[ 1 => ['uomini' => $row[0]['voti_uomini'], 'donne' => $row[0]['voti_donne'], 'totali' => $row[0]['voti_complessivi']]];
 ?>
 <!-- Titolo principale -->
-<h3 id="titoloSezione">Voti di Gruppo - Sezione n. <?php echo $sezione_attiva; ?></h3>
+<h3 id="titoloSezione"> 
+<?php if($tipo==1) echo "Affluenze";
+	elseif($tipo==2) echo "Voti per: "._GRUPPO;
+	elseif($tipo==3) echo "Voti per: "._LISTA;
+	elseif($tipo==4) echo "Voti di Preferenza";
+?>	
+ - Sezione n. <?php echo $sezione_attiva; ?></h3>
 <div class="mb-2 d-flex flex-wrap gap-1">
   <button class="btn" style="font-size: 0.65rem; padding: 0.1rem 0.25rem; color: #007bff; border: 1.5px solid #007bff; background-color: #fff;">Tutto Da Completare</button>
   <button class="btn" style="font-size: 0.65rem; padding: 0.1rem 0.25rem; color: #007bff; border: 1.5px solid #dc3545; background-color: #fff;">Errore</button>
@@ -114,7 +121,7 @@ if(count($row))
 
   <div class="container-fluid">
     <!-- Statistiche Ultima Ora -->
-	<?php if(count($votantiUltimaOra) and $tipo!=1) { ?>
+	<?php if(count($votantiUltimaOra) and $tipo!=1 and $tipo!=4) { ?>
     <h5 class="text-center">Votanti Ultima Ora</h5>
     <table class="table table-bordered text-center mx-auto" style="max-width: 400px; background-color: #f8f9fa; border-radius: 0.375rem;">
 	  <tbody id="tabellaVotanti">

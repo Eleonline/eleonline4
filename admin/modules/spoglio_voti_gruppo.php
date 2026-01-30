@@ -74,9 +74,9 @@ input[type=number].text-end {
 </style>
 
 <?php
-global $sezione_attiva,$id_sez;
+global $sezione_attiva,$id_sez,$tipo;
 #echo "<script>const idSez = " . json_encode($id_sez) . ";</script>";	
-
+$tipo=2;
 $row=elenco_gruppi();
 $numgruppi=count($row);
 /*
@@ -174,6 +174,7 @@ function selezionaSezione(str) {
     const formData = new FormData(); 
 	formData.append('funzione', 'leggiBarraSezioni');
     formData.append('num_sez', str);
+    formData.append('tipo', '2');
 
     fetch('../principale.php', {
         method: 'POST',
@@ -219,9 +220,12 @@ function aggiorna_gruppo(str) {
 
 function aggiorna_sezione(str) {
 
+	const num_sez=document.getElementById("numSezGruppo").value;
     const formData = new FormData(); 
 	formData.append('funzione', 'leggiBarraSezioni');
     formData.append('id_sez', str);
+    formData.append('num_sez', num_sez);
+    formData.append('tipo', '2');
 
     fetch('../principale.php', {
         method: 'POST',

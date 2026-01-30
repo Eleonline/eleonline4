@@ -315,13 +315,24 @@ function elenco_candidati($idlista)
 
 }
 
-function elenco_candidati_liste($i)
+function elenco_candidati_totale($i)
 {
 	global $id_cons,$prefix,$dbi,$circo,$idcirc;
 	if(isset($circo) and $circo) $filtro="and t2.id_circ='$idcirc'"; else $filtro='';
 	if($i==1) $ordine="order by t1.cognome,t1.nome";
 	else $ordine="order by t2.num_lista,t1.num_cand";
 	$sql="select t1.id_cand, t1.num_lista,t1.num_cand,concat(t1.cognome,' ', t1.nome) as descrizione,0 as votisum,t1.id_lista,t1.eletto from ".$prefix."_ele_candidato as t1 left join ".$prefix."_ele_lista as t2 on t1.id_lista=t2.id_lista where t1.id_cons='$id_cons' $filtro $ordine";
+	$sth = $dbi->prepare("$sql");
+	$sth->execute();
+	$row = $sth->fetchAll();
+	return($row);	
+
+}
+
+function elenco_candidati_lista($id)
+{
+	global $id_cons,$prefix,$dbi;
+	$sql="select * from ".$prefix."_ele_candidato where id_lista='$id'";
 	$sth = $dbi->prepare("$sql");
 	$sth->execute();
 	$row = $sth->fetchAll();
@@ -1031,6 +1042,16 @@ function voti_candidati_circo($numlista)
 	$row = $sth->fetchAll();
 	return($row);	
 
+}
+
+function voti_candidato_sezione($id_sez,$id_lista) 
+{
+	global $id_cons,$prefix,$dbi;
+	$sql="select t1.* from ".$prefix."_ele_voti_candidato as t1 left join ".$prefix."_ele_candidato as t2 on t1.id_cand=t2.id_cand where t2.id_lista='$id_lista' and t1.id_sez='$id_sez' order by t1.num_cand";
+	$sth = $dbi->prepare("$sql");
+	$sth->execute();
+	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+	return($row);	
 }
 
 function voti_gruppo($tab)

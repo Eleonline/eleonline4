@@ -74,9 +74,9 @@ input[type=number].text-end {
 </style>
 
 <?php
-global $id_cons_gen,$sezione_attiva,$id_sez;
+global $id_cons_gen,$sezione_attiva,$id_sez,$tipo;
 #echo "<script>const idSez = " . json_encode($id_sez) . ";</script>";	
-
+$tipo=1;
 $row=elenco_liste();
 $numliste=count($row);
 /*
