@@ -28,16 +28,25 @@ if(count($row)){
 	$sezioni_scrutinate=0;
 	$totale_sezioni=0;
 }
+//demo Badge LIVE
+$sezioni_scrutinate=8;
 ?>
 <!-- Box Card -->
 <div class="card bg-light" id="box-sezioni-card">
   <div class="card-header">
     <h3 class="card-title"><i class="fas fa-list"></i> Stato Sezioni </h3>
-    <div class="card-tools">
-	   <span class="badge badge-info">
+    <div class="card-tools d-flex align-items-center">
+	   <!-- Badge LIVE solo se tutte le sezioni sono scrutinate -->
+        <?php if($sezioni_scrutinate < $totale_sezioni): ?>
+        <span id="badge-live" 
+              style="background:red;color:white;font-size:0.7rem;padding:2px 6px;border-radius:4px;
+                     margin-right:6px;">
+            LIVE
+        </span>
+        <?php endif; ?>
+	   <span class="badge badge-info" id="badge-sezioni">
             Sezioni <?php echo $sezioni_scrutinate; ?> su <?php echo $totale_sezioni; ?>
         </span>
-    
       <button class="btn btn-tool toggle-layout-btn" onclick="toggleSezioniLayout()">
         <i class="fas fa-expand"></i>
       </button>
@@ -47,44 +56,53 @@ if(count($row)){
   <div class="card-body">
     <!-- Navigazione Sezioni -->
     <div class="mb-3">
-<div class="d-flex flex-wrap" id="sezioniBtn">
-<?php
-for ($i = 1; $i <= $totale_sezioni; $i++) {
-    $col = (!isset($colore[$i]) || empty($colore[$i])) ? '#007bff' : $colore[$i];
-    echo '<button class="btn btn-outline-primary sezione-btn" 
-                 style="border: 3px solid '.$col.'; box-shadow: 0 0 5px '.$col.'; margin:2px; pointer-events: none; cursor: default;">' 
-                 . $i . '</button>';
-}
-?>
-</div>
-
+      <div class="d-flex flex-wrap" id="sezioniBtn">
+      <?php
+      for ($i = 1; $i <= $totale_sezioni; $i++) {
+          $col = (!isset($colore[$i]) || empty($colore[$i])) ? '#007bff' : $colore[$i];
+          echo '<button class="btn btn-outline-primary sezione-btn" 
+                       style="border: 3px solid '.$col.'; box-shadow: 0 0 5px '.$col.'; margin:2px; pointer-events: none; cursor: default;">' 
+                       . $i . '</button>';
+      }
+      ?>
+      </div>
     </div>
   </div>
 </div>
+
+<!-- CSS lampeggio netto -->
+<style>
+  @keyframes blink {
+    0%, 50%, 100% { visibility: visible; }
+    25%, 75% { visibility: hidden; }
+  }
+  #badge-live {
+    animation: blink 2s step-start infinite;
+  }
+</style>
+
 <script>
 function aggiornaSezioni() {
     fetch('dashboard/cards/dati_sezioni.php')
         .then(res => res.json())
         .then(data => {
-            // Aggiorna badge
-            document.querySelector('#box-sezioni-card .badge-info')
-                .textContent = `Sezioni ${data.scrutinate} su ${data.totale}`;
+            // Aggiorna badge numerico
+            document.getElementById('badge-sezioni').textContent = `Sezioni ${data.scrutinate} su ${data.totale}`;
 
-            // Aggiorna bottoni
-            const container = document.getElementById('sezioniBtn');
-            container.innerHTML = '';
-            for(let i = 1; i <= data.totale; i++){
-                const col = data.colori[i] || '#007bff';
-                const btn = document.createElement('button');
-                btn.className = 'btn btn-outline-primary sezione-btn';
-                btn.style.border = `3px solid ${col}`;
-                btn.style.boxShadow = `0 0 5px ${col}`;
-                btn.style.margin = '2px';
-                btn.style.pointerEvents = 'none';
-                btn.style.cursor = 'default';
-                btn.textContent = i;
-                container.appendChild(btn);
+            // Mostra/nascondi LIVE
+            let badgeLive = document.getElementById('badge-live');
+            if(data.scrutinate < data.totale){
+                if(!badgeLive){
+                    badgeLive = document.createElement('span');
+                    badgeLive.id = 'badge-live';
+                    badgeLive.style.cssText = "background:red;color:white;font-size:0.7rem;padding:2px 6px;border-radius:4px;margin-left:6px;";
+                    badgeLive.textContent = 'LIVE';
+                    document.querySelector('.card-tools').insertBefore(badgeLive, document.querySelector('.toggle-layout-btn'));
+                }
+            } else if(badgeLive){
+                badgeLive.remove();
             }
+
         })
         .catch(err => console.error("Errore aggiornamento sezioni:", err));
 }
@@ -95,4 +113,3 @@ aggiornaSezioni();
 // Auto-refresh ogni 60 secondi
 setInterval(aggiornaSezioni, 60000);
 </script>
-

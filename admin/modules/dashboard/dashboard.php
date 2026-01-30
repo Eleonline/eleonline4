@@ -92,25 +92,170 @@ body.panel-open section.content {
 
 <?php
 $ruolo = $_SESSION['ruolo'];
+$statoSezioniDisponibile   = true; // oppure false/null se non c'è dato
+$aggiornamentoDisponibile  = true; // oppure false/null se non c'è dato
+$ultimaAffluenza           = true; // oppure false/null se non c'è dato
+$sezioniScrutinate         = true; // oppure false/null se non c'è dato
+$schedeScrutinate          = true; // oppure false/null se non c'è dato
+$affluenzeOrario           = true; // oppure false/null se non c'è dato
+$schedeCandidati           = true; // oppure false/null se non c'è dato
+$listeDisponibili          = true; // oppure false/null se non c'è dato
+$referendumDisponibile     = true; // oppure false/null se non c'è dato
 $cards = [
-  'Stato-Sezioni'                 => ['file'=>'cards/box_situazione_sezioni.php','col'=>'col-md-3','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
-  'Scheda-Aggionamento'           => ['file'=>'cards/scheda_dato_aggiornato.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin'], 'defaultVisible'=>true],
-  'Scheda-Sezioni-Scrutinate'     => ['file'=>'cards/sezione_scrutinate.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
-  'Scheda-Schede-Scrutintate'     => ['file'=>'cards/scheda_scrutinate.php','col'=>'col-lg-3 col-6','roles'=>['superuser'], 'defaultVisible'=>true],
-  'Scheda-Ultima-Affluenza'       => ['file'=>'cards/scheda_affluenza_rilevata.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin'], 'defaultVisible'=>true],
-  'Profilo-Utente'                => ['file'=>'cards/scheda_ruolo.php','col'=>'col-md-3','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
-  'Scheda-Informazione-Comune'    => ['file'=>'cards/scheda_comune.php','col'=>'col-md-3','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
-  'Scheda-Affluenze'              => ['file'=>'cards/box_affluenze_orario.php','col'=>'col-md-3','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
-  'scheda-Candidati'              => ['file'=>'cards/scheda_gruppi.php','col'=>'col-md-3','roles'=>['superuser','admin'], 'defaultVisible'=>true],
-  'scheda-Liste'                  => ['file'=>'cards/scheda_liste.php','col'=>'col-md-3','roles'=>['superuser','admin'], 'defaultVisible'=>true],
-  //'box-abitanti'                  => ['file'=>'cards/box_abitanti.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin'], 'defaultVisible'=>true],
-  //'box-elettori'                  => ['file'=>'cards/box_elettori.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin'], 'defaultVisible'=>true],
-  //'box-sezioni'                   => ['file'=>'cards/box_sezioni.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>true],
-  //'box-superficie'                => ['file'=>'cards/box_superficie.php','col'=>'col-lg-3 col-6','roles'=>['superuser'], 'defaultVisible'=>true],
-  'box-demo'                      => ['file'=>'cards/box_demo.php','col'=>'col-lg-3 col-6','roles'=>['superuser','admin'], 'defaultVisible'=>false],
-  'scheda-demo'                   => ['file'=>'cards/scheda_demo.php','col'=>'col-md-6','roles'=>['superuser','admin'], 'defaultVisible'=>false],
-  'box-grafico'                   => ['file'=>'cards/box_grafico.php','col'=>'col-md-6','roles'=>['superuser','admin','operatore'], 'defaultVisible'=>false],
+
+  ...( !empty($statoSezioniDisponibile) ? [
+
+    'Stato-Sezioni' => [
+        'file'=>'cards/box_situazione_sezioni.php',
+        'col'=>'col-md-3',
+        'roles'=>['superuser','admin','operatore'],
+        'defaultVisible'=>true
+    ]
+
+] : []),
+
+
+  ...( !empty($aggiornamentoDisponibile) ? [
+
+    'Scheda-Aggionamento' => [
+        'file'=>'cards/scheda_dato_aggiornato.php',
+        'col'=>'col-lg-3 col-6',
+        'roles'=>['superuser','admin'],
+        'defaultVisible'=>true
+    ]
+
+] : []),
+
+  ...( !empty($ultimaAffluenza) ? [
+
+    'Scheda-Ultima-Affluenza' => [
+        'file'=>'cards/scheda_affluenza_rilevata.php',
+        'col'=>'col-lg-3 col-6',
+        'roles'=>['superuser','admin'],
+        'defaultVisible'=>true
+    ]
+
+] : []),
+
+  ...( !empty($sezioniScrutinate) ? [
+
+    'Scheda-Sezioni-Scrutinate' => [
+        'file'=>'cards/sezione_scrutinate.php',
+        'col'=>'col-lg-3 col-6',
+        'roles'=>['superuser','admin','operatore'],
+        'defaultVisible'=>true
+    ]
+
+] : []),
+
+  ...( !empty($schedeScrutinate) ? [
+
+    'Scheda-Schede-Scrutintate' => [
+        'file'=>'cards/scheda_scrutinate.php',
+        'col'=>'col-lg-3 col-6',
+        'roles'=>['superuser'],
+        'defaultVisible'=>true
+    ]
+
+] : []),
+
+  
+  'Profilo-Utente' => [
+    'file'=>'cards/scheda_ruolo.php',
+    'col'=>'col-md-3',
+    'roles'=>['superuser','admin','operatore'],
+    'defaultVisible'=>true
+  ],
+
+  'Scheda-Informazione-Comune' => [
+    'file'=>'cards/scheda_comune.php',
+    'col'=>'col-md-3',
+    'roles'=>['superuser','admin','operatore'],
+    'defaultVisible'=>true
+  ],
+
+  ...( !empty($affluenzeOrario) ? [
+
+    'Scheda-Affluenze' => [
+        'file'=>'cards/box_affluenze_orario.php',
+        'col'=>'col-md-3',
+        'roles'=>['superuser','admin','operatore'],
+        'defaultVisible'=>true
+    ]
+
+] : []),
+
+
+  ...( in_array($tipo_consultazione, [
+        'comunali',
+        'ballottaggio comunali',
+        'regionali',
+        'camera',
+        'senato'
+    ]) && !empty($schedeCandidati) ? [
+
+        'scheda-Candidati' => [
+            'file'=>'cards/scheda_gruppi.php',
+            'col'=>'col-md-3',
+            'roles'=>['superuser','admin'],
+            'defaultVisible'=>true
+        ]
+
+    ] : []),
+
+
+ ...( in_array($tipo_consultazione, [
+        'europee',
+        'comunali',
+        'ballottaggio comunali',
+        'regionali',
+        'camera',
+        'senato'
+    ]) && !empty($listeDisponibili) ? [
+
+        'scheda-Liste' => [
+            'file'=>'cards/scheda_liste.php',
+            'col'=>'col-md-3',
+            'roles'=>['superuser','admin'],
+            'defaultVisible'=>true
+        ]
+
+    ] : []),
+
+    ...( $tipo_consultazione === 'referendum' && !empty($referendumDisponibile) ? [
+
+    'Scheda-Referendum' => [
+        'file'=>'cards/scheda_referendum.php',
+        'col'=>'col-md-3',
+        'roles'=>['superuser','admin'],
+        'defaultVisible'=>true
+    ]
+
+] : []),
+
+
+  'box-demo' => [
+    'file'=>'cards/box_demo.php',
+    'col'=>'col-lg-3 col-6',
+    'roles'=>['superuser','admin'],
+    'defaultVisible'=>false
+  ],
+  'scheda-demo' => [
+    'file'=>'cards/scheda_demo.php',
+    'col'=>'col-md-6',
+    'roles'=>['superuser','admin'],
+    'defaultVisible'=>false
+  ],
+
+  'box-grafico' => [
+    'file'=>'cards/box_grafico.php',
+    'col'=>'col-md-6',
+    'roles'=>['superuser','admin','operatore'],
+    'defaultVisible'=>false
+  ],
+
 ];
+
 ?>
 
 <div class="row invisible" id="dashboard-cards">

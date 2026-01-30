@@ -5,30 +5,12 @@
     <small id="orario-affluenza" style="display:block;margin-bottom:4px;">Ore 19:00</small>
 
     <h3 id="affluenza-valore" style="margin:0;">0 %</h3>
-
-    <!-- Badge LIVE lampeggiante -->
-    <span id="badge-live" 
-          style="background:red;color:white;font-size:0.7rem;padding:2px 6px;border-radius:4px;
-                 position:absolute;top:10px;right:10px;">
-      LIVE
-    </span>
-
+  
   </div>
   <div class="icon">
     <i class="fas fa-poll"></i>
   </div>
 </div>
-
-<!-- CSS lampeggio netto -->
-<style>
-  @keyframes blink {
-    0%, 50%, 100% { visibility: visible; }
-    25%, 75% { visibility: hidden; }
-  }
-  #badge-live {
-    animation: blink 2s step-start infinite;
-  }
-</style>
 
 <!-- JS auto-refresh via PHP senza contatore animato -->
 <script>

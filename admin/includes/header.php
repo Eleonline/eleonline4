@@ -4,13 +4,6 @@ include_once __DIR__ . '/../config/config.php';
 // Dati del comune  da eliminare se nella riga 17 si mettere il valore giusto
 $row=dati_comune();
 $descrizione=$row[0]['descrizione'];
-$comune = [
-    'nome' => $descrizione,
-    'abitanti' => 12000,
-    'superficie_km2' => 35.7,
-    'elettori' => 10500,
-    'sezioni' => 8
-];
 ?>
 <!DOCTYPE html>
 <html lang="it">

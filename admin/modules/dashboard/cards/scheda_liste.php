@@ -14,6 +14,11 @@ $totaleVoti = array_sum(array_column($listes, 'voti'));
 <div class="card bg-light" id="box-liste">
   <div class="card-header">
     <h3 class="card-title"><i class="fas fa-layer-group"></i> Liste</h3>
+	<div class="card-tools d-flex align-items-center">
+	   <span class="badge badge-info" id="badge-sezioni">
+            Sezioni <?php echo $sezioni_scrutinate; ?> su <?php echo $totale_sezioni; ?>
+        </span>
+    </div>
   </div>
   <div class="card-body">
     <div id="liste-contenuto">
