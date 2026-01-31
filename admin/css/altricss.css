@@ -1,3 +1,8 @@
+/* Margine fondo contenuto */
+.main-content {
+    margin-bottom: 50px;
+}
+
 /* Wrapper principale */
 .wrapper {
   display: flex;

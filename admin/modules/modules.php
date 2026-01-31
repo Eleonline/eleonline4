@@ -74,8 +74,11 @@ require_once '../includes/lang-it.php';
 
 ob_start(); // attiva output buffering
 include '../includes/header.php';
-include '../includes/menu.php'; 
-include 'contenuto.php'; 
+include '../includes/menu.php'; ?>
+<div class="main-content">
+    <?php include 'contenuto.php'; ?>
+</div>
+<?php
 include '../includes/footer.php'; 
 
 ob_end_flush();?>
