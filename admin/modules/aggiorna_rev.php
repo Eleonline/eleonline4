@@ -260,7 +260,7 @@ send_output("Aggiornamento database...", 'ok');
 
 // Step 8: Pulizia file temporanei
 send_output("Archiviazione file temporanei...");
-if(rename($tmpDir,$tmpDir."Da_$rev_locale_a_$rev_online"))
+if(rename($tmpDir,$tmpDir."Da_".$rev_locale."_a_".$rev_online))
 	send_output("Pulizia file temporanei...", 'ok');
 
 // Step 9: Aggiorna Versione

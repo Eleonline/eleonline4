@@ -8,7 +8,6 @@ admin/login - Copia.php
 /admin/logs
 *.log
 /admin/documenti
-/admin/includes
 /admin/logs
 /client/documenti
 /admin/logs
