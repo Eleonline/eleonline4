@@ -92,7 +92,7 @@ $tot_voti_lista+=$val['voti'];} */
 <div id="divBarraSezioni"> <?php include_once("barra_sezioni.php"); ?> </div>
 </section>
 <div id="divRilevazioni"> <?php include('pagina_rilevazioni.php'); ?> </div>
-<div id="divVotiFinale"> <?php include('pagina_voti_finali.php'); ?> </div>
+<!--<div id="divVotiFinale"> <?php// include('pagina_voti_finali.php'); ?> </div>-->
 
 
 
