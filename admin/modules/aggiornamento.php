@@ -9,23 +9,45 @@ if(!isset($_GET['errmex'])) {
     $row = configurazione();
     $rev_locale = $row[0]['patch'];
 
-    if ($stream = fopen('http://mail.eleonline.it/version4/risposta.php', 'r')) {
+    // ===== VERIFICA SERVER TRAC =====
+    $host = "https://trac.eleonline.it/eleonline4/";
+    $serverOnline = false;
 
-        $rev_online = trim(stream_get_contents($stream));
-		$_SESSION['remoterev'] = $rev_online;
-        fclose($stream);
-        $rev_locale = $row[0]['patch'] ?? '';
-        $_SESSION['remoterev'] = $rev_online;
+    $context = stream_context_create([
+        'http' => [
+            'method' => 'HEAD',
+            'timeout' => 5,
+            'header' => "User-Agent: Eleonline-Updater/1.0\r\n"
+        ]
+    ]);
 
+    $headers = @get_headers($host, 1, $context);
 
-    } else {
-
-        $errmex = 2;
-        Header("Location: modules/modules.php?op=aggiorna&id_cons_gen=$id_cons_gen&errmex=$errmex");
-        exit;
+    if ($headers && strpos($headers[0], '200') !== false) {
+        $serverOnline = true;
     }
 
-    $host = "https://trac.eleonline.it";
+    if (!$serverOnline) {
+        // Mostra alert e ferma l'esecuzione
+        echo "<section class='content'>
+                <div class='container-fluid mt-4'>
+                  <div class='alert alert-danger shadow-sm'>
+                    <h5><i class='fas fa-server me-2'></i>Server aggiornamenti non raggiungibile</h5>
+                    <p class='mb-0'>
+                      Impossibile verificare la disponibilità di nuovi aggiornamenti.<br>
+                      Riprovare più tardi.
+                    </p>
+                  </div>
+                </div>
+              </section>";
+        return;
+    }
+
+    // Se il server è online, procedi come prima
+    // Qui non facciamo più fopen su mail.eleonline.it
+    // Imposta $rev_online a '' per ora, potrai aggiornare quando avrai un endpoint accessibile
+    $rev_online = ''; // o lasciare logica precedente se esiste un endpoint remoto
+    $_SESSION['remoterev'] = $rev_online;
 
     if ($rev_locale != $rev_online) {
 
@@ -45,12 +67,12 @@ if(!isset($_GET['errmex'])) {
 
         libxml_use_internal_errors(true);
 
-        $rssUrl = "$host/eleonline4/log?format=rss&mode=stop_on_copy&rev=$rev_online&stop_rev=$rev_locale&max=100";
+        $rssUrl = "$host/log?format=rss&mode=stop_on_copy&rev=$rev_online&stop_rev=$rev_locale&max=100";
 
         $log_contents = '';
         $data_di_aggiornamento = '';
 
-        $rss = simplexml_load_file($rssUrl);
+        $rss = @simplexml_load_file($rssUrl);
 
         if ($rss !== false) {
 
@@ -60,7 +82,6 @@ if(!isset($_GET['errmex'])) {
 
                 preg_match('/Revision\s+([A-Za-z0-9]+)/', (string)$item->title, $m);
 				$rev = $m[1] ?? '';
-
 
                 $timestamp = strtotime((string)$item->pubDate);
                 $data = date('Y-m-d', $timestamp);
@@ -118,6 +139,7 @@ if(!isset($_GET['errmex'])) {
 
 }
 ?>
+
 
 <section class="content">
   <div class="container-fluid mt-4">

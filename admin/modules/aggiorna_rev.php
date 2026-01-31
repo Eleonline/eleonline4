@@ -156,45 +156,60 @@ if ($zipbak->open($filename, ZipArchive::CREATE)!==TRUE) {
 }
 
 $index=$zip->locateName('aggiorna_rev.php');
-//die("TEST: $index : $aggiornaDb :");
-for ($i = 0; $i < $zip->numFiles; $i++) {
-	if($i==$index) continue;
-    $entryName = $zip->getNameIndex($i); 
-        $relativePath = $entryName; #substr($entryName, strlen('trunk/'));
-		if(is_file("../$relativePath")) $zipbak->addFile("../$relativePath","admin/$relativePath");
-		if(is_file("../$relativePath")) $zipbak->addFile("../$relativePath","client/$relativePath");
-				send_output("Elaboro ../$relativePath", 'ok');
+#die("TEST: $index : $aggiornaDb :");
+#decommentare se funziona tutto
+// for ($i = 0; $i < $zip->numFiles; $i++) {
+	// if($i==$index) continue;
+    // $entryName = $zip->getNameIndex($i); 
+        // $relativePath = $entryName; #substr($entryName, strlen('trunk/'));
+		// if(is_file("../$relativePath")) $zipbak->addFile("../$relativePath","admin/$relativePath");
+		// if(is_file("../$relativePath")) $zipbak->addFile("../$relativePath","client/$relativePath");
+				// send_output("Elaboro ../$relativePath", 'ok');
 
-        if (substr($relativePath, -1) === '/') {
-            @mkdir($extractPath . $relativePath, 0777, true);
-			send_output("Creata la dir $relativePath", 'ok');
-			if(is_dir("$relativePath") and !is_dir("../$relativePath")) {
-				mkdir("../$relativePath", 0777, true);
-			}
-        } else {
-            $dir = dirname($extractPath . $relativePath);
-            if (!is_dir($dir)) {
-                mkdir($dir, 0777, true);
-            }
-            $contents = $zip->getFromIndex($i);
-            if ($contents === false) {
-                send_output("Errore: impossibile leggere $entryName nello zip.", 'error');
-                $zip->close();
-                exit;
-            }
-			$artemp = explode( '/', $entryName );
-			array_pop( $artemp );
-			$newdir = implode( '/', $artemp );
-			if( !is_dir( $newdir ) )
-				mkdir( "../".$newdir, 0777, true );
+        // if (substr($relativePath, -1) === '/') {
+            // @mkdir($extractPath . $relativePath, 0777, true);
+			// send_output("Creata la dir $relativePath", 'ok');
+			// if(is_dir("$relativePath") and !is_dir("../$relativePath")) {
+				// mkdir("../$relativePath", 0777, true);
+			// }
+        // } else {
+            // $dir = dirname($extractPath . $relativePath);
+            // if (!is_dir($dir)) {
+                // mkdir($dir, 0777, true);
+            // }
+            // $contents = $zip->getFromIndex($i);
+            // if ($contents === false) {
+                // send_output("Errore: impossibile leggere $entryName nello zip.", 'error');
+                // $zip->close();
+                // exit;
+            // }
+			// $artemp = explode( '/', $entryName );
+			// array_pop( $artemp );
+			// $newdir = implode( '/', $artemp );
+			// if( !is_dir( $newdir ) )
+				// mkdir( "../".$newdir, 0777, true );
 			
-#            file_put_contents('../'.$extractPath . $relativePath, $contents);
-            file_put_contents("../$entryName", $contents);
+// #            file_put_contents('../'.$extractPath . $relativePath, $contents);
+            // file_put_contents("../$entryName", $contents);
 
-//			copy("$extractPath$entryName","../$entryName");
-       }
-//    }
+// #			copy("$extractPath$entryName","../$entryName");
+       // }
+// #    }
+// }
+
+# demo sovrascrive tutti i file
+for ($i = 0; $i < $zip->numFiles; $i++) {
+
+    if($i == $index) continue;
+
+    $entryName = $zip->getNameIndex($i);
+
+    // SOLO LOG — NESSUNA SCRITTURA SU DISCO
+    send_output("TEST MODE: file pronto -> $entryName", 'ok');
+
 }
+
+
 $zip->close();
 $zipbak->close();
 send_output("Estrazione file...", 'ok');
