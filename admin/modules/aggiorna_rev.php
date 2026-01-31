@@ -80,7 +80,7 @@ if (!is_dir($backupPath) && !mkdir($backupPath, 0777, true)) {
     exit;
 }
 
-$url = "https://trac.eleonline.it/eleonline4/changeset?format=zip&new=$rev_online&new_path=%2F&old=$rev_locale&old_path=%2F";
+$url = "http://mail.eleonline.it/version4/scaricarev.php?new=$rev_online&old=$rev_locale";
 
 send_output("Scaricamento da: $url");
 
