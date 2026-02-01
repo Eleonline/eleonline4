@@ -91,6 +91,7 @@ $tot_voti_lista+=$val['voti'];} */
 <section class="content" id="sezioneContent">
 <div id="divBarraSezioni"> <?php include_once("barra_sezioni.php"); ?> </div>
 </section>
+<div id="divboxerrore"> <?php include_once("box_errore_spoglio.php"); ?> </div>
 <div id="divPaginaListe"> <?php include('pagina_voti_lista.php'); ?> </div>
 <div id="divVotiFinale"> <?php include('pagina_voti_finali.php'); ?> </div>
 
