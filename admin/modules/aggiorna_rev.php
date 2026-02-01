@@ -1,38 +1,69 @@
 <?php
+// error_reporting(0);
+// ini_set('display_errors', 0);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 set_time_limit(0);
 while (ob_get_level()) ob_end_clean();
 
 header('Content-Type: text/plain; charset=utf-8');
 header('Cache-Control: no-cache');
+header("Content-Encoding: none");
 header('X-Accel-Buffering: no'); // per nginx disabling buffer
 
+echo str_repeat(" ", 8192);
+flush();
+
 function send_output($msg, $status = 'progress') {
-    if ($status === 'ok') {
-        echo "__OK__" . $msg . "\n";
-    } elseif ($status === 'error') {
-        echo "__ERROR__" . $msg . "\n";
-    } elseif ($status === 'question') {
-        echo "__QUESTION__" . $msg . "\n";
-    } else {
-        echo "__STEP__" . $msg . "\n";
-    }
-    @ob_flush();
-    @flush();
+    if ($status === 'ok') echo "__OK__" . $msg . "\n";
+    elseif ($status === 'error') echo "__ERROR__" . $msg . "\n";
+    elseif ($status === 'question') echo "__QUESTION__" . $msg . "\n";
+    else echo "__STEP__" . $msg . "\n";
+
+    if (ob_get_level()) ob_flush();
+    flush();
 }
+
+
+set_exception_handler(function($e) {
+    send_output("ERRORE CRITICO: " . $e->getMessage(), 'error');
+    echo "__FINISH__AGGIORNAMENTO FALLITO\n";
+    exit;
+});
+
+set_error_handler(function($errno, $errstr, $errfile, $errline) {
+
+    // Ignora NOTICE e WARNING minori
+    if ($errno === E_NOTICE || $errno === E_WARNING) {
+        return true;
+    }
+
+    send_output("ERRORE PHP: $errstr in $errfile:$errline", 'error');
+    echo "__FINISH__AGGIORNAMENTO FALLITO\n";
+    exit;
+});
+
+
 
 // Leggi parametri POST con fallback a 0
 $data_rev = isset($_POST['data_rev']) ? $_POST['data_rev'] : '';
 $row=configurazione();
 $rev_locale=$row[0]['patch'];
 //$rev_locale = isset($_POST['rev_locale']) ? (int)$_POST['rev_locale'] : 0; # caricare da db
-if ($stream = fopen('http://mail.eleonline.it/version4/risposta.php', 'r')) {
+$ctx = stream_context_create(['http' => ['timeout' => 5]]);
+$stream = @fopen('http://mail.eleonline.it/version4/risposta.php', 'r', false, $ctx);
+
+if ($stream) {
+
 	$rev= stream_get_contents($stream, 7);
 	fclose($stream);							
 	$rev_online=substr($rev,0,7);
 	$_SESSION['remoterev']=$rev_online;         
 }else{
-	$errmex=2;
-	Header("Location: admin.php?op=aggiorna&id_cons_gen=$id_cons_gen&errmex=$errmex"); exit;
+    send_output("Errore: risposta versione non disponibile dal server.", 'error');
+    echo "__FINISH__AGGIORNAMENTO FALLITO\n";
+    exit;
 }
 
 $backup_sql_confermato = isset($_POST['backup_sql']) ? (int)$_POST['backup_sql'] : -1;
@@ -56,7 +87,8 @@ $steps = [
 
 // Step 1: Connessione reale al server di aggiornamento
 send_output("Connessione al server di aggiornamento...");
-$testUrl = "https://trac.eleonline.it/eleonline4/";
+//$testUrl = "https://trac.eleonline.it/eleonline4/";
+$testUrl = "http://mail.eleonline.it/version4/";
 
 $ctx = stream_context_create(['http' => ['timeout' => 5]]);
 $fp = @fopen($testUrl, 'r', false, $ctx);
@@ -219,7 +251,18 @@ send_output("Backup dei files da aggiornare...", 'ok');
 // Step 6: Verifica backup database
 send_output("Verifica backup database...");
 //if($aggiornaDb)
-	include("includes/backupDb.php");
+	if(false){
+    try {
+        include("includes/backupDb.php");
+    } catch (Throwable $e) {
+        send_output("Backup DB fallito: ".$e->getMessage(), 'error');
+		flush();
+        echo "__FINISH__AGGIORNAMENTO FALLITO\n";
+        exit;
+    }
+}
+
+
 // Backup database: logica eventualmente da scommentare
 /*
 if ($backup_sql_confermato != 1) {
@@ -250,7 +293,13 @@ if (file_exists($aggiornaDbFile)) {
     send_output("Trovato script di aggiornamento database: aggiornadb.php. Esecuzione in corso...");
     while (ob_get_level()) ob_end_flush(); // svuota eventuali buffer precedenti
 ob_implicit_flush(true);
-	include $aggiornaDbFile;
+try {
+    include $aggiornaDbFile;
+	} catch (Throwable $e) {
+		send_output("Aggiornamento DB fallito: ".$e->getMessage(), 'error');
+		echo "__FINISH__AGGIORNAMENTO FALLITO\n";
+		exit;
+	}
     send_output("Esecuzione aggiornadb.php completata.", 'ok');
 } else {
     send_output("Nessuno script di aggiornamento database trovato in admin/modules/aggiornadb.php. Saltando aggiornamento database...", 'progress');
@@ -260,12 +309,26 @@ send_output("Aggiornamento database...", 'ok');
 
 // Step 8: Pulizia file temporanei
 send_output("Archiviazione file temporanei...");
-if(rename($tmpDir,$tmpDir."Da_".$rev_locale."_a_".$rev_online))
-	send_output("Pulizia file temporanei...", 'ok');
+$newTmp = $tmpDir."Da_".$rev_locale."_a_".$rev_online;
+
+if (!rename($tmpDir, $newTmp)) {
+    send_output("Errore: impossibile rinominare cartella temporanea", 'error');
+    echo "__FINISH__AGGIORNAMENTO FALLITO\n";
+    exit;
+}
+
+send_output("Pulizia file temporanei...", 'ok');
+
 
 // Step 9: Aggiorna Versione
 send_output("Aggiorna Versione...");  // Step 1: messaggio iniziale
 $sql="update ".$prefix."_config set patch=:patch";
+if (!$dbi) {
+    send_output("Errore DB: connessione non inizializzata", 'error');
+    echo "__FINISH__AGGIORNAMENTO FALLITO\n";
+    exit;
+}
+
 	$res = $dbi->prepare("$sql");
 	try {
 		$res->bindParam(':patch', $rev_online,  PDO::PARAM_STR);
@@ -275,7 +338,6 @@ $sql="update ".$prefix."_config set patch=:patch";
 		echo $e->getMessage();
 	}
 send_output("Aggiorna Versione...", 'ok');
-send_output("Aggiornamento completato con successo.", 'ok');
 echo "__FINISH__Aggiornamento completato con successo.\n";
 exit;
 ?>

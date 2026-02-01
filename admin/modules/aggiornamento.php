@@ -1,4 +1,13 @@
 <?php 
+@apache_setenv('no-gzip', 1);
+@ini_set('zlib.output_compression', 0);
+@ini_set('implicit_flush', 1);
+while (ob_get_level() > 0) ob_end_flush();
+ob_implicit_flush(1);
+
+echo str_repeat(" ", 2048);
+flush();
+
 if(is_file('includes/check_access.php'))
 	require_once 'includes/check_access.php';
 else
@@ -9,9 +18,10 @@ if(!isset($_GET['errmex'])) {
     $row = configurazione();
     $rev_locale = $row[0]['patch'];
 
-    // ===== VERIFICA SERVER TRAC =====
-    $host = "https://trac.eleonline.it/eleonline4/";
-    $serverOnline = false;
+    # ===== VERIFICA SERVER TRAC =====
+    //$host = "https://trac.eleonline.it/eleonline4/";
+    $host = "http://mail.eleonline.it/version4/";
+	$serverOnline = false;
 
     $context = stream_context_create([
         'http' => [
@@ -22,8 +32,8 @@ if(!isset($_GET['errmex'])) {
     ]);
 
     $headers = @get_headers($host, 1, $context);
-
-    if ($headers && strpos($headers[0], '200') !== false) {
+	
+	if ($headers && preg_match('/200|301|302/', $headers[0])) {
         $serverOnline = true;
     }
 
@@ -46,7 +56,7 @@ if(!isset($_GET['errmex'])) {
     // Se il server è online, procedi come prima
     // Qui non facciamo più fopen su mail.eleonline.it
     // Imposta $rev_online a '' per ora, potrai aggiornare quando avrai un endpoint accessibile
-    $rev_online = ''; // o lasciare logica precedente se esiste un endpoint remoto
+    $rev_online = 'fc2904c'; // o lasciare logica precedente se esiste un endpoint remoto
     $_SESSION['remoterev'] = $rev_online;
 
     if ($rev_locale != $rev_online) {
@@ -264,15 +274,19 @@ $(document).ready(function(){
               steps[key] = 'ok';
               renderSteps();
             } else if (line.startsWith("__FINISH__")) {
-              let msg = line.replace("__FINISH__", "");
-              $('#titoloAggiornamento').html('<i class="fas fa-check-circle me-2"></i>Aggiornamento completato');
-              $('#logAggiornamento').append('<div style="color:green; margin-top:10px;">' + msg + '</div>');
-              $('#btnAggiorna').prop('disabled', false);
-            } else {
-              // aggiungi testo log normale
-              $('#logAggiornamento').append('<div>' + $('<div>').text(line).html() + '</div>');
-              $('#logAggiornamento').scrollTop($('#logAggiornamento')[0].scrollHeight);
-            }
+
+  let msg = line.replace("__FINISH__", "");
+
+  if (msg.includes("FALLITO")) {
+    $('#titoloAggiornamento').html('<i class="fas fa-times-circle text-danger me-2"></i>Aggiornamento NON riuscito');
+  } else {
+    $('#titoloAggiornamento').html('<i class="fas fa-check-circle me-2"></i>Aggiornamento completato');
+  }
+
+  $('#logAggiornamento').append('<div style="margin-top:10px;">' + msg + '</div>');
+  $('#btnAggiorna').prop('disabled', false);
+}
+
           });
         }
       },

@@ -35,6 +35,8 @@ if (!$dbi) {
 // =======================================
 header('Content-Type: text/plain; charset=utf-8');
 header('Cache-Control: no-cache');
+header("Content-Encoding: none");
+
 
 // Kick iniziale per flush immediato browser
 echo str_repeat(' ', 2048);

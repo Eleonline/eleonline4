@@ -137,3 +137,6 @@ Si devono fare tutti i controlli:
 - Setup Configurazioni: Se sono presenti dati di spoglio caricati, non è consentita l’eliminazione delle configurazioni.
 Fa eccezione la “Configurazione Consultazione”, che può essere eliminata anche in presenza di dati.
 - Gestione Liste e candidati o referndum : Se sono presenti dati di spoglio caricati, non è consentita l’eliminazione delle gestioni.
+
+mettere funzione converti_colore_to_4() su aggiorndadbto4.php
+creata box_errore_spoglio.php popolare gli errori
