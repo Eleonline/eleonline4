@@ -7,7 +7,9 @@ if(is_file('../includes/check_access.php'))
 	require_once 'includes/check_access.php';
 //	require_once 'includes/lang-it.php';
 //	require_once 'includes/query.php';
-} 
+}
+//require_once 'ele_colora_sez.php'; 
+//converti_colore_to_4();
 global $id_cons_gen,$id_cons,$id_sez,$num_sez,$tipo;
 $param=strtolower($_SERVER['REQUEST_METHOD']) == 'get' ? $_GET : $_POST;
 #if (isset($param['id_gruppo'])) {$id_gruppo=intval($param['id_gruppo']);}

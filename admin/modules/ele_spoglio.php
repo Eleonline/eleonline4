@@ -322,7 +322,7 @@ $result->execute();
 				if($votisezcand>($votisezlis*$numprefs))
 					{$segna="style=\"background-color: #dd0000;\""; }#$segna2=$segna;
 				elseif($ctrvoticand)
-					$segna="style=\"background-color: #99CC33;\"";
+					$segna="style=\"background-color: #28a745;\"";
 				$sql="SELECT t1.voti,t2.num_cand FROM ".$prefix."_ele_voti_candidati as t1 left join ".$prefix."_ele_candidati as t2 on t1.id_cand=t2.id_cand where t1.id_cons='$id_cons' and  t1.id_sez='$id_sez' and t2.id_lista='$id_rif'";
 				$res4 = $dbi->prepare("$sql");
 				$res4->execute();
@@ -582,7 +582,7 @@ $result->execute();
 				$rese = $dbi->prepare("$sql");
 				$rese->execute();
 				list($maxvotic,$sumvotic,$numrec)=$rese->fetch(PDO::FETCH_NUM);#die("TEST: $numrec");
-				if($numrec>0 or ($votoc and $scruliste)) {$sezscru=1; $statuscol="#99CC33;";} else $statuscol='';
+				if($numrec>0 or ($votoc and $scruliste)) {$sezscru=1; $statuscol="#28a745;";} else $statuscol='';
 				if($maxvotic>$voti or $sumvotic>$voti*$numprefs) $statuscol='#dd0000;'; #$segna="style=\"background-color: #dd0000;\"";
 				$sql="select * from ".$prefix."_ele_controlli where tipo='lista' and id_sez='$id_sez' and id='$id_lista3'";
 				$rese = $dbi->prepare("$sql");
@@ -597,7 +597,7 @@ $result->execute();
 				if(isset($errgrulis[$rifgruppo])) {
 					$errcolor="style=\"background-color: rgb(255, 0, 0);\""; 
 					$bordcolor="border-color:red;";
-				}elseif(!$errcolor && $numrec) $errcolor="style=\"background-color: #99CC33;\"";
+				}elseif(!$errcolor && $numrec) $errcolor="style=\"background-color: #28a745;\"";
 				if($genere>=4 and !$votoc) $stilcur="style=\"cursor: pointer;\""; else $stilcur='';
 				echo "<td align=\"center\" $errcolor><b> $num_lista </b></td>"
 				."<td align=\"left\" $stilcur onClick=\"vai_lista('id_rif$i');\"><b>$descr_lista</b></td>";
@@ -995,7 +995,7 @@ $result->execute();
 					if ($numpro and ($pro['si']+$pro['no']!=$pro['validi'] or ($pro['validi']+$pro['nulli']+$pro['bianchi']+$pro['contestati']!=$tot and $pro['validi']+$pro['nulli']+$pro['bianchi']+$pro['contestati']!=0))){
 						echo "<tr style=\"background-color: rgb(255, 0, 0); text-align:center\">";
 					}elseif($numpro and ($pro['validi']+$pro['nulli']+$pro['bianchi']+$pro['contestati']!=0))
-						echo "<tr style=\"background-color:#99CC33; text-align:center\">"; 
+						echo "<tr style=\"background-color:#28a745; text-align:center\">"; 
 					else 
 						echo "<tr style=\"background-color:$bgcolor2; text-align:center\">";
 #					$descr = explode('.',$descr_gruppo, 100);
