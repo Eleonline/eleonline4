@@ -138,6 +138,7 @@ function colora_sezione() {
 ?>
 
 <?php
+<?php
 function converti_colore_to_4() {
     if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
         header("Location: ../index.php");
@@ -167,13 +168,17 @@ function converti_colore_to_4() {
     ];
 
     foreach ($sezioni as $sez) {
+        // Se colore è NULL o vuoto, impostiamo il colore iniziale blu
         $colore_old = strtolower(trim($sez['colore'] ?? ''));
+        if ($colore_old === '') {
+            $colore_old = '#007bff'; // default: stato iniziale
+        }
 
         // Se il colore esiste nella mappa, converte
         $colore_new = $mappa_colori[$colore_old] ?? $colore_old;
 
         // Aggiorna il colore nel DB solo se è cambiato
-        if ($colore_new !== $colore_old) {
+        if ($colore_new !== $sez['colore']) {
             $sql_update = "UPDATE ".$prefix."_ele_sezione 
                            SET colore=:colore 
                            WHERE id_cons=:id_cons AND id_sez=:id_sez";
@@ -189,3 +194,4 @@ function converti_colore_to_4() {
     echo "Conversione colori completata secondo la mappa finale!";
 }
 ?>
+
