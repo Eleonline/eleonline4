@@ -96,21 +96,25 @@ $filebk.=scarica_array($sql,$prefix."_ele_voti_parziale");
 $sql="select * from ".$prefix."_ele_voti_ref " ;
 $filebk.=scarica_array($sql,$prefix."_ele_voti_ref");
 
-$sql="select * from ".$prefix."_ubicazione " ;
-$filebk.=scarica_array($sql,$prefix."_ubicazione");
+        $sql="SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$dbname' AND TABLE_NAME = '".$prefix."_ubicazione'";
+        $res = $dbi->prepare("$sql");
+        $res->execute();
+        if($res->rowCount()) {
+			$sql="select * from ".$prefix."_ubicazione " ;
+			$filebk.=scarica_array($sql,$prefix."_ubicazione");
 
-$sql="select * from ".$prefix."_ws_comunicazione " ;
-$filebk.=scarica_array($sql,$prefix."_ws_comunicazione");
+			$sql="select * from ".$prefix."_ws_comunicazione " ;
+			$filebk.=scarica_array($sql,$prefix."_ws_comunicazione");
 
-$sql="select * from ".$prefix."_ws_funzione " ;
-$filebk.=scarica_array($sql,$prefix."_ws_funzione");
+			$sql="select * from ".$prefix."_ws_funzione " ;
+			$filebk.=scarica_array($sql,$prefix."_ws_funzione");
 
-$sql="select * from ".$prefix."_ws_sezione " ;
-$filebk.=scarica_array($sql,$prefix."_ws_sezione");
+			$sql="select * from ".$prefix."_ws_sezione " ;
+			$filebk.=scarica_array($sql,$prefix."_ws_sezione");
 
-$sql="select * from ".$prefix."_ws_tipo " ;
-$filebk.=scarica_array($sql,$prefix."_ws_tipo");
-
+			$sql="select * from ".$prefix."_ws_tipo " ;
+			$filebk.=scarica_array($sql,$prefix."_ws_tipo");
+		}
 #salva la variabile su file zip
 #$zip = new ZipArchive();
 if(!is_dir("documenti/backup"))

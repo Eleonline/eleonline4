@@ -2,8 +2,8 @@
 @apache_setenv('no-gzip', 1);
 @ini_set('zlib.output_compression', 0);
 @ini_set('implicit_flush', 1);
-while (ob_get_level() > 0) ob_end_flush();
-ob_implicit_flush(1);
+#while (ob_get_level() > 0) ob_end_flush();
+#ob_implicit_flush(1);
 
 echo str_repeat(" ", 2048);
 flush();
@@ -20,7 +20,7 @@ if(!isset($_GET['errmex'])) {
 
     # ===== VERIFICA SERVER TRAC =====
     //$host = "https://trac.eleonline.it/eleonline4/";
-    $host = "http://mail.eleonline.it/version4/";
+    $host = "https://www.eleonline.it/rev/version4/";
 	$serverOnline = false;
 
     $context = stream_context_create([
@@ -56,8 +56,25 @@ if(!isset($_GET['errmex'])) {
     // Se il server è online, procedi come prima
     // Qui non facciamo più fopen su mail.eleonline.it
     // Imposta $rev_online a '' per ora, potrai aggiornare quando avrai un endpoint accessibile
-    $rev_online = 'fc2904c'; // o lasciare logica precedente se esiste un endpoint remoto
-    $_SESSION['remoterev'] = $rev_online;
+#####
+$ctx = stream_context_create(['http' => ['timeout' => 5]]);
+$stream = @fopen('https://www.eleonline.it/rev/version4/risposta.php', 'r', false, $ctx);
+
+if ($stream) {
+
+	$rev= stream_get_contents($stream, 7);
+	fclose($stream);							
+	$rev_online=substr($rev,0,7);
+	$_SESSION['remoterev']=$rev_online;         
+}else{
+    send_output("Errore: risposta versione non disponibile dal server.", 'error');
+    echo "__FINISH__AGGIORNAMENTO FALLITO\n";
+    exit;
+}
+
+#####
+#    $rev_online = 'fc2904c'; // o lasciare logica precedente se esiste un endpoint remoto
+#    $_SESSION['remoterev'] = $rev_online;
 
     if ($rev_locale != $rev_online) {
 
@@ -77,7 +94,7 @@ if(!isset($_GET['errmex'])) {
 
         libxml_use_internal_errors(true);
 
-        $rssUrl = "$host/log?format=rss&mode=stop_on_copy&rev=$rev_online&stop_rev=$rev_locale&max=100";
+       $rssUrl = "https://www.eleonline.it/rev/version4/scaricalog.php?new=$rev_online&old=$rev_locale";
 
         $log_contents = '';
         $data_di_aggiornamento = '';
