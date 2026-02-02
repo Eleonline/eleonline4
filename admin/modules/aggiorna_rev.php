@@ -270,7 +270,7 @@ function recurse_copy($src,$dst,$bck) {
 #		send_output("Elaboro: $file");
         if (( $file != '.' ) && ( $file != '..' )) {
             if ( is_dir($src . '/' . $file) ) {
-			send_output("Apro: $src . '/' . $file");
+//			send_output("Apro: $src . '/' . $file");
                 recurse_copy($src . '/' . $file,$dst . '/' . $file,$bck . '/' . $file);
             }
             else {
@@ -286,7 +286,7 @@ function recurse_copy($src,$dst,$bck) {
             }
         }
     }
-	send_output("Chiudo: $src");
+//	send_output("Chiudo: $src");
     closedir($dir);
 }
 
