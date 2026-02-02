@@ -4,6 +4,7 @@ if(is_file('includes/check_access.php'))
 else
 	require_once '../includes/check_access.php';
 global $prefix,$dbi,$id_comune;
+if(!$id_comune and isset($_SESSION['id_comune'])) $id_comune=$_SESSION['id_comune']; 
 $filebk='';
 
 $sql="select * from ".$prefix."_access " ;
@@ -117,9 +118,9 @@ $filebk.=scarica_array($sql,$prefix."_ele_voti_ref");
 		}
 #salva la variabile su file zip
 #$zip = new ZipArchive();
-if(!is_dir("documenti/backup"))
-	mkdir("documenti/backup", 0777, true);
-$filename = "documenti/backup/eleonlineDb_$id_comune_.txt";
+if(!is_dir(dirname(__DIR__)."documenti/backup"))
+	mkdir(dirname(__DIR__)."documenti/backup", 0777, true);
+$filename = dirname(__DIR__)."documenti/backup/eleonlineDb_".$id_comune."_.txt";
 #if ($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
 #    exit("Non è possibile aprire il file <$filename>\n");
 	

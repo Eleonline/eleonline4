@@ -184,9 +184,9 @@ if(file_exists("$extractPath/admin/modules/aggiornadb.php")) {
 send_output("Backup dei files da aggiornare...", 'ok');
 
 // Step 6: Verifica backup database
-send_output("Verifica backup database...");
+send_output("Verifica backup database: $aggiornaDb...");
 
-if($aggiornaDb) {
+if($aggiornaDbFile) {
 //	if(false){
     try {
         include(dirname(__DIR__) ."/includes/backupDb.php");
