@@ -4,7 +4,6 @@ file header mettere il nome del comune riga 17.
 Dashboard:
 - creare le card.
 - ordinamento delle card e Mostra / Nascondi schede sul database associato all'utente.
-- correggere il bottone in alto a destra (posizione).
 
 Sistema:
 - Stato Sistema: ok
@@ -15,7 +14,7 @@ Impostazione e dati generali:
 - configurazione sito: ok
 - tema colore: ok
 - Anagrafica enti/comuni: ok
-- Aggiornamento REV : da verificare.
+- Aggiornamento REV : ok.
 - Aggiornamento Data base : creata la pagina verificare. 
 
 Utenti e permessi:
@@ -131,12 +130,11 @@ menù.php (menù top):
 Client: 
 - Adatttare con db nuovo.
 - Eliminare tutti gli altri temi e lasciare solo bootstrap.
-- Per il Referendum utilizzare la configurazione "/pagine/config_colori_quesiti.php"
 
 Si devono fare tutti i controlli:
 - Setup Configurazioni: Se sono presenti dati di spoglio caricati, non è consentita l’eliminazione delle configurazioni.
 Fa eccezione la “Configurazione Consultazione”, che può essere eliminata anche in presenza di dati.
-- Gestione Liste e candidati o referndum : Se sono presenti dati di spoglio caricati, non è consentita l’eliminazione delle gestioni.
+- Gestione Liste e candidati o referendum : Se sono presenti dati di spoglio caricati, non è consentita l’eliminazione delle gestioni.
 
 mettere funzione converti_colore_to_4() su aggiorndadbto4.php
 creata box_errore_spoglio.php popolare gli errori
