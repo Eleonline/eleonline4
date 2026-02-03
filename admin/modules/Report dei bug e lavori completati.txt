@@ -1,10 +1,17 @@
-Admin:
-file header mettere il nome del comune riga 17.
-
-Il logo dell'eleonline non si vede forse non è linkato giusto.
+Gestione operatore e responsabile
 
 Dashboard:
-- creare le card.
+- card:
+. propolare:
+	scheda_scrutinate.php
+	scheda_ruolo.php
+	scheda_affluenza_rilevata.php
+	scheda_comune.php
+	scheda_dato_aggiornato.php
+	scheda_gruppi.php
+	scheda_liste.php
+	scheda_referendum.php
+	
 - ordinamento delle card e Mostra / Nascondi schede sul database associato all'utente.
 
 Sistema:
@@ -52,7 +59,7 @@ Comunali:
 - Lista: manca nel form link trasparenza.
          Fare il controllo se è stato messo il link trasparenza al candidato sindaco e oscurare nel form link trasparenza
 - Candidati: verificare anteprima pdf. 
-Fare il controllo se è stato messo il link trasparenza delle liste o  al candidato al sindaco e oscrurare nel form curriculum e Certificato Penale.
+             Fare il controllo se è stato messo il link trasparenza delle liste o  al candidato al sindaco e oscrurare nel form curriculum e Certificato Penale.
 
 Ballottaggio: e tutto da fare
 - Candidato Sindaco: da fare

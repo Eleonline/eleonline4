@@ -233,7 +233,7 @@ $cards = [
 
 ] : []),
 
-
+/*
   'box-demo' => [
     'file'=>'cards/box_demo.php',
     'col'=>'col-lg-3 col-6',
@@ -253,7 +253,7 @@ $cards = [
     'roles'=>['superuser','admin','operatore'],
     'defaultVisible'=>false
   ],
-
+*/
 ];
 
 ?>
