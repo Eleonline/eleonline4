@@ -1,6 +1,8 @@
 Admin:
 file header mettere il nome del comune riga 17.
 
+Il logo dell'eleonline non si vede forse non è linkato giusto.
+
 Dashboard:
 - creare le card.
 - ordinamento delle card e Mostra / Nascondi schede sul database associato all'utente.
@@ -46,10 +48,10 @@ Senato:
 	- Listino Bloccato: ok
  
 Comunali:
-- Candidato Sindaco: verificare anteprima immagini. Non trova la posizione libera. manca nel form link trasparenza.
-- Lista: verificare anteprima immagini. Non trova la posizione libera. manca nel form link trasparenza.
-Fare il controllo se è stato messo il link trasparenza al candidato sindaco e oscurare nel form link trasparenza
-- Candidati: verificare anteprima immagini e pdf. non trova la posizione libera. 
+- Candidato Sindaco: manca nel form link trasparenza.
+- Lista: manca nel form link trasparenza.
+         Fare il controllo se è stato messo il link trasparenza al candidato sindaco e oscurare nel form link trasparenza
+- Candidati: verificare anteprima pdf. 
 Fare il controllo se è stato messo il link trasparenza delle liste o  al candidato al sindaco e oscrurare nel form curriculum e Certificato Penale.
 
 Ballottaggio: e tutto da fare
@@ -74,32 +76,31 @@ Carica informazioni:
 
 Rilevazione di voto: 
 
+creato il box erorre controlli.
+fare il focus e colorare di rosso sull'errore
+
 Comunali:
-- Affluenza: 
-	errori:
-	nel titolo mettere il tipo di spoglio : affluenze, voti di lista, ecc..
-	quando cambio sezione non carica le affluenze della sezione.
-	nella pagina affluenza nascondere Votanti Ultima Ora e totali.
+- Affluenza: da verificare
 - Candidato Sindaco: da fare
 - Lista: da verificare
 - Preferenze: da fare
 
 Camera e Senato:
 - Affluenza: da verificare 
-- Candidato Uninominale: da fare
+- Candidato Uninominale: da verificare
 - Lista collegata: da verificare
 - Listino bloccato: da verificare
 
 Europei:
 - Affluenza: da verificare
 - Lista: da verificare
-- Preferenze: da fare
+- Preferenze: da verificare
 
 Regionali:
 - Affluenza: da verificare
-- Candidato Presidente: da fare
+- Candidato Presidente: da verificare
 - Lista: da verificare
-- Preferenze: da fare
+- Preferenze: da verificare
 
 Referendum:
 - Affluenza: da verificare

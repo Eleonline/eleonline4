@@ -67,6 +67,7 @@ if(count($row))
 	elseif($tipo==4) echo "Voti di Preferenza";
 ?>	
  - Sezione n. <?php echo $sezione_attiva; ?></h3>
+<!-- non serve
 <div class="mb-2 d-flex flex-wrap gap-1">
   <button class="btn" style="font-size: 0.65rem; padding: 0.1rem 0.25rem; color: #007bff; border: 1.5px solid #007bff; background-color: #fff;">Tutto Da Completare</button>
   <button class="btn" style="font-size: 0.65rem; padding: 0.1rem 0.25rem; color: #007bff; border: 1.5px solid #dc3545; background-color: #fff;">Errore</button>
@@ -74,7 +75,7 @@ if(count($row))
   <button class="btn" style="font-size: 0.65rem; padding: 0.1rem 0.25rem; color: #007bff; border: 1.5px solid #fd7e14; background-color: #fff;">Da Verificare</button>
   <button class="btn" style="font-size: 0.65rem; padding: 0.1rem 0.25rem; color: #007bff; border: 1.5px solid #6f42c1; background-color: #fff;">Opzionale</button>
   <button class="btn" style="font-size: 0.65rem; padding: 0.1rem 0.25rem; color: #007bff; border: 1.5px solid #28a745; background-color: #fff;">Tutto Completato</button>
-</div>
+</div> -->
 
 <!-- Navigazione Sezioni -->
 <div class="mb-3">

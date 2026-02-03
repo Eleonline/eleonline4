@@ -243,14 +243,17 @@ if(simboloInput){
 // ===========================
 function aggiungiGruppo(e) {
     e.preventDefault();
-const numero = document.getElementById("numero").value;
 
-// CONTROLLO POSIZIONE GIÀ USATA
-if (posizioneUsata(numero)) {
-    alert("ATTENZIONE: la posizione " + numero + " è già assegnato!");
+const numero = document.getElementById("numero").value;
+const idEditing = document.getElementById("id_gruppo").value;
+
+if (posizioneUsata(numero, idEditing)) {
+    alert("ATTENZIONE: la posizione " + numero + " è già assegnata!");
     document.getElementById("numero").focus();
-    return; // BLOCCA IL SALVATAGGIO
+    return;
 }
+
+
 
     const formData = new FormData();
     formData.append('funzione', 'salvaGruppo');
