@@ -365,7 +365,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 			$candidato_presidenti_attivo = 1;
 			$lista_attivo = 1;
 			$lista_collegata_attivo = 1;
-			$listino_bloccato_attivo = 1;
+			//$listino_bloccato_attivo = 1;
 			$preferenze_attivo = 1;
 			$scheda_attivo = 1;
 			$assegna_seggi_attivo = 1;
@@ -438,13 +438,13 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 			  </a>
 			</li>
 
-			<li class="nav-item">
-			  <a href="<?php echo $listino_bloccato_attivo ? 'modules.php?op=32' : '#'; ?>" 
-				 class="nav-link <?php echo ($op == 32) ? 'active' : ''; ?> <?php echo !$listino_bloccato_attivo ? 'disabled' : ''; ?>">
-				<i class="nav-icon fas fa-lock <?php echo $listino_bloccato_attivo ? 'text-danger' : 'text-secondary'; ?>"></i>
-				<p><?php echo $listino_bloccato_attivo ? 'Listino bloccato' : 'Listino bloccato'; ?></p>
+			<!--<li class="nav-item">
+			  <a href="<?php// echo $listino_bloccato_attivo ? 'modules.php?op=32' : '#'; ?>" 
+				 class="nav-link <?php //echo ($op == 32) ? 'active' : ''; ?> <?php// echo !$listino_bloccato_attivo ? 'disabled' : ''; ?>">
+				<i class="nav-icon fas fa-lock <?php //echo $listino_bloccato_attivo ? 'text-danger' : 'text-secondary'; ?>"></i>
+				<p><?php //echo $listino_bloccato_attivo ? 'Listino bloccato' : 'Listino bloccato'; ?></p>
 			  </a>
-			</li>
+			</li>-->
 			<?php } ?>
 
 			<?php if (!in_array($tipo_consultazione, ['referendum','camera','senato'])) { ?>
