@@ -293,4 +293,48 @@ function numeroSezioneDuplicato(numeroInserito, idSezEditing) {
     return false; // numero libero
 }
 
+function editTotale(id)
+{
+    document.getElementById("totaleView"+id).style.display="none";
+    document.getElementById("totaleEdit"+id).style.display="inline";
+}
+
+function annullaTotale(id)
+{
+    document.getElementById("totaleEdit"+id).style.display="none";
+    document.getElementById("totaleView"+id).style.display="inline";
+}
+
+function salvaTotaleInline(id)
+{
+    const input = document.getElementById("totaleInput"+id);
+    const nuovoTotale = input.value;
+
+    const view = document.getElementById("totaleView"+id);
+
+    // Aggiorna visualizzazione immediata
+    view.innerHTML = `
+        ${nuovoTotale}
+        <button class="btn btn-xs btn-link text-primary"
+                onclick="editTotale(${id})">
+            ✏️
+        </button>
+    `;
+
+    annullaTotale(id);
+
+    const idSezione = document.getElementById("idSezione"+id).innerText;
+
+    /*
+    ====== AJAX MySQL READY ======
+
+    fetch("salva_totale.php", {
+        method:"POST",
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body:"id="+idSezione+"&totale="+nuovoTotale
+    });
+    */
+}
+
+
 </script>

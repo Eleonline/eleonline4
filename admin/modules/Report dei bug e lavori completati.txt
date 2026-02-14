@@ -35,7 +35,7 @@ Setup Configurazione:
 - Configura Affluenza: ok.
 - Configura Circoscrizione: non lo utilizzo io quindi non sò cosa và qui.
 - Configura Sede Elettorale: ok.
-- Configura Sezione: ok.
+- Configura Sezione: aggiunto nella lista il totale editabile da sistemare quando si clicca ok invio aggiorna il db.
 
 Importa Dati:
 - Webservice : da fare.
@@ -114,6 +114,8 @@ Referendum:
 - Referendum: da fare
 
 Scheda di Riepilogo: Creata la pagina. Caricare i dati reali.
+
+invio al webservice: creata pagine da popolare di dati.
 
 Risultati e stampe:
 - Affluenze: Creata la pagina. Caricare i dati reali.

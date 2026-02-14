@@ -347,8 +347,8 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 
 <?php if (in_array($_SESSION['ruolo'], ['superuser', 'admin', 'operatore'])): ?>
         <!-- RILEVAZIONI DI VOTO -->
-        <li class="nav-item has-treeview <?php echo in_array($op, [31, 32, 33, 34, 35, 39, 40, 41]) ? 'menu-open' : ''; ?>">
-          <a href="#" class="nav-link <?php echo in_array($op, [31, 32, 33, 34, 35, 39, 40, 41]) ? 'active' : ''; ?>">
+        <li class="nav-item has-treeview <?php echo in_array($op, [31, 32, 33, 34, 35, 39, 40, 42]) ? 'menu-open' : ''; ?>">
+          <a href="#" class="nav-link <?php echo in_array($op, [31, 32, 33, 34, 35, 39, 40, 42]) ? 'active' : ''; ?>">
             <i class="nav-icon fas fa-poll text-warning"></i>
             <p>
               Rilevazioni di voto
@@ -477,8 +477,8 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 			<?php } ?>
 			
 			<li class="nav-item">
-  <a href="<?php echo $scheda_invio_dait ? 'modules.php?op=41' : '#'; ?>" 
-     class="nav-link <?php echo ($op == 41) ? 'active' : ''; ?> <?php echo !$scheda_invio_dait ? 'disabled' : ''; ?>">
+  <a href="<?php echo $scheda_invio_dait ? 'modules.php?op=42' : '#'; ?>" 
+     class="nav-link <?php echo ($op == 42) ? 'active' : ''; ?> <?php echo !$scheda_invio_dait ? 'disabled' : ''; ?>">
     <i class="nav-icon <?php echo $scheda_invio_dait ? 'fas fa-paper-plane text-primary' : 'fas fa-clipboard text-muted'; ?>"></i>
     <p><?php echo $scheda_invio_dait ? 'Invio al Dait' : 'Scheda di Riepilogo'; ?></p>
   </a>
