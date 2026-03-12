@@ -10,7 +10,7 @@ if (!defined('MODULE_FILE')) {
     die ("You can't access this file dirrectly...");
 }
 
-
+global $genere;
 $param=strtolower($_SERVER['REQUEST_METHOD']) == 'get' ? $_GET : $_POST;
 
 if (isset($param['id_lista'])) $id_lista=intval($param['id_lista']); else $id_lista='';
@@ -55,15 +55,17 @@ if ($stemma=="" && is_readable('modules/Elezioni/images/vuoto.png')){
 	$stemma =  fread( fopen( 'modules/Elezioni/images/vuoto.png', 'r' ), filesize( 'modules/Elezioni/images/vuoto.png' ) );}
 if(isset($pdf)) 
 {
+	if($genere==0) $nomeFile='Fac_simile.pdf';
+	else $nomeFile='Programma.pdf';
   if (strstr($_SERVER['HTTP_USER_AGENT'],"MSIE"))
     {
     	header('Cache-Control: public'); 
     	header("Content-Type: application/pdf"); 
 	header("Content-Transfer-Encoding: binary");
-        header("Content-Disposition: attachment; filename=Programma.pdf");
+        header("Content-Disposition: attachment; filename=$nomeFile");
     }else{
         header("Content-type: application/pdf");
-        header("Content-Disposition: attachment; filename=Programma.pdf");
+        header("Content-Disposition: attachment; filename=$nomeFile");
     } 
 }
 

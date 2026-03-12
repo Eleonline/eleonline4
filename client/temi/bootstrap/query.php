@@ -496,15 +496,51 @@ function elenco_numeri()
 
 function elenco_sedi($i)
 {
-	global $id_cons_gen,$id_cons,$id_comune,$prefix,$dbi,$genere,$idcirc,$circo;
-	if(isset($circo) and $circo) $filtro="and t1.id_circ='$idcirc'"; else $filtro='';
-	if($i==1) $ordine='order by t2.num_circ'; else $ordine='order by t2.descrizione'; 
-	$sql="select t1.id_sede,t1.indirizzo,t1.telefono1,t1.telefono2, t1.mappa, t1.filemappa,t2.descrizione,t2.num_circ,t1.latitudine,t1.longitudine from ".$prefix."_ele_sede as t1, ".$prefix."_ele_circoscrizione as t2 where t1.id_circ=t2.id_circ and t1.id_cons='$id_cons' $filtro $ordine"; 
-	$sth = $dbi->prepare("$sql");
-	$sth->execute();
-	$row = $sth->fetchAll();
-	return($row);	
-	
+ global $id_cons_gen,$id_cons,$id_comune,$prefix,$dbi,$genere,$idcirc,$circo;
+
+ if(isset($circo) and $circo) 
+  $filtro="and t1.id_circ='$idcirc'"; 
+ else 
+  $filtro='';
+
+ $sql = "
+ SELECT 
+  t1.id_sede,
+  t1.indirizzo,
+  t1.telefono1,
+  t1.telefono2,
+  t1.mappa,
+  t1.filemappa,
+  t2.descrizione,
+  t2.num_circ,
+  t1.latitudine,
+  t1.longitudine,
+  s.prima_sezione
+ FROM ".$prefix."_ele_sede as t1
+
+ LEFT JOIN ".$prefix."_ele_circoscrizione as t2 
+  ON t1.id_circ = t2.id_circ
+
+ LEFT JOIN (
+  SELECT id_sede, MIN(num_sez) as prima_sezione
+  FROM ".$prefix."_ele_sezione
+  WHERE id_cons = :id_cons_sub
+  GROUP BY id_sede
+ ) as s 
+  ON s.id_sede = t1.id_sede
+
+ WHERE t1.id_cons = :id_cons_main
+ $filtro
+
+ ORDER BY s.prima_sezione ASC
+ ";
+
+ $sth = $dbi->prepare($sql);
+ $sth->bindParam(':id_cons_sub', $id_cons);
+ $sth->bindParam(':id_cons_main', $id_cons);
+ $sth->execute();
+
+ return $sth->fetchAll();
 }
 
 function elenco_servizi()
