@@ -41,9 +41,46 @@ $maxNumero++;
     <td id="indirizzo<?= $key ?>"><?= $val['indirizzo'] ?></td>
     <td id="maschi<?= $key ?>" style="text-align:right; <?= $nascondi ?>"><?= $val['maschi'] ?></td>
     <td id="femmine<?= $key ?>" style="text-align:right; <?= $nascondi ?>"><?= $val['femmine'] ?></td>
-    <td id="totale<?= $key ?>" style="text-align:right;">
-    <?= ($inizioNoGenere > $dataInizio) ? ($val['maschi'] + $val['femmine']) : $val['maschi'] ?>
+    <td id="totale<?= $key ?>" style="text-align:right; white-space:nowrap;">
+
+<?php
+$totaleCalcolato = ($inizioNoGenere > $dataInizio)
+    ? ($val['maschi'] + $val['femmine'])
+    : $val['maschi'];
+?>
+
+<!-- Visualizzazione -->
+<span id="totaleView<?= $key ?>">
+    <?= $totaleCalcolato ?>
+    <button class="btn btn-xs btn-link text-primary"
+            onclick="editTotale(<?= $key ?>)">
+        ✏️
+    </button>
+</span>
+
+<!-- Modalità edit -->
+<span id="totaleEdit<?= $key ?>" style="display:none;">
+
+    <input type="number"
+           id="totaleInput<?= $key ?>"
+           value="<?= $totaleCalcolato ?>"
+           class="form-control form-control-sm d-inline-block"
+           style="width:80px; text-align:right;">
+
+    <button class="btn btn-sm btn-success ms-1"
+            onclick="salvaTotaleInline(<?= $key ?>)">
+        OK
+    </button>
+
+    <button class="btn btn-sm btn-secondary ms-1"
+            onclick="annullaTotale(<?= $key ?>)">
+        ✖
+    </button>
+
+</span>
+
 </td>
+
 
 	<td>
         <button class="btn btn-sm btn-warning me-1" onclick="editSezione(<?= $key ?>);">Modifica</button>

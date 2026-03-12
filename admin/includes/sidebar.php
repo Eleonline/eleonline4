@@ -347,8 +347,8 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 
 <?php if (in_array($_SESSION['ruolo'], ['superuser', 'admin', 'operatore'])): ?>
         <!-- RILEVAZIONI DI VOTO -->
-        <li class="nav-item has-treeview <?php echo in_array($op, [31, 32, 33, 34, 35, 39, 40]) ? 'menu-open' : ''; ?>">
-          <a href="#" class="nav-link <?php echo in_array($op, [31, 32, 33, 34, 35, 39, 40]) ? 'active' : ''; ?>">
+        <li class="nav-item has-treeview <?php echo in_array($op, [31, 32, 33, 34, 35, 39, 40, 42]) ? 'menu-open' : ''; ?>">
+          <a href="#" class="nav-link <?php echo in_array($op, [31, 32, 33, 34, 35, 39, 40, 42]) ? 'active' : ''; ?>">
             <i class="nav-icon fas fa-poll text-warning"></i>
             <p>
               Rilevazioni di voto
@@ -365,10 +365,11 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 			$candidato_presidenti_attivo = 1;
 			$lista_attivo = 1;
 			$lista_collegata_attivo = 1;
-			$listino_bloccato_attivo = 1;
+			//$listino_bloccato_attivo = 1;
 			$preferenze_attivo = 1;
 			$scheda_attivo = 1;
 			$assegna_seggi_attivo = 1;
+			$scheda_invio_dait = 1;
 			?>
 
 			<li class="nav-item">
@@ -438,13 +439,13 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 			  </a>
 			</li>
 
-			<li class="nav-item">
-			  <a href="<?php echo $listino_bloccato_attivo ? 'modules.php?op=32' : '#'; ?>" 
-				 class="nav-link <?php echo ($op == 32) ? 'active' : ''; ?> <?php echo !$listino_bloccato_attivo ? 'disabled' : ''; ?>">
-				<i class="nav-icon fas fa-lock <?php echo $listino_bloccato_attivo ? 'text-danger' : 'text-secondary'; ?>"></i>
-				<p><?php echo $listino_bloccato_attivo ? 'Listino bloccato' : 'Listino bloccato'; ?></p>
+			<!--<li class="nav-item">
+			  <a href="<?php// echo $listino_bloccato_attivo ? 'modules.php?op=32' : '#'; ?>" 
+				 class="nav-link <?php //echo ($op == 32) ? 'active' : ''; ?> <?php// echo !$listino_bloccato_attivo ? 'disabled' : ''; ?>">
+				<i class="nav-icon fas fa-lock <?php //echo $listino_bloccato_attivo ? 'text-danger' : 'text-secondary'; ?>"></i>
+				<p><?php //echo $listino_bloccato_attivo ? 'Listino bloccato' : 'Listino bloccato'; ?></p>
 			  </a>
-			</li>
+			</li>-->
 			<?php } ?>
 
 			<?php if (!in_array($tipo_consultazione, ['referendum','camera','senato'])) { ?>
@@ -474,6 +475,14 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : null;
 			  </a>
 			</li>
 			<?php } ?>
+			
+			<li class="nav-item">
+  <a href="<?php echo $scheda_invio_dait ? 'modules.php?op=42' : '#'; ?>" 
+     class="nav-link <?php echo ($op == 42) ? 'active' : ''; ?> <?php echo !$scheda_invio_dait ? 'disabled' : ''; ?>">
+    <i class="nav-icon <?php echo $scheda_invio_dait ? 'fas fa-paper-plane text-primary' : 'fas fa-clipboard text-muted'; ?>"></i>
+    <p><?php echo $scheda_invio_dait ? 'Invio al Dait' : 'Scheda di Riepilogo'; ?></p>
+  </a>
+</li>
 
 		  </ul>
         </li>

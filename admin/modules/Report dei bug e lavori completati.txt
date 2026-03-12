@@ -1,10 +1,18 @@
-Admin:
-file header mettere il nome del comune riga 17.
+Gestione operatore e responsabile
 
 Dashboard:
-- creare le card.
+- card:
+. propolare:
+	scheda_scrutinate.php
+	scheda_ruolo.php
+	scheda_affluenza_rilevata.php
+	scheda_comune.php
+	scheda_dato_aggiornato.php
+	scheda_gruppi.php
+	scheda_liste.php
+	scheda_referendum.php
+	
 - ordinamento delle card e Mostra / Nascondi schede sul database associato all'utente.
-- correggere il bottone in alto a destra (posizione).
 
 Sistema:
 - Stato Sistema: ok
@@ -15,7 +23,7 @@ Impostazione e dati generali:
 - configurazione sito: ok
 - tema colore: ok
 - Anagrafica enti/comuni: ok
-- Aggiornamento REV : da verificare.
+- Aggiornamento REV : ok.
 - Aggiornamento Data base : creata la pagina verificare. 
 
 Utenti e permessi:
@@ -27,7 +35,7 @@ Setup Configurazione:
 - Configura Affluenza: ok.
 - Configura Circoscrizione: non lo utilizzo io quindi non sò cosa và qui.
 - Configura Sede Elettorale: ok.
-- Configura Sezione: ok.
+- Configura Sezione: aggiunto nella lista il totale editabile da sistemare quando si clicca ok invio aggiorna il db.
 
 Importa Dati:
 - Webservice : da fare.
@@ -47,11 +55,11 @@ Senato:
 	- Listino Bloccato: ok
  
 Comunali:
-- Candidato Sindaco: verificare anteprima immagini. Non trova la posizione libera. manca nel form link trasparenza.
-- Lista: verificare anteprima immagini. Non trova la posizione libera. manca nel form link trasparenza.
-Fare il controllo se è stato messo il link trasparenza al candidato sindaco e oscurare nel form link trasparenza
-- Candidati: verificare anteprima immagini e pdf. non trova la posizione libera. 
-Fare il controllo se è stato messo il link trasparenza delle liste o  al candidato al sindaco e oscrurare nel form curriculum e Certificato Penale.
+- Candidato Sindaco: manca nel form link trasparenza.
+- Lista: manca nel form link trasparenza.
+         Fare il controllo se è stato messo il link trasparenza al candidato sindaco e oscurare nel form link trasparenza
+- Candidati: verificare anteprima pdf. 
+             Fare il controllo se è stato messo il link trasparenza delle liste o  al candidato al sindaco e oscrurare nel form curriculum e Certificato Penale.
 
 Ballottaggio: e tutto da fare
 - Candidato Sindaco: da fare
@@ -75,38 +83,39 @@ Carica informazioni:
 
 Rilevazione di voto: 
 
+creato il box erorre controlli.
+fare il focus e colorare di rosso sull'errore
+
 Comunali:
-- Affluenza: 
-	errori:
-	nel titolo mettere il tipo di spoglio : affluenze, voti di lista, ecc..
-	quando cambio sezione non carica le affluenze della sezione.
-	nella pagina affluenza nascondere Votanti Ultima Ora e totali.
+- Affluenza: da verificare
 - Candidato Sindaco: da fare
 - Lista: da verificare
 - Preferenze: da fare
 
 Camera e Senato:
 - Affluenza: da verificare 
-- Candidato Uninominale: da fare
+- Candidato Uninominale: da verificare
 - Lista collegata: da verificare
 - Listino bloccato: da verificare
 
 Europei:
 - Affluenza: da verificare
 - Lista: da verificare
-- Preferenze: da fare
+- Preferenze: da verificare
 
 Regionali:
 - Affluenza: da verificare
-- Candidato Presidente: da fare
+- Candidato Presidente: da verificare
 - Lista: da verificare
-- Preferenze: da fare
+- Preferenze: da verificare
 
 Referendum:
 - Affluenza: da verificare
 - Referendum: da fare
 
 Scheda di Riepilogo: Creata la pagina. Caricare i dati reali.
+
+invio al webservice: creata pagine da popolare di dati.
 
 Risultati e stampe:
 - Affluenze: Creata la pagina. Caricare i dati reali.
@@ -131,12 +140,11 @@ menù.php (menù top):
 Client: 
 - Adatttare con db nuovo.
 - Eliminare tutti gli altri temi e lasciare solo bootstrap.
-- Per il Referendum utilizzare la configurazione "/pagine/config_colori_quesiti.php"
 
 Si devono fare tutti i controlli:
 - Setup Configurazioni: Se sono presenti dati di spoglio caricati, non è consentita l’eliminazione delle configurazioni.
 Fa eccezione la “Configurazione Consultazione”, che può essere eliminata anche in presenza di dati.
-- Gestione Liste e candidati o referndum : Se sono presenti dati di spoglio caricati, non è consentita l’eliminazione delle gestioni.
+- Gestione Liste e candidati o referendum : Se sono presenti dati di spoglio caricati, non è consentita l’eliminazione delle gestioni.
 
 mettere funzione converti_colore_to_4() su aggiorndadbto4.php
 creata box_errore_spoglio.php popolare gli errori
